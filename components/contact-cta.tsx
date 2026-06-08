@@ -26,7 +26,8 @@ export function ContactCta() {
           <Button
             size="lg"
             className="rounded-full bg-white text-[oklch(0.26_0.07_252)] hover:bg-blue-50"
-            render={<a href="mailto:contact@yunjianbiao.com" />}
+            nativeButton={false}
+            render={<a href="mailto:service@cyberwater.cn" />}
           >
             预约产品演示
             <ArrowRight className="size-4" />
@@ -35,7 +36,8 @@ export function ContactCta() {
             size="lg"
             variant="outline"
             className="rounded-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
-            render={<a href="mailto:contact@yunjianbiao.com" />}
+            nativeButton={false}
+            render={<a href="mailto:service@cyberwater.cn" />}
           >
             获取解决方案
           </Button>

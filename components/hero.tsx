@@ -48,6 +48,7 @@ export function Hero() {
             <Button
               size="lg"
               className="rounded-full bg-white text-[oklch(0.26_0.07_252)] hover:bg-blue-50"
+              nativeButton={false}
               render={<a href="/#contact" />}
             >
               立即咨询
@@ -57,6 +58,7 @@ export function Hero() {
               size="lg"
               variant="outline"
               className="rounded-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              nativeButton={false}
               render={<a href="/#solutions" />}
             >
               查看解决方案

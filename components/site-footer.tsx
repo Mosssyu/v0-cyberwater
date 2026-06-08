@@ -1,4 +1,4 @@
-import { Droplets, Mail, MapPin } from "lucide-react"
+import { Mail, MapPin } from "lucide-react"
 
 const columns = [
   {
@@ -32,15 +32,14 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 lg:grid-cols-6">
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2">
-              <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                <Droplets className="size-5" />
-              </span>
-              <span className="flex flex-col leading-none">
-                <span className="text-lg font-semibold">云建标 CYBERWATER</span>
-                <span className="text-[10px] tracking-[0.2em] text-blue-100/50">
-                  执数智之器 · 精水务之业
-                </span>
+            <div className="flex flex-col gap-2">
+              <img
+                src="/cyberwater-logo.png"
+                alt="云建标 CYBERWATER"
+                className="h-8 w-auto"
+              />
+              <span className="text-[11px] tracking-[0.2em] text-blue-100/50">
+                执数智之器 · 精水务之业
               </span>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-blue-100/60">
