@@ -5,6 +5,7 @@ import { Solutions } from "@/components/solutions"
 import { Architecture } from "@/components/architecture"
 import { AiAgents } from "@/components/ai-agents"
 import { CustomerValue } from "@/components/customer-value"
+import { CasesPreview } from "@/components/cases-preview"
 import { Scenes } from "@/components/scenes"
 import { ContactCta } from "@/components/contact-cta"
 import { SiteFooter } from "@/components/site-footer"
@@ -20,6 +21,7 @@ export default function Page() {
         <Architecture />
         <AiAgents />
         <CustomerValue />
+        <CasesPreview />
         <Scenes />
         <ContactCta />
       </main>

@@ -24,22 +24,20 @@ export function ContactCta() {
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-4">
           <Button
-            asChild
             size="lg"
             className="rounded-full bg-white text-[oklch(0.26_0.07_252)] hover:bg-blue-50"
+            render={<a href="mailto:contact@yunjianbiao.com" />}
           >
-            <a href="mailto:contact@yunjianbiao.com">
-              预约产品演示
-              <ArrowRight className="size-4" />
-            </a>
+            预约产品演示
+            <ArrowRight className="size-4" />
           </Button>
           <Button
-            asChild
             size="lg"
             variant="outline"
             className="rounded-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+            render={<a href="mailto:contact@yunjianbiao.com" />}
           >
-            <a href="mailto:contact@yunjianbiao.com">获取解决方案</a>
+            获取解决方案
           </Button>
         </div>
       </div>

@@ -43,22 +43,20 @@ export function Hero() {
 
           <div className="mt-9 flex flex-wrap gap-4">
             <Button
-              asChild
               size="lg"
               className="rounded-full bg-white text-[oklch(0.26_0.07_252)] hover:bg-blue-50"
+              render={<a href="/#contact" />}
             >
-              <a href="#contact">
-                立即咨询
-                <ArrowRight className="size-4" />
-              </a>
+              立即咨询
+              <ArrowRight className="size-4" />
             </Button>
             <Button
-              asChild
               size="lg"
               variant="outline"
               className="rounded-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              render={<a href="/#solutions" />}
             >
-              <a href="#solutions">查看解决方案</a>
+              查看解决方案
             </Button>
           </div>
 

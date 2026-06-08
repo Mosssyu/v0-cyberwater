@@ -23,7 +23,7 @@ const scenes = [
 
 export function Scenes() {
   return (
-    <section id="cases" className="bg-background py-24">
+    <section id="scenes" className="bg-background py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-medium text-primary">典型应用场景</span>
