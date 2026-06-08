@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button"
 
 const navItems = [
   { label: "首页", href: "/#home" },
-  { label: "产品中心", href: "/#products" },
+  { label: "核心产品", href: "/#products" },
   { label: "解决方案", href: "/#solutions" },
-  { label: "客户案例", href: "/cases" },
-  { label: "技术能力", href: "/#capabilities" },
+  { label: "成功案例", href: "/cases" },
   { label: "关于我们", href: "/#about" },
+  { label: "新闻动态", href: "/#news" },
   { label: "联系我们", href: "/#contact" },
 ]
 
@@ -24,8 +24,13 @@ export function SiteHeader() {
           <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Droplets className="size-5" />
           </span>
-          <span className="text-lg font-semibold tracking-tight text-foreground">
-            云建标智慧水务
+          <span className="flex flex-col leading-none">
+            <span className="text-lg font-semibold tracking-tight text-foreground">
+              云建标
+            </span>
+            <span className="text-[10px] font-medium tracking-[0.2em] text-muted-foreground">
+              CYBERWATER
+            </span>
           </span>
         </a>
 

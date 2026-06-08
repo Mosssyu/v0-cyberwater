@@ -7,6 +7,9 @@ import { AiAgents } from "@/components/ai-agents"
 import { CustomerValue } from "@/components/customer-value"
 import { CasesPreview } from "@/components/cases-preview"
 import { Scenes } from "@/components/scenes"
+import { About } from "@/components/about"
+import { News } from "@/components/news"
+import { Careers } from "@/components/careers"
 import { ContactCta } from "@/components/contact-cta"
 import { SiteFooter } from "@/components/site-footer"
 
@@ -23,6 +26,9 @@ export default function Page() {
         <CustomerValue />
         <CasesPreview />
         <Scenes />
+        <About />
+        <News />
+        <Careers />
         <ContactCta />
       </main>
       <SiteFooter />

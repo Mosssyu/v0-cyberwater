@@ -1,27 +1,34 @@
-import { Droplets, Mail, Phone, MapPin } from "lucide-react"
+import { Droplets, Mail, MapPin } from "lucide-react"
 
 const columns = [
   {
-    title: "产品中心",
-    links: ["厂网河湖一体化平台", "水厂运营管理系统", "物联网 IoT 平台", "AI 水务智能体平台"],
+    title: "核心产品",
+    links: ["CWAgent AI 智能体", "CWVisual 数字孪生", "CWPilot 防汛调度", "厂网河湖一体化平台"],
   },
   {
     title: "解决方案",
-    links: ["水厂智慧运营", "排水管网运维", "防汛应急调度", "集团化多厂站管理"],
+    links: ["水务集团数字化运营", "一体化业务管理", "BIM+数字孪生", "防汛应急调度"],
   },
   {
-    title: "技术能力",
-    links: ["平台能力架构", "数据接入能力", "AI 智能体能力", "API 开放平台"],
+    title: "成功案例",
+    links: ["数字水厂", "集团数字运营", "多厂集约化管理", "BIM+数字孪生"],
   },
   {
     title: "关于我们",
-    links: ["公司介绍", "发展历程", "新闻动态", "加入我们"],
+    links: ["公司介绍", "成长历程", "新闻动态", "加入我们"],
   },
+]
+
+const branches = [
+  "深圳 · 南山区沙河西路南山智谷产业园",
+  "成都 · 天府新区同森元气港",
+  "西安 · 高新区清华科技园",
+  "上海 · 普陀区华宏商务中心",
 ]
 
 export function SiteFooter() {
   return (
-    <footer id="about" className="border-t border-border bg-[oklch(0.18_0.04_256)] text-white">
+    <footer className="border-t border-border bg-[oklch(0.18_0.04_256)] text-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 lg:grid-cols-6">
           <div className="lg:col-span-2">
@@ -29,25 +36,36 @@ export function SiteFooter() {
               <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <Droplets className="size-5" />
               </span>
-              <span className="text-lg font-semibold">云建标智慧水务</span>
+              <span className="flex flex-col leading-none">
+                <span className="text-lg font-semibold">云建标 CYBERWATER</span>
+                <span className="text-[10px] tracking-[0.2em] text-blue-100/50">
+                  执数智之器 · 精水务之业
+                </span>
+              </span>
             </div>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-blue-100/60">
-              面向水务集团、水厂、排水公司与城投平台，构建 AI 驱动的厂网河湖一体化智慧水务数字底座。
+              北京云建标科技有限公司，国家高新技术企业、中国水协智慧水务专业委员会委员单位，致力于成为最懂运营管理的智慧水务科技公司。
             </p>
             <ul className="mt-6 space-y-3 text-sm text-blue-100/70">
-              <li className="flex items-center gap-2">
-                <Phone className="size-4 text-cyan-300" />
-                400-888-8888
+              <li className="flex items-start gap-2">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-cyan-300" />
+                北京市东城区东直门外大街 46 号天恒大厦 B 座 16 层
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="size-4 text-cyan-300" />
-                contact@yunjianbiao.com
-              </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="size-4 text-cyan-300" />
-                中国 · 智慧水务产业园
+                service@cyberwater.cn
               </li>
             </ul>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {branches.map((b) => (
+                <span
+                  key={b}
+                  className="rounded-full border border-white/10 px-3 py-1 text-xs text-blue-100/50"
+                >
+                  {b}
+                </span>
+              ))}
+            </div>
           </div>
 
           {columns.map((col) => (
@@ -70,7 +88,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-blue-100/50 sm:flex-row">
-          <p>© 2026 云建标智慧水务科技有限公司. 保留所有权利.</p>
+          <p>© 2026 北京云建标科技有限公司. 京ICP备20010617号</p>
           <div className="flex gap-6">
             <a href="#" className="transition-colors hover:text-cyan-300">
               隐私政策

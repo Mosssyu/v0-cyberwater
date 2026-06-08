@@ -1,4 +1,4 @@
-import { ArrowRight, Activity, ShieldCheck, Cpu } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function Hero() {
@@ -30,15 +30,18 @@ export function Hero() {
         <div className="text-white">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs text-cyan-100 backdrop-blur">
             <span className="size-1.5 rounded-full bg-cyan-300" />
-            AI 智能体 · 厂网河湖一体化 · 集团化运营
+            执数智之器 · 精水务之业
           </div>
           <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            AI 驱动的厂网河湖
+            新一代
+            <span className="bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">
+              AI 智慧水务
+            </span>
             <br />
-            一体化智慧水务平台
+            一体化运营平台
           </h1>
           <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-blue-100/80 sm:text-lg">
-            融合水厂、泵站、管网、河湖、防汛、调度、IoT 与 AI 智能体，构建面向集团化运营的智慧水务数字底座。
+            云建标 CYBERWATER 将 AI 智能体、BIM、GIS、数字孪生与边云协同深度融合于水务、水环境、水利的建设运营，打造「精确感知 + 无缝协同 + 智慧决策」的新一代智慧水务数字底座。
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -62,12 +65,12 @@ export function Hero() {
 
           <div className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-8">
             {[
-              { icon: Activity, label: "实时在线监测" },
-              { icon: Cpu, label: "AI 智能体赋能" },
-              { icon: ShieldCheck, label: "集团化管控" },
+              { num: "2015", label: "深耕水务数字化" },
+              { num: "40+", label: "智慧水务项目" },
+              { num: "30+", label: "软件著作权" },
             ].map((item) => (
-              <div key={item.label} className="flex flex-col items-start gap-2">
-                <item.icon className="size-5 text-cyan-300" />
+              <div key={item.label} className="flex flex-col items-start gap-1">
+                <span className="text-2xl font-bold text-cyan-300">{item.num}</span>
                 <span className="text-sm text-blue-100/80">{item.label}</span>
               </div>
             ))}
