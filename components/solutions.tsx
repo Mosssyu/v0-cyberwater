@@ -93,7 +93,7 @@ export function Solutions() {
                 ].map((row) => (
                   <div key={row.k} className="flex gap-4">
                     <dt
-                      className={`shrink-0 rounded-md bg-muted px-2.5 py-1 text-xs font-medium ${row.c}`}
+                      className={`h-fit w-12 shrink-0 rounded-md bg-muted px-2.5 py-1 text-center text-xs font-medium ${row.c}`}
                     >
                       {row.k}
                     </dt>
