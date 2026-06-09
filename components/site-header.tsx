@@ -21,13 +21,11 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <a href="/#home" className="flex items-center" aria-label="云建标 CYBERWATER 首页">
-          <span className="flex items-center rounded-lg bg-[oklch(0.18_0.04_256)] px-3 py-2">
-            <img
-              src="/cyberwater-logo.png"
-              alt="云建标 CYBERWATER"
-              className="h-6 w-auto"
-            />
-          </span>
+          <img
+            src="/cyberwater-logo-color.png"
+            alt="云建标 CYBERWATER"
+            className="h-9 w-auto"
+          />
         </a>
 
         <nav className="hidden items-center gap-7 lg:flex">

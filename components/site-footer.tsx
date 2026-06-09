@@ -34,9 +34,9 @@ export function SiteFooter() {
           <div className="lg:col-span-2">
             <div className="flex flex-col gap-2">
               <img
-                src="/cyberwater-logo.png"
+                src="/cyberwater-logo-dark.png"
                 alt="云建标 CYBERWATER"
-                className="h-8 w-auto"
+                className="h-9 w-auto"
               />
               <span className="text-[11px] tracking-[0.2em] text-blue-100/50">
                 执数智之器 · 精水务之业
