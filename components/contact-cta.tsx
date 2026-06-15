@@ -5,7 +5,7 @@ export function ContactCta() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden bg-gradient-to-r from-[oklch(0.26_0.07_252)] to-[oklch(0.4_0.13_232)] py-24 text-white"
+      className="relative overflow-hidden bg-gradient-to-r from-[oklch(0.45_0.15_252)] to-[oklch(0.62_0.13_210)] py-24 text-white"
     >
       <div
         className="pointer-events-none absolute inset-0 opacity-15"

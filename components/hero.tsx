@@ -5,14 +5,14 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-gradient-to-b from-[oklch(0.21_0.06_256)] via-[oklch(0.26_0.07_252)] to-[oklch(0.32_0.07_248)]"
+      className="relative overflow-hidden bg-gradient-to-br from-[oklch(0.55_0.16_252)] via-[oklch(0.6_0.15_232)] to-[oklch(0.7_0.13_205)]"
     >
       {/* 水流科技纹理 */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.18]"
+        className="pointer-events-none absolute inset-0 opacity-[0.25]"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 20% 30%, oklch(0.7 0.13 215) 0, transparent 40%), radial-gradient(circle at 85% 20%, oklch(0.52 0.18 252) 0, transparent 45%)",
+            "radial-gradient(circle at 18% 25%, oklch(0.9 0.08 200) 0, transparent 42%), radial-gradient(circle at 88% 80%, oklch(0.7 0.14 248) 0, transparent 45%)",
         }}
         aria-hidden="true"
       />
@@ -28,20 +28,19 @@ export function Hero() {
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
         <div className="text-white">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs text-cyan-100 backdrop-blur">
-            <span className="size-1.5 rounded-full bg-cyan-300" />
-            执数智之器 · 精水务之业
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs text-cyan-50 backdrop-blur">
+            <span className="size-1.5 rounded-full bg-cyan-200" />
+            从水务运营中长出来的数字化产品公司
           </div>
           <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            新一代
-            <span className="bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">
-              AI 智慧水务
-            </span>
+            做最懂运营的
             <br />
-            一体化运营平台
+            <span className="bg-gradient-to-r from-cyan-100 to-white bg-clip-text text-transparent">
+              水务数字化服务商
+            </span>
           </h1>
-          <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-blue-100/80 sm:text-lg">
-            云建标 CYBERWATER 将 AI 智能体、BIM、GIS、数字孪生与边云协同深度融合于水务、水环境、水利的建设运营，打造「精确感知 + 无缝协同 + 智慧决策」的新一代智慧水务数字底座。
+          <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-blue-50/90 sm:text-lg">
+            云建标依托国内头部水务集团的运营实践，持续沉淀水务运营经验、管理标准与技术能力，将 AI 智能体、BIM、GIS、数字孪生深度融合，打造标准化、产品化、可配置的新一代水务运营平台。
           </p>
 
           <div className="mt-9 flex flex-wrap gap-4">
@@ -72,8 +71,8 @@ export function Hero() {
               { num: "30+", label: "软件著作权" },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-start gap-1">
-                <span className="text-2xl font-bold text-cyan-300">{item.num}</span>
-                <span className="text-sm text-blue-100/80">{item.label}</span>
+                <span className="text-2xl font-bold text-white">{item.num}</span>
+                <span className="text-sm text-blue-50/85">{item.label}</span>
               </div>
             ))}
           </div>
