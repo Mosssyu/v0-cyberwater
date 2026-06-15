@@ -1,92 +1,116 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
+
+const domains = [
+  "水厂",
+  "泵站",
+  "管网",
+  "河湖",
+  "防汛",
+  "调度",
+  "IoT 物联",
+  "AI 智能体",
+]
 
 export function Hero() {
   return (
-    <section
-      id="home"
-      className="relative overflow-hidden bg-gradient-to-br from-[oklch(0.55_0.16_252)] via-[oklch(0.6_0.15_232)] to-[oklch(0.7_0.13_205)]"
-    >
-      {/* 水流科技纹理 */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.25]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 18% 25%, oklch(0.9 0.08 200) 0, transparent 42%), radial-gradient(circle at 88% 80%, oklch(0.7 0.14 248) 0, transparent 45%)",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage:
-            "linear-gradient(oklch(1 0 0) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }}
-        aria-hidden="true"
-      />
+    <section id="home" className="relative overflow-hidden bg-background">
+      {/* 顶部柔光 */}
+      <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-[520px]" aria-hidden="true" />
+      {/* 科技网格 */}
+      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:py-28">
-        <div className="text-white">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs text-cyan-50 backdrop-blur">
-            <span className="size-1.5 rounded-full bg-cyan-200" />
-            从水务运营中长出来的数字化产品公司
+      <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-16 lg:pt-28">
+        <div className="mx-auto max-w-3xl text-center">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur">
+            <span className="size-1.5 rounded-full bg-accent" />
+            企业级 AI 水务操作系统 · CW-Cloud
           </div>
-          <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            做最懂运营的
+
+          <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+            AI 驱动的厂网河湖
             <br />
-            <span className="bg-gradient-to-r from-cyan-100 to-white bg-clip-text text-transparent">
-              水务数字化服务商
-            </span>
+            <span className="text-gradient">一体化智慧水务平台</span>
           </h1>
-          <p className="mt-6 max-w-xl text-pretty text-base leading-relaxed text-blue-50/90 sm:text-lg">
-            云建标依托国内头部水务集团的运营实践，持续沉淀水务运营经验、管理标准与技术能力，将 AI 智能体、BIM、GIS、数字孪生深度融合，打造标准化、产品化、可配置的新一代水务运营平台。
+
+          <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+            云建标依托头部水务集团的运营实践，融合 IoT 感知、数字孪生、大屏可视化与 AI 智能体，
+            把水厂、泵站、管网、河湖、防汛、调度统一到一个标准化、产品化、可配置的运营底座。
           </p>
 
-          <div className="mt-9 flex flex-wrap gap-4">
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
             <Button
               size="lg"
-              className="rounded-full bg-white text-[oklch(0.26_0.07_252)] hover:bg-blue-50"
+              className="rounded-full"
               nativeButton={false}
               render={<a href="/#contact" />}
             >
-              立即咨询
+              预约演示
               <ArrowRight className="size-4" />
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              className="rounded-full border-border bg-card/40 text-foreground hover:bg-card"
               nativeButton={false}
               render={<a href="/#solutions" />}
             >
+              <Play className="size-4" />
               查看解决方案
             </Button>
           </div>
 
-          <div className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-white/15 pt-8">
-            {[
-              { num: "2015", label: "深耕水务数字化" },
-              { num: "40+", label: "智慧水务项目" },
-              { num: "30+", label: "软件著作权" },
-            ].map((item) => (
-              <div key={item.label} className="flex flex-col items-start gap-1">
-                <span className="text-2xl font-bold text-white">{item.num}</span>
-                <span className="text-sm text-blue-50/85">{item.label}</span>
-              </div>
+          {/* 业务域能力条 */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
+            {domains.map((d) => (
+              <span
+                key={d}
+                className="rounded-full border border-border bg-card/50 px-3.5 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur"
+              >
+                {d}
+              </span>
             ))}
           </div>
         </div>
 
-        <div className="relative">
-          <div className="absolute -inset-4 rounded-3xl bg-cyan-400/10 blur-2xl" aria-hidden="true" />
-          <div className="relative overflow-hidden rounded-2xl border border-white/15 shadow-2xl shadow-blue-950/50">
+        {/* 平台大屏可视化 */}
+        <div className="relative mx-auto mt-16 max-w-5xl">
+          <div className="pointer-events-none absolute -inset-x-10 -top-10 bottom-0 rounded-[2rem] bg-primary/10 blur-3xl" aria-hidden="true" />
+          <div className="ring-hairline relative overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-black/60">
+            {/* 窗口栏 */}
+            <div className="flex items-center gap-2 border-b border-border bg-secondary/40 px-4 py-3">
+              <span className="size-3 rounded-full bg-destructive/70" />
+              <span className="size-3 rounded-full bg-accent/70" />
+              <span className="size-3 rounded-full bg-primary/70" />
+              <span className="ml-3 font-mono text-xs text-muted-foreground">
+                cyberwater · 厂网河湖一体化运营大屏
+              </span>
+            </div>
             <img
               src="/water-dashboard.png"
               alt="智慧水务平台运营大屏，包含地图、管网、泵站、水厂、AI 分析、告警与工单"
               className="w-full"
             />
           </div>
+        </div>
+
+        {/* 关键指标 */}
+        <div className="mx-auto mt-16 grid max-w-4xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-4">
+          {[
+            { num: "2015", label: "深耕水务数字化" },
+            { num: "40+", label: "智慧水务项目" },
+            { num: "30+", label: "软件著作权" },
+            { num: "99.9%", label: "平台运行可用性" },
+          ].map((item) => (
+            <div key={item.label} className="bg-background px-6 py-7 text-center">
+              <div className="text-2xl font-bold text-foreground sm:text-3xl">
+                {item.num}
+              </div>
+              <div className="mt-1.5 text-xs text-muted-foreground sm:text-sm">
+                {item.label}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

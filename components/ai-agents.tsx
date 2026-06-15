@@ -54,22 +54,19 @@ const scenes = [
 
 export function AiAgents() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[oklch(0.36_0.11_252)] via-[oklch(0.34_0.1_240)] to-[oklch(0.4_0.1_220)] py-24 text-white">
-      <div
-        className="pointer-events-none absolute inset-0 opacity-25"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 15% 20%, oklch(0.78 0.12 200) 0, transparent 40%), radial-gradient(circle at 90% 80%, oklch(0.62 0.16 255) 0, transparent 45%)",
-        }}
-        aria-hidden="true"
-      />
+    <section className="relative overflow-hidden border-y border-border bg-[oklch(0.13_0.012_252)] py-24">
+      <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-80" aria-hidden="true" />
+      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
+
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-medium text-cyan-200">核心产品 · CW-Agent</span>
-          <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight sm:text-4xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent backdrop-blur">
+            核心产品 · CW-Agent
+          </span>
+          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             水务智能体，让 AI 深入运营每一环节
           </h2>
-          <p className="mt-4 text-pretty leading-relaxed text-blue-50/80">
+          <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
             源于真实水务运营场景，沉淀业务流程、岗位经验与处置规则，再以智能体方式进行重构与放大。
           </p>
         </div>
@@ -78,13 +75,13 @@ export function AiAgents() {
         <div className="mt-14 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           {dna.map((d, i) => (
             <div key={d.label} className="flex items-center gap-3 sm:gap-4">
-              <div className="flex flex-col items-center gap-2 rounded-2xl border border-white/15 bg-white/[0.06] px-5 py-4 text-center backdrop-blur">
-                <d.icon className="size-6 text-cyan-200" />
-                <span className="text-sm font-semibold">{d.label}</span>
-                <span className="text-xs text-blue-50/65">{d.note}</span>
+              <div className="ring-hairline flex flex-col items-center gap-2 rounded-2xl border border-border bg-card/70 px-5 py-4 text-center backdrop-blur">
+                <d.icon className="size-6 text-accent" />
+                <span className="text-sm font-semibold text-foreground">{d.label}</span>
+                <span className="text-xs text-muted-foreground">{d.note}</span>
               </div>
               {i < dna.length - 1 && (
-                <span className="hidden text-cyan-200/60 sm:inline" aria-hidden="true">
+                <span className="hidden text-muted-foreground sm:inline" aria-hidden="true">
                   ›
                 </span>
               )}
@@ -97,16 +94,16 @@ export function AiAgents() {
           {scenes.map((s) => (
             <div
               key={s.title}
-              className="group flex flex-col rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/40 hover:bg-white/[0.08]"
+              className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
             >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-400/30 to-primary/30 text-cyan-100">
+              <div className="flex size-11 items-center justify-center rounded-xl bg-gradient-to-br from-accent/25 to-primary/25 text-accent">
                 <s.icon className="size-5" />
               </div>
-              <h3 className="mt-5 text-base font-semibold">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-blue-50/70">
+              <h3 className="mt-5 text-base font-semibold text-foreground">{s.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {s.desc}
               </p>
-              <p className="mt-4 border-t border-white/10 pt-4 text-sm leading-relaxed text-cyan-100/90">
+              <p className="mt-4 border-t border-border pt-4 text-sm leading-relaxed text-accent">
                 {s.value}
               </p>
             </div>

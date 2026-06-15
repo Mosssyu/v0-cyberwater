@@ -28,7 +28,7 @@ const branches = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-[oklch(0.29_0.07_255)] text-white">
+    <footer className="border-t border-border bg-[oklch(0.12_0.012_252)] text-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 lg:grid-cols-6">
           <div className="lg:col-span-2">

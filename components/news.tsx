@@ -46,8 +46,10 @@ export function News() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <span className="text-sm font-medium text-primary">新闻动态</span>
-            <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
+              Newsroom
+            </span>
+            <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               洞察行业趋势，见证项目落地
             </h2>
           </div>

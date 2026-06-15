@@ -22,7 +22,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <a href="/#home" className="flex items-center" aria-label="云建标 CYBERWATER 首页">
           <img
-            src="/cyberwater-logo-color.png"
+            src="/cyberwater-logo-dark.png"
             alt="云建标 CYBERWATER"
             className="h-9 w-auto"
           />

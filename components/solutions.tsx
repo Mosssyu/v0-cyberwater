@@ -56,9 +56,11 @@ export function Solutions() {
     <section id="solutions" className="bg-muted/40 py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-medium text-primary">解决方案</span>
-          <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            覆盖四大核心场景的水务数字化方案
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
+            Solutions
+          </span>
+          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            覆盖六大核心场景的水务数字化方案
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
             针对不同业务场景，提供从痛点诊断到能力建设、再到价值落地的完整方案。

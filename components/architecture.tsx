@@ -40,14 +40,14 @@ const toneStyles: Record<
     ring: "border-primary/20",
   },
   ai: {
-    badge: "bg-emerald-500/10 text-emerald-600",
-    accent: "text-emerald-600",
+    badge: "bg-emerald-500/15 text-emerald-400",
+    accent: "text-emerald-400",
     chipHover: "hover:border-emerald-500/40 hover:bg-emerald-500/5",
     ring: "border-emerald-500/20",
   },
   capability: {
-    badge: "bg-orange-500/10 text-orange-600",
-    accent: "text-orange-600",
+    badge: "bg-orange-500/15 text-orange-400",
+    accent: "text-orange-400",
     chipHover: "hover:border-orange-500/40 hover:bg-orange-500/5",
     ring: "border-orange-500/20",
   },
@@ -291,8 +291,10 @@ export function Architecture() {
     <section id="capabilities" className="bg-muted/30 py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="text-sm font-medium text-primary">平台能力架构</span>
-          <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
+            Architecture
+          </span>
+          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             厂网河湖 AI 一体化平台
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
@@ -309,7 +311,7 @@ export function Architecture() {
           {/* AI 智能体层 */}
           <div className="rounded-2xl border border-emerald-500/20 bg-card p-5 lg:flex lg:gap-6">
             <div className="mb-4 flex shrink-0 items-start gap-3 lg:mb-0 lg:w-48 lg:flex-col lg:gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-emerald-500/10 text-xs font-bold text-emerald-600">
+              <span className="flex size-7 items-center justify-center rounded-full bg-emerald-500/15 text-xs font-bold text-emerald-400">
                 2
               </span>
               <div>
@@ -329,7 +331,7 @@ export function Architecture() {
                   <ArrowRight className="size-3.5" />
                   沉淀优化
                 </span>
-                <span className="text-xs font-medium text-emerald-600">
+                <span className="text-xs font-medium text-emerald-400">
                   AI 能力统一入口，赋能业务与场景，驱动智能决策
                 </span>
               </div>
@@ -340,7 +342,7 @@ export function Architecture() {
                     className="rounded-xl border border-border bg-muted/40 p-3.5 transition-colors hover:border-emerald-500/40 hover:bg-emerald-500/5"
                   >
                     <div className="flex items-center gap-2">
-                      <a.icon className="size-4 text-emerald-600" />
+                      <a.icon className="size-4 text-emerald-400" />
                       <span className="text-sm font-semibold text-foreground">
                         {a.title}
                       </span>
@@ -362,14 +364,14 @@ export function Architecture() {
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-center text-xs font-medium text-emerald-600">
+              <p className="mt-4 text-center text-xs font-medium text-emerald-400">
                 基于数据 + 知识 + 模型，提供智能问答、分析、预测、决策能力
               </p>
             </div>
 
             <div className="mt-4 hidden shrink-0 flex-col justify-center gap-1.5 border-t border-border pt-3 lg:mt-0 lg:flex lg:w-28 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0">
               {["超级入口", "AI 赋能", "智能决策", "持续进化"].map((a) => (
-                <span key={a} className="text-xs text-emerald-600">
+                <span key={a} className="text-xs text-emerald-400">
                   {a}
                 </span>
               ))}
@@ -379,7 +381,7 @@ export function Architecture() {
           {/* 平台能力中心 */}
           <div className="rounded-2xl border border-orange-500/20 bg-card p-5 lg:flex lg:gap-6">
             <div className="mb-4 flex shrink-0 items-start gap-3 lg:mb-0 lg:w-48 lg:flex-col lg:gap-2">
-              <span className="flex size-7 items-center justify-center rounded-full bg-orange-500/10 text-xs font-bold text-orange-600">
+              <span className="flex size-7 items-center justify-center rounded-full bg-orange-500/15 text-xs font-bold text-orange-400">
                 3
               </span>
               <div>
@@ -391,7 +393,7 @@ export function Architecture() {
             </div>
 
             <div className="flex-1">
-              <p className="mb-3 text-xs font-medium text-orange-600">
+              <p className="mb-3 text-xs font-medium text-orange-400">
                 可复用、可组合的核心能力中心，为上层场景与 AI 智能体提供统一能力支撑
               </p>
               <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
@@ -401,7 +403,7 @@ export function Architecture() {
                     className="rounded-xl border border-border bg-muted/40 p-3 transition-colors hover:border-orange-500/40 hover:bg-orange-500/5"
                   >
                     <div className="flex items-center gap-1.5">
-                      <c.icon className="size-4 text-orange-600" />
+                      <c.icon className="size-4 text-orange-400" />
                       <span className="text-[13px] font-semibold text-foreground">
                         {c.title}
                       </span>
@@ -420,14 +422,14 @@ export function Architecture() {
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-center text-xs font-medium text-orange-600">
+              <p className="mt-4 text-center text-xs font-medium text-orange-400">
                 为上层场景与 AI 能力提供统一、标准、可复用的能力支撑
               </p>
             </div>
 
             <div className="mt-4 hidden shrink-0 flex-col justify-center gap-1.5 border-t border-border pt-3 lg:mt-0 lg:flex lg:w-28 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0">
               {["能力支撑", "平台核心", "服务化能力"].map((a) => (
-                <span key={a} className="text-xs text-orange-600">
+                <span key={a} className="text-xs text-orange-400">
                   {a}
                 </span>
               ))}

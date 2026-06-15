@@ -17,8 +17,10 @@ export function Careers() {
         <div className="overflow-hidden rounded-3xl border border-border bg-muted/40">
           <div className="grid gap-8 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
             <div>
-              <span className="text-sm font-medium text-primary">加入我们</span>
-              <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
+                Careers
+              </span>
+              <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
                 与最懂运营的水务科技团队同行
               </h2>
               <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
