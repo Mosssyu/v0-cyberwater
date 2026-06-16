@@ -8,13 +8,13 @@ export function ContactCta() {
         <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-72" aria-hidden="true" />
         <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
 
-        <div className="relative mx-auto max-w-2xl">
+        <div className="relative mx-auto max-w-3xl">
           <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            让智慧水务运营更简单、更高效、
-            <span className="text-gradient">更智能</span>
+            让水务运营从“系统管理”走向
+            <span className="text-gradient">智能决策</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
-            预约一对一产品演示，获取贴合您业务场景的智慧水务解决方案。
+          <p className="mx-auto mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
+            通过 CW-Agent、CW-PPI、CW-3DP 与 CW-POM 的组合建设，帮助水务企业构建覆盖感知、运营、空间、决策与经营分析的一体化智能平台。
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-4">
             <Button

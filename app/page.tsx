@@ -3,6 +3,7 @@ import { Hero } from "@/components/hero"
 import { Products } from "@/components/products"
 import { Solutions } from "@/components/solutions"
 import { ProductAgent, ProductPPI, ProductTwin, ProductPOM } from "@/components/product-details"
+import { ProductMatrixCompare } from "@/components/product-matrix-compare"
 import { CustomerValue } from "@/components/customer-value"
 import { CasesPreview } from "@/components/cases-preview"
 import { Scenes } from "@/components/scenes"
@@ -23,6 +24,7 @@ export default function Page() {
         <ProductPPI />
         <ProductTwin />
         <ProductPOM />
+        <ProductMatrixCompare />
         <CustomerValue />
         <CasesPreview />
         <Scenes />
