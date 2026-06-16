@@ -90,6 +90,7 @@ export function Hero() {
               src="/water-dashboard.png"
               alt="智慧水务平台运营大屏，包含地图、管网、泵站、水厂、AI 分析、告警与工单"
               className="w-full"
+              style={{ filter: "brightness(0.94) contrast(0.96) saturate(0.92)" }}
             />
           </div>
         </div>
