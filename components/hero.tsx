@@ -74,24 +74,12 @@ export function Hero() {
         </div>
 
         {/* 平台大屏可视化 */}
-        <div className="relative mx-auto mt-16 max-w-5xl">
-          <div className="pointer-events-none absolute -inset-x-10 -top-10 bottom-0 rounded-[2rem] bg-primary/10 blur-3xl" aria-hidden="true" />
-          <div className="ring-hairline relative overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-black/60">
-            {/* 窗口栏 */}
-            <div className="flex items-center gap-2 border-b border-border bg-secondary/40 px-4 py-3">
-              <span className="size-3 rounded-full bg-destructive/70" />
-              <span className="size-3 rounded-full bg-accent/70" />
-              <span className="size-3 rounded-full bg-primary/70" />
-              <span className="ml-3 font-mono text-xs text-muted-foreground">
-                cyberwater · 新一代水务运营平台架构
-              </span>
-            </div>
-            <img
-              src="/platform-architecture-wide.png"
-              alt="新一代水务运营平台架构图：五层平台架构、六大能力中心，以及 CW-Agent、CW-PPI、CW-POM、CW-Visual 四大产品"
-              className="w-full"
-            />
-          </div>
+        <div className="mx-auto mt-16 max-w-5xl">
+          <img
+            src="/platform-architecture-wide.png"
+            alt="新一代水务运营平台架构图：五层平台架构、六大能力中心，以及 CW-Agent、CW-PPI、CW-POM、CW-Visual 四大产品"
+            className="w-full"
+          />
         </div>
 
         {/* 关键指标 */}
