@@ -3,8 +3,8 @@ import {
   Factory,
   Radio,
   Bot,
-  CloudRain,
   Box as Cube,
+  KeyRound,
   ArrowUpRight,
 } from "lucide-react"
 
@@ -12,38 +12,41 @@ const products = [
   {
     icon: Bot,
     tag: "AI Agent",
-    title: "CWAgent · AI 水务智能体",
+    title: "CW-Agent · 水务智能体",
     desc: "新一代 AI 智能体，支持知识问数、报表生成、告警分析、调度辅助与工艺优化，让运营经验沉淀为智能能力。",
-  },
-  {
-    icon: Cube,
-    tag: "Digital Twin",
-    title: "CWVisual · 二三维数字孪生",
-    desc: "融合 BIM + GIS 的二三维一体化平台，构建数字孪生水厂与流域级孪生，赋能水环境智慧治理与可视化运维。",
-  },
-  {
-    icon: CloudRain,
-    tag: "Dispatch",
-    title: "CWPilot · 防汛调度系统",
-    desc: "雨情、水情、泵站、管网、积水点、预警预案联动调度，助力区域公司高效完成强降雨应急响应。",
   },
   {
     icon: Network,
     tag: "Platform",
-    title: "厂网河湖一体化平台",
-    desc: "统一管理水厂、泵站、管网、河道、湖泊、防汛与调度业务，打通集团化多业态运营。",
+    title: "CW-PPI · 厂网河湖一体化",
+    desc: "统一管理水厂、泵站、管网、河道、湖泊、防汛与调度业务，数据赋能、智能治理，打通集团化多业态运营。",
+  },
+  {
+    icon: Cube,
+    tag: "Digital Twin",
+    title: "CW-Visual · 数字孪生",
+    desc: "融合 BIM + GIS 的二三维一体化平台，构建数字孪生水厂与流域级孪生，实现全域可感知与可视化运维。",
   },
   {
     icon: Factory,
     tag: "Operation",
-    title: "数字水厂运营系统",
-    desc: "覆盖生产运行、工艺管理、设备运维、巡检工单、报表分析的全流程闭环，打造新一代未来水厂。",
+    title: "CW-POM · 数字水厂",
+    desc: "覆盖生产监控、工艺管理、设备运维、巡检工单、报表分析的全流程闭环，打造新一代未来水厂。",
   },
+]
+
+const support = [
   {
     icon: Radio,
     tag: "IoT",
     title: "智能感知 IoT 平台",
     desc: "统一接入液位计、流量计、雨量计、压力传感器、RTU、PLC 等设备数据，实现精确感知。",
+  },
+  {
+    icon: KeyRound,
+    tag: "SSO",
+    title: "统一登录 SSO 平台",
+    desc: "统一身份认证与单点登录，打通产品矩阵账号体系，实现一次登录、全平台无缝协同。",
   },
 ]
 
@@ -59,11 +62,12 @@ export function Products() {
             新一代智慧水务产品矩阵
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            以 CWAgent、CWVisual、CWPilot 为核心，从智能感知到智慧决策，云建标提供端到端的新一代智慧水务产品能力。
+            以 CW-Agent、CW-PPI、CW-Visual、CW-POM 为核心，从智能感知到智慧决策，云建标提供端到端的新一代智慧水务产品能力。
           </p>
         </div>
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+        {/* 四大核心产品 */}
+        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
             <div
               key={product.title}
@@ -90,6 +94,41 @@ export function Products() {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* 矩阵支撑 */}
+        <div className="mt-10">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-xs uppercase tracking-wider text-accent">
+              矩阵支撑 · Foundation
+            </span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+          <div className="mt-5 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
+            {support.map((item) => (
+              <div
+                key={item.title}
+                className="group relative flex items-start gap-4 bg-card p-6 transition-colors duration-300 hover:bg-secondary/40"
+              >
+                <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-border bg-gradient-to-br from-primary/15 to-accent/10 text-primary transition-colors group-hover:text-accent">
+                  <item.icon className="size-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-foreground">
+                      {item.title}
+                    </h3>
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                      {item.tag}
+                    </span>
+                  </div>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
