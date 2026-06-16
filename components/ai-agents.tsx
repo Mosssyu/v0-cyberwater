@@ -54,7 +54,7 @@ const scenes = [
 
 export function AiAgents() {
   return (
-    <section className="relative overflow-hidden border-y border-border bg-[oklch(0.13_0.012_252)] py-24">
+    <section id="product-agent" className="relative overflow-hidden border-y border-border bg-[oklch(0.13_0.012_252)] py-24">
       <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-80" aria-hidden="true" />
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
 

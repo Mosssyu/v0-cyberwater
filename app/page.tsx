@@ -3,6 +3,7 @@ import { Hero } from "@/components/hero"
 import { Products } from "@/components/products"
 import { Solutions } from "@/components/solutions"
 import { AiAgents } from "@/components/ai-agents"
+import { ProductPPI, ProductVisual, ProductPOM } from "@/components/product-details"
 import { CustomerValue } from "@/components/customer-value"
 import { CasesPreview } from "@/components/cases-preview"
 import { Scenes } from "@/components/scenes"
@@ -20,6 +21,9 @@ export default function Page() {
         <Products />
         <Solutions />
         <AiAgents />
+        <ProductPPI />
+        <ProductVisual />
+        <ProductPOM />
         <CustomerValue />
         <CasesPreview />
         <Scenes />
