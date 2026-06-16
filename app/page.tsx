@@ -8,6 +8,7 @@ import { CustomerValue } from "@/components/customer-value"
 import { CasesPreview } from "@/components/cases-preview"
 import { Scenes } from "@/components/scenes"
 import { About } from "@/components/about"
+import { Values } from "@/components/values"
 import { News } from "@/components/news"
 import { ContactCta } from "@/components/contact-cta"
 import { SiteFooter } from "@/components/site-footer"
@@ -29,6 +30,7 @@ export default function Page() {
         <CasesPreview />
         <Scenes />
         <About />
+        <Values />
         <News />
         <ContactCta />
       </main>
