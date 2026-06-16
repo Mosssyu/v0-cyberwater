@@ -83,14 +83,13 @@ export function Hero() {
               <span className="size-3 rounded-full bg-accent/70" />
               <span className="size-3 rounded-full bg-primary/70" />
               <span className="ml-3 font-mono text-xs text-muted-foreground">
-                cyberwater · 厂网河湖一体化运营大屏
+                cyberwater · 新一代水务运营平台架构
               </span>
             </div>
             <img
-              src="/water-dashboard.png"
-              alt="智慧水务平台运营大屏，包含地图、管网、泵站、水厂、AI 分析、告警与工单"
+              src="/platform-architecture-wide.png"
+              alt="新一代水务运营平台架构图：五层平台架构、六大能力中心，以及 CW-Agent、CW-PPI、CW-POM、CW-Visual 四大产品"
               className="w-full"
-              style={{ filter: "brightness(0.94) contrast(0.96) saturate(0.92)" }}
             />
           </div>
         </div>
