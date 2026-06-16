@@ -9,7 +9,7 @@ export type CaseCategory =
 export type CaseProduct =
   | "CW-Agent · 水务智能体"
   | "CW-PPI · 厂网河湖一体化"
-  | "CW-Visual · 数字孪生"
+  | "CW-3DP · 数字孪生"
   | "CW-POM · 数字水厂"
 
 export interface CaseItem {
@@ -39,7 +39,7 @@ export const caseCategories: CaseCategory[] = [
 export const caseProducts: CaseProduct[] = [
   "CW-Agent · 水务智能体",
   "CW-PPI · 厂网河湖一体化",
-  "CW-Visual · 数字孪生",
+  "CW-3DP · 数字孪生",
   "CW-POM · 数字水厂",
 ]
 
@@ -47,7 +47,7 @@ export const caseProducts: CaseProduct[] = [
 export const productImage: Record<CaseProduct, string> = {
   "CW-Agent · 水务智能体": "/case-agent.png",
   "CW-PPI · 厂网河湖一体化": "/case-ppi.png",
-  "CW-Visual · 数字孪生": "/case-visual.png",
+  "CW-3DP · 数字孪生": "/case-visual.png",
   "CW-POM · 数字水厂": "/case-pom.png",
 }
 
@@ -56,7 +56,7 @@ export const cases: CaseItem[] = [
     slug: "huanqiu-yingcheng",
     title: "环球影城智慧水务",
     category: "水利/水环境",
-    product: "CW-Visual · 数字孪生",
+    product: "CW-3DP · 数字孪生",
     location: "北京·通州",
     client: "北京环球度假区",
     image: "/case-visual.png",
@@ -231,7 +231,7 @@ export const cases: CaseItem[] = [
     slug: "yinchuan-twin",
     title: "银川数字孪生污水厂",
     category: "BIM+数字孪生",
-    product: "CW-Visual · 数字孪生",
+    product: "CW-3DP · 数字孪生",
     location: "宁夏·银川",
     client: "银川污水处理厂",
     image: "/case-visual.png",

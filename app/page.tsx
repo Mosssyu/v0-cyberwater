@@ -2,8 +2,7 @@ import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
 import { Products } from "@/components/products"
 import { Solutions } from "@/components/solutions"
-import { AiAgents } from "@/components/ai-agents"
-import { ProductPPI, ProductVisual, ProductPOM } from "@/components/product-details"
+import { ProductAgent, ProductPPI, ProductTwin, ProductPOM } from "@/components/product-details"
 import { CustomerValue } from "@/components/customer-value"
 import { CasesPreview } from "@/components/cases-preview"
 import { Scenes } from "@/components/scenes"
@@ -20,9 +19,9 @@ export default function Page() {
         <Hero />
         <Products />
         <Solutions />
-        <AiAgents />
+        <ProductAgent />
         <ProductPPI />
-        <ProductVisual />
+        <ProductTwin />
         <ProductPOM />
         <CustomerValue />
         <CasesPreview />

@@ -24,7 +24,7 @@ const products = [
   {
     icon: Cube,
     tag: "Digital Twin",
-    title: "CW-Visual · 数字孪生",
+    title: "CW-3DP · 数字孪生",
     desc: "融合 BIM + GIS 的二三维一体化平台，构建数字孪生水厂与流域级孪生，实现全域可感知与可视化运维。",
   },
   {
@@ -62,7 +62,7 @@ export function Products() {
             新一代智慧水务产品矩阵
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            以 CW-Agent、CW-PPI、CW-Visual、CW-POM 为核心，从智能感知到智慧决策，云建标提供端到端的新一代智慧水务产品能力。
+            以 CW-Agent、CW-PPI、CW-3DP、CW-POM 为核心，从智能感知到智慧决策，云建标提供端到端的新一代智慧水务产品能力。
           </p>
         </div>
 
