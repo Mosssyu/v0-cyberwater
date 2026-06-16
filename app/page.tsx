@@ -2,7 +2,6 @@ import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
 import { Products } from "@/components/products"
 import { Solutions } from "@/components/solutions"
-import { Architecture } from "@/components/architecture"
 import { AiAgents } from "@/components/ai-agents"
 import { CustomerValue } from "@/components/customer-value"
 import { CasesPreview } from "@/components/cases-preview"
@@ -20,7 +19,6 @@ export default function Page() {
         <Hero />
         <Products />
         <Solutions />
-        <Architecture />
         <AiAgents />
         <CustomerValue />
         <CasesPreview />
