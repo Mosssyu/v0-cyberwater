@@ -6,10 +6,17 @@ export type CaseCategory =
   | "水利/水环境"
   | "BIM+数字孪生"
 
+export type CaseProduct =
+  | "CW-Agent · 水务智能体"
+  | "CW-PPI · 厂网河湖一体化"
+  | "CW-Visual · 数字孪生"
+  | "CW-POM · 数字水厂"
+
 export interface CaseItem {
   slug: string
   title: string
   category: CaseCategory
+  product: CaseProduct
   location: string
   client: string
   image: string
@@ -29,14 +36,30 @@ export const caseCategories: CaseCategory[] = [
   "BIM+数字孪生",
 ]
 
+export const caseProducts: CaseProduct[] = [
+  "CW-Agent · 水务智能体",
+  "CW-PPI · 厂网河湖一体化",
+  "CW-Visual · 数字孪生",
+  "CW-POM · 数字水厂",
+]
+
+// 各产品对应的示意图
+export const productImage: Record<CaseProduct, string> = {
+  "CW-Agent · 水务智能体": "/case-agent.png",
+  "CW-PPI · 厂网河湖一体化": "/case-ppi.png",
+  "CW-Visual · 数字孪生": "/case-visual.png",
+  "CW-POM · 数字水厂": "/case-pom.png",
+}
+
 export const cases: CaseItem[] = [
   {
     slug: "huanqiu-yingcheng",
     title: "环球影城智慧水务",
     category: "水利/水环境",
+    product: "CW-Visual · 数字孪生",
     location: "北京·通州",
     client: "北京环球度假区",
-    image: "/scene-pipe.png",
+    image: "/case-visual.png",
     summary:
       "为北京环球影城园区水环境构建二三维一体化的智慧运维平台，保障园区景观水体水质与水位安全稳定。",
     background:
@@ -58,9 +81,10 @@ export const cases: CaseItem[] = [
     slug: "daoxianghu",
     title: "北京稻香湖（地下）智慧污水厂",
     category: "数字水厂",
+    product: "CW-Agent · 水务智能体",
     location: "北京·海淀",
     client: "稻香湖再生水厂",
-    image: "/scene-plant.png",
+    image: "/case-agent.png",
     summary:
       "面向全地下再生水厂打造数字化运营平台，实现工艺精确控制、能耗优化与无人值守巡检。",
     background:
@@ -82,9 +106,10 @@ export const cases: CaseItem[] = [
     slug: "beikong-shuiwu",
     title: "北控水务集团智慧水务",
     category: "集团数字运营",
+    product: "CW-PPI · 厂网河湖一体化",
     location: "全国",
     client: "北控水务集团",
-    image: "/water-dashboard.png",
+    image: "/case-ppi.png",
     summary:
       "为大型水务集团构建跨区域、多业态的集团级数字化运营平台，支撑数百座水厂的集约化管控与决策。",
     background:
@@ -106,9 +131,10 @@ export const cases: CaseItem[] = [
     slug: "tianjin-chuangye",
     title: "天津创业环保南部区多层级数字化运营",
     category: "集团数字运营",
+    product: "CW-PPI · 厂网河湖一体化",
     location: "天津",
     client: "天津创业环保",
-    image: "/water-dashboard.png",
+    image: "/case-ppi.png",
     summary:
       "构建区域公司多层级数字化运营平台，打通区域与厂站数据，实现集约化生产调度与运营管理。",
     background:
@@ -130,9 +156,10 @@ export const cases: CaseItem[] = [
     slug: "xinjiang-jiyuehua",
     title: "新疆多厂集约化管理",
     category: "多厂集约化管理",
+    product: "CW-POM · 数字水厂",
     location: "新疆",
     client: "新疆区域水务公司",
-    image: "/scene-plant.png",
+    image: "/case-pom.png",
     summary:
       "面向地域分散的多座水厂，建设集约化运营管控平台，实现少人化运营与远程集中监管。",
     background:
@@ -154,9 +181,10 @@ export const cases: CaseItem[] = [
     slug: "qinhuangdao",
     title: "秦皇岛厂网一体化",
     category: "水利/水环境",
+    product: "CW-PPI · 厂网河湖一体化",
     location: "河北·秦皇岛",
     client: "秦皇岛区域公司",
-    image: "/scene-flood.png",
+    image: "/case-ppi.png",
     summary:
       "建设厂网河一体化平台与 CWPilot 防汛调度系统，成功助力区域公司应对强降雨与城市内涝。",
     background:
@@ -178,9 +206,10 @@ export const cases: CaseItem[] = [
     slug: "keyuan-supply",
     title: "内蒙古科源供水一体化",
     category: "城乡供水",
+    product: "CW-PPI · 厂网河湖一体化",
     location: "内蒙古",
     client: "科源供水",
-    image: "/scene-supply.png",
+    image: "/case-ppi.png",
     summary:
       "构建从水源、水厂到管网、用户的供水一体化平台，实现供水全过程的精细化管控与漏损控制。",
     background:
@@ -202,9 +231,10 @@ export const cases: CaseItem[] = [
     slug: "yinchuan-twin",
     title: "银川数字孪生污水厂",
     category: "BIM+数字孪生",
+    product: "CW-Visual · 数字孪生",
     location: "宁夏·银川",
     client: "银川污水处理厂",
-    image: "/scene-twin.png",
+    image: "/case-visual.png",
     summary:
       "基于 BIM+GIS 构建污水厂数字孪生体，实现工艺仿真、设备全生命周期管理与三维可视化运营。",
     background:
@@ -226,9 +256,10 @@ export const cases: CaseItem[] = [
     slug: "mianyang-taziba",
     title: "绵阳塔子坝数字孪生污水厂",
     category: "BIM+数字孪生",
+    product: "CW-Agent · 水务智能体",
     location: "四川·绵阳",
     client: "塔子坝污水处理厂",
-    image: "/scene-twin.png",
+    image: "/case-agent.png",
     summary:
       "打造新一代数字孪生未来水厂，融合 BIM、工艺模型与智能控制，实现精确感知与智慧决策。",
     background:
@@ -250,9 +281,10 @@ export const cases: CaseItem[] = [
     slug: "chengdu-shuangliu",
     title: "成都双流公兴（地下）智慧污水厂",
     category: "数字水厂",
+    product: "CW-POM · 数字水厂",
     location: "四川·成都",
     client: "双流公兴污水厂",
-    image: "/scene-plant.png",
+    image: "/case-pom.png",
     summary:
       "为地下式污水厂建设智慧化运营平台，实现工艺优化、智能控制与地下空间安全保障。",
     background:
@@ -274,9 +306,10 @@ export const cases: CaseItem[] = [
     slug: "shanghai-linkang",
     title: "上海城投临港智慧水厂",
     category: "数字水厂",
+    product: "CW-POM · 数字水厂",
     location: "上海·临港",
     client: "上海城投",
-    image: "/scene-plant.png",
+    image: "/case-pom.png",
     summary:
       "为临港新片区水厂建设智慧化运营平台，支撑高标准出水与智能化、精细化运营管理。",
     background:
@@ -298,9 +331,10 @@ export const cases: CaseItem[] = [
     slug: "shanghai-fangzha",
     title: "上海泵闸署智慧防汛",
     category: "水利/水环境",
+    product: "CW-PPI · 厂网河湖一体化",
     location: "上海",
     client: "上海泵闸管理署",
-    image: "/scene-flood.png",
+    image: "/case-ppi.png",
     summary:
       "构建泵闸智慧防汛调度平台，实现降雨预报、泵闸联动与城市排涝的科学指挥调度。",
     background:

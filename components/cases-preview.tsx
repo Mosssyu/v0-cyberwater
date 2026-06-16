@@ -1,36 +1,92 @@
+"use client"
+
+import { useState } from "react"
 import Link from "next/link"
 import { ArrowRight, MapPin } from "lucide-react"
-import { cases } from "@/lib/cases"
+import { cases, caseProducts, caseCategories } from "@/lib/cases"
 
-const featured = cases.slice(0, 6)
+type Dimension = "product" | "category"
 
 export function CasesPreview() {
+  const [dimension, setDimension] = useState<Dimension>("product")
+  const [filter, setFilter] = useState<string>("全部")
+
+  const chips = ["全部", ...(dimension === "product" ? caseProducts : caseCategories)]
+
+  const filtered = cases.filter((c) => {
+    if (filter === "全部") return true
+    return dimension === "product" ? c.product === filter : c.category === filter
+  })
+
+  function switchDimension(next: Dimension) {
+    setDimension(next)
+    setFilter("全部")
+  }
+
   return (
     <section id="cases" className="bg-secondary/40 py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
-              Customers
-            </span>
-            <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              服务行业领先客户，沉淀可复制的运营经验
-            </h2>
-            <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-              覆盖数字水厂、集团数字运营、多厂集约化、城乡供水、水利水环境、BIM+数字孪生等场景，与北控水务、上海城投、北京环球度假区等领先客户深度合作。
-            </p>
-          </div>
-          <Link
-            href="/cases"
-            className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
-          >
-            查看全部案例
-            <ArrowRight className="size-4" />
-          </Link>
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
+            Customers
+          </span>
+          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            服务行业领先客户，沉淀可复制的运营经验
+          </h2>
+          <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
+            按产品矩阵与解决方案两个维度梳理标杆案例，覆盖数字水厂、集团数字运营、厂网河湖一体化、城乡供水、防汛调度与数字孪生等场景。
+          </p>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featured.map((item) => (
+        {/* 维度切换 */}
+        <div className="mt-10 flex justify-center">
+          <div className="inline-flex rounded-full border border-border bg-card p-1">
+            <button
+              type="button"
+              onClick={() => switchDimension("product")}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+                dimension === "product"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              按产品划分
+            </button>
+            <button
+              type="button"
+              onClick={() => switchDimension("category")}
+              className={`rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+                dimension === "category"
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              按解决方案划分
+            </button>
+          </div>
+        </div>
+
+        {/* 筛选标签 */}
+        <div className="mt-6 flex flex-wrap justify-center gap-2.5">
+          {chips.map((chip) => (
+            <button
+              key={chip}
+              type="button"
+              onClick={() => setFilter(chip)}
+              className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
+                filter === chip
+                  ? "border-primary/50 bg-primary/10 text-primary"
+                  : "border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
+              }`}
+            >
+              {chip}
+            </button>
+          ))}
+        </div>
+
+        {/* 案例网格 */}
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((item) => (
             <Link
               key={item.slug}
               href={`/cases/${item.slug}`}
@@ -39,11 +95,11 @@ export function CasesPreview() {
               <div className="relative overflow-hidden">
                 <img
                   src={item.image || "/placeholder.svg"}
-                  alt={item.title}
+                  alt={`${item.title}示意图`}
                   className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <span className="absolute left-4 top-4 rounded-full bg-background/85 px-3 py-1 text-xs font-medium text-primary backdrop-blur">
-                  {item.category}
+                  {dimension === "product" ? item.product : item.category}
                 </span>
               </div>
               <div className="flex flex-1 flex-col p-6">
