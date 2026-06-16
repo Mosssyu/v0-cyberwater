@@ -79,6 +79,12 @@ export function Hero() {
             src="/platform-architecture-wide.png"
             alt="新一代水务运营平台架构图：五层平台架构、六大能力中心，以及 CW-Agent、CW-PPI、CW-POM、CW-Visual 四大产品"
             className="w-full"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(120% 120% at 50% 45%, #000 55%, transparent 96%)",
+              maskImage:
+                "radial-gradient(120% 120% at 50% 45%, #000 55%, transparent 96%)",
+            }}
           />
         </div>
 
