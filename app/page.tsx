@@ -6,7 +6,6 @@ import { ProductAgent, ProductPPI, ProductTwin, ProductPOM } from "@/components/
 import { ProductMatrixCompare } from "@/components/product-matrix-compare"
 import { CustomerValue } from "@/components/customer-value"
 import { CasesPreview } from "@/components/cases-preview"
-import { Scenes } from "@/components/scenes"
 import { About } from "@/components/about"
 import { Values } from "@/components/values"
 import { News } from "@/components/news"
@@ -28,7 +27,6 @@ export default function Page() {
         <ProductMatrixCompare />
         <CustomerValue />
         <CasesPreview />
-        <Scenes />
         <About />
         <Values />
         <News />
