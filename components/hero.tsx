@@ -28,9 +28,9 @@ export function Hero() {
           </div>
 
           <h1 className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            AI 驱动的厂网河湖
+            AI 驱动的新一代
             <br />
-            <span className="text-gradient">一体化智慧水务平台</span>
+            <span className="text-gradient">智慧水务平台</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
