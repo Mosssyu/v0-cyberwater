@@ -14,9 +14,9 @@ export function Architecture() {
           </p>
         </div>
 
-        <div className="mx-auto mt-14 max-w-3xl overflow-hidden rounded-2xl border border-border bg-card ring-hairline">
+        <div className="mt-14 overflow-hidden rounded-2xl border border-border bg-card ring-hairline">
           <img
-            src="/platform-architecture.png"
+            src="/platform-architecture-wide.png"
             alt="新一代水务运营平台架构图：五层平台架构、六大能力中心，以及 CW-Agent、CW-PPI、CW-POM、CW-Visual 四大产品"
             className="w-full"
           />
