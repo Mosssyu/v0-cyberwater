@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect, useRef } from "react"
 import {
   Bot,
   Brain,
@@ -166,82 +169,114 @@ function ProductCard({ p, align }: { p: Product; align: "left" | "right" }) {
   )
 }
 
-/* 六大能力中心 —— 缓慢旋转轨道 */
+/* 六大能力中心 —— 3D 透视轨道（节点沿倾斜椭圆盘环绕中心球旋转） */
 function CapabilityOrbit() {
-  const radius = 118 // px
-  return (
-    <div className="relative mx-auto aspect-square w-[280px] sm:w-[300px]">
-      {/* 轨道圈 */}
-      <span
-        className="ring-pulse-anim pointer-events-none absolute inset-6 rounded-full border border-accent/25"
-        style={{ animation: "ring-pulse 4s ease-in-out infinite" }}
-        aria-hidden="true"
-      />
-      <span
-        className="pointer-events-none absolute inset-12 rounded-full border border-dashed border-accent/20"
-        aria-hidden="true"
-      />
-      <span
-        className="pointer-events-none absolute inset-[4.5rem] rounded-full border border-primary/15"
-        aria-hidden="true"
-      />
+  const nodesRef = useRef<(HTMLDivElement | null)[]>([])
+  const rafRef = useRef<number>(0)
 
-      {/* 旋转节点层 */}
-      <div
-        className="orbit-anim absolute inset-0"
-        style={{ animation: "orbit-spin 36s linear infinite" }}
-      >
-        {capabilities.map((c, i) => {
-          const angle = (i / capabilities.length) * 2 * Math.PI - Math.PI / 2
-          const x = Math.cos(angle) * radius
-          const y = Math.sin(angle) * radius
-          return (
-            <div
-              key={c.label}
-              className="absolute left-1/2 top-1/2"
-              style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
-            >
-              {/* 反向旋转，保持文字正向 */}
-              <div
-                className="orbit-anim flex flex-col items-center gap-1"
-                style={{ animation: "orbit-spin-rev 36s linear infinite" }}
-              >
-                <span
-                  className="flex size-12 items-center justify-center rounded-xl border border-accent/40 bg-[oklch(0.16_0.03_240/0.85)] backdrop-blur transition-transform duration-300 hover:scale-110"
-                  style={{ boxShadow: "0 0 18px -4px oklch(0.72 0.15 215 / 0.7), inset 0 1px 0 0 oklch(1 0 0 / 0.18)" }}
-                >
-                  <c.icon className="size-5 text-accent" />
-                </span>
-                <span className="rounded-full bg-[oklch(0.12_0.02_240/0.7)] px-2 py-0.5 text-[10px] font-medium text-foreground/85 backdrop-blur">
-                  {c.short}
-                </span>
-              </div>
-            </div>
-          )
-        })}
+  // 椭圆轨道参数：rx 为水平半径，ry 为垂直半径（被透视压扁）
+  const rx = 168
+  const ry = 52
+
+  useEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    const n = capabilities.length
+    const speed = (2 * Math.PI) / 38000 // 一圈约 38s
+    let start: number | null = null
+
+    const render = (t: number) => {
+      if (start === null) start = t
+      const elapsed = reduce ? 0 : t - start
+      const base = elapsed * speed
+
+      nodesRef.current.forEach((el, i) => {
+        if (!el) return
+        const angle = base + (i / n) * 2 * Math.PI
+        const x = Math.cos(angle) * rx
+        const y = Math.sin(angle) * ry
+        // depth: -1（最远）→ 1（最近）。sin(angle) 越大越靠前
+        const depth = Math.sin(angle)
+        const scale = 0.62 + ((depth + 1) / 2) * 0.55 // 0.62 ~ 1.17
+        const opacity = 0.45 + ((depth + 1) / 2) * 0.55 // 0.45 ~ 1
+        const blur = depth < -0.2 ? (Math.abs(depth) - 0.2) * 2.6 : 0
+        el.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`
+        el.style.opacity = String(opacity)
+        el.style.filter = blur > 0.05 ? `blur(${blur.toFixed(1)}px)` : "none"
+        el.style.zIndex = String(100 + Math.round(depth * 50))
+      })
+
+      if (!reduce) rafRef.current = requestAnimationFrame(render)
+    }
+
+    rafRef.current = requestAnimationFrame(render)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [])
+
+  return (
+    <div className="relative mx-auto h-[260px] w-full max-w-[440px] [perspective:900px]">
+      {/* 透视轨道盘（倾斜椭圆环） */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div
+          className="rounded-[50%] border border-accent/25"
+          style={{
+            width: rx * 2 + 56,
+            height: ry * 2 + 56,
+            boxShadow: "0 0 50px -10px oklch(0.7 0.15 215 / 0.45), inset 0 0 40px -12px oklch(0.7 0.15 215 / 0.4)",
+            background:
+              "radial-gradient(ellipse 60% 80% at 50% 50%, oklch(0.5 0.16 230 / 0.12), transparent 70%)",
+          }}
+          aria-hidden="true"
+        />
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-dashed border-primary/15"
+          style={{ width: rx * 2 - 28, height: ry * 2 - 16 }}
+          aria-hidden="true"
+        />
       </div>
 
       {/* 中心核心球 */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute left-1/2 top-1/2 z-[120] -translate-x-1/2 -translate-y-1/2">
         <div
-          className="core-pulse-anim flex size-[78px] flex-col items-center justify-center rounded-full text-center"
+          className="flex size-[104px] flex-col items-center justify-center rounded-full text-center"
           style={{
             animation: "core-pulse 4s ease-in-out infinite",
             background:
-              "radial-gradient(circle at 50% 32%, oklch(0.85 0.13 205 / 0.96) 0%, oklch(0.55 0.18 235 / 0.92) 52%, oklch(0.32 0.16 255 / 0.96) 100%)",
+              "radial-gradient(circle at 50% 30%, oklch(0.88 0.11 200 / 0.98) 0%, oklch(0.6 0.17 225 / 0.95) 46%, oklch(0.34 0.16 250 / 0.98) 100%)",
           }}
         >
-          <span className="text-base font-extrabold leading-tight text-white drop-shadow">六大</span>
-          <span className="text-[11px] font-semibold leading-tight text-white/90">能力中心</span>
+          <span className="text-lg font-extrabold leading-tight text-white drop-shadow">六大</span>
+          <span className="text-xs font-semibold leading-tight text-white/90">能力中心</span>
         </div>
+        {/* 核心球底部光晕 */}
+        <span
+          className="pointer-events-none absolute left-1/2 top-full h-6 w-28 -translate-x-1/2 -translate-y-3 rounded-[50%] bg-accent/30 blur-md"
+          aria-hidden="true"
+        />
       </div>
 
-      {/* 扫描高光点 */}
-      <span
-        className="pointer-events-none absolute left-1/2 top-1/2 size-2 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_10px_2px_var(--color-accent)]"
-        style={{ transform: `translate(-50%, calc(-50% - ${radius + 24}px))` }}
-        aria-hidden="true"
-      />
+      {/* 环绕节点（JS 驱动透视位置） */}
+      {capabilities.map((c, i) => (
+        <div
+          key={c.label}
+          ref={(el) => {
+            nodesRef.current[i] = el
+          }}
+          className="absolute left-1/2 top-1/2 flex flex-col items-center gap-1 will-change-transform"
+        >
+          <span
+            className="flex size-12 items-center justify-center rounded-xl border border-accent/40 bg-[oklch(0.16_0.03_240/0.9)] backdrop-blur"
+            style={{ boxShadow: "0 0 18px -4px oklch(0.72 0.15 215 / 0.8), inset 0 1px 0 0 oklch(1 0 0 / 0.18)" }}
+          >
+            <c.icon className="size-5 text-accent" />
+          </span>
+          <span className="whitespace-nowrap rounded-full bg-[oklch(0.12_0.02_240/0.78)] px-2 py-0.5 text-[10px] font-medium text-foreground/90 backdrop-blur">
+            {c.short}
+          </span>
+        </div>
+      ))}
     </div>
   )
 }
