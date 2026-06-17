@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroDashboard } from "@/components/hero-dashboard"
+import { PlatformArchitecture } from "@/components/platform-architecture"
 
 const productPills = [
   { name: "CW-Agent", icon: Bot, color: "text-[oklch(0.7_0.13_300)]", href: "/#product-agent" },
@@ -119,13 +120,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* 下方架构图区（保留不变） */}
-      <div className="relative mx-auto mt-4 max-w-5xl px-6 pb-8">
-        <img
-          src="/platform-architecture-vector.svg"
-          alt="新一代水务运营平台架构图：五层平台架构、六大能力中心，以及 CW-Agent、CW-PPI、CW-3DP、CW-POM 四大产品"
-          className="w-full"
-        />
+      {/* 下方三维分层平台架构 */}
+      <div className="relative mt-4 pb-12">
+        <PlatformArchitecture />
       </div>
     </section>
   )
