@@ -24,6 +24,7 @@ import {
   GitBranch,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+import { GlowIcon } from "@/components/glow-icon"
 
 /* ----------------------------- 数据 ----------------------------- */
 
@@ -140,12 +141,7 @@ function ProductCard({ p, align }: { p: Product; align: "left" | "right" }) {
         aria-hidden="true"
       />
       <div className={`flex items-start gap-3 ${align === "right" ? "lg:flex-row-reverse lg:text-right" : ""}`}>
-        <span
-          className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-white/10 to-transparent transition-shadow duration-300 group-hover:shadow-[0_0_22px_-4px_var(--g)]"
-          style={{ ["--g" as string]: p.glow }}
-        >
-          <p.icon className={`size-6 ${p.iconColor}`} />
-        </span>
+        <GlowIcon icon={p.icon} size="lg" glow={p.glow} />
         <div className="min-w-0">
           <div className="text-base font-bold tracking-tight text-foreground">{p.name}</div>
           <div className="text-sm text-foreground/80">{p.desc}</div>
@@ -160,7 +156,7 @@ function ProductCard({ p, align }: { p: Product; align: "left" | "right" }) {
             key={t.label}
             className="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] text-foreground/75"
           >
-            <t.icon className="size-3 text-accent" />
+            <GlowIcon icon={t.icon} size="xs" shape="circle" glow={p.glow} className="size-5" iconClassName="size-3" interactive={false} />
             {t.label}
           </span>
         ))}
@@ -275,15 +271,7 @@ function CapabilityOrbit() {
           }}
           className="absolute left-1/2 top-1/2 flex flex-col items-center gap-1 will-change-transform"
         >
-          <span
-            className="flex size-12 items-center justify-center rounded-xl border border-accent/40 bg-[oklch(0.16_0.03_240/0.9)] backdrop-blur"
-            style={{
-              boxShadow:
-                "0 0 18px -4px oklch(0.72 0.15 215 / 0.75), inset 0 1px 0 0 oklch(1 0 0 / 0.18)",
-            }}
-          >
-            <c.icon className="size-5 text-accent" />
-          </span>
+          <GlowIcon icon={c.icon} size="lg" glow="oklch(0.74 0.14 205)" interactive={false} />
           <span className="whitespace-nowrap rounded-full bg-[oklch(0.12_0.02_240/0.78)] px-2 py-0.5 text-[10px] font-medium text-foreground/90 backdrop-blur">
             {c.short}
           </span>
@@ -332,7 +320,7 @@ function PyramidTier({
         </span>
         <span className="flex items-center gap-1.5">
           {icons.map((Icon, i) => (
-            <Icon key={i} className="size-3.5 text-foreground/85" />
+            <GlowIcon key={i} icon={Icon} size="xs" shape="circle" glow={accent} className="size-6" iconClassName="size-3" interactive={false} />
           ))}
         </span>
       </div>
@@ -400,10 +388,8 @@ export function PlatformArchitecture() {
       {/* 底部能力条 */}
       <div className="relative mt-10 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-card/50 p-4 ring-hairline backdrop-blur sm:grid-cols-4">
         {bottomStrip.map((b) => (
-          <div key={b.label} className="flex items-center justify-center gap-2 py-1 text-sm text-foreground/85">
-            <span className="flex size-8 items-center justify-center rounded-lg border border-accent/25 bg-accent/10">
-              <b.icon className="size-4 text-accent" />
-            </span>
+          <div key={b.label} className="group flex items-center justify-center gap-2 py-1 text-sm text-foreground/85">
+            <GlowIcon icon={b.icon} size="sm" glow="oklch(0.79 0.13 200)" />
             {b.label}
           </div>
         ))}

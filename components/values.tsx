@@ -1,4 +1,5 @@
 import { Target, Network, Rocket } from "lucide-react"
+import { GlowIcon } from "@/components/glow-icon"
 
 const values = [
   {
@@ -77,9 +78,7 @@ export function Values() {
                 aria-hidden="true"
               />
               <div className="flex items-center justify-between">
-                <div className="flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-accent/25 to-primary/25 text-accent">
-                  <v.icon className="size-6" />
-                </div>
+                <GlowIcon icon={v.icon} size="lg" glow="oklch(0.79 0.13 200)" />
                 <span className="font-mono text-sm text-muted-foreground">
                   0{i + 1}
                 </span>
