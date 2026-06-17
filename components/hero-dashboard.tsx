@@ -339,6 +339,19 @@ export function HeroDashboard() {
           <Droplets className="size-3.5 text-accent" />
           <span className="text-[11px] font-semibold text-foreground">水厂运营看板</span>
         </div>
+        {/* 厂区俯视实景缩略图 */}
+        <div className="relative mb-2 overflow-hidden rounded-md border border-white/8">
+          <img
+            src="/plant-aerial-gold.png"
+            alt="水厂俯视 3D 实景，金色厂房与蓝色处理池"
+            className="aspect-[16/7] w-full object-cover"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,oklch(0.1_0.02_240/0.6)_100%)]" />
+          <span className="absolute bottom-1 left-1.5 inline-flex items-center gap-1 rounded-sm bg-background/70 px-1.5 py-0.5 text-[8px] font-medium text-accent backdrop-blur">
+            <span className="size-1 animate-pulse rounded-full bg-accent" />
+            实时俯视
+          </span>
+        </div>
         <div className="space-y-1.5 text-[10px]">
           {[
             ["日供水量", "152,680 m³"],
