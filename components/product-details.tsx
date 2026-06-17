@@ -37,7 +37,6 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react"
-import { GlowIcon } from "@/components/glow-icon"
 
 type FlowItem = { icon: LucideIcon; label: string; note?: string }
 type CapItem = { icon: LucideIcon; label: string; sub?: string; desc: string }
@@ -159,7 +158,7 @@ function ProductDetail({ data }: { data: ProductData }) {
               className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-accent/40"
             >
               <div className="flex items-center gap-2.5">
-                <GlowIcon icon={c.icon} size="sm" glow="oklch(0.79 0.13 200)" interactive={false} />
+                <c.icon className="size-5 shrink-0 text-accent" />
                 <span className="text-[15px] font-semibold text-foreground">{c.label}</span>
               </div>
               {c.sub && (
@@ -178,7 +177,7 @@ function ProductDetail({ data }: { data: ProductData }) {
               key={s.title}
               className="group flex flex-col rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
             >
-              <GlowIcon icon={s.icon} size="md" glow="oklch(0.63 0.17 250)" />
+              <s.icon className="size-6 text-primary" />
               <h3 className="mt-5 text-base font-semibold text-foreground">{s.title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{s.value}</p>
               <p className="mt-4 flex items-center gap-1.5 border-t border-border pt-4 font-mono text-xs text-accent">
@@ -200,7 +199,7 @@ const agent: ProductData = {
   subtitle:
     "融合大模型、RAG 与知识图谱技术，打通感知、认知、决策�����执行与进化全链路，持续优化水厂运行效率与决策质量。",
   flow: [
-    { icon: Dna, label: "水务基因", note: "运营场景内生" },
+    { icon: Dna, label: "水务基因", note: "运营场��内生" },
     { icon: Server, label: "自研底座", note: "工业级智能体" },
     { icon: BrainCircuit, label: "专业认知", note: "水务知识引擎" },
     { icon: Building2, label: "集团运营", note: "多层级多业态" },
@@ -542,7 +541,7 @@ const pom: ProductData = {
       icon: BookOpen,
       title: "标准与知识沉淀",
       value:
-        "将运营中的流程、指标、报表、知识和经验沉淀为可复用的管理标准，减少对个人经验的依赖，支撑多岗位、多班组、多水厂之间的标准化执行和持续优化。",
+        "将运营中的流程、指标、报表、知识和经验沉淀为可复用的管理标准，减少对个人经验的依赖，支撑多岗位、多班组、多水厂之间的标准化执行和��续优化。",
       diagram: "标准知识库页面",
     },
     {
