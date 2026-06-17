@@ -6,7 +6,7 @@ const columns = [
     links: [
       { label: "CW-Agent · 水务智能体", href: "/#product-agent" },
       { label: "CW-PPI · 厂网河湖一体化", href: "/#product-ppi" },
-      { label: "CW-3DP · 数字孪生", href: "/#product-3dp" },
+      { label: "CW-3DP · 三维孪生", href: "/#product-3dp" },
       { label: "CW-POM · 数字水厂", href: "/#product-pom" },
     ],
   },
