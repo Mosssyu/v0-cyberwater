@@ -325,7 +325,7 @@ export function HeroDashboard() {
           如何降低泵站能耗？
         </div>
         <p className="text-[10px] leading-relaxed text-muted-foreground">
-          建议从优化运行策略、设备启停调度、变频控制等方面综合优化。
+          建议���优化运行策略、设备启停调度、变频控制等方面综合优化。
         </p>
         <div className="mt-1.5 flex items-center gap-1 text-[10px] font-medium text-accent">
           查看分析结果
@@ -367,11 +367,11 @@ export function HeroDashboard() {
         </div>
       </FloatingCard>
 
-      {/* 浮动卡片：数字孪生 / 3D 场景（右下） */}
+      {/* 浮动卡片：三维孪生 / 3D 场景（右下） */}
       <FloatingCard className="absolute -bottom-10 right-2 hidden w-52 lg:block">
         <div className="mb-1.5 flex items-center gap-1.5">
           <Move3d className="size-3.5 text-accent" />
-          <span className="text-[11px] font-semibold text-foreground">数字孪生 / 3D 场景</span>
+          <span className="text-[11px] font-semibold text-foreground">三维孪生 / 3D 场景</span>
         </div>
         {/* 3D 厂区数字孪生场景 */}
         <div className="relative h-16 overflow-hidden rounded-md border border-white/8">
