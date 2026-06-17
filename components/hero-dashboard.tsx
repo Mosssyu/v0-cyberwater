@@ -360,23 +360,14 @@ export function HeroDashboard() {
           <Move3d className="size-3.5 text-accent" />
           <span className="text-[11px] font-semibold text-foreground">数字孪生 / 3D 场景</span>
         </div>
-        {/* 3D 厂区占位 */}
-        <div className="relative h-16 overflow-hidden rounded-md border border-white/8 bg-[linear-gradient(180deg,oklch(0.2_0.04_235)_0%,oklch(0.12_0.02_240)_100%)]">
-          <svg viewBox="0 0 200 64" preserveAspectRatio="none" className="size-full" aria-hidden="true">
-            <g stroke="oklch(0.79 0.13 200 / 0.25)" strokeWidth="0.5">
-              <path d="M0 48 L100 18 L200 48" fill="none" />
-              <path d="M0 56 L100 26 L200 56" fill="none" />
-            </g>
-            {/* 建筑块 */}
-            <g fill="oklch(0.3 0.05 230 / 0.8)" stroke="oklch(0.82 0.13 200 / 0.6)" strokeWidth="0.6">
-              <rect x="70" y="26" width="22" height="14" />
-              <rect x="98" y="22" width="16" height="18" />
-              <rect x="120" y="30" width="20" height="10" />
-            </g>
-            {[40, 88, 150].map((x, i) => (
-              <circle key={i} cx={x} cy={20 + i * 6} r="1.4" fill="oklch(0.85 0.13 200)" />
-            ))}
-          </svg>
+        {/* 3D 厂区数字孪生场景 */}
+        <div className="relative h-16 overflow-hidden rounded-md border border-white/8">
+          <img
+            src="/scene-twin-aerial.png"
+            alt="水厂园区数字孪生 3D 航拍场景，叠加多个传感器监测点"
+            className="size-full object-cover"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,oklch(0.1_0.02_240/0.55)_100%)]" />
         </div>
         <div className="mt-1.5 flex items-center justify-between text-[9px] text-muted-foreground">
           <span className="flex items-center gap-0.5"><Move3d className="size-2.5" />漫游</span>
