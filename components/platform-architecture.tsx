@@ -4,13 +4,10 @@ import { useEffect, useRef } from "react"
 import {
   Bot,
   Brain,
-  Factory,
   ClipboardList,
-  Network,
   Database,
   Sparkles,
   Eye,
-  Box,
   Boxes,
   ShieldCheck,
   TrendingUp,
@@ -18,13 +15,11 @@ import {
   Cpu,
   Layers,
   Settings,
-  Workflow,
-  Radio,
-  Share2,
-  GitBranch,
+  Bot as BotIcon,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { GlowIcon } from "@/components/glow-icon"
+import { NeonIcon } from "@/components/neon-icon"
 
 /* ----------------------------- 数据 ----------------------------- */
 
@@ -32,8 +27,7 @@ type Product = {
   name: string
   desc: string
   sub: string
-  icon: LucideIcon
-  iconColor: string
+  img: string
   glow: string
   tags: { label: string; icon: LucideIcon }[]
 }
@@ -43,8 +37,7 @@ const leftProducts: Product[] = [
     name: "CW-Agent",
     desc: "水务智能体",
     sub: "AI 驱动 · 智能决策",
-    icon: Bot,
-    iconColor: "text-[oklch(0.72_0.14_300)]",
+    img: "/icons/prod-agent.png",
     glow: "oklch(0.62 0.2 300)",
     tags: [
       { label: "决策增强", icon: TrendingUp },
@@ -55,8 +48,7 @@ const leftProducts: Product[] = [
     name: "CW-POM",
     desc: "水厂智慧运营系统",
     sub: "生产高效 · 全面闭环",
-    icon: Factory,
-    iconColor: "text-emerald-400",
+    img: "/icons/prod-pom.png",
     glow: "oklch(0.7 0.16 160)",
     tags: [
       { label: "生产监控", icon: Settings },
@@ -70,8 +62,7 @@ const rightProducts: Product[] = [
     name: "CW-PPI",
     desc: "厂网河湖一体化",
     sub: "数据贯通 · 智能治理",
-    icon: Network,
-    iconColor: "text-accent",
+    img: "/icons/prod-ppi.png",
     glow: "oklch(0.74 0.14 205)",
     tags: [
       { label: "数据集成", icon: Database },
@@ -82,8 +73,7 @@ const rightProducts: Product[] = [
     name: "CW-3DP",
     desc: "三维孪生",
     sub: "全域可感知 · 数字孪生",
-    icon: Box,
-    iconColor: "text-primary",
+    img: "/icons/prod-3dp.png",
     glow: "oklch(0.62 0.18 250)",
     tags: [
       { label: "全域可视化", icon: Eye },
@@ -95,7 +85,7 @@ const rightProducts: Product[] = [
 // 塔体五层，从上到下（上窄下宽）
 const upperTiers = [
   { n: 5, label: "业务应用层", width: "46%", icons: [Layers, TrendingUp], accent: "oklch(0.62 0.2 295)" },
-  { n: 4, label: "AI 智能体层", width: "60%", icons: [Bot, Brain], accent: "oklch(0.6 0.2 270)" },
+  { n: 4, label: "AI 智能体层", width: "60%", icons: [BotIcon, Brain], accent: "oklch(0.6 0.2 270)" },
 ]
 // 第 3 层及以下；旋转的六大能力中心放在第 4 层与第 3 层之间
 const lowerTiers = [
@@ -105,20 +95,20 @@ const lowerTiers = [
 ]
 
 // 六大能力中心（环绕旋转）
-const capabilities: { label: string; short: string; icon: LucideIcon }[] = [
-  { label: "AI知识中心", short: "AI知识", icon: Brain },
-  { label: "数据智能中心", short: "数据智能", icon: Database },
-  { label: "组织运营中心", short: "组织运营", icon: Workflow },
-  { label: "感知空间中心", short: "感知空间", icon: Radio },
-  { label: "业务闭环中心", short: "业务闭环", icon: GitBranch },
-  { label: "联动调度中心", short: "联动调度", icon: Share2 },
+const capabilities: { label: string; short: string; img: string }[] = [
+  { label: "AI知识中心", short: "AI知识", img: "/icons/cap-ai.png" },
+  { label: "数据智能中心", short: "数据智能", img: "/icons/cap-data.png" },
+  { label: "组织运营中心", short: "组织运营", img: "/icons/cap-org.png" },
+  { label: "感知空间中心", short: "感知空间", img: "/icons/cap-space.png" },
+  { label: "业务闭环中心", short: "业务闭环", img: "/icons/cap-loop.png" },
+  { label: "联动调度中心", short: "联动调度", img: "/icons/cap-dispatch.png" },
 ]
 
-const bottomStrip: { label: string; icon: LucideIcon }[] = [
-  { label: "多业态融合", icon: Boxes },
-  { label: "数据驱动", icon: TrendingUp },
-  { label: "AI 赋能", icon: Cpu },
-  { label: "安全可靠", icon: ShieldCheck },
+const bottomStrip: { label: string; img: string; glow: string }[] = [
+  { label: "多业态融合", img: "/icons/val-fusion.png", glow: "oklch(0.62 0.2 295)" },
+  { label: "数据驱动", img: "/icons/val-data.png", glow: "oklch(0.66 0.16 250)" },
+  { label: "AI 赋能", img: "/icons/val-ai.png", glow: "oklch(0.62 0.2 285)" },
+  { label: "安全可靠", img: "/icons/val-secure.png", glow: "oklch(0.74 0.14 205)" },
 ]
 
 /* ----------------------------- 子组件 ----------------------------- */
@@ -141,7 +131,7 @@ function ProductCard({ p, align }: { p: Product; align: "left" | "right" }) {
         aria-hidden="true"
       />
       <div className={`flex items-start gap-3 ${align === "right" ? "lg:flex-row-reverse lg:text-right" : ""}`}>
-        <GlowIcon icon={p.icon} size="lg" glow={p.glow} />
+        <NeonIcon src={p.img} alt={p.name} glow={p.glow} className="size-14" />
         <div className="min-w-0">
           <div className="text-base font-bold tracking-tight text-foreground">{p.name}</div>
           <div className="text-sm text-foreground/80">{p.desc}</div>
@@ -271,7 +261,7 @@ function CapabilityOrbit() {
           }}
           className="absolute left-1/2 top-1/2 flex flex-col items-center gap-1 will-change-transform"
         >
-          <GlowIcon icon={c.icon} size="lg" glow="oklch(0.74 0.14 205)" interactive={false} />
+          <NeonIcon src={c.img} alt={c.label} glow="oklch(0.74 0.14 205)" className="size-14" />
           <span className="whitespace-nowrap rounded-full bg-[oklch(0.12_0.02_240/0.78)] px-2 py-0.5 text-[10px] font-medium text-foreground/90 backdrop-blur">
             {c.short}
           </span>
@@ -389,7 +379,7 @@ export function PlatformArchitecture() {
       <div className="relative mt-10 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-card/50 p-4 ring-hairline backdrop-blur sm:grid-cols-4">
         {bottomStrip.map((b) => (
           <div key={b.label} className="group flex items-center justify-center gap-2 py-1 text-sm text-foreground/85">
-            <GlowIcon icon={b.icon} size="sm" glow="oklch(0.79 0.13 200)" />
+            <NeonIcon src={b.img} alt={b.label} glow={b.glow} className="size-10" />
             {b.label}
           </div>
         ))}
