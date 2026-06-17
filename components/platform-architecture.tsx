@@ -211,24 +211,38 @@ function CapabilityOrbit() {
 
   return (
     <div className="relative mx-auto h-[240px] w-full max-w-[440px]">
-      {/* 俯视盘面装饰圈（倾斜椭圆） */}
+      {/* 俯视盘面装饰圈（多层同心椭圆 + 虚线轨道） */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        {/* 最外发光盘面 */}
         <span
-          className="ring-pulse-anim block rounded-[50%] border border-accent/30"
+          className="ring-pulse-anim block rounded-[50%] border border-accent/25"
           style={{
-            width: rx * 2 + 48,
-            height: ry * 2 + 48,
+            width: rx * 2 + 80,
+            height: ry * 2 + 80,
             animation: "ring-pulse 4s ease-in-out infinite",
             boxShadow:
-              "0 0 60px -8px oklch(0.7 0.15 215 / 0.5), inset 0 0 50px -10px oklch(0.62 0.16 225 / 0.45)",
+              "0 0 70px -8px oklch(0.7 0.15 215 / 0.5), inset 0 0 60px -12px oklch(0.62 0.16 225 / 0.45)",
             background:
-              "radial-gradient(ellipse 60% 80% at 50% 50%, oklch(0.5 0.16 230 / 0.14), transparent 70%)",
+              "radial-gradient(ellipse 60% 80% at 50% 50%, oklch(0.5 0.16 230 / 0.14), transparent 72%)",
           }}
           aria-hidden="true"
         />
+        {/* 节点所在主轨道（实线椭圆） */}
         <span
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-dashed border-accent/20"
-          style={{ width: rx * 2 - 30, height: ry * 2 - 18 }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-accent/35"
+          style={{ width: rx * 2 + 4, height: ry * 2 + 4 }}
+          aria-hidden="true"
+        />
+        {/* 中层虚线轨道 */}
+        <span
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-dashed border-accent/25"
+          style={{ width: rx * 2 - 56, height: ry * 2 - 20 }}
+          aria-hidden="true"
+        />
+        {/* 内层轨道圈（贴近核心球） */}
+        <span
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-primary/20"
+          style={{ width: rx * 2 - 116, height: ry * 2 - 36 }}
           aria-hidden="true"
         />
       </div>
