@@ -232,23 +232,75 @@ function CapabilityOrbit() {
         />
       </div>
 
-      {/* 中心核心球 */}
+      {/* 中心核心球 —— 赛博朋克 HUD 风格 */}
       <div className="absolute left-1/2 top-1/2 z-[60] -translate-x-1/2 -translate-y-1/2">
-        <div
-          className="core-pulse-anim flex size-[96px] flex-col items-center justify-center rounded-full text-center"
-          style={{
-            animation: "core-pulse 4s ease-in-out infinite",
-            background:
-              "radial-gradient(circle at 50% 30%, oklch(0.88 0.11 200 / 0.98) 0%, oklch(0.6 0.17 225 / 0.95) 46%, oklch(0.34 0.16 250 / 0.98) 100%)",
-          }}
-        >
-          <span className="text-lg font-extrabold leading-tight text-white drop-shadow">六大</span>
-          <span className="text-xs font-semibold leading-tight text-white/90">能力中心</span>
+        <div className="relative size-[124px]">
+          {/* 外层旋转刻度环 */}
+          <span
+            className="core-ticks pointer-events-none absolute -inset-3 rounded-full opacity-70"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(circle at 50% 50%, transparent 60%, #000 62%, #000 70%, transparent 73%)",
+              maskImage:
+                "radial-gradient(circle at 50% 50%, transparent 60%, #000 62%, #000 70%, transparent 73%)",
+            }}
+            aria-hidden="true"
+          />
+          {/* 旋转扫光环 */}
+          <span
+            className="core-sweep pointer-events-none absolute -inset-1 rounded-full opacity-80"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(circle at 50% 50%, transparent 70%, #000 74%, #000 86%, transparent 90%)",
+              maskImage:
+                "radial-gradient(circle at 50% 50%, transparent 70%, #000 74%, #000 86%, transparent 90%)",
+            }}
+            aria-hidden="true"
+          />
+          {/* 静态描边圈（断点弧线 HUD 感） */}
+          <span
+            className="pointer-events-none absolute -inset-1 rounded-full border border-accent/40"
+            style={{ boxShadow: "0 0 18px -4px oklch(0.78 0.16 215 / 0.7)" }}
+            aria-hidden="true"
+          />
+
+          {/* 主球体 */}
+          <div
+            className="core-pulse-anim relative flex size-full flex-col items-center justify-center overflow-hidden rounded-full text-center"
+            style={{
+              animation: "core-pulse 4s ease-in-out infinite",
+              background:
+                "radial-gradient(circle at 50% 28%, oklch(0.92 0.1 198 / 0.98) 0%, oklch(0.62 0.18 222 / 0.96) 44%, oklch(0.3 0.16 255 / 0.98) 100%)",
+            }}
+          >
+            {/* 内部网格 */}
+            <span className="core-grid-mask pointer-events-none absolute inset-0" aria-hidden="true" />
+            {/* HUD 扫描线 */}
+            <span
+              className="core-scan-line pointer-events-none absolute inset-x-0 h-[3px] bg-[oklch(0.98_0.05_195/0.9)]"
+              style={{ boxShadow: "0 0 12px 2px oklch(0.95 0.08 200 / 0.9)" }}
+              aria-hidden="true"
+            />
+            {/* 顶部高光 */}
+            <span
+              className="pointer-events-none absolute inset-x-3 top-2 h-6 rounded-[50%] bg-white/45 blur-md"
+              aria-hidden="true"
+            />
+            {/* 文字 */}
+            <span className="core-flicker-anim relative z-10 text-lg font-extrabold leading-tight text-white">
+              六大
+            </span>
+            <span className="relative z-10 text-xs font-semibold leading-tight tracking-wide text-white/95">
+              能力中心
+            </span>
+          </div>
+
+          {/* 底部投影光晕 */}
+          <span
+            className="pointer-events-none absolute left-1/2 top-full h-8 w-36 -translate-x-1/2 -translate-y-3 rounded-[50%] bg-accent/35 blur-lg"
+            aria-hidden="true"
+          />
         </div>
-        <span
-          className="pointer-events-none absolute left-1/2 top-full h-7 w-32 -translate-x-1/2 -translate-y-2 rounded-[50%] bg-accent/30 blur-md"
-          aria-hidden="true"
-        />
       </div>
 
       {/* 环绕节点（JS 驱动俯视位置，节点始终直立） */}

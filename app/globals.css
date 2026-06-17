@@ -311,6 +311,94 @@
   transform-origin: top center;
 }
 
+/* ---------- 赛博朋克核心球 ---------- */
+/* 旋转扫光环 */
+@keyframes cyber-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes cyber-sweep-rev {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+/* 球内扫描线上下移动 */
+@keyframes core-scan {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120%);
+    opacity: 0;
+  }
+}
+/* 文字辉光微闪 */
+@keyframes core-flicker {
+  0%,
+  100% {
+    text-shadow: 0 0 8px oklch(0.95 0.08 200 / 0.9), 0 0 18px oklch(0.8 0.14 215 / 0.6);
+  }
+  50% {
+    text-shadow: 0 0 12px oklch(0.98 0.06 195 / 1), 0 0 28px oklch(0.85 0.14 210 / 0.85);
+  }
+}
+
+.core-sweep {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    oklch(0.85 0.16 200 / 0.85) 40deg,
+    transparent 110deg,
+    transparent 180deg,
+    oklch(0.7 0.18 280 / 0.7) 220deg,
+    transparent 300deg
+  );
+  animation: cyber-sweep 5s linear infinite;
+}
+.core-ticks {
+  background: repeating-conic-gradient(
+    from 0deg,
+    oklch(0.82 0.14 205 / 0.7) 0deg 1.4deg,
+    transparent 1.4deg 12deg
+  );
+  animation: cyber-sweep-rev 24s linear infinite;
+}
+.core-grid-mask {
+  background-image:
+    linear-gradient(oklch(0.92 0.08 200 / 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.92 0.08 200 / 0.35) 1px, transparent 1px);
+  background-size: 14px 14px;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 60%, transparent 78%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 60%, transparent 78%);
+}
+.core-scan-line {
+  animation: core-scan 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.core-flicker-anim {
+  animation: core-flicker 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .core-sweep,
+  .core-ticks,
+  .core-scan-line,
+  .core-flicker-anim {
+    animation: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .orbit-anim,
   .core-pulse-anim,
