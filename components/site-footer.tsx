@@ -3,19 +3,38 @@ import { Mail, MapPin } from "lucide-react"
 const columns = [
   {
     title: "核心产品",
-    links: ["CWAgent AI 智能体", "CWVisual 数字孪生", "CWPilot 防汛调度", "厂网河湖一体化平台"],
+    links: [
+      { label: "CW-Agent · 水务智能体", href: "/#product-agent" },
+      { label: "CW-PPI · 厂网河湖一体化", href: "/#product-ppi" },
+      { label: "CW-3DP · 数字孪生", href: "/#product-3dp" },
+      { label: "CW-POM · 数字水厂", href: "/#product-pom" },
+    ],
   },
   {
     title: "解决方案",
-    links: ["水务集团数字化运营", "一体化业务管理", "BIM+数字孪生", "防汛应急调度"],
+    links: [
+      { label: "水务集团数字化运营", href: "/#solutions" },
+      { label: "一体化业务管理", href: "/#solutions" },
+      { label: "BIM+数字孪生", href: "/#solutions" },
+      { label: "防汛应急调度", href: "/#solutions" },
+    ],
   },
   {
     title: "成功案例",
-    links: ["数字水厂", "集团数字运营", "多厂集约化管理", "BIM+数字孪生"],
+    links: [
+      { label: "数字水厂", href: "/#cases" },
+      { label: "集团数字运营", href: "/#cases" },
+      { label: "多厂集约化管理", href: "/#cases" },
+      { label: "BIM+数字孪生", href: "/#cases" },
+    ],
   },
   {
     title: "关于我们",
-    links: ["公司介绍", "成长历程", "新闻动态"],
+    links: [
+      { label: "公司介绍", href: "/#about" },
+      { label: "成长历程", href: "/#about" },
+      { label: "新闻动态", href: "/#news" },
+    ],
   },
 ]
 
@@ -48,7 +67,7 @@ export function SiteFooter() {
             <ul className="mt-6 space-y-3 text-sm text-blue-100/70">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-cyan-300" />
-                北京市东城区东直门外大街 46 号天恒大厦 B 座 16 层
+                北京市朝阳区新源里16号琨莎大厦2座901室
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="size-4 text-cyan-300" />
@@ -72,12 +91,12 @@ export function SiteFooter() {
               <h3 className="text-sm font-semibold text-white">{col.title}</h3>
               <ul className="mt-5 space-y-3">
                 {col.links.map((link) => (
-                  <li key={link}>
+                  <li key={link.label}>
                     <a
-                      href="#"
+                      href={link.href}
                       className="text-sm text-blue-100/60 transition-colors hover:text-cyan-300"
                     >
-                      {link}
+                      {link.label}
                     </a>
                   </li>
                 ))}
