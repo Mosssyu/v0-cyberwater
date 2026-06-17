@@ -11,15 +11,6 @@ const columns = [
     ],
   },
   {
-    title: "解决方案",
-    links: [
-      { label: "水务集团数字化运营", href: "/#solutions" },
-      { label: "一体化业务管理", href: "/#solutions" },
-      { label: "BIM+数字孪生", href: "/#solutions" },
-      { label: "防汛应急调度", href: "/#solutions" },
-    ],
-  },
-  {
     title: "成功案例",
     links: [
       { label: "数字水厂", href: "/#cases" },
