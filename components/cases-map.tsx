@@ -2,20 +2,49 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
-import { geoMercator, geoPath, type GeoProjection } from "d3-geo"
+import { geoMercator, type GeoProjection } from "d3-geo"
 import { MapPin } from "lucide-react"
 import { cases, caseCoords } from "@/lib/cases"
 
 const WIDTH = 800
 const HEIGHT = 640
 
+type Position = [number, number]
+
+interface Geometry {
+  type: "Polygon" | "MultiPolygon"
+  coordinates: Position[][] | Position[][][]
+}
+
 interface GeoFeatureCollection {
   type: "FeatureCollection"
   features: Array<{
     type: "Feature"
     properties: { name?: string }
-    geometry: unknown
+    geometry: Geometry
   }>
+}
+
+// 手动把多边形环投影成 SVG 路径（绕过 d3 geoPath 的球面裁剪，
+// 该数据集环绕方向不规范会导致 geoPath 填满整个画布）
+function featureToPath(geometry: Geometry, projection: GeoProjection): string {
+  const polygons =
+    geometry.type === "Polygon"
+      ? [geometry.coordinates as Position[][]]
+      : (geometry.coordinates as Position[][][])
+
+  let d = ""
+  for (const polygon of polygons) {
+    for (const ring of polygon) {
+      ring.forEach((coord, i) => {
+        const p = projection(coord)
+        if (!p) return
+        d += `${i === 0 ? "M" : "L"}${p[0].toFixed(1)},${p[1].toFixed(1)}`
+      })
+      d += "Z"
+    }
+  }
+  return d
 }
 
 export function CasesMap() {
@@ -46,12 +75,11 @@ export function CasesMap() {
   }, [geo])
 
   // 投影：固定中心与比例（该数据多边形环绕方向不规范，fitExtent 不可用）
-  const { projection, pathGen } = useMemo(() => {
-    const proj: GeoProjection = geoMercator()
+  const projection = useMemo<GeoProjection>(() => {
+    return geoMercator()
       .center([104, 36])
       .scale(760)
       .translate([WIDTH / 2, HEIGHT / 2])
-    return { projection: proj, pathGen: geoPath(proj) }
   }, [])
 
   // 把案例按坐标聚合到标记点
@@ -92,7 +120,7 @@ export function CasesMap() {
             {mainland?.features.map((f, i) => (
               <path
                 key={i}
-                d={pathGen(f as never) ?? undefined}
+                d={featureToPath(f.geometry, projection)}
                 fill="oklch(0.28 0.04 235 / 0.55)"
                 stroke="oklch(0.6 0.12 220 / 0.55)"
                 strokeWidth={0.7}
