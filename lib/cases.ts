@@ -190,7 +190,7 @@ export const cases: CaseItem[] = [
     background:
       "秦皇岛区域面临汛期强降雨带来的排水管网溢流与城市内涝风险，需要厂、网、河协同的一体化调度与防汛指挥能力。",
     scope: [
-      "厂网河一体化数据融合与建模",
+      "厂网河一体化数���融合与建模",
       "CWPilot 防汛调度与预警预报",
       "管网液位、泵站、降雨实时监测",
       "防汛应急指挥与联动调度",
@@ -353,6 +353,22 @@ export const cases: CaseItem[] = [
     tags: ["智慧防汛", "泵闸调度", "排涝"],
   },
 ]
+
+// 各项目大致经纬度坐标（[经度, 纬度]），用于中国地图标记示意
+export const caseCoords: Record<string, [number, number]> = {
+  "huanqiu-yingcheng": [116.66, 39.82], // 北京·通州
+  daoxianghu: [116.08, 40.06], // 北京·海淀
+  "beikong-shuiwu": [116.4, 39.9], // 集团总部·北京
+  "tianjin-chuangye": [117.2, 39.13], // 天津
+  "xinjiang-jiyuehua": [87.62, 43.82], // 新疆·乌鲁木齐
+  qinhuangdao: [119.6, 39.93], // 河北·秦皇岛
+  "keyuan-supply": [111.75, 40.84], // 内蒙古·呼和浩特
+  "yinchuan-twin": [106.27, 38.47], // 宁夏·银川
+  "mianyang-taziba": [104.74, 31.46], // 四川·绵阳
+  "chengdu-shuangliu": [103.92, 30.57], // 四川·成都双流
+  "shanghai-linkang": [121.92, 30.9], // 上海·临港
+  "shanghai-fangzha": [121.47, 31.23], // 上海
+}
 
 export function getCaseBySlug(slug: string) {
   return cases.find((c) => c.slug === slug)
