@@ -11,10 +11,14 @@ import { Values } from "@/components/values"
 import { News } from "@/components/news"
 import { ContactCta } from "@/components/contact-cta"
 import { SiteFooter } from "@/components/site-footer"
+import { ClickRipple } from "@/components/click-ripple"
+import { ScrollReveal } from "@/components/scroll-reveal"
 
 export default function Page() {
   return (
     <div className="min-h-screen bg-background">
+      <ClickRipple />
+      <ScrollReveal />
       <SiteHeader />
       <main>
         <Hero />

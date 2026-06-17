@@ -167,3 +167,84 @@
     box-shadow: inset 0 1px 0 0 oklch(1 0 0 / 0.06);
   }
 }
+
+/* ---------- 全局点击水波纹 ---------- */
+.ripple-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ripple {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 9999px;
+  border: 1.5px solid oklch(0.82 0.12 205 / 0.9);
+  background: radial-gradient(
+    circle,
+    oklch(0.85 0.13 205 / 0.28) 0%,
+    oklch(0.7 0.15 220 / 0.12) 45%,
+    transparent 70%
+  );
+  box-shadow: 0 0 12px 2px oklch(0.8 0.13 210 / 0.35);
+  transform: scale(0);
+  opacity: 0.9;
+  animation: ripple-expand 720ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+/* 第二圈，做出水波层次 */
+.ripple::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid oklch(0.82 0.12 205 / 0.45);
+  transform: scale(0.4);
+  opacity: 0.7;
+  animation: ripple-expand-inner 720ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+@keyframes ripple-expand {
+  to {
+    transform: scale(9);
+    opacity: 0;
+  }
+}
+@keyframes ripple-expand-inner {
+  to {
+    transform: scale(6);
+    opacity: 0;
+  }
+}
+
+/* ---------- 滚动入场动画 ---------- */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(2px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripple,
+  .ripple::after {
+    animation: none;
+    display: none;
+  }
+  .reveal-init {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
