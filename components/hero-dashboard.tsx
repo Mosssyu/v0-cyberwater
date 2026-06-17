@@ -5,7 +5,7 @@ import {
   Cpu,
   Gauge,
   Move3d,
-  Ruler,
+  AlertCircle,
   Workflow,
   Layers,
   Activity,
@@ -325,7 +325,7 @@ export function HeroDashboard() {
           如何降低泵站能耗？
         </div>
         <p className="text-[10px] leading-relaxed text-muted-foreground">
-          建议从优化运行策略、设备启停调度、变频控制等方面综合优化。
+          建议���优化运行策略、设备启停调度、变频控制等方面综合优化。
         </p>
         <div className="mt-1.5 flex items-center gap-1 text-[10px] font-medium text-accent">
           查看分析结果
@@ -384,7 +384,7 @@ export function HeroDashboard() {
         </div>
         <div className="mt-1.5 flex items-center justify-between text-[9px] text-muted-foreground">
           <span className="flex items-center gap-0.5"><Move3d className="size-2.5" />漫游</span>
-          <span className="flex items-center gap-0.5"><Ruler className="size-2.5" />测量</span>
+          <span className="flex items-center gap-0.5"><AlertCircle className="size-2.5" />告警</span>
           <span className="flex items-center gap-0.5"><Activity className="size-2.5" />分析</span>
           <span className="flex items-center gap-0.5"><Workflow className="size-2.5" />联动</span>
         </div>
