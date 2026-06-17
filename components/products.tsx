@@ -13,24 +13,28 @@ const products = [
     icon: Bot,
     tag: "AI Agent",
     title: "CW-Agent · 水务智能体",
+    href: "/#product-agent",
     desc: "新一代 AI 智能体，支持知识问数、报表生成、告警分析、调度辅助与工艺优化，让运营经验沉淀为智能能力。",
   },
   {
     icon: Network,
     tag: "Platform",
     title: "CW-PPI · 厂网河湖一体化",
+    href: "/#product-ppi",
     desc: "统一管理水厂、泵站、管网、河道、湖泊、防汛与调度业务，数据赋能、智能治理，打通集团化多业态运营。",
   },
   {
     icon: Cube,
     tag: "Digital Twin",
     title: "CW-3DP · 数字孪生",
+    href: "/#product-3dp",
     desc: "融合 BIM + GIS 的二三维一体化平台，构建数字孪生水厂与流域级孪生，实现全域可感知与可视化运维。",
   },
   {
     icon: Factory,
     tag: "Operation",
     title: "CW-POM · 数字水厂",
+    href: "/#product-pom",
     desc: "覆盖生产监控、工艺管理、设备运维、巡检工单、报表分析的全流程闭环，打造新一代未来水厂。",
   },
 ]
@@ -69,8 +73,9 @@ export function Products() {
         {/* 四大核心产品 */}
         <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => (
-            <div
+            <a
               key={product.title}
+              href={product.href}
               className="group relative flex flex-col bg-card p-8 transition-colors duration-300 hover:bg-secondary/40"
             >
               {/* hover 顶部高亮线 */}
@@ -92,7 +97,7 @@ export function Products() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                 {product.desc}
               </p>
-            </div>
+            </a>
           ))}
         </div>
 

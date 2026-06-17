@@ -15,10 +15,10 @@ import { Button } from "@/components/ui/button"
 import { HeroDashboard } from "@/components/hero-dashboard"
 
 const productPills = [
-  { name: "CW-Agent", icon: Bot, color: "text-[oklch(0.7_0.13_300)]" },
-  { name: "CW-POM", icon: Factory, color: "text-emerald-400" },
-  { name: "CW-PPI", icon: Network, color: "text-accent" },
-  { name: "CW-3DP", icon: Box, color: "text-primary" },
+  { name: "CW-Agent", icon: Bot, color: "text-[oklch(0.7_0.13_300)]", href: "/#product-agent" },
+  { name: "CW-POM", icon: Factory, color: "text-emerald-400", href: "/#product-pom" },
+  { name: "CW-PPI", icon: Network, color: "text-accent", href: "/#product-ppi" },
+  { name: "CW-3DP", icon: Box, color: "text-primary", href: "/#product-3dp" },
 ]
 
 const chain = [
@@ -85,10 +85,10 @@ export function Hero() {
             {/* 产品入口标签 */}
             <div className="mt-7 flex flex-wrap gap-2.5">
               {productPills.map((p) => (
-                <a
-                  key={p.name}
-                  href="/#products"
-                  className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-card/50 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur transition-colors hover:border-accent/40 hover:bg-card"
+              <a
+                key={p.name}
+                href={p.href}
+                className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-card/50 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur transition-colors hover:border-accent/40 hover:bg-card"
                 >
                   <p.icon className={`size-3.5 ${p.color}`} />
                   {p.name}
