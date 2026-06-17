@@ -51,11 +51,11 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid gap-12 lg:grid-cols-6">
           <div className="lg:col-span-2">
-            <div className="flex flex-col gap-2 text-left">
+            <div className="flex flex-col items-start gap-2 text-left">
               <img
                 src="/cyberwater-logo-dark.png"
                 alt="云建标 CYBERWATER"
-                className="h-9 w-auto object-scale-down"
+                className="-ml-2 h-9 w-auto object-scale-down object-left"
               />
               <span className="text-[11px] tracking-[0.2em] text-blue-100/50">
                 执数智之器 · 精水务之业
