@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
-import { CasesGrid } from "@/components/cases-grid"
+import { CasesBrowser } from "@/components/cases-browser"
 
 export const metadata: Metadata = {
   title: "客户案例 | 云建标智慧水务",
@@ -28,7 +28,7 @@ export default function CasesPage() {
 
         <section className="py-16">
           <div className="mx-auto max-w-7xl px-6">
-            <CasesGrid />
+            <CasesBrowser />
           </div>
         </section>
       </main>
