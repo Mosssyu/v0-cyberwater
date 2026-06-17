@@ -89,14 +89,14 @@ const rightProducts: Product[] = [
 ]
 
 // 塔体五层，从上到下（上窄下宽）
-// 上两层为塔尖，底三层作为旋转轨道的承载基座
-const topTiers = [
-  { n: 5, label: "业务应用层", width: "48%", icons: [Layers, TrendingUp], accent: "oklch(0.62 0.2 295)" },
-  { n: 4, label: "AI 智能体层", width: "62%", icons: [Bot, Brain], accent: "oklch(0.6 0.2 270)" },
+const upperTiers = [
+  { n: 5, label: "业务应用层", width: "46%", icons: [Layers, TrendingUp], accent: "oklch(0.62 0.2 295)" },
+  { n: 4, label: "AI 智能体层", width: "60%", icons: [Bot, Brain], accent: "oklch(0.6 0.2 270)" },
 ]
-const bottomTiers = [
-  { n: 3, label: "平台能力层", width: "82%", icons: [Settings, Sparkles], accent: "oklch(0.66 0.16 235)" },
-  { n: 2, label: "数据底座层", width: "92%", icons: [Database, Boxes], accent: "oklch(0.72 0.14 212)" },
+// 第 3 层及以下；旋转的六大能力中心放在第 4 层与第 3 层之间
+const lowerTiers = [
+  { n: 3, label: "平台能力层", width: "76%", icons: [Settings, Sparkles], accent: "oklch(0.66 0.16 235)" },
+  { n: 2, label: "数据底座层", width: "88%", icons: [Database, Boxes], accent: "oklch(0.72 0.14 212)" },
   { n: 1, label: "基础设施层", width: "100%", icons: [Cloud, Cpu, ShieldCheck], accent: "oklch(0.76 0.13 205)" },
 ]
 
@@ -263,9 +263,9 @@ function PyramidTier({
   index: number
 }) {
   return (
-    <div className="relative flex justify-center" style={{ marginTop: n === 5 ? 0 : "-12px" }}>
+    <div className="relative flex justify-center">
       <div
-        className="relative flex h-[54px] items-center justify-center gap-3 rounded-[50%] border px-6 transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02]"
+        className="relative flex h-[52px] items-center justify-center gap-3 rounded-[50%] border px-6 transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02]"
         style={{
           width,
           borderColor: `color-mix(in oklab, ${accent} 60%, transparent)`,
@@ -298,7 +298,7 @@ function PyramidTier({
 export function PlatformArchitecture() {
   return (
     <div className="relative mx-auto max-w-7xl overflow-hidden px-6 pb-10">
-      {/* cyber 网格地面 */}
+      {/* cyber 网格���面 */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[340px]" aria-hidden="true">
         <div className="cyber-grid-floor absolute inset-x-0 bottom-0 h-full" />
       </div>
@@ -323,28 +323,23 @@ export function PlatformArchitecture() {
           ))}
         </div>
 
-        {/* 中央三维分层塔，六大能力中心旋转轨道嵌入底三层 */}
+        {/* 中央三维分层塔：六大能力中心旋转轨道位于第 4 层与第 3 层之间 */}
         <div className="order-first lg:order-2">
-          <div className="relative mx-auto w-full max-w-md">
+          <div className="relative mx-auto flex w-full max-w-md flex-col gap-[18px]">
             {/* 上两层（塔尖） */}
-            <div className="relative z-20">
-              {topTiers.map((t, i) => (
-                <PyramidTier key={t.n} {...t} index={i} />
-              ))}
+            {upperTiers.map((t, i) => (
+              <PyramidTier key={t.n} {...t} index={i} />
+            ))}
+
+            {/* 六大能力中心：360° 旋转轨道（第 4 与第 3 层之间） */}
+            <div className="relative flex justify-center py-2">
+              <CapabilityOrbit />
             </div>
 
-            {/* 底三层 + 旋转轨道叠加区 */}
-            <div className="relative mt-[-12px]">
-              <div className="relative z-10 opacity-90">
-                {bottomTiers.map((t, i) => (
-                  <PyramidTier key={t.n} {...t} index={i + topTiers.length} />
-                ))}
-              </div>
-              {/* 旋转轨道居中叠加于底三层 */}
-              <div className="absolute inset-0 z-30 flex items-center justify-center">
-                <CapabilityOrbit />
-              </div>
-            </div>
+            {/* 第 3 层及以下 */}
+            {lowerTiers.map((t, i) => (
+              <PyramidTier key={t.n} {...t} index={i + upperTiers.length} />
+            ))}
           </div>
         </div>
 
