@@ -26,7 +26,7 @@ const products = [
   {
     icon: Cube,
     tag: "Digital Twin",
-    title: "CW-3DP · 数字孪生",
+    title: "CW-3DP · 三维孪生",
     href: "/#product-3dp",
     desc: "融合 BIM + GIS 的二三维一体化平台，构建数字孪生水厂与流域级孪生，实现全域可感知与可视化运维。",
   },
@@ -90,7 +90,7 @@ export function Products() {
                 </span>
               </div>
 
-              <h3 className="mt-6 flex items-center gap-2 text-lg font-semibold text-foreground">
+              <h3 className="mt-6 flex justify-start items-center gap-2 text-lg font-semibold text-foreground">
                 {product.title}
                 <ArrowUpRight className="size-4 text-accent opacity-0 transition-opacity group-hover:opacity-100" />
               </h3>
