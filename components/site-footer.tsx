@@ -11,7 +11,7 @@ const columns = [
     ],
   },
   {
-    title: "成功案例",
+    title: "项目案例",
     links: [
       { label: "数字水厂", href: "/#cases" },
       { label: "集团数字运营", href: "/#cases" },

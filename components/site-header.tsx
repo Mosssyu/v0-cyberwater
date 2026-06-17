@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 const navItems = [
   { label: "首页", href: "/#home" },
   { label: "核心产品", href: "/#products" },
-  { label: "成功案例", href: "/cases" },
+  { label: "项目案例", href: "/cases" },
   { label: "关于我们", href: "/#about" },
   { label: "新闻动态", href: "/#news" },
   { label: "联系我们", href: "/#contact" },
