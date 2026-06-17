@@ -79,7 +79,7 @@ const rightProducts: Product[] = [
   },
   {
     name: "CW-Visual",
-    desc: "三维数字孪生",
+    desc: "三维孪生",
     sub: "全域可感知 · 数字孪生",
     icon: Box,
     iconColor: "text-primary",
