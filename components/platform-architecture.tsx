@@ -18,7 +18,6 @@ import {
   Bot as BotIcon,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { GlowIcon } from "@/components/glow-icon"
 import { NeonIcon } from "@/components/neon-icon"
 
 /* ----------------------------- 数据 ----------------------------- */
@@ -146,7 +145,7 @@ function ProductCard({ p, align }: { p: Product; align: "left" | "right" }) {
             key={t.label}
             className="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] text-foreground/75"
           >
-            <GlowIcon icon={t.icon} size="xs" shape="circle" glow={p.glow} className="size-5" iconClassName="size-3" interactive={false} />
+            <t.icon className="size-3 text-foreground/55" />
             {t.label}
           </span>
         ))}
@@ -310,7 +309,7 @@ function PyramidTier({
         </span>
         <span className="flex items-center gap-1.5">
           {icons.map((Icon, i) => (
-            <GlowIcon key={i} icon={Icon} size="xs" shape="circle" glow={accent} className="size-6" iconClassName="size-3" interactive={false} />
+            <Icon key={i} className="size-3.5 text-white/70" />
           ))}
         </span>
       </div>
