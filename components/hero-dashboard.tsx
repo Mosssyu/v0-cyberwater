@@ -114,45 +114,18 @@ function MapTag({
 /* --------------------------- 厂网河湖一体化地图 ---------------------------- */
 function MapView() {
   return (
-    <div className="relative h-full min-h-44 overflow-hidden rounded-lg border border-white/8 bg-[radial-gradient(120%_120%_at_50%_0%,oklch(0.22_0.06_230)_0%,oklch(0.12_0.02_240)_60%)]">
-      {/* 网格 */}
-      <svg viewBox="0 0 200 120" preserveAspectRatio="none" className="absolute inset-0 size-full opacity-40" aria-hidden="true">
-        <defs>
-          <pattern id="mapgrid" width="16" height="16" patternUnits="userSpaceOnUse">
-            <path d="M16 0H0V16" fill="none" stroke="oklch(0.79 0.13 200 / 0.12)" strokeWidth="0.5" />
-          </pattern>
-        </defs>
-        <rect width="200" height="120" fill="url(#mapgrid)" />
-        {/* 河流 */}
-        <path
-          d="M10 30 C 50 40, 70 10, 110 28 S 180 50, 195 38"
-          fill="none"
-          stroke="oklch(0.72 0.14 220 / 0.7)"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-        {/* 管网连线 */}
-        <g stroke="oklch(0.79 0.13 200 / 0.45)" strokeWidth="0.7" strokeDasharray="2 2">
-          <line x1="45" y1="55" x2="100" y2="75" />
-          <line x1="100" y1="75" x2="150" y2="60" />
-          <line x1="100" y1="75" x2="90" y2="100" />
-          <line x1="45" y1="55" x2="40" y2="90" />
-        </g>
-        {/* 节点 */}
-        {[
-          [45, 55],
-          [100, 75],
-          [150, 60],
-          [90, 100],
-          [40, 90],
-          [165, 95],
-        ].map(([x, y], i) => (
-          <g key={i}>
-            <circle cx={x} cy={y} r="3.4" fill="oklch(0.79 0.13 200 / 0.18)" />
-            <circle cx={x} cy={y} r="1.4" fill="oklch(0.85 0.13 200)" />
-          </g>
-        ))}
-      </svg>
+    <div className="relative h-full min-h-44 overflow-hidden rounded-lg border border-white/8 bg-[oklch(0.12_0.02_240)]">
+      {/* 写实城市夜景底图 */}
+      <img
+        src="/dashboard-city-map.png"
+        alt="厂网河湖一体化城市总览地图"
+        className="absolute inset-0 size-full object-cover opacity-90"
+      />
+      {/* 顶部压暗渐变，保证标题可读 */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.1_0.02_240/0.7)_0%,transparent_30%,transparent_70%,oklch(0.1_0.02_240/0.55)_100%)]"
+        aria-hidden="true"
+      />
 
       {/* 标题 */}
       <div className="absolute left-2.5 top-2 text-[10px] font-semibold text-foreground/90">
