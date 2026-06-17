@@ -201,7 +201,7 @@ const agent: ProductData = {
   eyebrow: "核心产品 · CW-Agent · 水务智能体",
   title: "水务智能体，让 AI 深入运营每一环节",
   subtitle:
-    "融合大模型、RAG 与知识图谱技术，打通感知、认知、决策、执行与进化全链路，持续优化水厂运行效率与决策质量。",
+    "融合大模型、RAG 与知识图谱技术，打通感知、认知、决策���执行与进化全链路，持续优化水厂运行效率与决策质量。",
   flow: [
     { icon: Dna, label: "水务基因", note: "运营场景内生" },
     { icon: Server, label: "自研底座", note: "工业级智能体" },
@@ -376,7 +376,7 @@ const ppi: ProductData = {
 
 const twin: ProductData = {
   id: "product-3dp",
-  eyebrow: "核心产品 · CW-3DP · 数字孪生",
+  eyebrow: "核心产品 · CW-3DP · 三维孪生",
   title: "数字孪生，空间可视、状态可感、决策可推演",
   subtitle:
     "以三维实景还原为基础，以运行数据融合为核心，以场景联动和仿真推演为延伸，支撑水厂实现空间可视、状态可感、过程可巡、风险可控与决策可推演。",
