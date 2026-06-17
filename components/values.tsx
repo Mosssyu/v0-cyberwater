@@ -39,12 +39,6 @@ const values = [
   },
 ]
 
-const summary = [
-  { k: "执着", v: "让我们把水务行业做深、做细、做扎实。" },
-  { k: "共生", v: "让我们与客户、伙伴和行业一起成长。" },
-  { k: "求变", v: "让我们持续进化，面向未来构建新一代水务智能运营平台。" },
-]
-
 export function Values() {
   return (
     <section
@@ -129,48 +123,6 @@ export function Values() {
           ))}
         </div>
 
-        {/* 价值观总结 */}
-        <div className="relative mt-10 overflow-hidden rounded-2xl border border-border bg-card/60 p-8 ring-hairline backdrop-blur">
-          <span
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent"
-            aria-hidden="true"
-          />
-          <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
-
-          <div className="relative grid gap-px sm:grid-cols-3">
-            {summary.map((s, i) => (
-              <div
-                key={s.k}
-                className="group relative flex flex-col gap-3 px-6 py-2 first:pl-0 last:pr-0"
-              >
-                {/* 列间发光分隔线 */}
-                {i > 0 && (
-                  <span
-                    className="pointer-events-none absolute -left-px top-2 hidden h-[calc(100%-1rem)] w-px bg-gradient-to-b from-transparent via-border to-transparent sm:block"
-                    aria-hidden="true"
-                  />
-                )}
-
-                <div className="flex items-center gap-3">
-                  <span className="relative flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-gradient-to-br from-accent/20 to-primary/20 font-mono text-sm font-bold text-accent transition-all duration-300 group-hover:border-accent/60 group-hover:shadow-[0_0_18px_-4px_var(--color-accent)]">
-                    0{i + 1}
-                  </span>
-                  <span className="text-lg font-bold tracking-tight text-foreground">
-                    {s.k}
-                  </span>
-                  <span
-                    className="h-px flex-1 origin-left scale-x-0 bg-gradient-to-r from-accent/60 to-transparent transition-transform duration-300 group-hover:scale-x-100"
-                    aria-hidden="true"
-                  />
-                </div>
-
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {s.v}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   )
