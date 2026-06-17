@@ -1,9 +1,9 @@
-import { Target, Network, Rocket } from "lucide-react"
-import { GlowIcon } from "@/components/glow-icon"
+import { NeonIcon } from "@/components/neon-icon"
 
 const values = [
   {
-    icon: Target,
+    img: "/icons/val-dedication.png",
+    glow: "oklch(0.79 0.13 200)",
     title: "执着",
     en: "Dedication",
     headline: "长期深耕，把复杂问题做扎实",
@@ -15,7 +15,8 @@ const values = [
     keywords: ["长期主义", "深耕水务", "产品打磨", "交付负责", "结果导向"],
   },
   {
-    icon: Network,
+    img: "/icons/val-symbiosis.png",
+    glow: "oklch(0.74 0.14 205)",
     title: "共生",
     en: "Symbiosis",
     headline: "与客户、伙伴和行业共同成长",
@@ -27,7 +28,8 @@ const values = [
     keywords: ["客户共创", "生态开放", "系统融合", "伙伴协同", "价值共享"],
   },
   {
-    icon: Rocket,
+    img: "/icons/val-evolution.png",
+    glow: "oklch(0.72 0.14 300)",
     title: "求变",
     en: "Evolution",
     headline: "拥抱变化，持续进化",
@@ -78,7 +80,7 @@ export function Values() {
                 aria-hidden="true"
               />
               <div className="flex items-center justify-between">
-                <GlowIcon icon={v.icon} size="lg" glow="oklch(0.79 0.13 200)" />
+                <NeonIcon src={v.img} alt={v.title} glow={v.glow} className="size-14" />
                 <span className="font-mono text-sm text-muted-foreground">
                   0{i + 1}
                 </span>

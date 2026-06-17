@@ -1,17 +1,9 @@
-import {
-  Network,
-  Factory,
-  Radio,
-  Bot,
-  Box as Cube,
-  KeyRound,
-  ArrowUpRight,
-} from "lucide-react"
-import { GlowIcon } from "@/components/glow-icon"
+import { ArrowUpRight } from "lucide-react"
+import { NeonIcon } from "@/components/neon-icon"
 
 const products = [
   {
-    icon: Bot,
+    img: "/icons/prod-agent.png",
     tag: "AI Agent",
     glow: "oklch(0.72 0.14 300)",
     title: "CW-Agent · 水务智能体",
@@ -19,7 +11,7 @@ const products = [
     desc: "新一代 AI 智能体，支持知识问数、报表生成、告警分析、调度辅助与工艺优化，让运营经验沉淀为智能能力。",
   },
   {
-    icon: Network,
+    img: "/icons/prod-ppi.png",
     tag: "Platform",
     glow: "oklch(0.74 0.14 205)",
     title: "CW-PPI · 厂网河湖一体化",
@@ -27,7 +19,7 @@ const products = [
     desc: "统一管理水厂、泵站、管网、河道、湖泊、防汛与调度业务，数据赋能、智能治理，打通集团化多业态运营。",
   },
   {
-    icon: Cube,
+    img: "/icons/prod-3dp.png",
     tag: "Digital Twin",
     glow: "oklch(0.62 0.18 250)",
     title: "CW-3DP · 三维孪生",
@@ -35,7 +27,7 @@ const products = [
     desc: "融合 BIM + GIS 的二三维一体化平台，构建数字孪生水厂与流域级孪生，实现全域可感知与可视化运维。",
   },
   {
-    icon: Factory,
+    img: "/icons/prod-pom.png",
     tag: "Operation",
     glow: "oklch(0.7 0.16 160)",
     title: "CW-POM · 数字水厂",
@@ -46,14 +38,14 @@ const products = [
 
 const support = [
   {
-    icon: Radio,
+    img: "/icons/sup-iot.png",
     tag: "IoT",
     glow: "oklch(0.79 0.13 200)",
     title: "智能感知 IoT 平台",
     desc: "统一接入液位计、流量计、雨量计、压力传感器、RTU、PLC 等设备数据，实现精确感知。",
   },
   {
-    icon: KeyRound,
+    img: "/icons/sup-sso.png",
     tag: "SSO",
     glow: "oklch(0.63 0.17 250)",
     title: "统一登录 SSO 平台",
@@ -89,7 +81,7 @@ export function Products() {
               <span className="absolute inset-x-0 top-0 h-px scale-x-0 bg-gradient-to-r from-transparent via-accent to-transparent transition-transform duration-300 group-hover:scale-x-100" />
 
               <div className="flex items-center justify-between">
-                <GlowIcon icon={product.icon} size="lg" glow={product.glow} />
+                <NeonIcon src={product.img} alt={product.title} glow={product.glow} className="size-14" />
                 <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
                   {product.tag}
                 </span>
@@ -120,7 +112,7 @@ export function Products() {
                 key={item.title}
                 className="group relative flex items-start gap-4 bg-card p-6 transition-colors duration-300 hover:bg-secondary/40"
               >
-                <GlowIcon icon={item.icon} size="md" glow={item.glow} />
+                <NeonIcon src={item.img} alt={item.title} glow={item.glow} className="size-11" />
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="text-base font-semibold text-foreground">

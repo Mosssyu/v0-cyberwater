@@ -1,27 +1,26 @@
-import { Layers, Share2, LineChart, BrainCircuit } from "lucide-react"
-import { GlowIcon } from "@/components/glow-icon"
+import { NeonIcon } from "@/components/neon-icon"
 
 const values = [
   {
-    icon: Layers,
+    img: "/icons/val-platform.png",
     glow: "oklch(0.74 0.14 205)",
     title: "统一平台",
     desc: "降低多系统割裂，统一数据与业务入口。",
   },
   {
-    icon: Share2,
+    img: "/icons/val-collab.png",
     glow: "oklch(0.7 0.16 160)",
     title: "多业态协同",
     desc: "提升集团化管理与跨业务协同能力。",
   },
   {
-    icon: LineChart,
+    img: "/icons/val-data.png",
     glow: "oklch(0.79 0.13 200)",
     title: "数据驱动",
     desc: "提升运行分析效率与决策科学性。",
   },
   {
-    icon: BrainCircuit,
+    img: "/icons/val-ai.png",
     glow: "oklch(0.72 0.14 300)",
     title: "AI 赋能",
     desc: "沉淀企业运营经验，持续优化运营。",
@@ -47,7 +46,7 @@ export function CustomerValue() {
               key={value.title}
               className="group rounded-2xl border border-border bg-card p-7 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
             >
-              <GlowIcon icon={value.icon} size="xl" glow={value.glow} className="mx-auto" />
+              <NeonIcon src={value.img} alt={value.title} glow={value.glow} className="mx-auto size-16" />
               <h3 className="mt-5 text-lg font-semibold text-foreground">
                 {value.title}
               </h3>
