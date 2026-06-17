@@ -15,21 +15,8 @@ export const metadata: Metadata = {
     '云建标智慧水务，面向水务集团、水厂、排水公司、城投平台，提供厂网河湖一体化平台、物联网平台、AI水务智能体、防汛调度平台等产品，构建集团化运营的智慧水务数字底座。',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: [{ url: '/cyberwater-mark.png', type: 'image/png' }],
+    apple: '/cyberwater-mark.png',
   },
 }
 
