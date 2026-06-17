@@ -26,15 +26,6 @@ export function ContactCta() {
               预约产品演示
               <ArrowRight className="size-4" />
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full border-border bg-card/40 text-foreground hover:bg-card"
-              nativeButton={false}
-              render={<a href="mailto:service@cyberwater.cn" />}
-            >
-              获取解决方案
-            </Button>
           </div>
         </div>
       </div>
