@@ -1,38 +1,55 @@
-import { ArrowUpRight } from "lucide-react"
+import { Bot, Network, Box, Factory } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import { NeonIcon } from "@/components/neon-icon"
 
-const products = [
+type Product = {
+  icon: LucideIcon
+  name: string
+  href: string
+  title: string
+  desc: string
+  tags: string[]
+  accent: string
+  featured?: boolean
+}
+
+const products: Product[] = [
   {
-    img: "/icons/prod-agent.png",
-    tag: "AI Agent",
-    glow: "oklch(0.72 0.14 300)",
-    title: "CW-Agent · 水务智能体",
+    icon: Bot,
+    name: "CW-Agent",
     href: "/#product-agent",
-    desc: "新一代 AI 智能体，支持知识问数、报表生成、告警分析、调度辅助与工艺优化，让运营经验沉淀为智能能力。",
+    title: "智能认知与决策中枢",
+    desc: "面向运营的 AI 大脑，负责知识问答、运行诊断、优化建议、报告生成与智能体闭环，让运营经验沉淀为可复用的智能能力。",
+    tags: ["智能问答", "运行诊断", "优化建议", "报告生成", "智能体闭环"],
+    accent: "oklch(0.62 0.19 250)",
+    featured: true,
   },
   {
-    img: "/icons/prod-ppi.png",
-    tag: "Platform",
-    glow: "oklch(0.74 0.14 205)",
-    title: "CW-PPI · 厂网河湖一体化",
+    icon: Network,
+    name: "CW-PPI",
     href: "/#product-ppi",
-    desc: "统一管理水厂、泵站、管网、河道、湖泊、防汛与调度业务，数据赋能、智能治理，打通集团化多业态运营。",
+    title: "多业态一体化运营平台",
+    desc: "统一管理厂、站、网、河、湖、防汛与调度业务，打通集团化多业态运营，实现数据赋能与协同治理。",
+    tags: ["水厂运营", "泵站调度", "管网管理", "河湖治理", "防汛调度"],
+    accent: "oklch(0.74 0.14 205)",
   },
   {
-    img: "/icons/prod-3dp.png",
-    tag: "Digital Twin",
-    glow: "oklch(0.62 0.18 250)",
-    title: "CW-3DP · 三维孪生",
+    icon: Box,
+    name: "CW-3DP",
     href: "/#product-3dp",
-    desc: "融合 BIM + GIS 的二三维一体化平台，构建数字孪生水厂与流域级孪生，实现全域可感知与可视化运维。",
+    title: "空间可视化与仿真推演平台",
+    desc: "融合 BIM+GIS 的二三维一体化平台，提供三维实景、空间定位、场景联动与模拟推演，实现全域可感知。",
+    tags: ["三维实景", "空间定位", "场景联动", "模拟推演", "孪生运维"],
+    accent: "oklch(0.62 0.18 250)",
   },
   {
-    img: "/icons/prod-pom.png",
-    tag: "Operation",
-    glow: "oklch(0.7 0.16 160)",
-    title: "CW-POM · 数字水厂",
+    icon: Factory,
+    name: "CW-POM",
     href: "/#product-pom",
-    desc: "覆盖生产监控、工艺管理、设备运维、巡检工单、报表分析的全流程闭环，打造新一代未来水厂。",
+    title: "数字水厂运营管理平台",
+    desc: "覆盖生产、设备、安全、巡检、工单、移动执行与经营分析的全流程闭环，打造新一代未来水厂。",
+    tags: ["生产监控", "设备运维", "安全巡检", "工单移动执行", "经营分析"],
+    accent: "oklch(0.7 0.16 160)",
   },
 ]
 
@@ -59,41 +76,71 @@ export function Products() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
-            Products
+            Capability Matrix
           </span>
           <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            产品矩阵
+            四大产品，各司其职，协同成网
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            以 CW-Agent、CW-PPI、CW-3DP、CW-POM 为核心，从智能感知到智慧决策，云建标提供端到端的新一代智慧水务产品能力。
+            从智能决策到一体化运营、空间仿真与数字水厂，四大产品分层协同，构建端到端的智慧水务能力。
           </p>
         </div>
 
         {/* 四大核心产品 */}
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid gap-6 lg:grid-cols-2">
           {products.map((product) => (
             <a
-              key={product.title}
+              key={product.name}
               href={product.href}
-              className="group relative flex flex-col bg-card p-8 transition-colors duration-300 hover:bg-secondary/40"
+              className="group relative flex flex-col rounded-2xl border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5"
+              style={{
+                borderColor: product.featured
+                  ? `color-mix(in oklab, ${product.accent} 55%, transparent)`
+                  : undefined,
+                boxShadow: product.featured
+                  ? `0 0 32px -12px ${product.accent}`
+                  : undefined,
+              }}
             >
-              {/* hover 顶部高亮线 */}
-              <span className="absolute inset-x-0 top-0 h-px scale-x-0 bg-gradient-to-r from-transparent via-accent to-transparent transition-transform duration-300 group-hover:scale-x-100" />
-
-              <div className="flex items-center justify-between">
-                <NeonIcon src={product.img} alt={product.title} glow={product.glow} className="size-14" />
-                <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-                  {product.tag}
+              {/* 图标 + 产品名 */}
+              <div className="flex items-center gap-4">
+                <span
+                  className="flex size-14 shrink-0 items-center justify-center rounded-2xl"
+                  style={{
+                    backgroundColor: product.featured
+                      ? product.accent
+                      : `color-mix(in oklab, ${product.accent} 14%, transparent)`,
+                    boxShadow: product.featured ? `0 0 24px -6px ${product.accent}` : undefined,
+                  }}
+                >
+                  <product.icon
+                    className="size-7"
+                    style={{ color: product.featured ? "oklch(0.99 0 0)" : product.accent }}
+                  />
+                </span>
+                <span className="font-mono text-xl font-semibold tracking-wide text-foreground">
+                  {product.name}
                 </span>
               </div>
 
-              <h3 className="mt-6 flex justify-start items-center gap-2 text-lg font-semibold text-foreground">
-                {product.title}
-                <ArrowUpRight className="size-4 text-accent opacity-0 transition-opacity group-hover:opacity-100" />
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {product.desc}
-              </p>
+              {/* 副标题 + 描述 */}
+              <h3 className="mt-7 text-xl font-bold text-foreground">{product.title}</h3>
+              <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">{product.desc}</p>
+
+              {/* 分隔线 */}
+              <span className="mt-7 h-px w-full bg-border" />
+
+              {/* 标签胶囊 */}
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                {product.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-border bg-secondary/30 px-3.5 py-1.5 text-[13px] text-foreground/80 transition-colors group-hover:border-border/80"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </a>
           ))}
         </div>
