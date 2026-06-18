@@ -62,7 +62,7 @@ export function Products() {
             Products
           </span>
           <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            新一代智慧水务产品矩阵
+            产品矩阵
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
             以 CW-Agent、CW-PPI、CW-3DP、CW-POM 为核心，从智能感知到智慧决策，云建标提供端到端的新一代智慧水务产品能力。
