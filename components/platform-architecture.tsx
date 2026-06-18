@@ -16,6 +16,14 @@ import {
   Layers,
   Settings,
   Bot as BotIcon,
+  MessageSquare,
+  Wand2,
+  Wrench,
+  ListChecks,
+  Network,
+  Waves,
+  Map,
+  Box,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { NeonIcon } from "@/components/neon-icon"
@@ -41,6 +49,8 @@ const leftProducts: Product[] = [
     tags: [
       { label: "决策增强", icon: TrendingUp },
       { label: "知识进化", icon: Brain },
+      { label: "智能问数", icon: MessageSquare },
+      { label: "工艺优化", icon: Wand2 },
     ],
   },
   {
@@ -52,6 +62,8 @@ const leftProducts: Product[] = [
     tags: [
       { label: "生产监控", icon: Settings },
       { label: "全面闭环", icon: ClipboardList },
+      { label: "设备运维", icon: Wrench },
+      { label: "巡检工单", icon: ListChecks },
     ],
   },
 ]
@@ -66,6 +78,8 @@ const rightProducts: Product[] = [
     tags: [
       { label: "数据集成", icon: Database },
       { label: "智能治理", icon: Sparkles },
+      { label: "厂网协同", icon: Network },
+      { label: "防汛调度", icon: Waves },
     ],
   },
   {
@@ -77,6 +91,8 @@ const rightProducts: Product[] = [
     tags: [
       { label: "全域可视化", icon: Eye },
       { label: "数字孪生", icon: Boxes },
+      { label: "BIM+GIS", icon: Map },
+      { label: "三维建模", icon: Box },
     ],
   },
 ]
@@ -143,9 +159,13 @@ function ProductCard({ p, align }: { p: Product; align: "left" | "right" }) {
         {p.tags.map((t) => (
           <span
             key={t.label}
-            className="inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] text-foreground/75"
+            className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11px] text-foreground/85 transition-colors"
+            style={{
+              borderColor: `color-mix(in oklch, ${p.glow} 35%, transparent)`,
+              backgroundColor: `color-mix(in oklch, ${p.glow} 10%, transparent)`,
+            }}
           >
-            <t.icon className="size-3 text-foreground/55" />
+            <t.icon className="size-3" style={{ color: p.glow }} />
             {t.label}
           </span>
         ))}
