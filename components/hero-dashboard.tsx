@@ -325,7 +325,7 @@ export function HeroDashboard() {
           如何降低泵站能耗？
         </div>
         <p className="text-[10px] leading-relaxed text-muted-foreground">
-          建议���优化运行策略、设备启停调度、变频控制等方面综合优化。
+          建议优化运行策略、设备启停调度、变频控制等方面综合优化。
         </p>
         <div className="mt-1.5 flex items-center gap-1 text-[10px] font-medium text-accent">
           查看分析结果
