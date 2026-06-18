@@ -1,39 +1,7 @@
-import {
-  Award,
-  Sprout,
-  Boxes,
-  Code2,
-  Network,
-  Building2,
-  FileCheck,
-  ShieldCheck,
-} from "lucide-react"
+import { Award, Building2, FileCheck, ShieldCheck } from "lucide-react"
 
 const intro =
   "北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，形成了面向水务行业的标准化、产品化、可配置的软件服务能力。"
-
-const tags = [
-  {
-    icon: Sprout,
-    title: "运营场景内生",
-    desc: "源于真实水务运营体系，贴近一线业务需求。",
-  },
-  {
-    icon: Boxes,
-    title: "产品能力沉淀",
-    desc: "标准化、模块化、配置化，支撑快速复用、灵活扩展。",
-  },
-  {
-    icon: Code2,
-    title: "自主研发交付",
-    desc: "平台自研、低代码配置，提升建设与迭代效率。",
-  },
-  {
-    icon: Network,
-    title: "开放融合共建",
-    desc: "兼容既有系统，连接客户、伙伴与行业生态，集成交付。",
-  },
-]
 
 const stats = [
   { icon: Building2, num: "2015", label: "公司成立" },
@@ -83,28 +51,8 @@ export function About() {
           </p>
         </div>
 
-        {/* 四大标签 */}
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {tags.map((t) => (
-            <div
-              key={t.title}
-              className="rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
-            >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <t.icon className="size-5" />
-              </div>
-              <h3 className="mt-5 text-base font-semibold text-foreground">
-                {t.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {t.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
         {/* 资质数据 */}
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {stats.map((s) => (
             <div
               key={s.label}
