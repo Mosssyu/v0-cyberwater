@@ -452,19 +452,16 @@ export function PlatformArchitecture() {
         </div>
       </div>
 
-      {/* 底部能力条 */}
-      <div className="relative mt-10 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-card/50 p-5 ring-hairline backdrop-blur sm:grid-cols-4">
-        {bottomStrip.map((b, i) => (
+      {/* 底部价值卡片 */}
+      <div className="relative mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {bottomStrip.map((b) => (
           <div
             key={b.label}
-            className="group flex items-center gap-3 py-1 sm:justify-start"
-            style={{ borderLeft: i > 0 ? "1px solid color-mix(in oklab, var(--border) 60%, transparent)" : undefined }}
+            className="group rounded-2xl border border-border bg-card p-7 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
           >
-            <NeonIcon src={b.img} alt={b.label} glow={b.glow} className="size-11 shrink-0 sm:ml-3" />
-            <div className="min-w-0">
-              <div className="text-sm font-semibold text-foreground">{b.label}</div>
-              <div className="truncate text-xs text-muted-foreground">{b.sub}</div>
-            </div>
+            <NeonIcon src={b.img} alt={b.label} glow={b.glow} className="mx-auto size-16" />
+            <h3 className="mt-5 text-lg font-semibold text-foreground">{b.label}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.sub}</p>
           </div>
         ))}
       </div>
