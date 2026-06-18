@@ -274,7 +274,7 @@ const ppi: ProductData = {
       icon: Building2,
       title: "集团级运营监管",
       value: "跨区域、跨业态统一监管，实现多厂对标、风险汇总与标准复制。",
-      diagram: "集团运营驾驶舱",
+      diagram: "���团运营驾驶舱",
     },
   ],
   variant: "default",
@@ -341,18 +341,6 @@ const pom: ProductData = {
     { icon: Smartphone, label: "执行" },
     { icon: RotateCcw, label: "复盘" },
     { icon: Library, label: "标准化" },
-  ],
-  versions: [
-    {
-      name: "标准版",
-      tag: "运营数字化",
-      desc: "适合先完成水厂基础运营数字化建设，重点打通生产、设备、安全、巡检、工单和移动执行闭环。",
-    },
-    {
-      name: "Plus 版",
-      tag: "经营分析",
-      desc: "在标准版基础上，进一步面向碳排放、成本、能耗、药耗、污泥和预算管理，支持水厂从运营管理走向经营分析。",
-    },
   ],
   scenes: [
     {
