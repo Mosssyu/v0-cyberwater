@@ -382,7 +382,7 @@ export function PlatformArchitecture() {
       {/* 标题 */}
       <div className="relative text-center">
         <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-          <span className="text-gradient">新一代水务运营平台</span>
+          <span className="text-gradient">能力架构</span>
         </h2>
         <div className="mt-3 flex items-center justify-center gap-3 text-sm text-muted-foreground">
           <span className="hidden h-px w-10 bg-gradient-to-r from-transparent to-accent/60 sm:block" />
