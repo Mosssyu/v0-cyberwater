@@ -275,7 +275,7 @@ const agent: ProductData = {
     {
       icon: MessageSquareText,
       title: "智能问答与洞察",
-      value: "自然语言提问即可获得答案���分析与成稿，降低检索与报告成本。",
+      value: "自然语言提问即可获得答案分析与成稿，降低检索与报告成本。",
       diagram: "AI 问答 · 报告生成",
     },
   ],
