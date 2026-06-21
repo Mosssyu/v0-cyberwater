@@ -1,3 +1,4 @@
+import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
 import { Products } from "@/components/products"
 import { ProductAgent, ProductPPI, ProductTwin, ProductPOM } from "@/components/product-details"
@@ -17,6 +18,7 @@ export default function Page() {
     <div className="min-h-screen bg-background">
       <ClickRipple />
       <ScrollReveal />
+      <SiteHeader />
       <main>
         <Hero />
         <CustomerValue />
