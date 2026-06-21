@@ -38,10 +38,10 @@ export function Hero() {
       {/* 科技网格 */}
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-20 lg:pt-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:gap-10">
-          {/* 左侧：价值主张 */}
-          <div className="max-w-xl">
+      <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-20 [perspective:2000px] [perspective-origin:50%_45%] lg:pt-24">
+        <div className="grid items-center gap-12 [transform-style:preserve-3d] lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:gap-10">
+          {/* 左侧：价值主张（向中心右收内凹） */}
+          <div className="max-w-xl lg:origin-right lg:[transform:rotateY(8deg)_translateZ(-20px)]">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-card/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur">
               <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
@@ -113,8 +113,8 @@ export function Hero() {
             </div>
           </div>
 
-          {/* 右侧：产品总览大屏 */}
-          <div className="lg:pl-4">
+          {/* 右侧：产品总览大屏（向中心左收内凹） */}
+          <div className="lg:origin-left lg:pl-4 lg:[transform:rotateY(-8deg)_translateZ(-20px)]">
             <HeroDashboard />
           </div>
         </div>
