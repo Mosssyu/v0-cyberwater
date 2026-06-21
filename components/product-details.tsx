@@ -29,7 +29,6 @@ import {
   Smartphone,
   RotateCcw,
   Library,
-  BookOpen,
   ShieldCheck,
   Workflow,
   LineChart,
@@ -411,18 +410,6 @@ const pom: ProductData = {
       title: "安全与合规闭环管控",
       value: "隐患排查、作业审批、应急处置线上流转，闭环追踪与责任落实。",
       diagram: "安全管理闭环",
-    },
-    {
-      icon: BookOpen,
-      title: "标准与知识沉淀",
-      value: "流程、指标、报表与经验沉淀为可用标准，减少经验依赖。",
-      diagram: "标准知识库",
-    },
-    {
-      icon: Smartphone,
-      title: "移动端现场执行",
-      value: "巡检、维修、上报延伸到移动端，支持扫码打卡与离线作业闭环。",
-      diagram: "移动端任务执行",
     },
     {
       icon: LineChart,
