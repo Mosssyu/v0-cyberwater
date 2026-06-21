@@ -20,7 +20,6 @@ import {
   Waves,
   Droplets,
   Radio,
-  Info,
   Box,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
@@ -412,17 +411,9 @@ export function PlatformArchitecture() {
         </div>
 
         {/* 右侧：轻量说明卡 */}
-        <div className="flex flex-col gap-6 lg:order-3">
-          {/* 为什么这样展示 */}
-          <GlassCard>
-            <CardHeading icon={Info} title="聚焦平台能力" />
-            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-              官网架构区聚焦平台核心能力与运转中枢，产品详细介绍见下方专区，避免重复展示、喧宾夺主。
-            </p>
-          </GlassCard>
-
+        <div className="flex h-full flex-col gap-6 lg:order-3">
           {/* 适配业态 */}
-          <GlassCard>
+          <GlassCard className="flex-1">
             <CardHeading icon={Layers} title="适配业态" />
             <div className="mt-4 flex flex-wrap gap-2">
               {adaptScenes.map((s) => (
@@ -438,7 +429,7 @@ export function PlatformArchitecture() {
           </GlassCard>
 
           {/* 产品矩阵 */}
-          <GlassCard>
+          <GlassCard className="flex-1">
             <CardHeading icon={Box} title="产品矩阵" />
             <div className="mt-4 flex flex-wrap gap-2">
               {productMatrix.map((p) => (
@@ -450,10 +441,6 @@ export function PlatformArchitecture() {
                 </span>
               ))}
             </div>
-            <p className="mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground">
-              <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
-              详细介绍见下方产品专区
-            </p>
           </GlassCard>
         </div>
       </div>
