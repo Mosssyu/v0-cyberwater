@@ -202,7 +202,7 @@ function ProductDetail({ data }: { data: ProductData }) {
                     <img
                       src={data.image || "/placeholder.svg"}
                       alt={`${data.title} 系统示意图`}
-                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="size-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
                       crossOrigin="anonymous"
                     />
                     {/* 屏幕高光 */}
