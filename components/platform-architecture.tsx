@@ -69,13 +69,13 @@ type Tier = {
   keys: string[]
 }
 const upperTiers: Tier[] = [
-  { n: 5, label: "业务应用层", width: "90%", icons: [Layers, TrendingUp], accent: "oklch(0.62 0.2 295)", keys: ["多场景应用", "业务闭环", "智能决策"] },
-  { n: 4, label: "AI 智能体层", width: "94%", icons: [BotIcon, Brain], accent: "oklch(0.6 0.2 270)", keys: ["智能体开发", "知识驱动", "自主决策"] },
+  { n: 5, label: "业务应用层", width: "100%", icons: [Layers, TrendingUp], accent: "oklch(0.62 0.2 295)", keys: ["多场景应用", "业务闭环", "智能决策"] },
+  { n: 4, label: "AI 智能体层", width: "100%", icons: [BotIcon, Brain], accent: "oklch(0.6 0.2 270)", keys: ["智能体开发", "知识驱动", "自主决策"] },
 ]
 // 第 3 层及以下；旋转的六大能力中心放在第 4 层与第 3 层之间
 const lowerTiers: Tier[] = [
-  { n: 3, label: "平台能力层", width: "94%", icons: [Settings, Sparkles], accent: "oklch(0.66 0.16 235)", keys: ["统一能力", "开放接口", "中台服务", "低代码"] },
-  { n: 2, label: "数据底座层", width: "97%", icons: [Database, Boxes], accent: "oklch(0.72 0.14 212)", keys: ["数据汇聚", "数据治理", "数据资产", "数据服务"] },
+  { n: 3, label: "平台能力层", width: "100%", icons: [Settings, Sparkles], accent: "oklch(0.66 0.16 235)", keys: ["统一能力", "开放接口", "中台服务", "低代码"] },
+  { n: 2, label: "数据底座层", width: "100%", icons: [Database, Boxes], accent: "oklch(0.72 0.14 212)", keys: ["数据汇聚", "数据治理", "数据资产", "数据服务"] },
   { n: 1, label: "基础设施层", width: "100%", icons: [Cloud, Cpu, ShieldCheck], accent: "oklch(0.76 0.13 205)", keys: ["云计算", "物联网", "网络通信", "安全防护"] },
 ]
 
@@ -412,45 +412,39 @@ export function PlatformArchitecture() {
 
         {/* 右侧：轻量说明卡 */}
         <div className="flex h-full flex-col gap-6 lg:order-3">
-          {/* 适配场景 · 2 列图标方块 */}
+          {/* 适配场景 · 轻量胶囊标签 */}
           <GlassCard className="flex-1">
             <CardHeading icon={Layers} title="适配场景" />
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="mt-4 flex flex-wrap gap-2">
               {adaptScenes.map((s) => (
-                <div
+                <span
                   key={s.label}
-                  className="group/scene flex flex-col items-center justify-center gap-2 rounded-xl border border-accent/20 bg-accent/5 py-4 transition-all duration-300 hover:border-accent/45 hover:bg-accent/10"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent/5 px-3 py-1.5 text-xs text-foreground/85 transition-colors duration-300 hover:border-accent/45 hover:bg-accent/10"
                 >
-                  <span className="flex size-9 items-center justify-center rounded-lg border border-accent/25 bg-accent/10 text-accent shadow-[0_0_16px_-6px_oklch(0.74_0.14_205/0.9)] transition-transform duration-300 group-hover/scene:scale-110">
-                    <s.icon className="size-4" />
-                  </span>
-                  <span className="text-xs font-medium text-foreground/90">{s.label}</span>
-                </div>
+                  <s.icon className="size-3.5 text-accent" />
+                  {s.label}
+                </span>
               ))}
             </div>
           </GlassCard>
 
-          {/* 产品矩阵 · 2×2 胶囊 */}
+          {/* 产品矩阵 · 一行轻量标签 */}
           <GlassCard className="flex-1">
             <CardHeading icon={Box} title="产品矩阵" />
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="mt-4 flex flex-wrap gap-2">
               {productMatrix.map((p) => (
                 <span
                   key={p}
-                  className="inline-flex items-center justify-center rounded-xl border border-primary/30 bg-primary/10 px-3 py-2.5 font-mono text-xs font-semibold text-foreground/90 transition-colors duration-300 hover:border-primary/55 hover:bg-primary/15"
+                  className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 font-mono text-[11px] font-medium text-foreground/90 transition-colors duration-300 hover:border-primary/55 hover:bg-primary/15"
                 >
                   {p}
                 </span>
               ))}
             </div>
-            <div className="mt-4 flex flex-col items-center gap-1 text-center">
-              <p className="text-[11px] font-medium text-foreground/80">平台产品能力载体</p>
-              <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
-                详细介绍见下方产品专区
-                <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
-              </p>
-            </div>
+            <p className="mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
+              平台能力承载产品体系
+            </p>
           </GlassCard>
         </div>
       </div>
