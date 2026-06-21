@@ -368,26 +368,23 @@ export function PlatformArchitecture() {
         </div>
       </div>
 
-      {/* 三列：左侧平台价值 / 中央塔+旋转核心 / 右侧轻量说明 */}
-      <div className="relative mt-10 grid items-stretch gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.6fr)_minmax(0,0.95fr)]">
-        {/* 左侧：平台价值竖卡 */}
-        <div className="lg:order-1">
-          <GlassCard className="h-full">
-            <CardHeading icon={Sparkles} title="平台能力价值" />
-            <ul className="mt-5 flex flex-col gap-5">
-              {platformValues.map((v) => (
-                <li key={v.label} className="flex items-start gap-3">
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent shadow-[0_0_18px_-6px_oklch(0.74_0.14_205/0.9)]">
-                    <v.icon className="size-5" />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="text-sm font-semibold text-foreground">{v.label}</div>
-                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{v.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </GlassCard>
+      {/* 三列：左侧平台价值(三模块) / 中央塔+旋转核心 / 右侧轻量说明 · 中心透视收束 */}
+      <div className="relative mt-10 grid items-stretch gap-6 [perspective:2200px] [perspective-origin:50%_45%] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-8">
+        {/* 左侧：平台能力价值 · 拆为三张独立模块（向中心右收） */}
+        <div className="flex h-full flex-col gap-6 lg:order-1 lg:origin-right lg:[transform:rotateY(7deg)]">
+          {platformValues.map((v) => (
+            <GlassCard key={v.label} className="flex flex-1 flex-col justify-center">
+              <div className="flex items-start gap-3.5">
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent shadow-[0_0_18px_-6px_oklch(0.74_0.14_205/0.9)]">
+                  <v.icon className="size-5" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold text-foreground">{v.label}</div>
+                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{v.desc}</p>
+                </div>
+              </div>
+            </GlassCard>
+          ))}
         </div>
 
         {/* 中央三维分层塔：六大能力中心旋转轨道位于第 4 层与第 3 层之间 */}
@@ -410,8 +407,8 @@ export function PlatformArchitecture() {
           </div>
         </div>
 
-        {/* 右侧：轻量说明卡 */}
-        <div className="flex h-full flex-col gap-6 lg:order-3">
+        {/* 右侧：轻量说明卡（向中心左收） */}
+        <div className="flex h-full flex-col gap-6 lg:order-3 lg:origin-left lg:[transform:rotateY(-7deg)]">
           {/* 适配场景 · 轻量胶囊标签 */}
           <GlassCard className="flex-1">
             <CardHeading icon={Layers} title="适配场景" />
