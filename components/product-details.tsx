@@ -288,7 +288,7 @@ const ppi: ProductData = {
   title: "厂网河湖一体化，从单点管理走向全域治理",
   subtitle:
     "以多业态对象统一建模、地图空间运营、数据融合与业务协同为核心，打通水厂、泵站、管网、河道、湖泊、排口、雨量站、重点部位、防汛与调度等场景，支撑集团全域感知、协同运营、联动调度与一体化治理。",
-  image: "/products/ppi.png",
+  image: "/products/ppi-dashboard.png",
   glow: "oklch(0.74 0.14 205)",
   flow: [
     { icon: Boxes, label: "统一对象" },
