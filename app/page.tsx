@@ -21,13 +21,13 @@ export default function Page() {
       <SiteHeader />
       <main>
         <Hero />
+        <CustomerValue />
         <Products />
         <ProductAgent />
         <ProductPPI />
         <ProductTwin />
         <ProductPOM />
         <ProductMatrixCompare />
-        <CustomerValue />
         <CasesPreview />
         <About />
         <Values />
