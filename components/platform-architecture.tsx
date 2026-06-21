@@ -27,20 +27,20 @@ import { NeonIcon } from "@/components/neon-icon"
 
 /* ----------------------------- 数据 ----------------------------- */
 
-// 左侧：平台价值三要点
+// 左侧：平台能力价值三要点
 const platformValues: { label: string; desc: string; icon: LucideIcon }[] = [
   {
-    label: "统一底座",
-    desc: "统一能力与数据底座，支撑多业态快速接入与扩展。",
+    label: "统一底座能力",
+    desc: "统一能力与数据底座，支撑多业态快速接入与持续扩展。",
     icon: Layers,
   },
   {
-    label: "AI 赋能",
+    label: "AI 赋能能力",
     desc: "AI 深度融入业务全流程，驱动智能决策与持续优化。",
-    icon: Cpu,
+    icon: Brain,
   },
   {
-    label: "多业态协同",
+    label: "多业态协同能力",
     desc: "跨域协同与联动调度，提升整体运营效率与韧性。",
     icon: Network,
   },
@@ -90,11 +90,11 @@ const capabilities: { label: string; img: string }[] = [
 ]
 
 // 底部价值总结条
-const bottomStrip: { label: string; icon: LucideIcon }[] = [
-  { label: "多业态融合", icon: Boxes },
-  { label: "数据驱动", icon: TrendingUp },
-  { label: "AI 赋能", icon: Cpu },
-  { label: "安全可靠", icon: ShieldCheck },
+const bottomStrip: { label: string; desc: string; icon: LucideIcon }[] = [
+  { label: "多业态融合", desc: "打通业务边界，协同高效运营", icon: Boxes },
+  { label: "数据驱动", desc: "数据汇聚治理，驱动精准决策", icon: TrendingUp },
+  { label: "AI 赋能", desc: "智能深度应用，持续优化进化", icon: Cpu },
+  { label: "安全可靠", desc: "安全防护体系，保障稳定运行", icon: ShieldCheck },
 ]
 
 /* ----------------------------- 子组件 ----------------------------- */
@@ -373,7 +373,7 @@ export function PlatformArchitecture() {
         {/* 左侧：平台价值竖卡 */}
         <div className="lg:order-1">
           <GlassCard className="h-full">
-            <CardHeading icon={Sparkles} title="平台价值" />
+            <CardHeading icon={Sparkles} title="平台能力价值" />
             <ul className="mt-5 flex flex-col gap-5">
               {platformValues.map((v) => (
                 <li key={v.label} className="flex items-start gap-3">
@@ -412,57 +412,61 @@ export function PlatformArchitecture() {
 
         {/* 右侧：轻量说明卡 */}
         <div className="flex h-full flex-col gap-6 lg:order-3">
-          {/* 适配业态 */}
+          {/* 适配场景 · 2 列图标方块 */}
           <GlassCard className="flex-1">
-            <CardHeading icon={Layers} title="适配业态" />
-            <div className="mt-4 flex flex-wrap gap-2">
+            <CardHeading icon={Layers} title="适配场景" />
+            <div className="mt-4 grid grid-cols-2 gap-3">
               {adaptScenes.map((s) => (
-                <span
+                <div
                   key={s.label}
-                  className="inline-flex items-center gap-1.5 rounded-md border border-accent/25 bg-accent/5 px-2.5 py-1 text-[11px] text-foreground/85"
+                  className="group/scene flex flex-col items-center justify-center gap-2 rounded-xl border border-accent/20 bg-accent/5 py-4 transition-all duration-300 hover:border-accent/45 hover:bg-accent/10"
                 >
-                  <s.icon className="size-3 text-accent" />
-                  {s.label}
-                </span>
+                  <span className="flex size-9 items-center justify-center rounded-lg border border-accent/25 bg-accent/10 text-accent shadow-[0_0_16px_-6px_oklch(0.74_0.14_205/0.9)] transition-transform duration-300 group-hover/scene:scale-110">
+                    <s.icon className="size-4" />
+                  </span>
+                  <span className="text-xs font-medium text-foreground/90">{s.label}</span>
+                </div>
               ))}
             </div>
           </GlassCard>
 
-          {/* 产品矩阵 */}
+          {/* 产品矩阵 · 2×2 胶囊 */}
           <GlassCard className="flex-1">
             <CardHeading icon={Box} title="产品矩阵" />
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 grid grid-cols-2 gap-3">
               {productMatrix.map((p) => (
                 <span
                   key={p}
-                  className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-[11px] font-medium text-foreground/90"
+                  className="inline-flex items-center justify-center rounded-xl border border-primary/30 bg-primary/10 px-3 py-2.5 font-mono text-xs font-semibold text-foreground/90 transition-colors duration-300 hover:border-primary/55 hover:bg-primary/15"
                 >
                   {p}
                 </span>
               ))}
             </div>
-            <p className="mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground">
-              <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
-              详细介绍见下方产品专区
-            </p>
+            <div className="mt-4 flex flex-col items-center gap-1 text-center">
+              <p className="text-[11px] font-medium text-foreground/80">平台产品能力载体</p>
+              <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
+                详细介绍见下方产品专区
+                <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
+              </p>
+            </div>
           </GlassCard>
         </div>
       </div>
 
       {/* 底部价值总结条 */}
       <div className="relative mt-10">
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 rounded-2xl border border-white/10 bg-card/40 px-6 py-4 backdrop-blur-md sm:gap-x-12">
-          {bottomStrip.map((b, i) => (
-            <div key={b.label} className="flex items-center gap-6 sm:gap-12">
-              <div className="flex items-center gap-2.5">
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10 text-accent shadow-[0_0_16px_-4px_oklch(0.74_0.14_205/0.8)]">
-                  <b.icon className="size-4" />
-                </span>
-                <span className="text-sm font-semibold tracking-wide text-foreground">{b.label}</span>
+        <div className="grid grid-cols-1 gap-4 rounded-2xl border border-white/10 bg-card/40 px-6 py-5 backdrop-blur-md sm:grid-cols-2 sm:divide-x sm:divide-border lg:grid-cols-4">
+          {bottomStrip.map((b) => (
+            <div key={b.label} className="flex items-center gap-3 sm:px-5 sm:first:pl-0 lg:px-6">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10 text-accent shadow-[0_0_16px_-4px_oklch(0.74_0.14_205/0.8)]">
+                <b.icon className="size-5" />
+              </span>
+              <div className="min-w-0">
+                <div className="text-sm font-semibold tracking-wide text-foreground">{b.label}</div>
+                <p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">{b.desc}</p>
               </div>
-              {i < bottomStrip.length - 1 && (
-                <span className="hidden h-6 w-px bg-border sm:block" aria-hidden="true" />
-              )}
             </div>
           ))}
         </div>
