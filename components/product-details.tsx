@@ -86,16 +86,27 @@ function ProductDetail({ data }: { data: ProductData }) {
 
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span
-            className={
-              isFlagship
-                ? "inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 font-mono text-xs text-accent backdrop-blur"
-                : "inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent backdrop-blur"
-            }
-          >
-            {isFlagship && <Sparkles className="size-3.5" />}
-            {data.eyebrow}
-          </span>
+          {(() => {
+            const parts = data.eyebrow.split(" · ")
+            return (
+              <span
+                className={
+                  isFlagship
+                    ? "inline-flex items-center gap-2.5 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 font-mono text-accent backdrop-blur"
+                    : "inline-flex items-center gap-2.5 rounded-full border border-border bg-card/60 px-4 py-1.5 font-mono text-accent backdrop-blur"
+                }
+              >
+                {isFlagship && <Sparkles className="size-4 shrink-0" />}
+                {parts[0] && <span className="text-xs text-accent/70">{parts[0]}</span>}
+                {parts[1] && (
+                  <span className="text-base font-bold tracking-wide text-accent sm:text-lg">
+                    {parts[1]}
+                  </span>
+                )}
+                {parts[2] && <span className="text-xs text-accent/70">{parts[2]}</span>}
+              </span>
+            )
+          })()}
           <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {data.title}
           </h2>
@@ -273,7 +284,7 @@ const ppi: ProductData = {
     {
       icon: Building2,
       title: "集团级运营监管",
-      value: "跨区域、跨业态统一监管，实现多厂对标、风险汇总与标准复制。",
+      value: "跨区域、跨业态统一监管，实现多厂对标、风险汇总与标准��制。",
       diagram: "集团运营驾驶舱",
     },
   ],
