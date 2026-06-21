@@ -186,15 +186,15 @@ function ProductDetail({ data }: { data: ProductData }) {
           )
 
           return (
-            <div className="mt-10 [perspective:2200px]">
-              <div className="flex flex-col items-stretch gap-4 [transform-style:preserve-3d] lg:flex-row lg:items-center lg:gap-0">
-                {/* 左侧功能栏 · 向中心右倾内收 */}
-                <ul className="flex flex-1 flex-col gap-4 lg:origin-right lg:[transform:rotateY(24deg)_translateZ(-40px)]">
+            <div className="mt-10 [perspective:2000px] [perspective-origin:50%_45%] lg:px-10">
+              <div className="flex flex-col items-stretch gap-4 [transform-style:preserve-3d] lg:flex-row lg:items-center lg:gap-6">
+                {/* 左侧功能栏 · 绕内缘向中心右倾内收 */}
+                <ul className="flex flex-1 flex-col gap-4 lg:origin-right lg:[transform:rotateY(22deg)_translateZ(-30px)]">
                   {leftScenes.map(renderCard)}
                 </ul>
 
                 {/* 中央主系统界面 · 前推突出 */}
-                <div className="relative z-10 mx-auto w-full max-w-md shrink-0 lg:-mx-6 lg:w-[40%] lg:[transform:translateZ(80px)]">
+                <div className="relative z-10 mx-auto w-full max-w-md shrink-0 lg:w-[38%] lg:[transform:translateZ(70px)]">
                   <div
                     className="group relative aspect-square overflow-hidden rounded-3xl border border-accent/30 bg-[oklch(0.13_0.012_252)]"
                     style={{ boxShadow: `0 24px 70px -24px ${data.glow}, inset 0 0 100px -50px ${data.glow}` }}
@@ -219,8 +219,8 @@ function ProductDetail({ data }: { data: ProductData }) {
                   </div>
                 </div>
 
-                {/* 右侧功能栏 · 向中心左倾内收 */}
-                <ul className="flex flex-1 flex-col gap-4 lg:origin-left lg:[transform:rotateY(-24deg)_translateZ(-40px)]">
+                {/* 右侧功能栏 · 绕内缘向中心左倾内收 */}
+                <ul className="flex flex-1 flex-col gap-4 lg:origin-left lg:[transform:rotateY(-22deg)_translateZ(-30px)]">
                   {rightScenes.map(renderCard)}
                 </ul>
               </div>
