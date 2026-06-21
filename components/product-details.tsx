@@ -376,7 +376,7 @@ const pom: ProductData = {
   title: "数字水厂，从高效运营到集团化经营决策",
   subtitle:
     "以运营闭环为基础，以经营分析为延伸，以集团管控为目标，支撑水务企业实现单厂高效运营、成本精细管理与集团化决策升级。",
-  image: "/products/pom.png",
+  image: "/products/pom-dashboard.png",
   glow: "oklch(0.7 0.16 160)",
   flow: [
     { icon: Radio, label: "感知" },
