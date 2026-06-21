@@ -37,7 +37,6 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react"
-import { NeonIcon } from "@/components/neon-icon"
 
 type FlowItem = { icon: LucideIcon; label: string; note?: string }
 type SceneItem = { icon: LucideIcon; title: string; value: string; diagram: string }
@@ -167,16 +166,26 @@ function ProductDetail({ data }: { data: ProductData }) {
           {/* 左侧：抽象产品图 */}
           <div className="lg:sticky lg:top-24">
             <div
-              className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-border bg-[oklch(0.13_0.012_252)]"
-              style={{ boxShadow: `inset 0 0 80px -40px ${data.glow}` }}
+              className="group relative aspect-square overflow-hidden rounded-3xl border border-border bg-[oklch(0.13_0.012_252)]"
+              style={{ boxShadow: `inset 0 0 100px -50px ${data.glow}` }}
             >
-              <span className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
+              <img
+                src={data.image || "/placeholder.svg"}
+                alt={`${data.title} 抽象示意图`}
+                className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                crossOrigin="anonymous"
+              />
+              {/* 边缘渐隐叠加，使插画融入深色背景 */}
               <span
                 className="pointer-events-none absolute inset-0"
-                style={{ background: `radial-gradient(circle at 50% 40%, ${data.glow} 0%, transparent 60%)`, opacity: 0.18 }}
+                style={{ boxShadow: `inset 0 0 60px 10px oklch(0.13 0.012 252)` }}
                 aria-hidden="true"
               />
-              <NeonIcon src={data.image} alt={data.title} glow={data.glow} className="relative size-2/5" />
+              <span
+                className="pointer-events-none absolute inset-0 opacity-60"
+                style={{ background: `radial-gradient(circle at 50% 120%, ${data.glow} 0%, transparent 55%)` }}
+                aria-hidden="true"
+              />
             </div>
           </div>
 
@@ -213,7 +222,7 @@ const agent: ProductData = {
   title: "水务智能体，让 AI 深入运营每一环节",
   subtitle:
     "融合大模型、RAG 与知识图谱技术，打通感知、认知、决策执行与进化全链路，持续优化水厂运行效率与决策质量。",
-  image: "/icons/prod-agent.png",
+  image: "/products/agent.png",
   glow: "oklch(0.62 0.19 250)",
   flow: [
     { icon: Dna, label: "水务基因", note: "运营场景内生" },
@@ -263,7 +272,7 @@ const ppi: ProductData = {
   title: "厂网河湖一体化，从单点管理走向全域治理",
   subtitle:
     "以多业态对象统一建模、地图空间运营、数据融合与业务协同为核心，打通水厂、泵站、管网、河道、湖泊、排口、雨量站、重点部位、防汛与调度等场景，支撑集团全域感知、协同运营、联动调度与一体化治理。",
-  image: "/icons/prod-ppi.png",
+  image: "/products/ppi.png",
   glow: "oklch(0.74 0.14 205)",
   flow: [
     { icon: Boxes, label: "统一对象" },
@@ -320,7 +329,7 @@ const twin: ProductData = {
   title: "数字孪生，空间可视、状态可感、决策可推演",
   subtitle:
     "以三维实景还原为基础，以运行数据融合为核心，以场景联动和仿真推演为延伸，支撑水厂实现空间可视、状态可感、过程可巡、风险可控与决策可推演。",
-  image: "/icons/prod-3dp.png",
+  image: "/products/twin.png",
   glow: "oklch(0.62 0.18 250)",
   flow: [
     { icon: Cube, label: "建模" },
@@ -370,7 +379,7 @@ const pom: ProductData = {
   title: "数字水厂，从高效运营到集团化经营决策",
   subtitle:
     "以运营闭环为基础，以经营分析为延伸，以集团管控为目标，支撑水务企业实现单厂高效运营、成本精细管理与集团化决策升级。",
-  image: "/icons/prod-pom.png",
+  image: "/products/pom.png",
   glow: "oklch(0.7 0.16 160)",
   flow: [
     { icon: Radio, label: "感知" },
