@@ -14,7 +14,7 @@ export function CasesPreview() {
             服务行业领先客户，沉淀可复制的运营经验
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            按产品矩阵与项目分布两个维度梳理标杆案例，覆盖数字水厂、集团数字运营、厂网河湖一体化、城乡供水、防汛调度与数字孪生等场景。
+            按企业数字化转型、数字水厂、智慧排水、水利/水环境四大解决方案梳理标杆案例，每个项目组合应用 CW-Agent、CW-PPI、CW-3DP 与 CW-POM 等产品能力。
           </p>
         </div>
 

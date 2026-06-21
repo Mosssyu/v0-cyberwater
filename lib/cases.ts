@@ -4,17 +4,15 @@ export type CaseCategory =
   | "智慧排水"
   | "水利/水环境"
 
-export type CaseProduct =
-  | "CW-Agent · 水务智能体"
-  | "CW-PPI · 厂网河湖一体化"
-  | "CW-3DP · 三维孪生"
-  | "CW-POM · 数字水厂"
+// 产品短代码（项目能力组成，仅作为案例详情标签，不参与一级筛选）
+export type CaseProduct = "CW-Agent" | "CW-PPI" | "CW-3DP" | "CW-POM"
 
 export interface CaseItem {
   slug: string
   title: string
   category: CaseCategory
-  product: CaseProduct
+  /** 项目中组合使用的产品（可多个） */
+  products: CaseProduct[]
   location: string
   client: string
   image: string
@@ -22,9 +20,11 @@ export interface CaseItem {
   background: string
   scope: string[]
   results: string[]
+  /** 项目亮点短标签 */
   tags: string[]
 }
 
+// 一级筛选：解决方案类型
 export const caseCategories: CaseCategory[] = [
   "企业数字化转型",
   "数字水厂",
@@ -32,19 +32,20 @@ export const caseCategories: CaseCategory[] = [
   "水利/水环境",
 ]
 
-export const caseProducts: CaseProduct[] = [
-  "CW-Agent · 水务智能体",
-  "CW-PPI · 厂网河湖一体化",
-  "CW-3DP · 三维孪生",
-  "CW-POM · 数字水厂",
-]
+// 各解决方案类型的点位/标签配色
+export const categoryColor: Record<CaseCategory, string> = {
+  企业数字化转型: "oklch(0.6 0.19 295)", // 蓝紫色
+  数字水厂: "oklch(0.72 0.14 205)", // 青蓝色
+  智慧排水: "oklch(0.6 0.2 255)", // 蓝色
+  "水利/水环境": "oklch(0.72 0.15 165)", // 青绿色
+}
 
-// 各产品对应的示意图
-export const productImage: Record<CaseProduct, string> = {
-  "CW-Agent · 水务智能体": "/case-agent.png",
-  "CW-PPI · 厂网河湖一体化": "/case-ppi.png",
-  "CW-3DP · 三维孪生": "/case-visual.png",
-  "CW-POM · 数字水厂": "/case-pom.png",
+// 产品代码 → 完整名称
+export const productLabel: Record<CaseProduct, string> = {
+  "CW-Agent": "CW-Agent · 水务智能体",
+  "CW-PPI": "CW-PPI · 厂网河湖一体化",
+  "CW-3DP": "CW-3DP · 三维孪生",
+  "CW-POM": "CW-POM · 数字水厂",
 }
 
 export const cases: CaseItem[] = [
@@ -53,7 +54,7 @@ export const cases: CaseItem[] = [
     slug: "beikong-shuiwu",
     title: "北控水务集团智慧水务",
     category: "企业数字化转型",
-    product: "CW-PPI · 厂网河湖一体化",
+    products: ["CW-PPI", "CW-POM"],
     location: "全国",
     client: "北控水务集团",
     image: "/case-ppi.png",
@@ -72,13 +73,13 @@ export const cases: CaseItem[] = [
       "构建集团统一的数据底座与指标体系",
       "支撑总部穿透式管控与精细化决策",
     ],
-    tags: ["集团运营", "数据底座", "多业态"],
+    tags: ["集团统一运营", "数据底座", "多业态"],
   },
   {
     slug: "tianjin-chuangye",
     title: "天津创业环保南部区多层级数字化运营",
     category: "企业数字化转型",
-    product: "CW-PPI · 厂网河湖一体化",
+    products: ["CW-PPI", "CW-POM"],
     location: "天津",
     client: "天津创业环保",
     image: "/case-ppi.png",
@@ -97,7 +98,7 @@ export const cases: CaseItem[] = [
       "厂站运行透明度与协同效率提升",
       "运营成本管控更加精细化",
     ],
-    tags: ["区域运营", "集约化", "协同调度"],
+    tags: ["区域集约化", "协同调度", "对标考核"],
   },
 
   // ===== 二、数字水厂 =====
@@ -105,7 +106,7 @@ export const cases: CaseItem[] = [
     slug: "daoxianghu",
     title: "北京稻香湖（地下）智慧污水厂",
     category: "数字水厂",
-    product: "CW-Agent · 水务智能体",
+    products: ["CW-POM", "CW-Agent"],
     location: "北京·海淀",
     client: "稻香湖再生水厂",
     image: "/case-agent.png",
@@ -124,13 +125,13 @@ export const cases: CaseItem[] = [
       "吨水电耗、药耗实现可量化的优化下降",
       "实现关键环节无人值守与远程巡检",
     ],
-    tags: ["数字水厂", "工艺控制", "节能降耗"],
+    tags: ["生产运行闭环", "工艺控制", "节能降耗"],
   },
   {
     slug: "yinchuan-twin",
     title: "银川数字孪生污水厂",
     category: "数字水厂",
-    product: "CW-3DP · 三维孪生",
+    products: ["CW-3DP", "CW-POM"],
     location: "宁夏·银川",
     client: "银川污水处理厂",
     image: "/case-visual.png",
@@ -149,13 +150,13 @@ export const cases: CaseItem[] = [
       "运维与资产管理效率显著提升",
       "为工艺优化提供仿真决策支持",
     ],
-    tags: ["数字孪生", "BIM+GIS", "工艺仿真"],
+    tags: ["三维可视化", "数字孪生", "工艺仿真"],
   },
   {
     slug: "mianyang-taziba",
     title: "绵阳塔子坝数字孪生污水厂",
     category: "数字水厂",
-    product: "CW-Agent · 水务智能体",
+    products: ["CW-3DP", "CW-Agent"],
     location: "四川·绵阳",
     client: "塔子坝污水处理厂",
     image: "/case-agent.png",
@@ -174,13 +175,13 @@ export const cases: CaseItem[] = [
       "实现工艺精确控制与智慧决策",
       "运营效率与出水稳定性双提升",
     ],
-    tags: ["未来水厂", "数字孪生", "智慧决策"],
+    tags: ["未来水厂", "三维可视化", "AI智慧决策"],
   },
   {
     slug: "pudong-haibin",
     title: "浦东水务海滨数字污水厂",
     category: "数字水厂",
-    product: "CW-POM · 数字水厂",
+    products: ["CW-POM"],
     location: "上海·浦东",
     client: "上海浦东水务",
     image: "/case-pom.png",
@@ -199,13 +200,13 @@ export const cases: CaseItem[] = [
       "设备运维与巡检效率显著提升",
       "为多厂复制推广积累数字化经验",
     ],
-    tags: ["数字水厂", "运营管理", "标准化"],
+    tags: ["生产运行闭环", "运营管理", "标准化"],
   },
   {
     slug: "pudong-beishuichang",
     title: "浦东水务智慧北水厂",
     category: "数字水厂",
-    product: "CW-POM · 数字水厂",
+    products: ["CW-POM"],
     location: "上海·浦东",
     client: "上海浦东水务",
     image: "/case-pom.png",
@@ -224,13 +225,13 @@ export const cases: CaseItem[] = [
       "设备与安全管理水平显著提升",
       "运营成本管控更加精细化",
     ],
-    tags: ["智慧水厂", "设备运维", "安全管理"],
+    tags: ["生产运行闭环", "设备运维", "安全管理"],
   },
   {
     slug: "shanghai-linkang",
     title: "上海城投临港智慧水厂",
     category: "数字水厂",
-    product: "CW-POM · 数字水厂",
+    products: ["CW-3DP", "CW-POM", "CW-Agent"],
     location: "上海·临港",
     client: "上海城投",
     image: "/case-pom.png",
@@ -251,13 +252,13 @@ export const cases: CaseItem[] = [
       "水质保障与运行稳定性显著提升",
       "成本管控与少人化运营水平有效提高",
     ],
-    tags: ["智慧水厂", "数字孪生", "人机协同", "水务智能体"],
+    tags: ["人机协同", "三维可视化", "AI问数分析"],
   },
   {
     slug: "xian-third-reclaimed",
     title: "西安市第三再生水厂智慧化项目",
     category: "数字水厂",
-    product: "CW-POM · 数字水厂",
+    products: ["CW-POM", "CW-3DP"],
     location: "陕西·西安",
     client: "西安净水公司",
     image: "/case-pom.png",
@@ -276,7 +277,7 @@ export const cases: CaseItem[] = [
       "实现厂区运行态势、设备健康与关键工艺参数的可视化推演",
       "为多厂复制推广和厂网一体化运营奠定数字化基础",
     ],
-    tags: ["再生水厂", "数字孪生", "数字管理平台"],
+    tags: ["生产运行闭环", "三维可视化", "可追溯"],
   },
 
   // ===== 三、智慧排水 =====
@@ -284,7 +285,7 @@ export const cases: CaseItem[] = [
     slug: "qinhuangdao",
     title: "秦皇岛厂网一体化",
     category: "智慧排水",
-    product: "CW-PPI · 厂网河湖一体化",
+    products: ["CW-PPI"],
     location: "河北·秦皇岛",
     client: "秦皇岛区域公司",
     image: "/case-ppi.png",
@@ -303,13 +304,13 @@ export const cases: CaseItem[] = [
       "防汛调度由被动应对转为主动预判",
       "厂网河协同调度能力显著增强",
     ],
-    tags: ["厂网一体化", "防汛调度", "CWPilot"],
+    tags: ["厂网一体化", "排水防汛调度", "CWPilot"],
   },
   {
     slug: "dalian-drainage",
     title: "大连智慧排水防涝项目",
     category: "智慧排水",
-    product: "CW-PPI · 厂网河湖一体化",
+    products: ["CW-PPI", "CW-3DP"],
     location: "辽宁·大连",
     client: "大连排水管理单位",
     image: "/case-ppi.png",
@@ -328,7 +329,7 @@ export const cases: CaseItem[] = [
       "增强内涝风险研判与应急处置水平",
       "模块化架构灵活扩展，支撑向厂网一体化运营延伸",
     ],
-    tags: ["智慧排水", "内涝防治", "配置化平台"],
+    tags: ["排水防汛调度", "内涝防治", "配置化平台"],
   },
 
   // ===== 四、水利/水环境 =====
@@ -336,7 +337,7 @@ export const cases: CaseItem[] = [
     slug: "huanqiu-yingcheng",
     title: "环球影城智慧水务",
     category: "水利/水环境",
-    product: "CW-3DP · 三维孪生",
+    products: ["CW-3DP", "CW-PPI"],
     location: "北京·通州",
     client: "北京环球度假区",
     image: "/case-visual.png",
@@ -355,13 +356,13 @@ export const cases: CaseItem[] = [
       "设备故障响应时间缩短 60% 以上",
       "运维人力投入显著下降，巡检效率大幅提高",
     ],
-    tags: ["水环境", "二三维一体化", "智慧运维"],
+    tags: ["水环境监测", "三维可视化", "智慧运维"],
   },
   {
     slug: "shanghai-fangzha",
     title: "上海泵闸署智慧防汛",
     category: "水利/水环境",
-    product: "CW-PPI · 厂网河湖一体化",
+    products: ["CW-PPI"],
     location: "上海",
     client: "上海泵闸管理署",
     image: "/case-ppi.png",
@@ -386,7 +387,7 @@ export const cases: CaseItem[] = [
     slug: "heshan-water-env",
     title: "鹤山水环境二三维智慧管控",
     category: "水利/水环境",
-    product: "CW-3DP · 三维孪生",
+    products: ["CW-3DP", "CW-PPI"],
     location: "广东·江门鹤山",
     client: "鹤山水务管理单位",
     image: "/case-visual.png",
@@ -405,13 +406,13 @@ export const cases: CaseItem[] = [
       "水环境监测与污染研判能力提升",
       "支撑流域协同治理与精细化管理",
     ],
-    tags: ["水环境", "二三维一体化", "流域治理"],
+    tags: ["水环境监测", "三维可视化", "流域治理"],
   },
   {
     slug: "meishan-rural-sewage",
     title: "四川眉山村镇污水智慧运营",
     category: "水利/水环境",
-    product: "CW-POM · 数字水厂",
+    products: ["CW-POM"],
     location: "四川·眉山",
     client: "眉山村镇水务运营单位",
     image: "/case-pom.png",
@@ -430,13 +431,13 @@ export const cases: CaseItem[] = [
       "运维人力成本显著降低",
       "设施运行稳定性与达标率提升",
     ],
-    tags: ["村镇污水", "集约化运营", "少人化"],
+    tags: ["集约化运营", "少人化", "达标管理"],
   },
   {
     slug: "hongkong-marine",
     title: "香港近海环卫数字化管理",
     category: "水利/水环境",
-    product: "CW-PPI · 厂网河湖一体化",
+    products: ["CW-PPI"],
     location: "香港",
     client: "香港近海环卫管理单位",
     image: "/case-ppi.png",
@@ -455,7 +456,7 @@ export const cases: CaseItem[] = [
       "作业过程透明化、可追溯",
       "环卫监管与运营管理水平提升",
     ],
-    tags: ["近海环卫", "作业调度", "数字化管理"],
+    tags: ["作业调度", "数字化管理", "可追溯"],
   },
 ]
 

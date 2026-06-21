@@ -134,13 +134,26 @@ export default async function CaseDetailPage({
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-muted-foreground">业务分类</dt>
+                    <dt className="text-muted-foreground">解决方案类型</dt>
                     <dd className="mt-1 font-medium text-foreground">
                       {item.category}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-muted-foreground">关键能力</dt>
+                    <dt className="text-muted-foreground">应用产品</dt>
+                    <dd className="mt-2 flex flex-wrap gap-2">
+                      {item.products.map((p) => (
+                        <span
+                          key={p}
+                          className="rounded-md border border-primary/30 bg-primary/10 px-2.5 py-1 font-mono text-xs font-medium text-primary"
+                        >
+                          {p}
+                        </span>
+                      ))}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-muted-foreground">项目亮点</dt>
                     <dd className="mt-2 flex flex-wrap gap-2">
                       {item.tags.map((t) => (
                         <span
