@@ -56,8 +56,13 @@ const adaptScenes: { label: string; icon: LucideIcon }[] = [
   { label: "调度", icon: Radio },
 ]
 
-// 右侧：产品矩阵胶囊
-const productMatrix = ["CW-Agent", "CW-POM", "CW-PPI", "CW-3DP"]
+// 右侧：产品矩阵胶囊（带图标）
+const productMatrix: { label: string; icon: LucideIcon }[] = [
+  { label: "CW-Agent", icon: BotIcon },
+  { label: "CW-POM", icon: Settings },
+  { label: "CW-PPI", icon: Network },
+  { label: "CW-3DP", icon: Box },
+]
 
 // 塔体五层，从上到下（上窄下宽），每层带关键词说明
 type Tier = {
@@ -431,10 +436,13 @@ export function PlatformArchitecture() {
             <div className="mt-4 grid flex-1 grid-cols-2 gap-2.5">
               {productMatrix.map((p) => (
                 <span
-                  key={p}
-                  className="inline-flex items-center justify-center rounded-xl border border-primary/30 bg-primary/10 px-3 font-mono text-xs font-medium text-foreground/90 transition-colors duration-300 hover:border-primary/55 hover:bg-primary/15"
+                  key={p.label}
+                  className="group/prod flex flex-col items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/10 px-3 py-3 transition-colors duration-300 hover:border-primary/55 hover:bg-primary/15"
                 >
-                  {p}
+                  <span className="flex size-9 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_-6px_oklch(0.62_0.18_250/0.9)] transition-transform duration-300 group-hover/prod:scale-110">
+                    <p.icon className="size-4" />
+                  </span>
+                  <span className="font-mono text-xs font-medium text-foreground/90">{p.label}</span>
                 </span>
               ))}
             </div>
