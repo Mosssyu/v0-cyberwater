@@ -159,74 +159,63 @@ function ProductDetail({ data }: { data: ProductData }) {
           </>
         )}
 
-        {/* 场景价值 · 操作舱式透视布局 */}
+        {/* 场景价值 · 中心内凹式双栏透视布局 */}
         <SectionLabel>Scenarios · 场景价值</SectionLabel>
-        {(() => {
-          const mid = Math.ceil(data.scenes.length / 2)
-          const leftScenes = data.scenes.slice(0, mid)
-          const rightScenes = data.scenes.slice(mid)
-
-          const renderCard = (s: SceneItem) => (
-            <li
-              key={s.title}
-              className="group flex items-start gap-3.5 rounded-2xl border border-border bg-card/80 p-4 backdrop-blur transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/10"
-            >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
-                <s.icon className="size-4" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <h3 className="text-sm font-semibold text-foreground">{s.title}</h3>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.value}</p>
-                <p className="mt-2 flex items-center gap-1.5 font-mono text-[10px] text-accent">
-                  <LayoutDashboard className="size-3 shrink-0" />
-                  {s.diagram}
-                </p>
-              </div>
-            </li>
-          )
-
-          return (
-            <div className="mt-10 [perspective:2000px] [perspective-origin:50%_45%] lg:px-10">
-              <div className="flex flex-col items-stretch gap-4 [transform-style:preserve-3d] lg:flex-row lg:items-center lg:gap-6">
-                {/* 左侧功能栏 · 绕内缘向中心右倾内收 */}
-                <ul className="flex flex-1 flex-col gap-4 lg:origin-right lg:[transform:rotateY(22deg)_translateZ(-30px)]">
-                  {leftScenes.map(renderCard)}
-                </ul>
-
-                {/* 中央主系统界面 · 前推突出 */}
-                <div className="relative z-10 mx-auto w-full max-w-md shrink-0 lg:w-[38%] lg:[transform:translateZ(70px)]">
-                  <div
-                    className="group relative aspect-square overflow-hidden rounded-3xl border border-accent/30 bg-[oklch(0.13_0.012_252)]"
-                    style={{ boxShadow: `0 24px 70px -24px ${data.glow}, inset 0 0 100px -50px ${data.glow}` }}
-                  >
-                    <img
-                      src={data.image || "/placeholder.svg"}
-                      alt={`${data.title} 系统示意图`}
-                      className="size-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
-                      crossOrigin="anonymous"
-                    />
-                    {/* 屏幕高光 */}
-                    <span
-                      className="pointer-events-none absolute inset-0 opacity-50"
-                      style={{ background: `radial-gradient(circle at 50% 120%, ${data.glow} 0%, transparent 55%)` }}
-                      aria-hidden="true"
-                    />
-                    <span
-                      className="pointer-events-none absolute inset-0"
-                      style={{ boxShadow: "inset 0 0 50px 6px oklch(0.13 0.012 252)" }}
-                      aria-hidden="true"
-                    />
-                  </div>
-                </div>
-
-                {/* 右侧功能栏 · 绕内缘向中心左倾内收 */}
-                <ul className="flex flex-1 flex-col gap-4 lg:origin-left lg:[transform:rotateY(-22deg)_translateZ(-30px)]">
-                  {rightScenes.map(renderCard)}
-                </ul>
+        <div className="mt-10 [perspective:1900px] [perspective-origin:50%_42%]">
+          <div className="flex flex-col gap-6 [transform-style:preserve-3d] lg:flex-row lg:items-stretch lg:gap-8">
+            {/* 左栏 · 大主系统界面（向中心内凹右收） */}
+            <div className="lg:w-[56%] lg:origin-right lg:[transform:rotateY(9deg)]">
+              <div
+                className="group relative h-full min-h-72 overflow-hidden rounded-3xl border border-accent/30 bg-[oklch(0.13_0.012_252)]"
+                style={{ boxShadow: `0 30px 80px -30px ${data.glow}, inset 0 0 120px -60px ${data.glow}` }}
+              >
+                <img
+                  src={data.image || "/placeholder.svg"}
+                  alt={`${data.title} 系统示意图`}
+                  className="size-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                  crossOrigin="anonymous"
+                />
+                <span
+                  className="pointer-events-none absolute inset-0 opacity-50"
+                  style={{ background: `radial-gradient(circle at 50% 120%, ${data.glow} 0%, transparent 55%)` }}
+                  aria-hidden="true"
+                />
+                <span
+                  className="pointer-events-none absolute inset-0"
+                  style={{ boxShadow: "inset 0 0 60px 8px oklch(0.13 0.012 252)" }}
+                  aria-hidden="true"
+                />
               </div>
             </div>
-          )
-        })()}
+
+            {/* 右栏 · 编号场景卡片列（向中心内凹左收） */}
+            <ul className="flex flex-1 flex-col gap-3 lg:origin-left lg:[transform:rotateY(-9deg)]">
+              {data.scenes.map((s, i) => (
+                <li
+                  key={s.title}
+                  className="group flex flex-1 items-start gap-4 rounded-2xl border border-border bg-card/70 p-4 backdrop-blur transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/10"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
+                    <s.icon className="size-5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-mono text-sm font-semibold tabular-nums text-accent">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="text-sm font-semibold text-foreground">{s.title}</h3>
+                    </div>
+                    <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.value}</p>
+                    <p className="mt-2 flex items-center gap-1.5 font-mono text-[10px] text-accent">
+                      <LayoutDashboard className="size-3 shrink-0" />
+                      {s.diagram}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -275,7 +264,7 @@ const agent: ProductData = {
     {
       icon: MessageSquareText,
       title: "智能问答与洞察",
-      value: "自然语言提问即可获得答案、分析与成稿，降低检索与报告成本。",
+      value: "自然语言提问即可获得答案���分析与成稿，降低检索与报告成本。",
       diagram: "AI 问答 · 报告生成",
     },
   ],
