@@ -238,7 +238,7 @@ const agent: ProductData = {
   title: "水务智能体，让 AI 深入运营每一环节",
   subtitle:
     "融合大模型、RAG 与知识图谱技术，打通感知、认知、决策执行与进化全链路，持续优化水厂运行效率与决策质量。",
-  image: "/products/agent.png",
+  image: "/products/agent-dashboard.png",
   glow: "oklch(0.62 0.19 250)",
   flow: [
     { icon: Dna, label: "水务基因", note: "运营场景内生" },
