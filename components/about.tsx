@@ -1,4 +1,4 @@
-import { Award, Building2, FileCheck, ShieldCheck } from "lucide-react"
+import { Building2, FileCheck, ShieldCheck } from "lucide-react"
 
 const intro =
   "北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，形成了面向水务行业的标准化、产品化、可配置的软件服务能力。"
@@ -19,19 +19,6 @@ const timeline = [
   { year: "2024", title: "智水积木云产品化", desc: "推进管理、技术、产品体系重构，沉淀 CW-Cloud 新一代水务运营平台。" },
   { year: "2025", title: "智能体前瞻布局", desc: "结合大模型技术，持续推进水务智能体（CW-Agent）产品化。" },
   { year: "2026", title: "新一代 AI 智能运营平台发布", desc: "全面发布新一代 AI 智能运营平台，深度融合大模型、智能体与数字孪生，实现感知、认知、决策、执行全链路智能闭环，引领水务行业迈入 AI 原生运营时代。" },
-]
-
-const honors = [
-  "国家高新技术企业",
-  "中国水协智慧水务专业委员会委员单位",
-  "企业信用等级 AAA",
-  "CMMI3 认证",
-  "ITSS 认证",
-  "电子与智能化专业承包二级",
-  "ISO9001 认证",
-  "ISO20000 认证",
-  "ISO27001 认证",
-  "诚信系统集成企业",
 ]
 
 export function About() {
@@ -96,21 +83,7 @@ export function About() {
           </ol>
         </div>
 
-        {/* 荣誉资质 */}
-        <div className="mt-16 rounded-2xl border border-border bg-card p-8">
-          <h3 className="text-lg font-semibold text-foreground">荣誉资质</h3>
-          <div className="mt-5 flex flex-wrap gap-3">
-            {honors.map((h) => (
-              <span
-                key={h}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/50 px-4 py-2 text-sm text-foreground"
-              >
-                <Award className="size-3.5 text-accent" />
-                {h}
-              </span>
-            ))}
-          </div>
-        </div>
+
       </div>
     </section>
   )
