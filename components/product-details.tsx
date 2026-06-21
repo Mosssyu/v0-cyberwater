@@ -345,7 +345,7 @@ const twin: ProductData = {
   title: "数字孪生，空间可视、状态可感、决策可推演",
   subtitle:
     "以三维实景还原为基础，以运行数据融合为核心，以场景联动和仿真推演为延伸，支撑水厂实现空间可视、状态可感、过程可巡、风险可控与决策可推演。",
-  image: "/products/twin.png",
+  image: "/products/twin-dashboard.png",
   glow: "oklch(0.62 0.18 250)",
   flow: [
     { icon: Cube, label: "建模" },
