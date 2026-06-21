@@ -159,55 +159,74 @@ function ProductDetail({ data }: { data: ProductData }) {
           </>
         )}
 
-        {/* 场景价值 */}
+        {/* 场景价值 · 操作舱式透视布局 */}
         <SectionLabel>Scenarios · 场景价值</SectionLabel>
-        <div className="mt-6 grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
-          {/* 左侧：抽象产品图 */}
-          <div className="lg:sticky lg:top-24">
-            <div
-              className="group relative aspect-square overflow-hidden rounded-3xl border border-border bg-[oklch(0.13_0.012_252)]"
-              style={{ boxShadow: `inset 0 0 100px -50px ${data.glow}` }}
-            >
-              <img
-                src={data.image || "/placeholder.svg"}
-                alt={`${data.title} 抽象示意图`}
-                className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                crossOrigin="anonymous"
-              />
-              {/* 边缘渐隐叠加，使插画融入深色背景 */}
-              <span
-                className="pointer-events-none absolute inset-0"
-                style={{ boxShadow: `inset 0 0 60px 10px oklch(0.13 0.012 252)` }}
-                aria-hidden="true"
-              />
-              <span
-                className="pointer-events-none absolute inset-0 opacity-60"
-                style={{ background: `radial-gradient(circle at 50% 120%, ${data.glow} 0%, transparent 55%)` }}
-                aria-hidden="true"
-              />
-            </div>
-          </div>
+        {(() => {
+          const mid = Math.ceil(data.scenes.length / 2)
+          const leftScenes = data.scenes.slice(0, mid)
+          const rightScenes = data.scenes.slice(mid)
 
-          {/* 右侧：场景价值列表（内容超出时换列对齐左图） */}
-          <ul className="grid auto-rows-min content-start gap-3 sm:grid-cols-2">
-            {data.scenes.map((s) => (
-              <li
-                key={s.title}
-                className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
-                  <s.icon className="size-5" />
-                </span>
-                <h3 className="mt-4 text-base font-semibold text-foreground">{s.title}</h3>
-                <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">{s.value}</p>
-                <p className="mt-3 flex items-center gap-1.5 font-mono text-[11px] text-accent">
+          const renderCard = (s: SceneItem) => (
+            <li
+              key={s.title}
+              className="group flex items-start gap-3.5 rounded-2xl border border-border bg-card/80 p-4 backdrop-blur transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/10"
+            >
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
+                <s.icon className="size-4" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h3 className="text-sm font-semibold text-foreground">{s.title}</h3>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.value}</p>
+                <p className="mt-2 flex items-center gap-1.5 font-mono text-[10px] text-accent">
                   <LayoutDashboard className="size-3 shrink-0" />
                   {s.diagram}
                 </p>
-              </li>
-            ))}
-          </ul>
-        </div>
+              </div>
+            </li>
+          )
+
+          return (
+            <div className="mt-10 [perspective:2200px]">
+              <div className="flex flex-col items-stretch gap-4 [transform-style:preserve-3d] lg:flex-row lg:items-center lg:gap-0">
+                {/* 左侧功能栏 · 向中心右倾内收 */}
+                <ul className="flex flex-1 flex-col gap-4 lg:origin-right lg:[transform:rotateY(24deg)_translateZ(-40px)]">
+                  {leftScenes.map(renderCard)}
+                </ul>
+
+                {/* 中央主系统界面 · 前推突出 */}
+                <div className="relative z-10 mx-auto w-full max-w-md shrink-0 lg:-mx-6 lg:w-[40%] lg:[transform:translateZ(80px)]">
+                  <div
+                    className="group relative aspect-square overflow-hidden rounded-3xl border border-accent/30 bg-[oklch(0.13_0.012_252)]"
+                    style={{ boxShadow: `0 24px 70px -24px ${data.glow}, inset 0 0 100px -50px ${data.glow}` }}
+                  >
+                    <img
+                      src={data.image || "/placeholder.svg"}
+                      alt={`${data.title} 系统示意图`}
+                      className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      crossOrigin="anonymous"
+                    />
+                    {/* 屏幕高光 */}
+                    <span
+                      className="pointer-events-none absolute inset-0 opacity-50"
+                      style={{ background: `radial-gradient(circle at 50% 120%, ${data.glow} 0%, transparent 55%)` }}
+                      aria-hidden="true"
+                    />
+                    <span
+                      className="pointer-events-none absolute inset-0"
+                      style={{ boxShadow: "inset 0 0 50px 6px oklch(0.13 0.012 252)" }}
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+
+                {/* 右侧功能栏 · 向中心左倾内收 */}
+                <ul className="flex flex-1 flex-col gap-4 lg:origin-left lg:[transform:rotateY(-24deg)_translateZ(-40px)]">
+                  {rightScenes.map(renderCard)}
+                </ul>
+              </div>
+            </div>
+          )
+        })()}
       </div>
     </section>
   )
@@ -414,7 +433,7 @@ const pom: ProductData = {
     {
       icon: LineChart,
       title: "成本能耗精细分析",
-      value: "电耗、药耗、污泥、成本统一分析，识别异常、支撑降本增效。",
+      value: "电耗、药耗、污泥、成本统一分析，识别异��、支撑降本增效。",
       diagram: "成本能耗分析",
     },
     {
