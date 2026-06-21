@@ -409,38 +409,39 @@ export function PlatformArchitecture() {
 
         {/* 右侧：轻量说明卡（向中心左收） */}
         <div className="flex h-full flex-col gap-6 lg:order-3 lg:origin-left lg:[transform:rotateY(-7deg)]">
-          {/* 适配场景 · 轻量胶囊标签 */}
-          <GlassCard className="flex-1">
+          {/* 适配场景 · 网格自适应铺满 */}
+          <GlassCard className="flex flex-1 flex-col">
             <CardHeading icon={Layers} title="适配场景" />
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 grid flex-1 grid-cols-2 gap-2.5">
               {adaptScenes.map((s) => (
                 <span
                   key={s.label}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent/5 px-3 py-1.5 text-xs text-foreground/85 transition-colors duration-300 hover:border-accent/45 hover:bg-accent/10"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-accent/25 bg-accent/5 px-3 text-xs text-foreground/85 transition-colors duration-300 hover:border-accent/45 hover:bg-accent/10"
                 >
-                  <s.icon className="size-3.5 text-accent" />
+                  <s.icon className="size-3.5 shrink-0 text-accent" />
                   {s.label}
                 </span>
               ))}
             </div>
           </GlassCard>
 
-          {/* 产品矩阵 · 一行轻量标签 */}
-          <GlassCard className="flex-1">
+          {/* 产品矩阵 · 网格自适应铺满 */}
+          <GlassCard className="flex flex-1 flex-col">
             <CardHeading icon={Box} title="产品矩阵" />
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-4 grid flex-1 grid-cols-2 gap-2.5">
               {productMatrix.map((p) => (
                 <span
                   key={p}
-                  className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 font-mono text-[11px] font-medium text-foreground/90 transition-colors duration-300 hover:border-primary/55 hover:bg-primary/15"
+                  className="inline-flex items-center justify-center rounded-xl border border-primary/30 bg-primary/10 px-3 font-mono text-xs font-medium text-foreground/90 transition-colors duration-300 hover:border-primary/55 hover:bg-primary/15"
                 >
                   {p}
                 </span>
               ))}
             </div>
-            <p className="mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground">
               <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
               平台能力承载产品体系
+              <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
             </p>
           </GlassCard>
         </div>
