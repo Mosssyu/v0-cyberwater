@@ -452,24 +452,7 @@ export function PlatformArchitecture() {
         </div>
       </div>
 
-      {/* 底部价值卡片 */}
-      <div className="relative mt-12">
-        <h3 className="text-center text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-          为水务集团创造可衡量的运营价值
-        </h3>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {bottomStrip.map((b) => (
-            <div
-              key={b.label}
-              className="group rounded-xl border border-border bg-card p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
-            >
-              <NeonIcon src={b.img} alt={b.label} glow={b.glow} className="mx-auto size-11" />
-              <h4 className="mt-3 text-base font-semibold text-foreground">{b.label}</h4>
-              <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{b.sub}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+
     </div>
   )
 }
