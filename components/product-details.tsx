@@ -91,36 +91,38 @@ function ProductDetail({ data }: { data: ProductData }) {
             const parts = data.eyebrow.split(" · ")
             return (
               <div className="flex flex-col items-center">
-                <span
-                  className={
-                    isFlagship
-                      ? "inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 font-mono text-accent backdrop-blur"
-                      : "inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 font-mono text-accent backdrop-blur"
-                  }
-                >
-                  {isFlagship && <Sparkles className="size-4 shrink-0" />}
-                  {parts[0] && <span className="text-xs text-accent/70">{parts[0]}</span>}
-                  {parts[1] && (
-                    <>
-                      <span className="text-accent/30" aria-hidden="true">
-                        |
-                      </span>
-                      <span className="text-sm font-bold tracking-wide text-accent">{parts[1]}</span>
-                    </>
-                  )}
-                </span>
-                {parts[2] && (
-                  <span className="mt-3 text-base font-medium tracking-wide text-foreground/90 sm:text-lg">
-                    {parts[2]}
+                {/* 标签胶囊：核心产品 */}
+                {parts[0] && (
+                  <span
+                    className={
+                      isFlagship
+                        ? "inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 font-mono text-xs text-accent backdrop-blur"
+                        : "inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 font-mono text-xs text-accent backdrop-blur"
+                    }
+                  >
+                    {isFlagship && <Sparkles className="size-3.5 shrink-0" />}
+                    {parts[0]}
                   </span>
+                )}
+                {/* 产品名：核心主标题 */}
+                {parts[1] && (
+                  <h2 className="mt-5 font-mono text-4xl font-extrabold tracking-tight text-accent sm:text-5xl">
+                    {parts[1]}
+                  </h2>
+                )}
+                {/* 产品定位：副标题 */}
+                {parts[2] && (
+                  <p className="mt-2 text-lg font-semibold tracking-wide text-foreground/90 sm:text-xl">
+                    {parts[2]}
+                  </p>
                 )}
               </div>
             )
           })()}
-          <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            {data.title}
-          </h2>
-          <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
+          {/* 说明文案：进一步弱化 */}
+          <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">
+            <span className="text-foreground/70">{data.title}</span>
+            <span className="mx-1.5 text-border">·</span>
             {data.subtitle}
           </p>
         </div>
