@@ -1,4 +1,4 @@
-import { Building2, FileCheck, ShieldCheck } from "lucide-react"
+import { Award, Building2, FileCheck, ShieldCheck } from "lucide-react"
 
 const intro =
   "北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，形成了面向水务行业的标准化、产品化、可配置的软件服务能力。"
