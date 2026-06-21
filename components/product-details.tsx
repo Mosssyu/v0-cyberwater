@@ -90,25 +90,34 @@ function ProductDetail({ data }: { data: ProductData }) {
           {(() => {
             const parts = data.eyebrow.split(" · ")
             return (
-              <span
-                className={
-                  isFlagship
-                    ? "inline-flex items-center gap-2.5 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 font-mono text-accent backdrop-blur"
-                    : "inline-flex items-center gap-2.5 rounded-full border border-border bg-card/60 px-4 py-1.5 font-mono text-accent backdrop-blur"
-                }
-              >
-                {isFlagship && <Sparkles className="size-4 shrink-0" />}
-                {parts[0] && <span className="text-xs text-accent/70">{parts[0]}</span>}
-                {parts[1] && (
-                  <span className="text-base font-bold tracking-wide text-accent sm:text-lg">
-                    {parts[1]}
+              <div className="flex flex-col items-center">
+                <span
+                  className={
+                    isFlagship
+                      ? "inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-4 py-1.5 font-mono text-accent backdrop-blur"
+                      : "inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 font-mono text-accent backdrop-blur"
+                  }
+                >
+                  {isFlagship && <Sparkles className="size-4 shrink-0" />}
+                  {parts[0] && <span className="text-xs text-accent/70">{parts[0]}</span>}
+                  {parts[1] && (
+                    <>
+                      <span className="text-accent/30" aria-hidden="true">
+                        |
+                      </span>
+                      <span className="text-sm font-bold tracking-wide text-accent">{parts[1]}</span>
+                    </>
+                  )}
+                </span>
+                {parts[2] && (
+                  <span className="mt-3 text-base font-medium tracking-wide text-foreground/90 sm:text-lg">
+                    {parts[2]}
                   </span>
                 )}
-                {parts[2] && <span className="text-xs text-accent/70">{parts[2]}</span>}
-              </span>
+              </div>
             )
           })()}
-          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <h2 className="mt-4 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {data.title}
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
