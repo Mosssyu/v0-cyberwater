@@ -69,13 +69,13 @@ type Tier = {
   keys: string[]
 }
 const upperTiers: Tier[] = [
-  { n: 5, label: "业务应用层", width: "60%", icons: [Layers, TrendingUp], accent: "oklch(0.62 0.2 295)", keys: ["多场景应用", "业务闭环", "智能决策"] },
-  { n: 4, label: "AI 智能体层", width: "72%", icons: [BotIcon, Brain], accent: "oklch(0.6 0.2 270)", keys: ["智能体开发", "知识驱动", "自主决策"] },
+  { n: 5, label: "业务应用层", width: "90%", icons: [Layers, TrendingUp], accent: "oklch(0.62 0.2 295)", keys: ["多场景应用", "业务闭环", "智能决策"] },
+  { n: 4, label: "AI 智能体层", width: "94%", icons: [BotIcon, Brain], accent: "oklch(0.6 0.2 270)", keys: ["智能体开发", "知识驱动", "自主决策"] },
 ]
 // 第 3 层及以下；旋转的六大能力中心放在第 4 层与第 3 层之间
 const lowerTiers: Tier[] = [
-  { n: 3, label: "平台能力层", width: "82%", icons: [Settings, Sparkles], accent: "oklch(0.66 0.16 235)", keys: ["统一能力", "开放接口", "中台服务", "低代码"] },
-  { n: 2, label: "数据底座层", width: "92%", icons: [Database, Boxes], accent: "oklch(0.72 0.14 212)", keys: ["数据汇聚", "数据治理", "数据资产", "数据服务"] },
+  { n: 3, label: "平台能力层", width: "94%", icons: [Settings, Sparkles], accent: "oklch(0.66 0.16 235)", keys: ["统一能力", "开放接口", "中台服务", "低代码"] },
+  { n: 2, label: "数据底座层", width: "97%", icons: [Database, Boxes], accent: "oklch(0.72 0.14 212)", keys: ["数据汇聚", "数据治理", "数据资产", "数据服务"] },
   { n: 1, label: "基础设施层", width: "100%", icons: [Cloud, Cpu, ShieldCheck], accent: "oklch(0.76 0.13 205)", keys: ["云计算", "物联网", "网络通信", "安全防护"] },
 ]
 
@@ -441,6 +441,10 @@ export function PlatformArchitecture() {
                 </span>
               ))}
             </div>
+            <p className="mt-3 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              <span className="h-px w-4 bg-accent/40" aria-hidden="true" />
+              详细介绍见下方产品专区
+            </p>
           </GlassCard>
         </div>
       </div>
