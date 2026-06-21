@@ -415,7 +415,7 @@ const pom: ProductData = {
     {
       icon: BookOpen,
       title: "标准与知识沉淀",
-      value: "流程、指标、报表与经验沉淀为可���用标准，减少经验依赖。",
+      value: "流程、指标、报表与经验沉淀为可用标准，减少经验依赖。",
       diagram: "标准知识库",
     },
     {
