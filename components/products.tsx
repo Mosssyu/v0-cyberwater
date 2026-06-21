@@ -16,7 +16,7 @@ type Product = {
 const products: Product[] = [
   {
     icon: Bot,
-    name: "CW-Agent",
+    name: "CW-Agent·水务智能体",
     href: "/#product-agent",
     title: "智能认知与决策中枢",
     desc: "面向运营的 AI 大脑，负责知识问答、运行诊断、优化建议、报告生成与智能体闭环，让运营经验沉淀为可复用的智能能力。",
@@ -26,7 +26,7 @@ const products: Product[] = [
   },
   {
     icon: Network,
-    name: "CW-PPI",
+    name: "CW-PPI·厂网河湖一体化",
     href: "/#product-ppi",
     title: "多业态一体化运营平台",
     desc: "统一管理厂、站、网、河、湖、防汛与调度业务，打通集团化多业态运营，实现数据赋能与协同治理。",
@@ -35,7 +35,7 @@ const products: Product[] = [
   },
   {
     icon: Box,
-    name: "CW-3DP",
+    name: "CW-3DP·三维孪生",
     href: "/#product-3dp",
     title: "空间可视化与仿真推演平台",
     desc: "融合 BIM+GIS 的二三维一体化平台，提供三维实景、空间定位、场景联动与模拟推演，实现全域可感知。",
@@ -44,7 +44,7 @@ const products: Product[] = [
   },
   {
     icon: Factory,
-    name: "CW-POM",
+    name: "CW-POM·数字化水厂",
     href: "/#product-pom",
     title: "数字水厂运营管理平台",
     desc: "覆盖生产、设备、安全、巡检、工单、移动执行与经营分析的全流程闭环，打造新一代未来水厂。",
