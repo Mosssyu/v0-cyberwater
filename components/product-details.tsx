@@ -189,24 +189,22 @@ function ProductDetail({ data }: { data: ProductData }) {
             </div>
           </div>
 
-          {/* 右侧：场景价值列表 */}
-          <ul className="flex flex-col gap-3">
+          {/* 右侧：场景价值列表（内容超出时换列对齐左图） */}
+          <ul className="grid auto-rows-min content-start gap-3 sm:grid-cols-2">
             {data.scenes.map((s) => (
               <li
                 key={s.title}
-                className="group flex items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
+                className="group flex flex-col rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
               >
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
                   <s.icon className="size-5" />
                 </span>
-                <div className="min-w-0 flex-1">
-                  <h3 className="text-base font-semibold text-foreground">{s.title}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.value}</p>
-                  <p className="mt-2.5 flex items-center gap-1.5 font-mono text-[11px] text-accent">
-                    <LayoutDashboard className="size-3 shrink-0" />
-                    {s.diagram}
-                  </p>
-                </div>
+                <h3 className="mt-4 text-base font-semibold text-foreground">{s.title}</h3>
+                <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted-foreground">{s.value}</p>
+                <p className="mt-3 flex items-center gap-1.5 font-mono text-[11px] text-accent">
+                  <LayoutDashboard className="size-3 shrink-0" />
+                  {s.diagram}
+                </p>
               </li>
             ))}
           </ul>
@@ -417,7 +415,7 @@ const pom: ProductData = {
     {
       icon: BookOpen,
       title: "标准与知识沉淀",
-      value: "流程、指标、报表与经验沉淀为可复用标准，减少经验依赖。",
+      value: "流程、指标、报表与经验沉淀为可���用标准，减少经验依赖。",
       diagram: "标准知识库",
     },
     {
