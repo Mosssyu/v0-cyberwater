@@ -332,7 +332,7 @@ const ppi: ProductData = {
     {
       icon: Building2,
       title: "集团级运营监管",
-      value: "跨区域、跨业态统一监管，实现多厂对标、风险汇总与标准��制。",
+      value: "跨区域、跨业态统一监管，实现多厂对标、风险汇总与标准制定。",
       diagram: "集团运营驾驶舱",
     },
   ],
