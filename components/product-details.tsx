@@ -37,6 +37,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react"
+import { NeonIcon } from "@/components/neon-icon"
 
 type FlowItem = { icon: LucideIcon; label: string; note?: string }
 type SceneItem = { icon: LucideIcon; title: string; value: string; diagram: string }
@@ -47,6 +48,8 @@ type ProductData = {
   eyebrow: string
   title: string
   subtitle: string
+  image: string
+  glow: string
   flow: FlowItem[]
   versions?: VersionItem[]
   scenes: SceneItem[]
@@ -160,28 +163,44 @@ function ProductDetail({ data }: { data: ProductData }) {
 
         {/* 场景价值 */}
         <SectionLabel>Scenarios · 场景价值</SectionLabel>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {data.scenes.map((s) => (
+        <div className="mt-6 grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* 左侧：抽象产品图 */}
+          <div className="lg:sticky lg:top-24">
             <div
-              key={s.title}
-              className="group flex items-stretch gap-4 rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
+              className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl border border-border bg-[oklch(0.13_0.012_252)]"
+              style={{ boxShadow: `inset 0 0 80px -40px ${data.glow}` }}
             >
-              {/* 左侧抽象图 */}
-              <div className="relative flex w-20 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-accent/20 bg-[radial-gradient(circle_at_50%_30%,oklch(0.7_0.14_215/0.18),transparent_70%)]">
-                <span className="bg-grid pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
-                <s.icon className="relative size-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-              </div>
-              {/* 右侧场景价值 */}
-              <div className="min-w-0 flex-1">
-                <h3 className="text-base font-semibold text-foreground">{s.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.value}</p>
-                <p className="mt-3 flex items-center gap-1.5 font-mono text-[11px] text-accent">
-                  <LayoutDashboard className="size-3 shrink-0" />
-                  {s.diagram}
-                </p>
-              </div>
+              <span className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
+              <span
+                className="pointer-events-none absolute inset-0"
+                style={{ background: `radial-gradient(circle at 50% 40%, ${data.glow} 0%, transparent 60%)`, opacity: 0.18 }}
+                aria-hidden="true"
+              />
+              <NeonIcon src={data.image} alt={data.title} glow={data.glow} className="relative size-2/5" />
             </div>
-          ))}
+          </div>
+
+          {/* 右侧：场景价值列表 */}
+          <ul className="flex flex-col gap-3">
+            {data.scenes.map((s) => (
+              <li
+                key={s.title}
+                className="group flex items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-all duration-300 hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5"
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
+                  <s.icon className="size-5" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-base font-semibold text-foreground">{s.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{s.value}</p>
+                  <p className="mt-2.5 flex items-center gap-1.5 font-mono text-[11px] text-accent">
+                    <LayoutDashboard className="size-3 shrink-0" />
+                    {s.diagram}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
@@ -194,6 +213,8 @@ const agent: ProductData = {
   title: "水务智能体，让 AI 深入运营每一环节",
   subtitle:
     "融合大模型、RAG 与知识图谱技术，打通感知、认知、决策执行与进化全链路，持续优化水厂运行效率与决策质量。",
+  image: "/icons/prod-agent.png",
+  glow: "oklch(0.62 0.19 250)",
   flow: [
     { icon: Dna, label: "水务基因", note: "运营场景内生" },
     { icon: Server, label: "自研底座", note: "工业级智能体" },
@@ -242,6 +263,8 @@ const ppi: ProductData = {
   title: "厂网河湖一体化，从单点管理走向全域治理",
   subtitle:
     "以多业态对象统一建模、地图空间运营、数据融合与业务协同为核心，打通水厂、泵站、管网、河道、湖泊、排口、雨量站、重点部位、防汛与调度等场景，支撑集团全域感知、协同运营、联动调度与一体化治理。",
+  image: "/icons/prod-ppi.png",
+  glow: "oklch(0.74 0.14 205)",
   flow: [
     { icon: Boxes, label: "统一对象" },
     { icon: MapIcon, label: "空间融合" },
@@ -297,6 +320,8 @@ const twin: ProductData = {
   title: "数字孪生，空间可视、状态可感、决策可推演",
   subtitle:
     "以三维实景还原为基础，以运行数据融合为核心，以场景联动和仿真推演为延伸，支撑水厂实现空间可视、状态可感、过程可巡、风险可控与决策可推演。",
+  image: "/icons/prod-3dp.png",
+  glow: "oklch(0.62 0.18 250)",
   flow: [
     { icon: Cube, label: "建模" },
     { icon: Layers, label: "融合" },
@@ -345,6 +370,8 @@ const pom: ProductData = {
   title: "数字水厂，从高效运营到集团化经营决策",
   subtitle:
     "以运营闭环为基础，以经营分析为延伸，以集团管控为目标，支撑水务企业实现单厂高效运营、成本精细管理与集团化决策升级。",
+  image: "/icons/prod-pom.png",
+  glow: "oklch(0.7 0.16 160)",
   flow: [
     { icon: Radio, label: "感知" },
     { icon: BarChart3, label: "分析" },
