@@ -19,7 +19,7 @@ type Milestone = {
   featured?: boolean
 }
 
-// 坐标对应底图 timeline-bg-wide.png 中能量轨迹的走向（百分比）
+// 坐标对应底图 timeline-bg-v3.png 中能量光带的走向（从左下连续爬升到右上箭头）
 const milestones: Milestone[] = [
   {
     year: "2015",
@@ -27,8 +27,8 @@ const milestones: Milestone[] = [
     desc: "中信国安 + 中国建筑标准设计研究院相关团队创立云建标，开始布局城市数字化服务。",
     icon: Building2,
     x: 6,
-    y: 61,
-    place: "below",
+    y: 78,
+    place: "above",
     align: "left",
   },
   {
@@ -36,9 +36,9 @@ const milestones: Milestone[] = [
     title: "双高认证",
     desc: "获得国家高新技术企业、中关村高新技术企业认证，技术研发能力获得认可。",
     icon: BadgeCheck,
-    x: 18,
-    y: 57,
-    place: "above",
+    x: 16,
+    y: 70,
+    place: "below",
     align: "center",
   },
   {
@@ -46,9 +46,9 @@ const milestones: Milestone[] = [
     title: "北控水务战略入股",
     desc: "北控水务战略入股，云建标深入头部水务集团运营体系。",
     icon: Handshake,
-    x: 31,
-    y: 63,
-    place: "below",
+    x: 27,
+    y: 62,
+    place: "above",
     align: "center",
   },
   {
@@ -56,9 +56,9 @@ const milestones: Milestone[] = [
     title: "加入水协智慧委",
     desc: "成为水协智慧委常委委员单位，进一步参与智慧水务行业实践与交流。",
     icon: Users,
-    x: 44,
-    y: 58,
-    place: "above",
+    x: 38,
+    y: 54,
+    place: "below",
     align: "center",
   },
   {
@@ -66,9 +66,9 @@ const milestones: Milestone[] = [
     title: "全面对外服务",
     desc: "逐步掌握水务全业态核心产品能力，从集团内部场景沉淀走向行业市场。",
     icon: Globe2,
-    x: 56,
-    y: 50,
-    place: "below",
+    x: 49,
+    y: 46,
+    place: "above",
     align: "center",
   },
   {
@@ -76,9 +76,9 @@ const milestones: Milestone[] = [
     title: "智水积木云产品化",
     desc: "推进管理、技术、产品体系重构，沉淀 CW-Cloud 新一代水务运营平台。",
     icon: Cloud,
-    x: 67,
-    y: 42,
-    place: "above",
+    x: 59,
+    y: 39,
+    place: "below",
     align: "center",
   },
   {
@@ -86,9 +86,9 @@ const milestones: Milestone[] = [
     title: "智能体前瞻布局",
     desc: "结合大模型技术，持续推进水务智能体（CW-Agent）产品化。",
     icon: Bot,
-    x: 77,
-    y: 33,
-    place: "below",
+    x: 68,
+    y: 32,
+    place: "above",
     align: "center",
   },
   {
@@ -96,10 +96,10 @@ const milestones: Milestone[] = [
     title: "新一代 AI 智能运营平台发布",
     desc: "全面发布新一代 AI 智能运营平台，深度融合大模型、智能体与数字孪生，实现全链路智能闭环。",
     icon: Rocket,
-    x: 86,
-    y: 25,
+    x: 76,
+    y: 26,
     place: "below",
-    align: "right",
+    align: "center",
     featured: true,
   },
 ]
@@ -110,10 +110,10 @@ export function GrowthTimeline() {
       {/* ===== 桌面端：海报式两层结构 ===== */}
       <div className="relative hidden overflow-hidden rounded-3xl border border-[oklch(0.5_0.12_240/0.3)] bg-[oklch(0.05_0.012_255)] shadow-[0_0_80px_-20px_oklch(0.6_0.18_245/0.4)] lg:block">
         {/* 第一层：视觉背景底图 */}
-        <div className="relative aspect-[2/1] w-full">
+        <div className="relative aspect-[16/9] w-full">
           <img
-            src="/growth/timeline-bg-wide.png"
-            alt="公司发展能量轨迹：从 2015 到 2026 持续上升的蓝色科技曲线与水务城市天际线"
+            src="/growth/timeline-bg-v3.png"
+            alt="公司发展能量轨迹：从 2015 到 2026 持续上升的蓝色科技光带与水务城市天际线"
             className="absolute inset-0 h-full w-full object-fill"
           />
           {/* 边缘柔化压暗，提升节点可读性 */}
@@ -151,12 +151,12 @@ export function GrowthTimeline() {
               {/* 玻璃拟态文案卡片 */}
               <div
                 className={[
-                  "absolute w-48 rounded-xl border p-3 backdrop-blur-md transition-transform duration-300",
+                  "absolute w-40 rounded-xl border p-3 backdrop-blur-md transition-transform duration-300",
                   "bg-[oklch(0.45_0.08_245/0.18)]",
                   m.featured
                     ? "border-[oklch(0.8_0.14_205/0.65)] shadow-[0_0_28px_-4px_oklch(0.7_0.16_205/0.6)]"
                     : "border-[oklch(0.6_0.1_230/0.35)] shadow-[0_8px_30px_-12px_oklch(0_0_0/0.6)]",
-                  m.place === "above" ? "bottom-[calc(50%+1.75rem)]" : "top-[calc(50%+1.75rem)]",
+                  m.place === "above" ? "bottom-[calc(50%+2.25rem)]" : "top-[calc(50%+2.25rem)]",
                   m.align === "center"
                     ? "left-1/2 -translate-x-1/2"
                     : m.align === "left"
@@ -190,9 +190,9 @@ export function GrowthTimeline() {
       <div className="lg:hidden">
         <div className="relative overflow-hidden rounded-2xl border border-[oklch(0.5_0.12_240/0.3)]">
           <img
-            src="/growth/timeline-bg-wide.png"
+            src="/growth/timeline-bg-v3.png"
             alt="公司发展能量轨迹"
-            className="h-40 w-full object-cover object-center"
+            className="h-44 w-full object-cover object-center"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[oklch(0.05_0.012_255)] to-transparent" />
         </div>
