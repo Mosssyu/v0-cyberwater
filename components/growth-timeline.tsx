@@ -117,44 +117,61 @@ export function GrowthTimeline() {
           >
             <defs>
               <linearGradient id="gt-line" x1="0" y1="520" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
-                <stop stopColor="oklch(0.62 0.18 250)" />
-                <stop offset="0.5" stopColor="oklch(0.74 0.14 205)" />
-                <stop offset="1" stopColor="oklch(0.82 0.13 200)" />
+                <stop stopColor="oklch(0.55 0.2 255)" />
+                <stop offset="0.45" stopColor="oklch(0.7 0.16 220)" />
+                <stop offset="1" stopColor="oklch(0.9 0.1 200)" />
               </linearGradient>
-              <filter id="gt-glow" x="-20%" y="-20%" width="140%" height="140%">
+              {/* 大范围柔光（光晕氛围） */}
+              <filter id="gt-haze" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="14" />
+              </filter>
+              {/* 主能量带发光 */}
+              <filter id="gt-glow" x="-50%" y="-50%" width="200%" height="200%">
                 <feGaussianBlur stdDeviation="6" result="b" />
                 <feMerge>
                   <feMergeNode in="b" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
+              {/* 箭头强发光 */}
+              <filter id="gt-arrow-glow" x="-120%" y="-120%" width="340%" height="340%">
+                <feGaussianBlur stdDeviation="5" result="b" />
+                <feMerge>
+                  <feMergeNode in="b" />
+                  <feMergeNode in="b" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
             </defs>
-            {/* 外发光底层 */}
-            <path d={CURVE} stroke="url(#gt-line)" strokeWidth="10" strokeLinecap="round" opacity="0.18" filter="url(#gt-glow)" />
-            {/* 主光线 */}
-            <path d={CURVE} stroke="url(#gt-line)" strokeWidth="2.5" strokeLinecap="round" filter="url(#gt-glow)" />
-            {/* 流光 */}
+
+            {/* 第1层：底部大光晕 */}
+            <path d={CURVE} stroke="url(#gt-line)" strokeWidth="24" strokeLinecap="round" opacity="0.2" filter="url(#gt-haze)" />
+            {/* 第2层：中层能量带 */}
+            <path d={CURVE} stroke="url(#gt-line)" strokeWidth="10" strokeLinecap="round" opacity="0.7" filter="url(#gt-glow)" />
+            {/* 第3层：核心高亮线 */}
+            <path d={CURVE} stroke="oklch(0.95 0.05 200)" strokeWidth="2.5" strokeLinecap="round" opacity="0.95" filter="url(#gt-glow)" />
+            {/* 第4层：流光动画线 */}
             <path
               d={CURVE}
-              stroke="oklch(0.92 0.06 200)"
+              stroke="oklch(0.97 0.04 200)"
               strokeWidth="3"
               strokeLinecap="round"
               className="gt-flow"
-              strokeDasharray="60 1240"
+              strokeDasharray="50 1250"
             />
-            {/* 右上上升箭头 */}
-            <g className="gt-arrow" filter="url(#gt-glow)">
+
+            {/* 右上能量冲刺箭头 */}
+            <g className="gt-arrow">
+              {/* 拖尾光束 */}
+              <path d="M 1108 108 L 1182 40" stroke="url(#gt-line)" strokeWidth="14" strokeLinecap="round" opacity="0.22" filter="url(#gt-haze)" />
+              <path d="M 1116 102 L 1184 38" stroke="url(#gt-line)" strokeWidth="7" strokeLinecap="round" opacity="0.55" filter="url(#gt-glow)" />
+              {/* 箭杆核心 */}
+              <path d="M 1124 96 L 1186 36" stroke="oklch(0.95 0.05 200)" strokeWidth="3" strokeLinecap="round" filter="url(#gt-arrow-glow)" />
+              {/* 发光箭头三角 */}
               <path
-                d="M 1128 94 L 1188 34"
-                stroke="oklch(0.86 0.12 200)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 1188 34 L 1166 40 M 1188 34 L 1182 56"
-                stroke="oklch(0.86 0.12 200)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
+                d="M 1162 18 L 1202 24 L 1176 56 Z"
+                fill="oklch(0.93 0.07 200)"
+                filter="url(#gt-arrow-glow)"
               />
             </g>
           </svg>
@@ -245,10 +262,10 @@ export function GrowthTimeline() {
         }
         .gt-breathe { animation: gt-breathe 3.4s ease-in-out infinite; }
         @keyframes gt-arrow {
-          0%, 100% { opacity: 0.7; }
-          50% { opacity: 1; }
+          0%, 100% { opacity: 0.85; transform: translate(0, 0); }
+          50% { opacity: 1; transform: translate(3px, -3px); }
         }
-        .gt-arrow { animation: gt-arrow 2.8s ease-in-out infinite; }
+        .gt-arrow { animation: gt-arrow 3.2s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
         .gt-particle {
           position: absolute;
           top: 0;
