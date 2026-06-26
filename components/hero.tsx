@@ -49,15 +49,15 @@ export function Hero() {
             </div>
 
             {/* 主标题 */}
-            <h1 className="mt-6 text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              新一代 AI 水务
+            <h1 className="mt-6 text-balance text-3xl font-bold leading-[1.16] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              做最懂水务运营管理的
               <br />
-              <span className="text-gradient">智能运营平台</span>
+              <span className="text-gradient">数字化产品公司</span>
             </h1>
 
             {/* 副标题 */}
-            <p className="mt-5 max-w-lg text-pretty leading-relaxed text-muted-foreground">
-              融合 IoT 感知、数字孪生与 AI 智能体，构建厂、网、河、湖一体化运营体系，全面赋能水厂、泵站、管网、河湖、防汛与调度的智能化运营与科学决策。
+            <p className="mt-5 max-w-xl text-pretty leading-relaxed text-muted-foreground">
+              北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，打造面向水务行业的标准化、产品化、可配置的软件服务能力。
             </p>
 
             {/* CTA */}

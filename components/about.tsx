@@ -44,14 +44,14 @@ export function About() {
           ))}
         </div>
 
-        {/* 发展历程 */}
+        {/* 发展路径 */}
         <div className="mt-20">
           <div className="mx-auto max-w-3xl text-center">
             <h3 className="text-gradient text-balance text-2xl font-bold tracking-tight sm:text-3xl">
-              十余年沉淀，从项目能力走向产品能力
+              发展路径
             </h3>
             <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
-              从 BIM / CIM 到智慧水务，从数字孪生到智水积木云与水务智能体。
+              十余年沉淀，从项目能力走向产品能力 —— 从 BIM / CIM 到智慧水务，从数字孪生到智水积木云与水务智能体。
             </p>
           </div>
 
