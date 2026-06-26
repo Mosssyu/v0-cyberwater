@@ -78,13 +78,13 @@ const stages = [
 export function CwCloudSlide({ active }: { active: boolean }) {
   const [stage, setStage] = useState(0)
 
-  // 仅当本幻灯片处于激活态时自动逐级堆叠
+  // 仅当本板块处于激活态时自动逐级推进，积木逐个跑动出现
   useEffect(() => {
     if (!active) {
       setStage(0)
       return
     }
-    const t = setInterval(() => setStage((s) => (s + 1) % 3), 2600)
+    const t = setInterval(() => setStage((s) => (s + 1) % 3), 2800)
     return () => clearInterval(t)
   }, [active])
 
@@ -93,8 +93,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
       {/* 背景氛围 */}
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
 
-      {/* 顶部：标题 + 积木体 */}
-      <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+      {/* 第一行：标题 | 流程条 + 完成体积木塔 */}
+      <div className="relative grid items-start gap-6 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.06] px-3 py-1 font-mono text-xs text-accent">
             <span className="size-1.5 rounded-full bg-accent" />
@@ -105,9 +105,11 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             <br />
             <span className="text-gradient">智能运营平台</span>
           </h3>
+        </div>
 
-          {/* 流程条 */}
-          <div className="mt-6 hidden flex-wrap items-center gap-x-2 gap-y-3 rounded-2xl border border-border bg-card/40 px-4 py-3 sm:flex">
+        {/* 右上：流程条 + 完成体积木塔（无文字标识） */}
+        <div className="flex items-start gap-4">
+          <div className="hidden flex-1 flex-wrap items-center gap-x-2 gap-y-3 self-center rounded-2xl border border-border bg-card/40 px-4 py-3 sm:flex">
             {steps.map((s, i) => (
               <div key={s.label} className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 text-xs text-foreground/85">
@@ -118,29 +120,18 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* 完成体积木塔（厂网河湖 AI 一体化整体形态） */}
-        <div className="relative h-44 sm:h-52 lg:h-56">
-          <div className="absolute right-0 top-0 h-full w-full">
+          <div className="relative hidden h-28 w-32 shrink-0 lg:block">
             <CompleteAssembly />
           </div>
-          <span className="absolute bottom-1 right-2 inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-card/60 px-2.5 py-1 text-[11px] text-foreground/80 backdrop-blur">
-            <span className="size-1.5 rounded-full bg-accent" />
-            一体化完成体
-          </span>
         </div>
       </div>
 
-      {/* 主体：左侧能力卡 + 右侧三阶段 */}
-      <div className="relative mt-6 grid gap-6 lg:grid-cols-[200px_minmax(0,1fr)]">
+      {/* 第二行：五大能力 | 积木托盘排 + 三阶段描述 */}
+      <div className="relative mt-6 grid gap-6 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
         {/* 五大能力 */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
           {features.map((f) => (
-            <div
-              key={f.title}
-              className="flex items-start gap-3 rounded-xl border border-border bg-card/50 p-3"
-            >
+            <div key={f.title} className="flex items-start gap-3 rounded-xl border border-border bg-card/50 p-3">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent/10">
                 <f.icon className="size-4.5 text-accent" />
               </span>
@@ -152,74 +143,86 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           ))}
         </div>
 
-        {/* 三阶段 */}
+        {/* 右区：三列对齐 —— 顶部积木托盘 + 下方阶段描述 */}
         <div className="grid gap-4 md:grid-cols-3">
           {stages.map((st, idx) => {
             const isActive = stage === idx
             return (
               <div
                 key={st.n}
-                className="flex flex-col rounded-2xl border bg-card/40 p-4 transition-all duration-500"
-                style={{
-                  borderColor: isActive ? "oklch(0.7 0.13 215 / 0.6)" : undefined,
-                  boxShadow: isActive ? "0 0 28px -8px oklch(0.7 0.14 215 / 0.7)" : undefined,
-                  transform: isActive ? "translateY(-2px)" : undefined,
-                }}
+                className="flex flex-col gap-3"
                 onMouseEnter={() => setStage(idx)}
               >
-                {/* 阶段积木簇：与本阶段对齐，积木逐个跑动出现 */}
-                <div className="relative mb-2 h-20" key={isActive ? `on-${idx}` : `off-${idx}`}>
-                  <StageBlocks stage={idx} active={isActive} />
-                </div>
-
-                {/* 阶段头 */}
-                <div className="flex items-center gap-2.5">
-                  <span
-                    className="flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-bold transition-colors"
-                    style={{
-                      borderColor: isActive ? "oklch(0.75 0.13 210)" : "oklch(0.4 0.05 240)",
-                      color: isActive ? "oklch(0.85 0.12 205)" : "oklch(0.7 0.03 240)",
-                      backgroundColor: isActive ? "oklch(0.7 0.14 215 / 0.12)" : "transparent",
-                    }}
-                  >
-                    {st.n}
-                  </span>
-                  <span className="text-sm font-semibold text-foreground">{st.title}</span>
-                </div>
-                <p className="mt-1.5 text-[11px] leading-snug text-muted-foreground">{st.sub}</p>
-
-                {/* 模块勾选 */}
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {st.mods.map((m) => (
-                    <span
-                      key={m}
-                      className="inline-flex items-center gap-1 rounded-md border border-border bg-secondary/30 px-2 py-1 text-[11px] text-foreground/85"
-                    >
-                      <Check className="size-3 text-accent" />
-                      {m}
-                    </span>
-                  ))}
-                </div>
-
-                {/* 驾驶舱预览 */}
-                <div className="mt-3 overflow-hidden rounded-xl border border-border">
-                  <div className="relative aspect-[16/10]">
-                    <img
-                      src={st.img || "/placeholder.svg"}
-                      alt={st.caption}
-                      className="size-full object-cover"
-                    />
-                    <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-[oklch(0.12_0.03_245)] to-transparent px-2.5 py-1.5">
-                      <span className="text-[11px] font-medium text-foreground">{st.caption}</span>
-                    </div>
+                {/* 顶部积木托盘：积木逐个跑动出现 */}
+                <div
+                  className="relative flex h-28 items-end justify-center overflow-hidden rounded-2xl border bg-[oklch(0.12_0.03_245)] transition-all duration-500"
+                  style={{
+                    borderColor: isActive ? "oklch(0.7 0.13 215 / 0.55)" : "oklch(0.3 0.04 245 / 0.8)",
+                    boxShadow: isActive ? "0 0 26px -8px oklch(0.7 0.14 215 / 0.65)" : undefined,
+                  }}
+                >
+                  <div
+                    className="bg-grid pointer-events-none absolute inset-0 opacity-30"
+                    aria-hidden="true"
+                  />
+                  <div className="relative h-full w-full" key={isActive ? `on-${idx}` : `off-${idx}`}>
+                    <StageBlocks stage={idx} active={isActive} />
                   </div>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 bg-card/70 px-2.5 py-2">
-                    {st.metrics.map((m) => (
-                      <div key={m.l} className="min-w-0">
-                        <div className="text-xs font-bold text-accent">{m.v}</div>
-                        <div className="text-[10px] leading-none text-muted-foreground">{m.l}</div>
-                      </div>
+                </div>
+
+                {/* 阶段描述卡 */}
+                <div
+                  className="flex flex-1 flex-col rounded-2xl border bg-card/40 p-4 transition-all duration-500"
+                  style={{
+                    borderColor: isActive ? "oklch(0.7 0.13 215 / 0.55)" : undefined,
+                    boxShadow: isActive ? "0 0 26px -8px oklch(0.7 0.14 215 / 0.65)" : undefined,
+                  }}
+                >
+                  {/* 阶段头 */}
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className="flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-bold transition-colors"
+                      style={{
+                        borderColor: isActive ? "oklch(0.75 0.13 210)" : "oklch(0.4 0.05 240)",
+                        color: isActive ? "oklch(0.85 0.12 205)" : "oklch(0.7 0.03 240)",
+                        backgroundColor: isActive ? "oklch(0.7 0.14 215 / 0.12)" : "transparent",
+                      }}
+                    >
+                      {st.n}
+                    </span>
+                    <span className="text-sm font-semibold text-foreground">{st.title}</span>
+                  </div>
+                  <p className="mt-1.5 text-[11px] leading-snug text-muted-foreground">{st.sub}</p>
+
+                  {/* 模块勾选 */}
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {st.mods.map((m) => (
+                      <span
+                        key={m}
+                        className="inline-flex items-center gap-1 rounded-md border border-border bg-secondary/30 px-2 py-1 text-[11px] text-foreground/85"
+                      >
+                        <Check className="size-3 text-accent" />
+                        {m}
+                      </span>
                     ))}
+                  </div>
+
+                  {/* 驾驶舱预览 */}
+                  <div className="mt-3 overflow-hidden rounded-xl border border-border">
+                    <div className="relative aspect-[16/10]">
+                      <img src={st.img || "/placeholder.svg"} alt={st.caption} className="size-full object-cover" />
+                      <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-[oklch(0.12_0.03_245)] to-transparent px-2.5 py-1.5">
+                        <span className="text-[11px] font-medium text-foreground">{st.caption}</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-x-3 gap-y-1 bg-card/70 px-2.5 py-2">
+                      {st.metrics.map((m) => (
+                        <div key={m.l} className="min-w-0">
+                          <div className="text-xs font-bold text-accent">{m.v}</div>
+                          <div className="text-[10px] leading-none text-muted-foreground">{m.l}</div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
