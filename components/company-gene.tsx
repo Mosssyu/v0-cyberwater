@@ -55,11 +55,10 @@ const cards: GeneCard[] = [
 ]
 
 const orbitTags = [
-  { label: "水厂", x: "50%", y: "12%", d: "0s" },
-  { label: "泵站", x: "84%", y: "40%", d: "0.5s" },
-  { label: "管网", x: "76%", y: "76%", d: "1s" },
-  { label: "河湖", x: "24%", y: "76%", d: "1.5s" },
-  { label: "集团运营", x: "16%", y: "40%", d: "2s" },
+  { label: "水厂", x: "50%", y: "18%", d: "0s" },
+  { label: "泵站", x: "82%", y: "50%", d: "0.6s" },
+  { label: "管网", x: "50%", y: "82%", d: "1.2s" },
+  { label: "集团运营", x: "18%", y: "50%", d: "1.8s" },
 ]
 
 const cornerClass: Record<GeneCard["corner"], string> = {
@@ -116,8 +115,9 @@ function Core() {
 export function CompanyGene() {
   return (
     <div className="w-full">
-      <div className="mb-5 flex items-center gap-2.5 lg:justify-center">
-        <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
+      <div className="mb-5 flex items-center gap-3 lg:justify-end">
+        <span className="hidden h-px w-12 bg-gradient-to-r from-transparent to-accent/40 lg:block" aria-hidden="true" />
+        <span className="size-1.5 shrink-0 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
         <h2 className="text-sm font-semibold tracking-wide text-foreground/90">
           公司基因 / 水务运营数字化能力沉淀
         </h2>

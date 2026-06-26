@@ -2,10 +2,9 @@
 
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 
 const navItems = [
-  { label: "首页", href: "/#home" },
+  { label: "首页", href: "/#home", active: true },
   { label: "核心产品", href: "/#products" },
   { label: "项目案例", href: "/cases" },
   { label: "关于我们", href: "/#about" },
@@ -32,18 +31,17 @@ export function SiteHeader() {
             <a
               key={item.label}
               href={item.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className={[
+                "relative text-sm transition-colors",
+                item.active
+                  ? "font-medium text-foreground after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-accent after:shadow-[0_0_8px_1px_oklch(0.79_0.13_200/0.6)]"
+                  : "text-muted-foreground hover:text-foreground",
+              ].join(" ")}
             >
               {item.label}
             </a>
           ))}
         </nav>
-
-        <div className="hidden lg:block">
-          <Button className="rounded-full" nativeButton={false} render={<a href="/#contact" />}>
-            预约演示
-          </Button>
-        </div>
 
         <button
           className="text-foreground lg:hidden"
@@ -67,15 +65,6 @@ export function SiteHeader() {
                 {item.label}
               </a>
             ))}
-            <Button
-              className="mt-3 w-full rounded-full"
-              nativeButton={false}
-              render={
-                <a href="/#contact" onClick={() => setOpen(false)} />
-              }
-            >
-              预约演示
-            </Button>
           </nav>
         </div>
       )}
