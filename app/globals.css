@@ -483,3 +483,38 @@
     animation: none !important;
   }
 }
+
+/* ---------- 数据粒子流光带 ---------- */
+/* 曲线沿自身方向的流光：dash 缓慢移动制造能量流动感 */
+@keyframes flow-line-move {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+.flow-line {
+  stroke-dasharray: 4 26;
+  stroke-dashoffset: 0;
+  animation: flow-line-move var(--flow-dur, 10s) linear infinite;
+  animation-delay: var(--flow-delay, 0s);
+}
+/* 整条流光带极轻微上下浮动，营造前后呼吸层次 */
+@keyframes flow-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+.data-flow {
+  animation: flow-drift 14s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-line,
+  .data-flow,
+  .flow-dot {
+    animation: none !important;
+  }
+}
