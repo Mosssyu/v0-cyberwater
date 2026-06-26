@@ -152,6 +152,25 @@ export function BuildingBlocks({
         aria-hidden="true"
       />
 
+      {/* Step 3 完成时的整体闪光反馈（一次性爆闪） */}
+      <AnimatePresence>
+        {allComplete && (
+          <motion.div
+            key="complete-flash"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl"
+            style={{
+              width: "92%",
+              height: "82%",
+              background: "radial-gradient(circle, oklch(0.95 0.1 200 / 0.75), transparent 62%)",
+            }}
+            initial={{ opacity: 0, scale: 0.55 }}
+            animate={{ opacity: [0, 0.95, 0], scale: [0.55, 1.12, 1.28] }}
+            transition={{ duration: 1.2, times: [0, 0.28, 1], ease: "easeOut" }}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
       <svg
         className="relative h-full w-full"
         viewBox={`0 0 ${VB_W} ${VB_H}`}
@@ -223,7 +242,7 @@ export function BuildingBlocks({
                     scale: 1,
                   }}
                   exit={{ opacity: 0, x: m.from.x, y: m.from.y, scale: 0.6 }}
-                  transition={{ type: "spring", stiffness: 220, damping: 18, mass: 0.6 }}
+                  transition={{ type: "spring", stiffness: 170, damping: 20, mass: 0.7 }}
                   style={{ transformBox: "fill-box", transformOrigin: "center", cursor: "pointer" }}
                   filter="url(#bb-glow)"
                   onMouseEnter={() => onHover(id)}

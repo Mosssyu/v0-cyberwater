@@ -95,7 +95,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   // 本板块激活且未被悬停暂停时，自动 Step1 → Step2 → Step3 循环
   useEffect(() => {
     if (!active || paused) return
-    const t = setInterval(() => setStage((s) => (s + 1) % 3), 2800)
+    const t = setInterval(() => setStage((s) => (s + 1) % 3), 4200)
     return () => clearInterval(t)
   }, [active, paused])
 
@@ -116,8 +116,35 @@ export function CwCloudSlide({ active }: { active: boolean }) {
       {/* 背景氛围 */}
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
 
-      {/* 第一行：标题 | 流程条 + 单一积木组合体（视觉焦点） */}
-      <div className="relative grid items-start gap-6 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)]">
+      {/* 顶部流程条：整条横幅，跨满宽度（与积木联动高亮） */}
+      <div className="relative flex flex-wrap items-center justify-center gap-x-2 gap-y-2 rounded-2xl border border-border bg-card/40 px-4 py-2.5">
+        {flowSteps.map((s, i) => {
+          const on = activeFlow.includes(i)
+          return (
+            <div key={s.label} className="flex items-center gap-1.5">
+              <span
+                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition-all duration-500"
+                style={{
+                  color: on ? "oklch(0.9 0.08 200)" : "oklch(0.62 0.02 240)",
+                  backgroundColor: on ? "oklch(0.7 0.14 215 / 0.14)" : "transparent",
+                }}
+              >
+                <s.icon className="size-3.5" style={{ color: on ? "oklch(0.82 0.13 205)" : "oklch(0.55 0.04 240)" }} />
+                {s.label}
+              </span>
+              {i < flowSteps.length - 1 && (
+                <ChevronRight
+                  className="size-3.5 transition-colors duration-500"
+                  style={{ color: on ? "oklch(0.8 0.13 205)" : "oklch(0.4 0.04 240)" }}
+                />
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* 标题 + 单一积木组合体：垂直居中并排，减少留白 */}
+      <div className="relative mt-6 grid items-center gap-8 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.06] px-3 py-1 font-mono text-xs text-accent">
             <span className="size-1.5 rounded-full bg-accent" />
@@ -128,49 +155,21 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             <br />
             <span className="text-gradient">智能运营平台</span>
           </h3>
-          <p className="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-4 max-w-sm text-pretty text-sm leading-relaxed text-muted-foreground">
             像积木一样，从单一水厂模块起步，按需叠加泵站、管网、河湖与 AI 智能体，逐步组合为一体化智能运营平台。
           </p>
         </div>
 
-        {/* 右上：流程条（与积木联动）+ 积木组合体 */}
-        <div className="relative">
-          {/* 流程条 */}
-          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-3 rounded-2xl border border-border bg-card/40 px-4 py-3">
-            {flowSteps.map((s, i) => {
-              const on = activeFlow.includes(i)
-              return (
-                <div key={s.label} className="flex items-center gap-1.5">
-                  <span
-                    className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-all duration-500"
-                    style={{
-                      color: on ? "oklch(0.9 0.08 200)" : "oklch(0.62 0.02 240)",
-                      backgroundColor: on ? "oklch(0.7 0.14 215 / 0.14)" : "transparent",
-                    }}
-                  >
-                    <s.icon className="size-3.5" style={{ color: on ? "oklch(0.82 0.13 205)" : "oklch(0.55 0.04 240)" }} />
-                    {s.label}
-                  </span>
-                  {i < flowSteps.length - 1 && (
-                    <ChevronRight
-                      className="size-3.5 transition-colors duration-500"
-                      style={{ color: on ? "oklch(0.8 0.13 205)" : "oklch(0.4 0.04 240)" }}
-                    />
-                  )}
-                </div>
-              )
-            })}
-          </div>
-
-          {/* 单一积木组合体 */}
-          <div className="mx-auto mt-2 max-w-[360px] lg:mr-0 lg:ml-auto">
+        {/* 单一积木组合体（缩小比例，水平居中于右侧空间） */}
+        <div className="flex justify-center">
+          <div className="w-full max-w-[260px]">
             <BuildingBlocks step={stage} hovered={hoveredModule} onHover={handleModuleHover} />
           </div>
         </div>
       </div>
 
       {/* 第二行：五大能力 | 三阶段描述卡（与积木联动高亮） */}
-      <div className="relative mt-2 grid gap-6 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)]">
+      <div className="relative mt-8 grid gap-6 lg:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
         {/* 五大能力 */}
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
           {features.map((f) => (
