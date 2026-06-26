@@ -1,15 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import { CwCloudSlide } from "@/components/cw-cloud-slide"
 import { Cw3dpSlide } from "@/components/cw-3dp-slide"
 import { NeonIcon } from "@/components/neon-icon"
-
-const slides = [
-  { id: "cw-cloud", name: "CW-Cloud 水务 AI 运营平台" },
-  { id: "cw-3dp", name: "CW-3DP 三维数字孪生" },
-]
 
 const support = [
   {
@@ -29,16 +22,6 @@ const support = [
 ]
 
 export function Products() {
-  const [active, setActive] = useState(0)
-
-  // 轮播自动切换
-  useEffect(() => {
-    const t = setInterval(() => setActive((a) => (a + 1) % slides.length), 12000)
-    return () => clearInterval(t)
-  }, [])
-
-  const go = (dir: number) => setActive((a) => (a + dir + slides.length) % slides.length)
-
   return (
     <section id="products" className="bg-background py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -54,76 +37,14 @@ export function Products() {
           </p>
         </div>
 
-        {/* 产品标签页 */}
-        <div className="mt-10 flex items-center justify-center gap-3">
-          {slides.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              onClick={() => setActive(i)}
-              className="rounded-full border px-4 py-2 text-sm font-medium transition-all"
-              style={{
-                borderColor: active === i ? "oklch(0.7 0.13 215 / 0.6)" : "var(--border)",
-                color: active === i ? "oklch(0.88 0.1 205)" : "var(--muted-foreground)",
-                backgroundColor: active === i ? "oklch(0.7 0.14 215 / 0.1)" : "transparent",
-                boxShadow: active === i ? "0 0 22px -10px oklch(0.7 0.14 215)" : undefined,
-              }}
-            >
-              {s.name}
-            </button>
-          ))}
+        {/* 产品一：CW-Cloud */}
+        <div className="mt-12">
+          <CwCloudSlide active />
         </div>
 
-        {/* 轮播 */}
-        <div className="relative mt-6">
-          <div className="overflow-hidden">
-            <div
-              className="flex transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)]"
-              style={{ transform: `translateX(-${active * 100}%)` }}
-            >
-              <div className="w-full shrink-0 px-1">
-                <CwCloudSlide active={active === 0} />
-              </div>
-              <div className="w-full shrink-0 px-1">
-                <Cw3dpSlide active={active === 1} />
-              </div>
-            </div>
-          </div>
-
-          {/* 左右切换 */}
-          <button
-            type="button"
-            aria-label="上一个产品"
-            onClick={() => go(-1)}
-            className="absolute -left-3 top-1/2 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground backdrop-blur transition-colors hover:border-accent/50 hover:text-accent lg:flex"
-          >
-            <ChevronLeft className="size-5" />
-          </button>
-          <button
-            type="button"
-            aria-label="下一个产品"
-            onClick={() => go(1)}
-            className="absolute -right-3 top-1/2 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground backdrop-blur transition-colors hover:border-accent/50 hover:text-accent lg:flex"
-          >
-            <ChevronRight className="size-5" />
-          </button>
-        </div>
-
-        {/* 进度点 */}
-        <div className="mt-6 flex items-center justify-center gap-2">
-          {slides.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              aria-label={s.name}
-              onClick={() => setActive(i)}
-              className="h-1.5 rounded-full transition-all"
-              style={{
-                width: active === i ? 28 : 8,
-                backgroundColor: active === i ? "oklch(0.7 0.14 215)" : "oklch(0.4 0.04 245)",
-              }}
-            />
-          ))}
+        {/* 产品二：CW-3DP */}
+        <div className="mt-10">
+          <Cw3dpSlide active />
         </div>
 
         {/* 矩阵支撑 */}

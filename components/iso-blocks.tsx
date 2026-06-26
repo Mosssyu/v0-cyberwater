@@ -1,39 +1,17 @@
 "use client"
 
 /**
- * 等距(isometric)积木体动效。
- * 三组积木分别对应下方三个阶段：
- *   group 0 → 水厂
- *   group 1 → 泵站 + 管网
- *   group 2 → 河湖 + AI 智能体
- * 随 stage(0/1/2) 逐级点亮、升起、发光，并在 stage 2 出现右侧悬浮的 AI 线框积木。
+ * 等距(isometric)积木动效。
+ *  - StageBlocks：每个阶段卡上方对齐的小积木簇，积木逐个「跑动」出现。
+ *      stage 0 → 1 个积木（水厂）
+ *      stage 1 → 3 个积木（水厂 + 泵站 + 管网）
+ *      stage 2 → 河湖 + AI 积木 + 更多虚框积木
+ *  - CompleteAssembly：右上角「完成体」堆叠积木塔（厂网河湖 AI 一体化的整体形态）。
  */
 
-const TW = 26 // tile half width
-const TH = 15 // tile half height
-const H = 30 // cube height
+type Cube = { a: number; b: number; s: number; dashed?: boolean; ai?: boolean }
 
-type CubeDef = { a: number; b: number; s: number; g: number }
-
-// a,b 为等距网格坐标，s 为堆叠层级，g 为所属阶段组
-const cubes: CubeDef[] = [
-  // group 0 —— 水厂（左下小簇）
-  { a: 0, b: 1, s: 0, g: 0 },
-  { a: 1, b: 1, s: 0, g: 0 },
-  { a: 0, b: 1, s: 1, g: 0 },
-  // group 1 —— 泵站 + 管网（中部，较高）
-  { a: 1, b: 0, s: 0, g: 1 },
-  { a: 2, b: 0, s: 0, g: 1 },
-  { a: 1, b: 0, s: 1, g: 1 },
-  { a: 1, b: 0, s: 2, g: 1 },
-  // group 2 —— 河湖 + AI（右侧高塔）
-  { a: 2, b: -1, s: 0, g: 2 },
-  { a: 2, b: -1, s: 1, g: 2 },
-  { a: 2, b: -1, s: 2, g: 2 },
-  { a: 3, b: -1, s: 0, g: 2 },
-]
-
-function facesFor(a: number, b: number, s: number) {
+function cubeFaces(a: number, b: number, s: number, TW: number, TH: number, H: number) {
   const cx = (a - b) * TW
   const baseY = (a + b) * TH
   const topCY = baseY - (s + 1) * H
@@ -49,138 +27,162 @@ function facesFor(a: number, b: number, s: number) {
   return { topFace, leftFace, rightFace }
 }
 
-const groupLabels = [
-  { g: 0, text: "水厂", a: 0.5, b: 1, s: 1 },
-  { g: 1, text: "泵站·管网", a: 1, b: 0, s: 3 },
-  { g: 2, text: "河湖·AI", a: 2, b: -1, s: 3 },
+function IsoDefs() {
+  return (
+    <defs>
+      <linearGradient id="cube-top" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="oklch(0.82 0.13 205)" />
+        <stop offset="1" stopColor="oklch(0.7 0.15 220)" />
+      </linearGradient>
+      <linearGradient id="cube-left" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="oklch(0.5 0.14 235)" />
+        <stop offset="1" stopColor="oklch(0.38 0.12 245)" />
+      </linearGradient>
+      <linearGradient id="cube-right" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="oklch(0.42 0.13 240)" />
+        <stop offset="1" stopColor="oklch(0.3 0.1 250)" />
+      </linearGradient>
+    </defs>
+  )
+}
+
+/** 单个等距立方体（实心 / 线框 / AI 线框） */
+function Cube({
+  c,
+  TW,
+  TH,
+  H,
+  index,
+  animate,
+}: {
+  c: Cube
+  TW: number
+  TH: number
+  H: number
+  index: number
+  animate: boolean
+}) {
+  const { topFace, leftFace, rightFace } = cubeFaces(c.a, c.b, c.s, TW, TH, H)
+  const wire = c.dashed || c.ai
+
+  return (
+    <g
+      className={animate ? "iso-pop" : undefined}
+      style={animate ? { animationDelay: `${index * 150}ms` } : undefined}
+    >
+      {wire ? (
+        <>
+          <polygon
+            points={leftFace}
+            fill={c.ai ? "oklch(0.6 0.14 230 / 0.14)" : "oklch(0.5 0.1 235 / 0.06)"}
+            stroke={c.ai ? "oklch(0.78 0.13 205 / 0.85)" : "oklch(0.66 0.1 215 / 0.5)"}
+            strokeWidth="0.8"
+            strokeDasharray="3 3"
+          />
+          <polygon
+            points={rightFace}
+            fill={c.ai ? "oklch(0.45 0.13 240 / 0.14)" : "oklch(0.4 0.1 245 / 0.05)"}
+            stroke={c.ai ? "oklch(0.78 0.13 205 / 0.85)" : "oklch(0.6 0.1 220 / 0.45)"}
+            strokeWidth="0.8"
+            strokeDasharray="3 3"
+          />
+          <polygon
+            points={topFace}
+            fill={c.ai ? "oklch(0.7 0.14 210 / 0.2)" : "oklch(0.6 0.12 210 / 0.08)"}
+            stroke={c.ai ? "oklch(0.92 0.1 200 / 0.95)" : "oklch(0.78 0.1 205 / 0.7)"}
+            strokeWidth="1"
+            strokeDasharray="3 3"
+          />
+        </>
+      ) : (
+        <g style={{ filter: "drop-shadow(0 0 5px oklch(0.8 0.15 210 / 0.5))" }}>
+          <polygon points={leftFace} fill="url(#cube-left)" stroke="oklch(0.62 0.13 215 / 0.5)" strokeWidth="0.6" />
+          <polygon points={rightFace} fill="url(#cube-right)" stroke="oklch(0.62 0.13 215 / 0.5)" strokeWidth="0.6" />
+          <polygon points={topFace} fill="url(#cube-top)" stroke="oklch(0.88 0.1 200 / 0.85)" strokeWidth="0.8" />
+        </g>
+      )}
+    </g>
+  )
+}
+
+const stageCubes: Cube[][] = [
+  // stage 0 —— 水厂（单个）
+  [{ a: 0, b: 0, s: 0 }],
+  // stage 1 —— 水厂 + 泵站 + 管网（三个）
+  [
+    { a: 0, b: 0, s: 0 },
+    { a: 1, b: 0, s: 0 },
+    { a: 0, b: 1, s: 0 },
+  ],
+  // stage 2 —— 河湖 + AI + 更多虚框积木
+  [
+    { a: 0, b: 0, s: 0 },
+    { a: 1, b: 0, s: 0 },
+    { a: 0, b: 1, s: 0 },
+    { a: 1, b: 0, s: 1, ai: true }, // AI 线框积木
+    { a: 2, b: 0, s: 0, dashed: true },
+    { a: 1, b: 1, s: 0, dashed: true },
+    { a: 0, b: 0, s: 1, dashed: true },
+  ],
 ]
 
-export function IsoBlocks({ stage }: { stage: number }) {
-  // 绘制顺序：先后(远)后前(近) —— 按 (a+b) 升序, 再按 s 升序
-  const ordered = [...cubes].sort((c1, c2) => a_plus_b(c1) - a_plus_b(c2) || c1.s - c2.s)
+/** 阶段积木簇：与下方阶段卡对齐，积木逐个跑动出现 */
+export function StageBlocks({ stage, active }: { stage: number; active: boolean }) {
+  const TW = 15
+  const TH = 8.5
+  const H = 19
+  const cubes = stageCubes[stage] ?? []
+  const ordered = [...cubes].sort((c1, c2) => c1.a + c1.b - (c2.a + c2.b) || c1.s - c2.s)
 
   return (
     <svg
-      viewBox="-90 -60 320 220"
+      viewBox="-52 -58 104 96"
+      preserveAspectRatio="xMidYMax meet"
       className="h-full w-full overflow-visible"
+      style={{ opacity: active ? 1 : 0.4, transition: "opacity .5s ease" }}
       aria-hidden="true"
     >
-      <defs>
-        <linearGradient id="cube-top" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="oklch(0.82 0.13 205)" />
-          <stop offset="1" stopColor="oklch(0.7 0.15 220)" />
-        </linearGradient>
-        <linearGradient id="cube-left" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="oklch(0.5 0.14 235)" />
-          <stop offset="1" stopColor="oklch(0.38 0.12 245)" />
-        </linearGradient>
-        <linearGradient id="cube-right" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="oklch(0.42 0.13 240)" />
-          <stop offset="1" stopColor="oklch(0.3 0.1 250)" />
-        </linearGradient>
-      </defs>
-
-      {ordered.map((c, i) => {
-        const { topFace, leftFace, rightFace } = facesFor(c.a, c.b, c.s)
-        const active = c.g <= stage
-        return (
-          <g
-            key={i}
-            style={{
-              opacity: active ? 1 : 0.22,
-              transform: active ? "translateY(0)" : "translateY(10px)",
-              transition: "opacity .6s ease, transform .6s cubic-bezier(.22,.61,.36,1)",
-              transitionDelay: active ? `${(c.s) * 90}ms` : "0ms",
-              filter: active
-                ? "drop-shadow(0 0 6px oklch(0.8 0.15 210 / 0.55))"
-                : "none",
-            }}
-          >
-            <polygon
-              points={leftFace}
-              fill={active ? "url(#cube-left)" : "oklch(0.28 0.04 245)"}
-              stroke={active ? "oklch(0.62 0.13 215 / 0.5)" : "oklch(0.35 0.04 245)"}
-              strokeWidth="0.6"
-            />
-            <polygon
-              points={rightFace}
-              fill={active ? "url(#cube-right)" : "oklch(0.22 0.03 245)"}
-              stroke={active ? "oklch(0.62 0.13 215 / 0.5)" : "oklch(0.32 0.04 245)"}
-              strokeWidth="0.6"
-            />
-            <polygon
-              points={topFace}
-              fill={active ? "url(#cube-top)" : "oklch(0.34 0.05 240)"}
-              stroke={active ? "oklch(0.88 0.1 200 / 0.8)" : "oklch(0.4 0.04 240)"}
-              strokeWidth="0.8"
-            />
-          </g>
-        )
-      })}
-
-      {/* 阶段标签 */}
-      {groupLabels.map((l) => {
-        const cx = (l.a - l.b) * TW
-        const y = (l.a + l.b) * TH - (l.s + 1) * H - TH - 8
-        const active = l.g <= stage
-        return (
-          <text
-            key={l.g}
-            x={cx}
-            y={y}
-            textAnchor="middle"
-            className="font-sans"
-            style={{
-              fontSize: 9,
-              fontWeight: 600,
-              fill: active ? "oklch(0.9 0.07 200)" : "oklch(0.55 0.03 240)",
-              opacity: active ? 1 : 0,
-              transition: "opacity .5s ease",
-            }}
-          >
-            {l.text}
-          </text>
-        )
-      })}
-
-      {/* stage 2 出现的右侧悬浮 AI 线框积木 + 虚线连接 */}
-      {(() => {
-        const show = stage >= 2
-        const ax = 4.4
-        const ay = -1.6
-        const { topFace, leftFace, rightFace } = facesFor(ax, ay, 0)
-        const fromX = (3 - -1) * TW
-        const fromY = (3 + -1) * TH - H
-        const toX = (ax - ay) * TW
-        const toY = (ax + ay) * TH
-        return (
-          <g
-            style={{
-              opacity: show ? 1 : 0,
-              transform: show ? "translateY(0)" : "translateY(-12px)",
-              transition: "opacity .6s ease .15s, transform .6s ease .15s",
-            }}
-          >
-            <line
-              x1={fromX}
-              y1={fromY}
-              x2={toX}
-              y2={toY}
-              stroke="oklch(0.8 0.13 205 / 0.7)"
-              strokeWidth="1"
-              strokeDasharray="3 4"
-              className={show ? "gene-flow" : ""}
-            />
-            <polygon points={leftFace} fill="oklch(0.5 0.13 230 / 0.12)" stroke="oklch(0.75 0.13 210 / 0.7)" strokeWidth="0.8" />
-            <polygon points={rightFace} fill="oklch(0.4 0.12 240 / 0.12)" stroke="oklch(0.75 0.13 210 / 0.7)" strokeWidth="0.8" />
-            <polygon points={topFace} fill="oklch(0.7 0.14 210 / 0.18)" stroke="oklch(0.9 0.1 200 / 0.9)" strokeWidth="1" />
-          </g>
-        )
-      })()}
+      <IsoDefs />
+      {ordered.map((c, i) => (
+        <Cube key={i} c={c} TW={TW} TH={TH} H={H} index={i} animate={active} />
+      ))}
     </svg>
   )
 }
 
-function a_plus_b(c: CubeDef) {
-  return c.a + c.b
+const assemblyCubes: Cube[] = [
+  { a: 0, b: 0, s: 0 },
+  { a: 1, b: 0, s: 0 },
+  { a: 0, b: 1, s: 0 },
+  { a: 1, b: 1, s: 0 },
+  { a: 0, b: 0, s: 1 },
+  { a: 1, b: 0, s: 1 },
+  { a: 0, b: 1, s: 1 },
+  { a: 0, b: 0, s: 2 },
+  { a: 0, b: 0, s: 3, ai: true }, // 顶部 AI 线框
+  { a: 2, b: 0, s: 0, dashed: true },
+  { a: 2, b: 0, s: 1, dashed: true },
+  { a: -1, b: 0, s: 0, dashed: true },
+]
+
+/** 完成体堆叠积木塔（右上角整体形态） */
+export function CompleteAssembly() {
+  const TW = 19
+  const TH = 11
+  const H = 25
+  const ordered = [...assemblyCubes].sort((c1, c2) => c1.a + c1.b - (c2.a + c2.b) || c1.s - c2.s)
+
+  return (
+    <svg
+      viewBox="-64 -108 150 180"
+      preserveAspectRatio="xMidYMax meet"
+      className="iso-float h-full w-full overflow-visible"
+      aria-hidden="true"
+    >
+      <IsoDefs />
+      {ordered.map((c, i) => (
+        <Cube key={i} c={c} TW={TW} TH={TH} H={H} index={i} animate={false} />
+      ))}
+    </svg>
+  )
 }

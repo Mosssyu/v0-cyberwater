@@ -13,7 +13,7 @@ import {
   Check,
   ChevronRight,
 } from "lucide-react"
-import { IsoBlocks } from "@/components/iso-blocks"
+import { StageBlocks, CompleteAssembly } from "@/components/iso-blocks"
 
 const features = [
   { icon: Building2, title: "全场景", desc: "覆盖厂、站、网、河湖" },
@@ -120,11 +120,15 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           </div>
         </div>
 
-        {/* 积木体动效 */}
+        {/* 完成体积木塔（厂网河湖 AI 一体化整体形态） */}
         <div className="relative h-44 sm:h-52 lg:h-56">
           <div className="absolute right-0 top-0 h-full w-full">
-            <IsoBlocks stage={stage} />
+            <CompleteAssembly />
           </div>
+          <span className="absolute bottom-1 right-2 inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-card/60 px-2.5 py-1 text-[11px] text-foreground/80 backdrop-blur">
+            <span className="size-1.5 rounded-full bg-accent" />
+            一体化完成体
+          </span>
         </div>
       </div>
 
@@ -163,6 +167,11 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 }}
                 onMouseEnter={() => setStage(idx)}
               >
+                {/* 阶段积木簇：与本阶段对齐，积木逐个跑动出现 */}
+                <div className="relative mb-2 h-20" key={isActive ? `on-${idx}` : `off-${idx}`}>
+                  <StageBlocks stage={idx} active={isActive} />
+                </div>
+
                 {/* 阶段头 */}
                 <div className="flex items-center gap-2.5">
                   <span

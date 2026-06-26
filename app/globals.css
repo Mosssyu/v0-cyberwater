@@ -558,3 +558,42 @@
     opacity: 0;
   }
 }
+
+/* ---------- 等距积木动效 ---------- */
+/* 单个积木「跑动」入场：从下方升起 + 淡入 */
+@keyframes iso-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.iso-pop {
+  animation: iso-pop 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+/* 完成体积木塔轻微浮动 */
+@keyframes iso-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.iso-float {
+  animation: iso-float 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-pop,
+  .iso-float {
+    animation: none !important;
+  }
+}
