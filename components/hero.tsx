@@ -1,35 +1,8 @@
-import {
-  ArrowRight,
-  LayoutGrid,
-  Bot,
-  Factory,
-  Network,
-  Box,
-  Radio,
-  Brain,
-  BarChart3,
-  Zap,
-  TrendingUp,
-} from "lucide-react"
+import { ArrowRight, LayoutGrid } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroDashboard } from "@/components/hero-dashboard"
 import { GrowthTimeline } from "@/components/growth-timeline"
 import { PlatformArchitecture } from "@/components/platform-architecture"
-
-const productPills = [
-  { name: "CW-Agent", icon: Bot, color: "text-[oklch(0.7_0.13_300)]", href: "/#product-agent" },
-  { name: "CW-POM", icon: Factory, color: "text-emerald-400", href: "/#product-pom" },
-  { name: "CW-PPI", icon: Network, color: "text-accent", href: "/#product-ppi" },
-  { name: "CW-3DP", icon: Box, color: "text-primary", href: "/#product-3dp" },
-]
-
-const chain = [
-  { label: "感知", icon: Radio },
-  { label: "认知", icon: Brain },
-  { label: "决策", icon: BarChart3 },
-  { label: "执行", icon: Zap },
-  { label: "进化", icon: TrendingUp },
-]
 
 export function Hero() {
   return (
@@ -84,34 +57,6 @@ export function Hero() {
               </Button>
             </div>
 
-            {/* 产品入口标签 */}
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              {productPills.map((p) => (
-              <a
-                key={p.name}
-                href={p.href}
-                className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-card/50 px-3 py-1.5 text-xs font-medium text-foreground backdrop-blur transition-colors hover:border-accent/40 hover:bg-card"
-                >
-                  <p.icon className={`size-3.5 ${p.color}`} />
-                  {p.name}
-                </a>
-              ))}
-            </div>
-
-            {/* 能力链路 */}
-            <div className="mt-7 flex flex-wrap items-center gap-x-1 gap-y-2">
-              {chain.map((c, i) => (
-                <div key={c.label} className="flex items-center gap-1">
-                  <span className="inline-flex items-center gap-1.5 rounded-md border border-accent/15 bg-accent/[0.06] px-2.5 py-1 text-xs text-foreground/80">
-                    <c.icon className="size-3 text-accent" />
-                    {c.label}
-                  </span>
-                  {i < chain.length - 1 ? (
-                    <span className="text-accent/40">·</span>
-                  ) : null}
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* 右侧：产品总览大屏（向中心左收内凹） */}
@@ -127,9 +72,6 @@ export function Hero() {
           <h2 className="text-gradient text-balance text-2xl font-bold tracking-tight sm:text-3xl">
             发展路径
           </h2>
-          <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
-            十余年沉淀，从项目能力走向产品能力 —— 从 BIM / CIM 到智慧水务，从数字孪生到智水积木云与水务智能体。
-          </p>
         </div>
         <GrowthTimeline />
       </div>
