@@ -9,11 +9,11 @@ export function Hero() {
       <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-[560px]" aria-hidden="true" />
       {/* 科技网格 */}
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0" aria-hidden="true" />
-      {/* 数据粒子流光带（左下角氛围层，z 低于内容、高于网格） */}
-      <DataFlowStream />
 
       <div className="relative z-[1] mx-auto max-w-7xl px-6 pt-20 pb-16 lg:pt-24">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
+        {/* 数据粒子流光带（约束在 Hero 文案区域下方，不触及时间轴） */}
+        <DataFlowStream />
+        <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
           {/* 左侧：价值主张 */}
           <div className="max-w-xl">
             {/* Badge */}
