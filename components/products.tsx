@@ -1,57 +1,14 @@
-import { Bot, Network, Box, Factory } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
+"use client"
+
+import { useEffect, useState } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { CwCloudSlide } from "@/components/cw-cloud-slide"
+import { Cw3dpSlide } from "@/components/cw-3dp-slide"
 import { NeonIcon } from "@/components/neon-icon"
-import { PlatformArchitecture } from "@/components/platform-architecture"
 
-type Product = {
-  icon: LucideIcon
-  name: string
-  href: string
-  title: string
-  desc: string
-  tags: string[]
-  accent: string
-  featured?: boolean
-}
-
-const products: Product[] = [
-  {
-    icon: Bot,
-    name: "CW-Agent·水务智能体",
-    href: "/#product-agent",
-    title: "智能认知与决策中枢",
-    desc: "面向运营的 AI 大脑，负责知识问答、运行诊断、优化建议、报告生成与智能体闭环，让运营经验沉淀为可复用的智能能力。",
-    tags: ["智能问答", "运行诊断", "优化建议", "报告生成", "智能体闭环"],
-    accent: "oklch(0.62 0.19 250)",
-    featured: true,
-  },
-  {
-    icon: Network,
-    name: "CW-PPI·厂网河湖一体化",
-    href: "/#product-ppi",
-    title: "多业态一体化运营平台",
-    desc: "统一管理厂、站、网、河、湖、防汛与调度业务，打通集团化多业态运营，实现数据赋能与协同治理。",
-    tags: ["水厂运营", "泵站调度", "管网管理", "河湖治理", "防汛调度"],
-    accent: "oklch(0.74 0.14 205)",
-  },
-  {
-    icon: Box,
-    name: "CW-3DP·三维孪生",
-    href: "/#product-3dp",
-    title: "空间可视化与仿真推演平台",
-    desc: "融合 BIM+GIS 的二三维一体化平台，提供三维实景、空间定位、场景联动与模拟推演，实现全域可感知。",
-    tags: ["三维实景", "空间定位", "场景联动", "模拟推演", "孪生运维"],
-    accent: "oklch(0.62 0.18 250)",
-  },
-  {
-    icon: Factory,
-    name: "CW-POM·数字化水厂",
-    href: "/#product-pom",
-    title: "数字水厂运营管理平台",
-    desc: "覆盖生产、设备、安全、巡检、工单、移动执行与经营分析的全流程闭环，打造新一代未来水厂。",
-    tags: ["生产监控", "设备运维", "安全巡检", "工单移动执行", "经营分析"],
-    accent: "oklch(0.7 0.16 160)",
-  },
+const slides = [
+  { id: "cw-cloud", name: "CW-Cloud 水务 AI 运营平台" },
+  { id: "cw-3dp", name: "CW-3DP 三维数字孪生" },
 ]
 
 const support = [
@@ -72,87 +29,105 @@ const support = [
 ]
 
 export function Products() {
+  const [active, setActive] = useState(0)
+
+  // 轮播自动切换
+  useEffect(() => {
+    const t = setInterval(() => setActive((a) => (a + 1) % slides.length), 12000)
+    return () => clearInterval(t)
+  }, [])
+
+  const go = (dir: number) => setActive((a) => (a + dir + slides.length) % slides.length)
+
   return (
     <section id="products" className="bg-background py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
-            Capability Matrix
+            Core Products
           </span>
           <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            四大产品，各司其职，协同成网
+            核心产品
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            从智能决策到一体化运营、空间仿真与数字水厂，四大产品分层协同，构建端到端的智慧水务能力。
+            CW-Cloud 水务 AI 运营平台与 CW-3DP 三维数字孪生，从智能运营到空间仿真，构建端到端的智慧水务能力。
           </p>
         </div>
 
-        {/* 平台架构总览 */}
-        <div className="mt-12">
-          <PlatformArchitecture />
-        </div>
-
-        {/* 四大核心产品 */}
-        <div className="mt-16 grid gap-6 lg:grid-cols-2">
-          {products.map((product) => (
-            <a
-              key={product.name}
-              href={product.href}
-              className="group relative flex flex-col rounded-2xl border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5"
+        {/* 产品标签页 */}
+        <div className="mt-10 flex items-center justify-center gap-3">
+          {slides.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => setActive(i)}
+              className="rounded-full border px-4 py-2 text-sm font-medium transition-all"
               style={{
-                borderColor: product.featured
-                  ? `color-mix(in oklab, ${product.accent} 55%, transparent)`
-                  : undefined,
-                boxShadow: product.featured
-                  ? `0 0 32px -12px ${product.accent}`
-                  : undefined,
+                borderColor: active === i ? "oklch(0.7 0.13 215 / 0.6)" : "var(--border)",
+                color: active === i ? "oklch(0.88 0.1 205)" : "var(--muted-foreground)",
+                backgroundColor: active === i ? "oklch(0.7 0.14 215 / 0.1)" : "transparent",
+                boxShadow: active === i ? "0 0 22px -10px oklch(0.7 0.14 215)" : undefined,
               }}
             >
-              {/* 图标 + 产品名 */}
-              <div className="flex items-center gap-4">
-                <span
-                  className="flex size-14 shrink-0 items-center justify-center rounded-2xl"
-                  style={{
-                    backgroundColor: product.featured
-                      ? product.accent
-                      : `color-mix(in oklab, ${product.accent} 14%, transparent)`,
-                    boxShadow: product.featured ? `0 0 24px -6px ${product.accent}` : undefined,
-                  }}
-                >
-                  <product.icon
-                    className="size-7"
-                    style={{ color: product.featured ? "oklch(0.99 0 0)" : product.accent }}
-                  />
-                </span>
-                <span className="font-mono text-xl font-semibold tracking-wide text-foreground">
-                  {product.name}
-                </span>
+              {s.name}
+            </button>
+          ))}
+        </div>
+
+        {/* 轮播 */}
+        <div className="relative mt-6">
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-700 ease-[cubic-bezier(.22,.61,.36,1)]"
+              style={{ transform: `translateX(-${active * 100}%)` }}
+            >
+              <div className="w-full shrink-0 px-1">
+                <CwCloudSlide active={active === 0} />
               </div>
-
-              {/* 副标题 + 描述 */}
-              <h3 className="mt-7 text-xl font-bold text-foreground">{product.title}</h3>
-              <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">{product.desc}</p>
-
-              {/* 分隔线 */}
-              <span className="mt-7 h-px w-full bg-border" />
-
-              {/* 标签胶囊 */}
-              <div className="mt-6 flex flex-wrap gap-2.5">
-                {product.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-border bg-secondary/30 px-3.5 py-1.5 text-[13px] text-foreground/80 transition-colors group-hover:border-border/80"
-                  >
-                    {t}
-                  </span>
-                ))}
+              <div className="w-full shrink-0 px-1">
+                <Cw3dpSlide active={active === 1} />
               </div>
-            </a>
+            </div>
+          </div>
+
+          {/* 左右切换 */}
+          <button
+            type="button"
+            aria-label="上一个产品"
+            onClick={() => go(-1)}
+            className="absolute -left-3 top-1/2 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground backdrop-blur transition-colors hover:border-accent/50 hover:text-accent lg:flex"
+          >
+            <ChevronLeft className="size-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="下一个产品"
+            onClick={() => go(1)}
+            className="absolute -right-3 top-1/2 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-card/80 text-foreground backdrop-blur transition-colors hover:border-accent/50 hover:text-accent lg:flex"
+          >
+            <ChevronRight className="size-5" />
+          </button>
+        </div>
+
+        {/* 进度点 */}
+        <div className="mt-6 flex items-center justify-center gap-2">
+          {slides.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              aria-label={s.name}
+              onClick={() => setActive(i)}
+              className="h-1.5 rounded-full transition-all"
+              style={{
+                width: active === i ? 28 : 8,
+                backgroundColor: active === i ? "oklch(0.7 0.14 215)" : "oklch(0.4 0.04 245)",
+              }}
+            />
           ))}
         </div>
 
         {/* 矩阵支撑 */}
-        <div className="mt-10">
+        <div className="mt-16">
           <div className="flex items-center gap-3">
             <span className="font-mono text-xs uppercase tracking-wider text-accent">
               矩阵支撑 · Foundation
@@ -168,16 +143,12 @@ export function Products() {
                 <NeonIcon src={item.img} alt={item.title} glow={item.glow} className="size-11" />
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-base font-semibold text-foreground">
-                      {item.title}
-                    </h3>
+                    <h3 className="text-base font-semibold text-foreground">{item.title}</h3>
                     <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
                       {item.tag}
                     </span>
                   </div>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                    {item.desc}
-                  </p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
                 </div>
               </div>
             ))}
