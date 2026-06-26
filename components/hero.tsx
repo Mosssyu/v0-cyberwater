@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroDashboard } from "@/components/hero-dashboard"
+import { GrowthTimeline } from "@/components/growth-timeline"
 import { PlatformArchitecture } from "@/components/platform-architecture"
 
 const productPills = [
@@ -118,6 +119,19 @@ export function Hero() {
             <HeroDashboard />
           </div>
         </div>
+      </div>
+
+      {/* 发展路径 */}
+      <div className="relative mx-auto max-w-7xl px-6 pt-4 pb-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-gradient text-balance text-2xl font-bold tracking-tight sm:text-3xl">
+            发展路径
+          </h2>
+          <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
+            十余年沉淀，从项目能力走向产品能力 —— 从 BIM / CIM 到智慧水务，从数字孪生到智水积木云与水务智能体。
+          </p>
+        </div>
+        <GrowthTimeline />
       </div>
 
       {/* 下方三维分层平台架构 */}

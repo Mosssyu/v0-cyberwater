@@ -1,5 +1,4 @@
 import { Award, Building2, FileCheck, ShieldCheck } from "lucide-react"
-import { GrowthTimeline } from "@/components/growth-timeline"
 
 const intro =
   "北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，形成了面向水务行业的标准化、产品化、可配置的软件服务能力。"
@@ -44,19 +43,6 @@ export function About() {
           ))}
         </div>
 
-        {/* 发展路径 */}
-        <div className="mt-20">
-          <div className="mx-auto max-w-3xl text-center">
-            <h3 className="text-gradient text-balance text-2xl font-bold tracking-tight sm:text-3xl">
-              发展路径
-            </h3>
-            <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">
-              十余年沉淀，从项目能力走向产品能力 —— 从 BIM / CIM 到智慧水务，从数字孪生到智水积木云与水务智能体。
-            </p>
-          </div>
-
-          <GrowthTimeline />
-        </div>
       </div>
     </section>
   )
