@@ -1,6 +1,7 @@
 import { Bot, Network, Box, Factory } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { NeonIcon } from "@/components/neon-icon"
+import { PlatformArchitecture } from "@/components/platform-architecture"
 
 type Product = {
   icon: LucideIcon
@@ -84,6 +85,11 @@ export function Products() {
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
             从智能决策到一体化运营、空间仿真与数字水厂，四大产品分层协同，构建端到端的智慧水务能力。
           </p>
+        </div>
+
+        {/* 平台架构总览 */}
+        <div className="mt-12">
+          <PlatformArchitecture />
         </div>
 
         {/* 四大核心产品 */}

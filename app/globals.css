@@ -406,3 +406,80 @@
     animation: none !important;
   }
 }
+
+/* ---------- 公司基因能力图谱动效 ---------- */
+@keyframes gene-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes gene-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes gene-core-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 40px -4px oklch(0.78 0.16 215 / 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 64px 2px oklch(0.8 0.16 205 / 0.9);
+  }
+}
+@keyframes gene-dash {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+.gene-float-anim {
+  animation: gene-float 5s ease-in-out infinite;
+}
+.gene-float-anim:nth-of-type(even) {
+  animation-delay: 1.2s;
+}
+.gene-twinkle-anim {
+  animation: gene-twinkle 3s ease-in-out infinite;
+}
+.gene-core-breathe {
+  animation: gene-core-breathe 4s ease-in-out infinite;
+}
+.gene-flow {
+  stroke-dasharray: 3 9;
+  animation: gene-dash 1s linear infinite;
+}
+
+/* 时间轴聚焦卡片入场 */
+@keyframes focus-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-focus {
+  animation: focus-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gene-float-anim,
+  .gene-twinkle-anim,
+  .gene-core-breathe,
+  .gene-flow,
+  .reveal-focus {
+    animation: none !important;
+  }
+}
