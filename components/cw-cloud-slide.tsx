@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { motion } from "framer-motion"
 import {
   Box,
   Boxes,
@@ -12,6 +13,16 @@ import {
   ChevronRight,
   RotateCcw,
   Check,
+  Plus,
+  ShieldCheck,
+  Recycle,
+  Factory,
+  Gauge,
+  Waves,
+  GitFork,
+  Cpu,
+  CloudRain,
+  type LucideIcon,
 } from "lucide-react"
 import { BuildingBlocks, type ModuleDef } from "@/components/building-blocks"
 
@@ -38,6 +49,21 @@ const productModules: ModuleDef[] = [
   { id: "flood", label: "城市防汛管理", col: 3, row: 2, palette: P.sky },
   { id: "ai", label: "水务智能体", col: 0, row: 0, palette: P.ai, float: true },
 ]
+
+// ---------- 11 个模块的详细介绍（图标 + 简要说明） ----------
+const productInfo: Record<string, { icon: LucideIcon; desc: string }> = {
+  group: { icon: Building2, desc: "面向水务集团，多区域、多公司、多厂站统一管理与运营分析。" },
+  integrated: { icon: Network, desc: "打通水厂、管网、泵站数据，实现厂网联调与一体化运营。" },
+  sso: { icon: ShieldCheck, desc: "统一身份认证与权限管理，一次登录贯通全平台应用。" },
+  sewage: { icon: Recycle, desc: "面向分散式、农村污水站点的集中监控与远程运维。" },
+  plant: { icon: Factory, desc: "覆盖供水、污水厂的生产、工艺、能耗与设备全流程运营。" },
+  pump: { icon: Gauge, desc: "泵站、水闸的远程监控、智能调度与运行优化。" },
+  reservoir: { icon: Waves, desc: "水库标准化管理与大坝安全运行监测。" },
+  pipe: { icon: GitFork, desc: "管网 GIS、压力流量监测、漏损分析与分区计量。" },
+  iot: { icon: Cpu, desc: "多协议设备接入、数据采集与边缘计算底座。" },
+  flood: { icon: CloudRain, desc: "内涝预警、排水调度与应急指挥一体化。" },
+  ai: { icon: BrainCircuit, desc: "大模型驱动的问数、报表、告警、工单与知识助手。" },
+}
 
 // ---------- 5 个演示阶段 ----------
 const demoStages: { title: string; flow: number; active: string[]; note: string }[] = [
@@ -77,34 +103,6 @@ const flowSteps = [
   { icon: Blocks, label: "多模块自由组合" },
   { icon: Network, label: "跨场景一体化" },
   { icon: Sparkles, label: "AI 持续升级" },
-]
-
-// 典型组合示例（点击应用到组合体）
-const examples: { icon: typeof Box; title: string; desc: string; combo: string[] }[] = [
-  {
-    icon: Box,
-    title: "单业态独立建设",
-    desc: "水厂、管网、泵闸站、分布式污水、水库、防汛等模块均可独立建设",
-    combo: ["plant"],
-  },
-  {
-    icon: Network,
-    title: "厂网站一体化",
-    desc: "水厂运营 + 泵闸站 + 管网 + IoT + SSO",
-    combo: ["plant", "pump", "pipe", "iot", "sso"],
-  },
-  {
-    icon: Building2,
-    title: "集团多业态运营",
-    desc: "集团运营 + 多厂站 + 多业态 + IoT + SSO",
-    combo: ["group", "plant", "pump", "pipe", "sewage", "reservoir", "flood", "iot", "sso"],
-  },
-  {
-    icon: BrainCircuit,
-    title: "AI 智能运营平台",
-    desc: "业务模块 + 水务智能体：问数 / 报表 / 告警 / 工单 / 知识 / 运营分析",
-    combo: ["group", "plant", "pump", "pipe", "sewage", "reservoir", "flood", "iot", "sso", "ai"],
-  },
 ]
 
 const descriptors = ["单业态可独立建设", "多模块可自由组合", "集团级可统一运营", "AI 能力可持续叠加"]
@@ -159,11 +157,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
       const base = prev ?? activeIds
       return base.includes(id) ? base.filter((x) => x !== id) : [...base, id]
     })
-  }
-
-  const applyCombo = (combo: string[]) => {
-    setPaused(true)
-    setCustom(combo)
   }
 
   const reset = () => {
@@ -262,7 +255,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           <div className="rounded-2xl border border-border bg-card/40 p-3.5">
             <div className="mb-2.5 flex items-center gap-1.5">
               <Boxes className="size-4 text-accent" />
-              <span className="text-xs font-semibold text-foreground">产品模块池 · 11 类</span>
+              <span className="text-xs font-semibold text-foreground">产品模块池 · 12 类</span>
             </div>
             <div className="flex flex-col gap-1.5">
               {productModules.map((m) => {
@@ -290,6 +283,12 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                   </button>
                 )
               })}
+              {/* 第 12 项：更多模块持续扩展 */}
+              <div className="flex items-center gap-2 rounded-lg border border-dashed border-accent/30 px-2.5 py-1.5 text-[12px] opacity-70">
+                <Plus className="size-3 shrink-0 text-accent" />
+                <span className="min-w-0 flex-1 truncate text-foreground/80">更多+</span>
+                <span className="shrink-0 text-[10px] text-muted-foreground">持续扩展</span>
+              </div>
             </div>
           </div>
 
@@ -313,35 +312,49 @@ export function CwCloudSlide({ active }: { active: boolean }) {
         </div>
       </div>
 
-      {/* 典型组合示例（点击应用） */}
+      {/* 11 个产品模块详解（带动画 + 简要说明，联动组合体高亮） */}
       <div className="relative mt-8">
         <div className="mb-3 flex items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">典型组合示例</span>
-          <span className="text-[11px] text-muted-foreground">（仅为示例，可自由组合 / 不限顺序）</span>
+          <span className="text-sm font-semibold text-foreground">产品模块详解 · 11 类</span>
+          <span className="text-[11px] text-muted-foreground">（悬停联动组合体高亮，点击可加入 / 移除组合）</span>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {examples.map((ex) => {
-            const isCurrent = custom && custom.length === ex.combo.length && ex.combo.every((c) => custom.includes(c))
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {productModules.map((m, i) => {
+            const info = productInfo[m.id]
+            const Icon = info.icon
+            const on = activeIds.includes(m.id)
             return (
-              <button
-                key={ex.title}
-                onClick={() => applyCombo(ex.combo)}
-                className="flex flex-col rounded-2xl border bg-card/40 p-4 text-left transition-all duration-300 hover:-translate-y-0.5"
-                style={{
-                  borderColor: isCurrent ? "oklch(0.7 0.13 215 / 0.6)" : undefined,
-                  boxShadow: isCurrent ? "0 0 24px -8px oklch(0.7 0.14 215 / 0.7)" : undefined,
-                }}
+              <motion.button
+                key={m.id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
+                whileHover={{ y: -4 }}
+                onMouseEnter={() => handleHover(m.id)}
+                onMouseLeave={() => handleHover(null)}
+                onClick={() => toggleModule(m.id)}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border bg-card/40 p-4 text-left transition-colors duration-300"
+                style={{ borderColor: on ? "oklch(0.7 0.13 215 / 0.55)" : "oklch(0.32 0.03 240 / 0.6)" }}
               >
-                <span className="flex size-9 items-center justify-center rounded-lg bg-accent/10">
-                  <ex.icon className="size-4.5 text-accent" />
+                {/* 顶部色条：悬停时由左铺开 */}
+                <span
+                  className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
+                  style={{ backgroundColor: m.palette.top, boxShadow: `0 0 10px 1px ${m.palette.glow}` }}
+                  aria-hidden="true"
+                />
+                <span
+                  className="flex size-9 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: `${m.palette.top}1f` }}
+                >
+                  <Icon className="size-4.5" style={{ color: m.palette.top }} />
                 </span>
-                <span className="mt-3 text-sm font-semibold text-foreground">{ex.title}</span>
-                <span className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{ex.desc}</span>
-                <span className="mt-2.5 inline-flex items-center gap-1 text-[11px] text-accent">
-                  {ex.combo.length} 个模块
-                  <ChevronRight className="size-3" />
+                <span className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                  {m.label}
+                  {on && <Check className="size-3.5 text-accent" />}
                 </span>
-              </button>
+                <span className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{info.desc}</span>
+              </motion.button>
             )
           })}
         </div>
