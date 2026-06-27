@@ -114,15 +114,15 @@ export function GrowthTimeline() {
                   <span
                     className={[
                       "relative z-10 inline-flex shrink-0 items-center justify-center rounded-full border font-bold transition-all duration-500",
-                      m.key ? "size-6 text-[11px]" : "size-3.5 text-[0px]",
+                      m.key ? "size-6 text-[11px]" : "size-4 text-[0px]",
                       isActive
                         ? "scale-125 border-accent bg-accent text-background shadow-[0_0_20px_2px_oklch(0.79_0.13_200/0.75)]"
                         : m.key
                           ? "border-accent/60 bg-accent/15 text-accent shadow-[0_0_12px_-2px_oklch(0.79_0.13_200/0.6)]"
-                          : "border-border bg-card text-transparent",
+                          : "border-accent/30 bg-card text-transparent group-hover:border-accent/60",
                     ].join(" ")}
                   >
-                    {m.key ? "★" : ""}
+                    {m.key ? "★" : <span className="size-1.5 rounded-full bg-accent/70" aria-hidden="true" />}
                   </span>
                 </span>
 
