@@ -474,12 +474,56 @@
   animation: focus-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+/* 时间轴节点逐个入场：上方从上滑入，下方从下滑入 */
+@keyframes tl-item-up {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes tl-item-down {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.tl-item-up {
+  animation: tl-item-up 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.tl-item-down {
+  animation: tl-item-down 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+/* 中轴线生长：从左到右铺开 */
+@keyframes tl-line-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.tl-line-grow {
+  transform-origin: left center;
+  animation: tl-line-grow 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .gene-float-anim,
   .gene-twinkle-anim,
   .gene-core-breathe,
   .gene-flow,
-  .reveal-focus {
+  .reveal-focus,
+  .tl-item-up,
+  .tl-item-down,
+  .tl-line-grow {
     animation: none !important;
   }
 }
