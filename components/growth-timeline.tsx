@@ -42,7 +42,7 @@ const milestones: Milestone[] = [
     key: true,
   },
   {
-    year: "2024 - 2025",
+    year: "2025",
     title: "智水积木云产品化",
     desc: "推进管理、技术、产品体系重构，沉淀并打造积木云平台，并结合大模型前瞻布局水务智能体（CW-Agent）产品化。",
     key: false,
