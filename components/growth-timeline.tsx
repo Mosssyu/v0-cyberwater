@@ -14,43 +14,43 @@ const milestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: "聚焦 BIM / CIM 与数字化工程能力起步。",
+    desc: "中信国安 + 中国建筑标准设计研究院相关团队创立云建标，开始布局城市数字化服务。",
     key: false,
   },
   {
     year: "2016",
     title: "双高认证",
-    desc: "通过高新技术企业认定，夯实技术资质。",
+    desc: "获得国家高新技术企业、中关村高新技术企业认证，技术研发能力获得认可。",
     key: false,
   },
   {
     year: "2018",
-    title: "进入水务运营场景",
-    desc: "深度绑定国内头部水务集团，从技术能力真正进入真实水务运营场景，迈入行业深水区。",
+    title: "北控水务战略入股",
+    desc: "北控水务战略入股，云建标深入头部水务集团运营体系，从技术能力真正进入真实水务运营场景。",
     key: true,
   },
   {
     year: "2020",
-    title: "参与行业标准建设",
-    desc: "加入水协智慧水务委员会，参与行业标准建设，沉淀管理标准与业务流程。",
+    title: "加入水协智慧委",
+    desc: "成为水协智慧委筹委委员单位，进一步参与智慧水务行业实践与交流，沉淀管理标准与业务流程。",
     key: false,
   },
   {
     year: "2022",
     title: "全面对外服务",
-    desc: "从内部能力沉淀走向外部产品化服务，能力成熟、对外开放，开始规模化服务行业客户。",
+    desc: "逐步掌握水务全业务核心产品能力，从集团内部场景沉淀走向行业市场，开始规模化服务行业客户。",
     key: true,
   },
   {
     year: "2024 - 2025",
-    title: "智水积木云与智能体布局",
-    desc: "推出标准化、可配置的智水积木云产品，并前瞻布局水务智能体。",
+    title: "智水积木云产品化",
+    desc: "推进管理、技术、产品体系重构，沉淀 CW-Cloud 新一代水务运营平台，并结合大模型前瞻布局水务智能体（CW-Agent）产品化。",
     key: false,
   },
   {
     year: "2026",
-    title: "新一代 AI 水务运营平台",
-    desc: "AI 化、平台化、一体化，感知—认知—决策—执行—进化，全面赋能水务智能化运营。",
+    title: "新一代 AI 智能运营平台发布",
+    desc: "全面发布新一代 AI 智能运营平台，深度融合大模型、智能体与数字孪生，实现感知、认知、决策、执行全链路智能闭环。",
     key: true,
   },
 ]
@@ -200,9 +200,7 @@ export function GrowthTimeline() {
                   <span className="font-mono text-sm font-bold tabular-nums text-accent">{m.year}</span>
                   <span className="text-sm font-semibold text-foreground">{m.title}</span>
                 </div>
-                {m.key ? (
-                  <p className="mt-1.5 text-pretty text-xs leading-relaxed text-muted-foreground">{m.desc}</p>
-                ) : null}
+                <p className="mt-1.5 text-pretty text-xs leading-relaxed text-muted-foreground">{m.desc}</p>
               </button>
             </li>
           )
@@ -231,7 +229,7 @@ function NodeCard({
       aria-pressed={active}
       className={[
         "group flex flex-col items-center rounded-xl border px-3 py-2.5 text-center outline-none transition-all duration-300",
-        isKey ? "w-44" : "w-32",
+        isKey ? "w-48" : "w-44",
         active
           ? "border-accent/60 bg-card/80 shadow-lg shadow-accent/15 ring-hairline"
           : isKey
@@ -251,13 +249,13 @@ function NodeCard({
       <span
         className={[
           "mt-0.5 text-pretty leading-snug transition-colors duration-300",
-          isKey ? "text-xs font-semibold" : "text-[11px]",
-          active ? "text-foreground" : "text-muted-foreground/85",
+          isKey ? "text-sm font-semibold" : "text-xs font-medium",
+          active ? "text-foreground" : isKey ? "text-foreground/90" : "text-muted-foreground/90",
         ].join(" ")}
       >
         {milestone.title}
       </span>
-      {/* 关键节点展开完整说明 */}
+      {/* 关键节点：激活时展开完整说明 */}
       {isKey ? (
         <span
           className={[
@@ -271,7 +269,12 @@ function NodeCard({
             </span>
           </span>
         </span>
-      ) : null}
+      ) : (
+        /* 非关键年份：常显简要说明 */
+        <span className="mt-1.5 block text-pretty text-[11px] leading-relaxed text-muted-foreground/80">
+          {milestone.desc}
+        </span>
+      )}
     </button>
   )
 }
