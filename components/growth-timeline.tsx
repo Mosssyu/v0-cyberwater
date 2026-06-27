@@ -80,38 +80,34 @@ export function GrowthTimeline() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* ===== 大屏：上下分布时间轴 ===== */}
+      {/* ===== 大屏：上下交替时间轴（上-下-上-下，按年份顺序） ===== */}
       <div className="relative hidden lg:block">
         {/* 中轴基线（从左到右生长） */}
         <div
-          className="tl-line-grow pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-accent/40 to-transparent"
+          className="tl-line-grow pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-accent/45 to-transparent"
           aria-hidden="true"
         />
 
-        <ol className="relative flex items-stretch">
+        <ol className="relative grid grid-cols-7 gap-x-4">
           {milestones.map((m, i) => {
             const isActive = i === active
+            const isUp = i % 2 === 0
             return (
-              <li key={m.year} className="relative flex h-72 flex-1 flex-col items-center">
-                {/* 上方区：非关键年份卡片 */}
-                <div className="flex flex-1 flex-col items-center justify-end pb-3">
-                  {!m.key ? (
+              <li key={m.year} className="relative flex h-[19rem] flex-col items-center">
+                {/* 上半区 */}
+                <div className="flex h-1/2 w-full flex-col items-center justify-end">
+                  {isUp ? (
                     <div
                       className="tl-item-up flex flex-col items-center"
-                      style={{ animationDelay: `${i * 0.12}s` }}
+                      style={{ animationDelay: `${i * 0.1}s` }}
                     >
-                      <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} placement="up" />
-                      {/* 连接茎（卡片 → 轴线） */}
-                      <span
-                        className="mt-2 w-px flex-none bg-gradient-to-b from-accent/50 to-accent/20"
-                        style={{ height: "1.5rem" }}
-                        aria-hidden="true"
-                      />
+                      <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
+                      <Stem direction="down" active={isActive} />
                     </div>
                   ) : null}
                 </div>
 
-                {/* 轴线上的节点 */}
+                {/* 轴线节点 */}
                 <button
                   type="button"
                   onClick={() => setActive(i)}
@@ -129,7 +125,7 @@ export function GrowthTimeline() {
                   <span
                     className={[
                       "relative inline-flex shrink-0 items-center justify-center rounded-full border font-bold transition-all duration-500",
-                      m.key ? "size-7 text-xs" : "size-4 text-[0px]",
+                      m.key ? "size-7 text-xs" : "size-5 text-[0px]",
                       isActive
                         ? "scale-125 border-accent bg-accent text-background shadow-[0_0_20px_3px_oklch(0.79_0.13_200/0.8)]"
                         : m.key
@@ -141,20 +137,15 @@ export function GrowthTimeline() {
                   </span>
                 </button>
 
-                {/* 下方区：关键年份强调卡片 */}
-                <div className="flex flex-1 flex-col items-center justify-start pt-3">
-                  {m.key ? (
+                {/* 下半区 */}
+                <div className="flex h-1/2 w-full flex-col items-center justify-start">
+                  {!isUp ? (
                     <div
                       className="tl-item-down flex flex-col items-center"
-                      style={{ animationDelay: `${i * 0.12 + 0.1}s` }}
+                      style={{ animationDelay: `${i * 0.1 + 0.05}s` }}
                     >
-                      {/* 连接茎（轴线 → 卡片） */}
-                      <span
-                        className="mb-2 w-px flex-none bg-gradient-to-t from-accent/50 to-accent/20"
-                        style={{ height: "1.5rem" }}
-                        aria-hidden="true"
-                      />
-                      <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} placement="down" />
+                      <Stem direction="up" active={isActive} />
+                      <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
                     </div>
                   ) : null}
                 </div>
@@ -210,16 +201,31 @@ export function GrowthTimeline() {
   )
 }
 
+/** 卡片与轴线之间的连接茎 */
+function Stem({ direction, active }: { direction: "up" | "down"; active: boolean }) {
+  return (
+    <span
+      className={[
+        "h-6 w-px flex-none transition-colors duration-300",
+        direction === "down"
+          ? "bg-gradient-to-b from-accent/55 to-accent/15"
+          : "bg-gradient-to-t from-accent/55 to-accent/15",
+        active ? "opacity-100" : "opacity-60",
+        direction === "down" ? "mt-2" : "mb-2",
+      ].join(" ")}
+      aria-hidden="true"
+    />
+  )
+}
+
 function NodeCard({
   milestone,
   active,
   onSelect,
-  placement,
 }: {
   milestone: Milestone
   active: boolean
   onSelect: () => void
-  placement: "up" | "down"
 }) {
   const isKey = milestone.key
   return (
@@ -228,53 +234,40 @@ function NodeCard({
       onClick={onSelect}
       aria-pressed={active}
       className={[
-        "group flex flex-col items-center rounded-xl border px-3 py-2.5 text-center outline-none transition-all duration-300",
-        isKey ? "w-48" : "w-44",
+        "group flex w-full flex-col rounded-xl border px-3.5 py-3 text-left outline-none transition-all duration-300",
         active
-          ? "border-accent/60 bg-card/80 shadow-lg shadow-accent/15 ring-hairline"
+          ? "border-accent/60 bg-card/85 shadow-lg shadow-accent/15"
           : isKey
-            ? "border-accent/35 bg-card/60 hover:border-accent/55"
-            : "border-border bg-card/40 hover:border-accent/40",
+            ? "border-accent/35 bg-card/65 hover:border-accent/55"
+            : "border-border bg-card/40 hover:border-accent/45",
       ].join(" ")}
     >
+      <div className="flex items-center gap-2">
+        <span
+          className={[
+            "font-mono text-sm font-bold tabular-nums transition-colors duration-300",
+            active ? "text-accent" : isKey ? "text-foreground" : "text-muted-foreground",
+          ].join(" ")}
+        >
+          {milestone.year}
+        </span>
+        {isKey ? (
+          <span className="inline-flex items-center rounded-full border border-accent/40 bg-accent/10 px-1.5 py-0.5 text-[9px] font-medium text-accent">
+            里程碑
+          </span>
+        ) : null}
+      </div>
       <span
         className={[
-          "font-mono font-bold tabular-nums transition-colors duration-300",
-          isKey ? "text-base" : "text-sm",
-          active ? "text-accent" : isKey ? "text-foreground" : "text-muted-foreground",
-        ].join(" ")}
-      >
-        {milestone.year}
-      </span>
-      <span
-        className={[
-          "mt-0.5 text-pretty leading-snug transition-colors duration-300",
-          isKey ? "text-sm font-semibold" : "text-xs font-medium",
-          active ? "text-foreground" : isKey ? "text-foreground/90" : "text-muted-foreground/90",
+          "mt-1 text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
+          active ? "text-foreground" : "text-foreground/90",
         ].join(" ")}
       >
         {milestone.title}
       </span>
-      {/* 关键节点：激活时展开完整说明 */}
-      {isKey ? (
-        <span
-          className={[
-            "grid transition-all duration-500",
-            active ? "mt-2 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
-          ].join(" ")}
-        >
-          <span className="overflow-hidden">
-            <span className="block text-pretty text-[11px] leading-relaxed text-muted-foreground">
-              {milestone.desc}
-            </span>
-          </span>
-        </span>
-      ) : (
-        /* 非关键年份：常显简要说明 */
-        <span className="mt-1.5 block text-pretty text-[11px] leading-relaxed text-muted-foreground/80">
-          {milestone.desc}
-        </span>
-      )}
+      <span className="mt-1.5 block text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
+        {milestone.desc}
+      </span>
     </button>
   )
 }
