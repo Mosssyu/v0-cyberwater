@@ -69,7 +69,7 @@ export function BuildingBlocks({
       className="relative w-full"
       style={{ aspectRatio: `${VB_W} / ${VB_H}` }}
       role="img"
-      aria-label="CW-Cloud 模块池组合体：从 11 类水务产品模块中按需选择，自由组合为一体化智能运营平台"
+      aria-label="CW-Cloud 模块池组合体：从 10+ 类水务产品模块中按需选择，自由组合为一体化智能运营平台"
     >
       {/* 组合体整体光晕（AI 叠加后增强） */}
       <div

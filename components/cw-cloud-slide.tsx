@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   Box,
   Boxes,
@@ -25,8 +25,9 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { BuildingBlocks, type ModuleDef } from "@/components/building-blocks"
+import { ProductScene } from "@/components/product-scene"
 
-// ---------- 11 个产品模块池（数据驱动） ----------
+// ---------- 产品模块池（数据驱动，按指定顺序） ----------
 const P = {
   cyan: { top: "#46dced", left: "#0d6f9e", right: "#1597c0", glow: "oklch(0.78 0.13 205)" },
   blue: { top: "#3a86e6", left: "#143a72", right: "#1d5fae", glow: "oklch(0.66 0.15 250)" },
@@ -36,38 +37,86 @@ const P = {
   ai: { top: "#bfe9ff", left: "#2f6fd0", right: "#3f9fe6", glow: "oklch(0.8 0.12 220)" },
 }
 
+// 列表顺序即为用户指定顺序；col/row 仅决定等距组合体中的位置
 const productModules: ModuleDef[] = [
   { id: "group", label: "集团运营管理", col: 0, row: 0, palette: P.cyan },
-  { id: "integrated", label: "厂网站一体化管理", col: 1, row: 0, palette: P.blue },
-  { id: "sso", label: "SSO 统一登录", col: 2, row: 0, palette: P.blue },
-  { id: "sewage", label: "分布式污水运营管理", col: 0, row: 1, palette: P.green },
-  { id: "plant", label: "水厂运营管理", col: 1, row: 1, palette: P.cyan },
-  { id: "pump", label: "泵闸站管理", col: 2, row: 1, palette: P.sky },
-  { id: "reservoir", label: "水库标化管理", col: 0, row: 2, palette: P.teal },
-  { id: "pipe", label: "管网管理", col: 1, row: 2, palette: P.blue },
-  { id: "iot", label: "IoT 物联网平台", col: 2, row: 2, palette: P.teal },
-  { id: "flood", label: "城市防汛管理", col: 3, row: 2, palette: P.sky },
+  { id: "integrated", label: "厂网河湖一体化", col: 1, row: 0, palette: P.blue },
+  { id: "sewage", label: "分布式污水厂运营管理", col: 2, row: 0, palette: P.green },
+  { id: "plant", label: "水厂运营管理", col: 0, row: 1, palette: P.cyan },
+  { id: "pump", label: "泵闸站管理", col: 1, row: 1, palette: P.sky },
+  { id: "pipe", label: "管网管理", col: 2, row: 1, palette: P.blue },
+  { id: "reservoir", label: "水库标准化管理", col: 0, row: 2, palette: P.teal },
+  { id: "flood", label: "城市防汛内涝管理", col: 1, row: 2, palette: P.sky },
+  { id: "iot", label: "IoT 物联平台", col: 2, row: 2, palette: P.teal },
+  { id: "sso", label: "SSO 统一登录", col: 3, row: 1, palette: P.blue },
   { id: "ai", label: "水务智能体", col: 0, row: 0, palette: P.ai, float: true },
 ]
 
-// ---------- 11 个模块的详细介绍（图标 + 简要说明） ----------
-const productInfo: Record<string, { icon: LucideIcon; desc: string }> = {
-  group: { icon: Building2, desc: "面向水务集团，多区域、多公司、多厂站统一管理与运营分析。" },
-  integrated: { icon: Network, desc: "打通水厂、管网、泵站数据，实现厂网联调与一体化运营。" },
-  sso: { icon: ShieldCheck, desc: "统一身份认证与权限管理，一次登录贯通全平台应用。" },
-  sewage: { icon: Recycle, desc: "面向分散式、农村污水站点的集中监控与远程运维。" },
-  plant: { icon: Factory, desc: "覆盖供水、污水厂的生产、工艺、能耗与设备全流程运营。" },
-  pump: { icon: Gauge, desc: "泵站、水闸的远程监控、智能调度与运行优化。" },
-  reservoir: { icon: Waves, desc: "水库标准化管理与大坝安全运行监测。" },
-  pipe: { icon: GitFork, desc: "管网 GIS、压力流量监测、漏损分析与分区计量。" },
-  iot: { icon: Cpu, desc: "多协议设备接入、数据采集与边缘计算底座。" },
-  flood: { icon: CloudRain, desc: "内涝预警、排水调度与应急指挥一体化。" },
-  ai: { icon: BrainCircuit, desc: "大模型驱动的问数、报表、告警、工单与知识助手。" },
+// 模块池仅列出 10 类业务模块（AI 作为可持续叠加的智能层，不计入列表）
+const listedModules = productModules.filter((m) => !m.float)
+
+// ---------- 每个模块的详细介绍（图标 + 简述 + 关键能力） ----------
+const productInfo: Record<string, { icon: LucideIcon; desc: string; features: string[] }> = {
+  group: {
+    icon: Building2,
+    desc: "面向水务集团，多区域、多公司、多厂站统一管理与运营分析，支撑集团级决策。",
+    features: ["多组织架构", "运营驾驶舱", "经营分析"],
+  },
+  integrated: {
+    icon: Network,
+    desc: "打通水厂、管网、泵站与河湖数据，实现厂网河湖联调与一体化运营。",
+    features: ["厂网联动", "全要素感知", "协同调度"],
+  },
+  sewage: {
+    icon: Recycle,
+    desc: "面向分散式、农村污水厂站点的集中监控、远程运维与达标管理。",
+    features: ["集中监控", "远程运维", "达标排放"],
+  },
+  plant: {
+    icon: Factory,
+    desc: "覆盖供水、污水厂的生产、工艺、能耗与设备全流程精细化运营。",
+    features: ["工艺管控", "能耗优化", "设备管理"],
+  },
+  pump: {
+    icon: Gauge,
+    desc: "泵站、水闸的远程监控、智能调度与运行优化，保障安全高效运行。",
+    features: ["远程监控", "智能调度", "运行优化"],
+  },
+  pipe: {
+    icon: GitFork,
+    desc: "管网 GIS、压力流量监测、漏损分析与分区计量（DMA）一体化管理。",
+    features: ["管网 GIS", "漏损分析", "分区计量"],
+  },
+  reservoir: {
+    icon: Waves,
+    desc: "水库标准化管理与大坝安全运行监测，实现规范化、可视化运营。",
+    features: ["标准化管理", "大坝监测", "水位预警"],
+  },
+  flood: {
+    icon: CloudRain,
+    desc: "城市内涝预警、排水调度与应急指挥一体化，提升城市防汛能力。",
+    features: ["内涝预警", "排水调度", "应急指挥"],
+  },
+  iot: {
+    icon: Cpu,
+    desc: "多协议设备接入、数据采集与边缘计算底座，支撑全平台物联感知。",
+    features: ["多协议接入", "数据采集", "边缘计算"],
+  },
+  sso: {
+    icon: ShieldCheck,
+    desc: "统一身份认证与权限管理，一次登录贯通全平台应用，安全可控。",
+    features: ["统一认证", "权限管理", "单点登录"],
+  },
+  ai: {
+    icon: BrainCircuit,
+    desc: "大模型驱动的问数、报表、告警、工单与知识助手，叠加在业务模块之上。",
+    features: ["智能问数", "智能报表", "知识助手"],
+  },
 }
 
 // ---------- 5 个演示阶段 ----------
 const demoStages: { title: string; flow: number; active: string[]; note: string }[] = [
-  { title: "产品模块池", flow: 0, active: [], note: "11 类水务产品模块，能力可选、模块丰富、按需建设。" },
+  { title: "产品模块池", flow: 0, active: [], note: "10+ 类水务产品模块，能力可选、模块丰富、按需建设。" },
   {
     title: "单业态独立建设",
     flow: 1,
@@ -78,7 +127,7 @@ const demoStages: { title: string; flow: number; active: string[]; note: string 
     title: "多模块自由组合",
     flow: 2,
     active: ["plant", "pump", "pipe", "iot", "sso"],
-    note: "厂网站一体化只是典型组合之一，可按项目需要自由组合、不限定模块顺序。",
+    note: "厂网河湖一体化只是典型组合之一，可按项目需要自由组合、不限定模块顺序。",
   },
   {
     title: "跨场景一体化",
@@ -122,6 +171,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   const [custom, setCustom] = useState<string[] | null>(null)
   const [paused, setPaused] = useState(false)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
+  const [focusId, setFocusId] = useState<string>("group")
 
   // 自动播放 Stage 0 → 1 → 2 → 3 → 4 循环
   useEffect(() => {
@@ -146,13 +196,21 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   const flowIdx = custom ? inferFlow(custom) : demoStages[stageIdx].flow
   const note = custom ? demoStages[inferFlow(custom)].note : demoStages[stageIdx].note
 
+  // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
+  const showId = hoveredId ?? focusId
+  const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
+  const showInfo = productInfo[showModule.id]
+  const showInPlatform = activeIds.includes(showModule.id)
+
   const handleHover = (id: string | null) => {
     setHoveredId(id)
     setPaused(!!id)
+    if (id) setFocusId(id)
   }
 
   const toggleModule = (id: string) => {
     setPaused(true)
+    setFocusId(id)
     setCustom((prev) => {
       const base = prev ?? activeIds
       return base.includes(id) ? base.filter((x) => x !== id) : [...base, id]
@@ -213,7 +271,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             <span className="text-gradient">智能运营平台</span>
           </h3>
           <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">
-            从单一业态到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 11 类产品模块按需选择、灵活组合、持续扩展。
+            从单一业态到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
           </p>
 
           {/* 说明标签 */}
@@ -249,18 +307,18 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           </div>
         </div>
 
-        {/* 右：模块池面板 | 组合体 */}
-        <div className="grid gap-5 sm:grid-cols-[minmax(0,210px)_minmax(0,1fr)]">
+        {/* 右：模块池面板（唯一选择入口）| 组合体 */}
+        <div className="grid gap-5 sm:grid-cols-[minmax(0,220px)_minmax(0,1fr)]">
           {/* 产品模块池 */}
           <div className="rounded-2xl border border-border bg-card/40 p-3.5">
             <div className="mb-2.5 flex items-center gap-1.5">
               <Boxes className="size-4 text-accent" />
-              <span className="text-xs font-semibold text-foreground">产品模块池 · 12 类</span>
+              <span className="text-xs font-semibold text-foreground">产品模块池 · 10+</span>
             </div>
             <div className="flex flex-col gap-1.5">
-              {productModules.map((m) => {
+              {listedModules.map((m) => {
                 const on = activeIds.includes(m.id)
-                const hot = hoveredId === m.id
+                const hot = showId === m.id
                 return (
                   <button
                     key={m.id}
@@ -270,8 +328,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                     className="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-left text-[12px] transition-all duration-300"
                     style={{
                       borderColor: on ? "oklch(0.7 0.13 210 / 0.5)" : hot ? "oklch(0.6 0.1 215 / 0.6)" : "oklch(0.32 0.03 240 / 0.6)",
-                      backgroundColor: on ? "oklch(0.7 0.14 215 / 0.14)" : "transparent",
-                      opacity: on || hot ? 1 : 0.55,
+                      backgroundColor: on ? "oklch(0.7 0.14 215 / 0.14)" : hot ? "oklch(0.5 0.06 235 / 0.18)" : "transparent",
+                      opacity: on || hot ? 1 : 0.6,
                     }}
                   >
                     <span
@@ -283,7 +341,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                   </button>
                 )
               })}
-              {/* 第 12 项：更多模块持续扩展 */}
+              {/* 更多模块持续扩展 */}
               <div className="flex items-center gap-2 rounded-lg border border-dashed border-accent/30 px-2.5 py-1.5 text-[12px] opacity-70">
                 <Plus className="size-3 shrink-0 text-accent" />
                 <span className="min-w-0 flex-1 truncate text-foreground/80">更多+</span>
@@ -306,58 +364,96 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </div>
             </div>
             <p className="mt-1 text-center text-[11px] text-muted-foreground">
-              已选 {activeIds.length} / {productModules.length} 个模块 · 点击模块可加入或移除组合
+              已选 {activeIds.filter((id) => id !== "ai").length} / {listedModules.length} 个模块 · 点击模块查看说明并加入组合
             </p>
           </div>
         </div>
       </div>
 
-      {/* 11 个产品模块详解（带动画 + 简要说明，联动组合体高亮） */}
+      {/* 聚焦产品展示区：说明 + 专属场景示意动画 */}
       <div className="relative mt-8">
         <div className="mb-3 flex items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">产品模块详解 · 11 类</span>
-          <span className="text-[11px] text-muted-foreground">（悬停联动组合体高亮，点击可加入 / 移除组合）</span>
+          <span className="text-sm font-semibold text-foreground">产品示意</span>
+          <span className="text-[11px] text-muted-foreground">（在上方模块池或组合体中选择 / 悬停，下方实时呈现该产品说明与示意动画）</span>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {productModules.map((m, i) => {
-            const info = productInfo[m.id]
-            const Icon = info.icon
-            const on = activeIds.includes(m.id)
-            return (
-              <motion.button
-                key={m.id}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
-                whileHover={{ y: -4 }}
-                onMouseEnter={() => handleHover(m.id)}
-                onMouseLeave={() => handleHover(null)}
-                onClick={() => toggleModule(m.id)}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border bg-card/40 p-4 text-left transition-colors duration-300"
-                style={{ borderColor: on ? "oklch(0.7 0.13 215 / 0.55)" : "oklch(0.32 0.03 240 / 0.6)" }}
-              >
-                {/* 顶部色条：悬停时由左铺开 */}
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={showModule.id}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="grid gap-5 overflow-hidden rounded-2xl border border-border bg-card/40 p-5 lg:grid-cols-2"
+          >
+            {/* 左：产品说明 */}
+            <div className="flex flex-col">
+              <div className="flex items-center gap-3">
                 <span
-                  className="absolute inset-x-0 top-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100"
-                  style={{ backgroundColor: m.palette.top, boxShadow: `0 0 10px 1px ${m.palette.glow}` }}
-                  aria-hidden="true"
-                />
-                <span
-                  className="flex size-9 items-center justify-center rounded-lg transition-transform duration-300 group-hover:scale-110"
-                  style={{ backgroundColor: `${m.palette.top}1f` }}
+                  className="flex size-11 items-center justify-center rounded-xl"
+                  style={{ backgroundColor: `${showModule.palette.top}20` }}
                 >
-                  <Icon className="size-4.5" style={{ color: m.palette.top }} />
+                  <showInfo.icon className="size-5.5" style={{ color: showModule.palette.top }} />
                 </span>
-                <span className="mt-3 flex items-center gap-1.5 text-sm font-semibold text-foreground">
-                  {m.label}
-                  {on && <Check className="size-3.5 text-accent" />}
-                </span>
-                <span className="mt-1 text-[11px] leading-relaxed text-muted-foreground">{info.desc}</span>
-              </motion.button>
-            )
-          })}
-        </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg font-bold text-foreground">{showModule.label}</span>
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                      style={{
+                        color: showInPlatform ? "oklch(0.88 0.1 200)" : "oklch(0.62 0.02 240)",
+                        backgroundColor: showInPlatform ? "oklch(0.7 0.14 215 / 0.16)" : "oklch(0.4 0.03 240 / 0.3)",
+                      }}
+                    >
+                      {showInPlatform ? "已在组合中" : "未加入组合"}
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-muted-foreground">产品模块</span>
+                </div>
+              </div>
+
+              <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">{showInfo.desc}</p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {showInfo.features.map((f) => (
+                  <span
+                    key={f}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-secondary/30 px-2.5 py-1 text-[11px] text-foreground/85"
+                  >
+                    <span className="size-1.5 rounded-[2px]" style={{ backgroundColor: showModule.palette.top }} />
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              <button
+                onClick={() => toggleModule(showModule.id)}
+                className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
+                style={{
+                  marginTop: "1.25rem",
+                  borderColor: showInPlatform ? "oklch(0.4 0.03 240 / 0.5)" : "oklch(0.7 0.13 215 / 0.55)",
+                  color: showInPlatform ? "oklch(0.7 0.02 240)" : "oklch(0.88 0.1 200)",
+                  backgroundColor: showInPlatform ? "transparent" : "oklch(0.7 0.14 215 / 0.12)",
+                }}
+              >
+                {showInPlatform ? <RotateCcw className="size-3.5" /> : <Plus className="size-3.5" />}
+                {showInPlatform ? "从组合中移除" : "加入组合"}
+              </button>
+            </div>
+
+            {/* 右：场景示意动画 */}
+            <div
+              className="relative flex items-center justify-center overflow-hidden rounded-xl border"
+              style={{
+                minHeight: "200px",
+                borderColor: `${showModule.palette.top}33`,
+                background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}14, oklch(0.14 0.03 245) 72%)`,
+              }}
+            >
+              <ProductScene id={showModule.id} palette={showModule.palette} />
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   )
