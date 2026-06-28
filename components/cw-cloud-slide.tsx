@@ -438,7 +438,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             {/* 左：产品说明��轻微透视朝中心倾斜，作为环绕主屏的辅助面板） */}
             <div
               className="flex flex-col lg:col-span-2"
-              style={{ transform: "rotateY(16deg) translateZ(-90px) scale(0.94)", transformOrigin: "right center" }}
+              style={{ transform: "rotateY(-17deg) translateZ(-60px) scale(0.92)", transformOrigin: "right center" }}
             >
               <div className="flex items-center gap-3">
                 <span
@@ -500,7 +500,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 borderColor: `${showModule.palette.top}77`,
                 background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}26, oklch(0.1 0.025 248) 76%)`,
                 boxShadow: `0 0 80px -4px ${showModule.palette.glow}, 0 36px 90px -24px oklch(0.04 0.02 248 / 0.95)`,
-                transform: "translateZ(90px) scale(1.04)",
+                transform: "translateZ(0px)",
               }}
             >
               {productImages[showModule.id] ? (
