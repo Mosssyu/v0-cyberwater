@@ -394,27 +394,35 @@ export function CwCloudSlide({ active }: { active: boolean }) {
         <div
           className="relative overflow-hidden rounded-2xl border border-border"
           style={{
-            perspective: "1600px",
+            perspective: "1200px",
             background:
-              "radial-gradient(115% 90% at 50% 42%, oklch(0.2 0.05 245 / 0.9) 0%, oklch(0.15 0.04 246 / 0.85) 42%, oklch(0.1 0.03 248 / 0.96) 100%)",
+              "radial-gradient(105% 85% at 50% 44%, oklch(0.26 0.07 240 / 0.95) 0%, oklch(0.16 0.045 246 / 0.9) 38%, oklch(0.09 0.025 248 / 0.99) 100%)",
           }}
         >
-          {/* 背景向中心汇聚的发光导引线 */}
+          {/* 背景向中心汇聚的发光导引线（更密更亮） */}
           <div
-            className="pointer-events-none absolute inset-0 opacity-50"
+            className="pointer-events-none absolute inset-0 opacity-70"
             aria-hidden="true"
             style={{
               background:
-                "conic-gradient(from 0deg at 50% 46%, transparent 0deg, oklch(0.6 0.16 235 / 0.08) 18deg, transparent 36deg, transparent 90deg, oklch(0.6 0.16 235 / 0.08) 108deg, transparent 126deg, transparent 180deg, oklch(0.6 0.16 235 / 0.08) 198deg, transparent 216deg, transparent 270deg, oklch(0.6 0.16 235 / 0.08) 288deg, transparent 306deg)",
-              maskImage: "radial-gradient(circle at 50% 46%, black 10%, transparent 70%)",
-              WebkitMaskImage: "radial-gradient(circle at 50% 46%, black 10%, transparent 70%)",
+                "conic-gradient(from 0deg at 50% 46%, transparent 0deg, oklch(0.65 0.18 235 / 0.16) 10deg, transparent 24deg, transparent 66deg, oklch(0.65 0.18 235 / 0.16) 80deg, transparent 96deg, transparent 156deg, oklch(0.65 0.18 235 / 0.16) 170deg, transparent 186deg, transparent 246deg, oklch(0.65 0.18 235 / 0.16) 260deg, transparent 276deg, transparent 318deg, oklch(0.65 0.18 235 / 0.16) 332deg, transparent 348deg)",
+              maskImage: "radial-gradient(circle at 50% 46%, black 6%, transparent 64%)",
+              WebkitMaskImage: "radial-gradient(circle at 50% 46%, black 6%, transparent 64%)",
             }}
           />
-          {/* 边缘收束暗角，强化中心聚焦 */}
+          {/* 中心聚光高光 */}
           <div
             className="pointer-events-none absolute inset-0"
             aria-hidden="true"
-            style={{ boxShadow: "inset 0 0 120px 40px oklch(0.08 0.02 248 / 0.85)" }}
+            style={{
+              background: "radial-gradient(38% 42% at 50% 46%, oklch(0.6 0.16 230 / 0.22) 0%, transparent 70%)",
+            }}
+          />
+          {/* 边缘收束暗角，强化中心聚焦（更深更厚） */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            aria-hidden="true"
+            style={{ boxShadow: "inset 0 0 180px 70px oklch(0.06 0.02 248 / 0.95)" }}
           />
 
           <AnimatePresence mode="wait">
@@ -427,10 +435,10 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               className="relative grid items-center gap-5 p-5 sm:p-6 lg:grid-cols-5 lg:gap-7"
               style={{ transformStyle: "preserve-3d" }}
             >
-            {/* 左：产品说明（轻微透视朝中心倾斜，作为环绕主屏的辅助面板） */}
+            {/* 左：产品说明��轻微透视朝中心倾斜，作为环绕主屏的辅助面板） */}
             <div
               className="flex flex-col lg:col-span-2"
-              style={{ transform: "rotateY(7deg) translateZ(-30px)", transformOrigin: "right center" }}
+              style={{ transform: "rotateY(16deg) translateZ(-90px) scale(0.94)", transformOrigin: "right center" }}
             >
               <div className="flex items-center gap-3">
                 <span
@@ -489,10 +497,10 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             <div
               className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border p-2 sm:p-3 lg:col-span-3"
               style={{
-                borderColor: `${showModule.palette.top}55`,
-                background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}1f, oklch(0.1 0.025 248) 76%)`,
-                boxShadow: `0 0 50px -6px ${showModule.palette.glow}, 0 24px 60px -20px oklch(0.05 0.02 248 / 0.9)`,
-                transform: "translateZ(40px)",
+                borderColor: `${showModule.palette.top}77`,
+                background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}26, oklch(0.1 0.025 248) 76%)`,
+                boxShadow: `0 0 80px -4px ${showModule.palette.glow}, 0 36px 90px -24px oklch(0.04 0.02 248 / 0.95)`,
+                transform: "translateZ(90px) scale(1.04)",
               }}
             >
               {productImages[showModule.id] ? (
