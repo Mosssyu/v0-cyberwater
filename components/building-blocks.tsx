@@ -83,13 +83,19 @@ export function BuildingBlocks({
   const ghostModule = hoveredId && !isActive(hoveredId) ? business.find((b) => b.id === hoveredId) : undefined
   const ghostSlot = ghostModule ? towerSlot(activeBusiness.length) : null
 
-  const layersFilled = Math.max(1, Math.ceil(activeBusiness.length / PER_LAYER))
-  const capCy = ORIGIN_Y - layersFilled * H
-  const CAP = { cx: ORIGIN_X, cy: capCy, w: W, qh: QH, h: H }
-  const AI = { cx: ORIGIN_X, cy: CAP.cy - CAP.h - 14, w: 56, qh: 14, h: 30 }
+  // 「更多+」始终占据堆叠塔的下一个槽位：实体积木最多 11 个，第 12 格为「更多+」
+  const MAX_BLOCKS = 11
+  const moreIndex = Math.min(activeBusiness.length, MAX_BLOCKS)
+  const moreSlot = towerSlot(moreIndex)
+  const CAP = { cx: moreSlot.cx, cy: moreSlot.cy, w: W, qh: QH, h: H }
+
+  // 塔顶最高层（含「更多+」格），用于定位 AI 中枢与上升光束
+  const topLayer = Math.max(0, Math.floor(moreIndex / PER_LAYER))
+  const towerTopY = ORIGIN_Y - (topLayer + 1) * H
+  const AI = { cx: ORIGIN_X, cy: towerTopY - 22, w: 56, qh: 14, h: 30 }
 
   // 中枢上升光束顶端（随塔高变化）
-  const beamTopY = CAP.cy - 10
+  const beamTopY = towerTopY - 10
 
   return (
     <div
@@ -192,10 +198,10 @@ export function BuildingBlocks({
           </g>
         )}
 
-        {/* ===== 塔尖「更多+」虚框收束块（持续旋转） ===== */}
+        {/* ===== 「更多+」虚框块：堆叠塔的下一个待扩展槽位（持续旋转） ===== */}
         <motion.g
           initial={false}
-          animate={{ opacity: hoveredId ? 0.6 : 1 }}
+          animate={{ opacity: ghostModule ? 0 : hoveredId ? 0.55 : 1 }}
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
           aria-hidden="true"
         >
