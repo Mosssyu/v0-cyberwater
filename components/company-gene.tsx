@@ -70,14 +70,18 @@ const cornerClass: Record<GeneCard["corner"], string> = {
 
 function GeneCardBox({ card }: { card: GeneCard }) {
   return (
-    <div className="group/card gene-float-anim w-[200px] rounded-2xl border border-border bg-card/80 p-4 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-[0_0_28px_-6px_oklch(0.79_0.13_200/0.6)]">
+    <div className="group/card gene-float-anim w-[200px] rounded-2xl border border-transparent bg-transparent p-4 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:bg-card/60 hover:backdrop-blur-md hover:shadow-[0_0_28px_-6px_oklch(0.79_0.13_200/0.5)]">
       <div className="flex items-center gap-2.5">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/25 bg-accent/10 text-accent transition-colors group-hover/card:bg-accent/20">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
           <card.icon className="size-[18px]" />
         </span>
-        <h4 className="text-sm font-semibold leading-snug text-foreground">{card.title}</h4>
+        <h4 className="text-sm font-semibold leading-snug text-foreground/85 transition-colors group-hover/card:text-foreground">
+          {card.title}
+        </h4>
       </div>
-      <p className="mt-2.5 text-pretty text-xs leading-relaxed text-muted-foreground">{card.desc}</p>
+      <p className="mt-2.5 text-pretty text-xs leading-relaxed text-muted-foreground/65 transition-colors group-hover/card:text-muted-foreground">
+        {card.desc}
+      </p>
     </div>
   )
 }
