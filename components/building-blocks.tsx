@@ -14,16 +14,16 @@ export type ModuleDef = {
   float?: boolean
 }
 
-// 等距投影参数（viewBox 380 x 360）
-const VB_W = 380
-const VB_H = 360
-const ORIGIN_X = 190
-const ORIGIN_Y = 184 // 塔底基准点
-const W = 68 // 立方体宽
-const QH = W / 4 // 顶面菱形半高 = 17
-const H = 40 // 立方体高
-const HALF_W = W / 2 // 34
-const HALF_TH = W / 4 // 17
+// 等距投影参数（viewBox 420 x 400）
+const VB_W = 420
+const VB_H = 400
+const ORIGIN_X = 210
+const ORIGIN_Y = 206 // 塔底基准点
+const W = 86 // 立方体宽
+const QH = W / 4 // 顶面菱形半高 = 21.5
+const H = 50 // 立方体高
+const HALF_W = W / 2 // 43
+const HALF_TH = W / 4 // 21.5
 
 // 2×2 占位填充顺序（自底层向上层逐格填充）
 const FOOT: [number, number][] = [
@@ -201,34 +201,55 @@ export function BuildingBlocks({
           )
         })}
 
-        {/* 塔尖收束块：白蓝高亮单块，叠于塔体顶部 */}
+        {/* 塔尖收束块「更多+」：白蓝高亮单块，持续旋转 */}
         <AnimatePresence>
           {hasTower && (
             <motion.g
               key={`cap-${topActiveLayer}`}
-              initial={{ opacity: 0, y: -24, scale: 0.6 }}
+              initial={{ opacity: 0, y: -28, scale: 0.6 }}
               animate={{ opacity: hoveredId ? 0.55 : 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -24, scale: 0.6 }}
+              exit={{ opacity: 0, y: -28, scale: 0.6 }}
               transition={{ type: "spring", stiffness: 170, damping: 19, mass: 0.7 }}
               style={{ transformBox: "fill-box", transformOrigin: "center" }}
-              filter="url(#bb-glow)"
               aria-hidden="true"
             >
-              {(() => {
-                const f = faces(CAP.cx, CAP.cy, CAP.w, CAP.qh, CAP.h)
-                return (
-                  <>
-                    <polygon points={f.left} fill="oklch(0.62 0.13 245)" fillOpacity={0.97} />
-                    <polygon points={f.right} fill="oklch(0.72 0.12 235)" fillOpacity={0.97} />
-                    <polygon
-                      points={f.top}
-                      fill="oklch(0.96 0.03 220)"
-                      stroke="oklch(0.99 0.02 210)"
-                      strokeWidth={1.4}
-                    />
-                  </>
-                )
-              })()}
+              {/* 绕竖直轴旋转：水平镜像缩放往复模拟等距自转 */}
+              <motion.g
+                animate={{ scaleX: [1, -1, 1], y: [0, -4, 0] }}
+                transition={{
+                  scaleX: { duration: 4.4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+                  y: { duration: 3.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+                }}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+                filter="url(#bb-glow)"
+              >
+                {(() => {
+                  const f = faces(CAP.cx, CAP.cy, CAP.w, CAP.qh, CAP.h)
+                  return (
+                    <>
+                      <polygon points={f.left} fill="oklch(0.62 0.13 245)" fillOpacity={0.97} />
+                      <polygon points={f.right} fill="oklch(0.72 0.12 235)" fillOpacity={0.97} />
+                      <polygon
+                        points={f.top}
+                        fill="oklch(0.96 0.03 220)"
+                        stroke="oklch(0.99 0.02 210)"
+                        strokeWidth={1.4}
+                      />
+                    </>
+                  )
+                })()}
+              </motion.g>
+              {/* 「更多+」文字标注（不随旋转翻转） */}
+              <text
+                x={CAP.cx}
+                y={CAP.cy + CAP.h / 2 + 2}
+                textAnchor="middle"
+                dominantBaseline="middle"
+                style={{ fontSize: 13, fontWeight: 700, letterSpacing: 0.5 }}
+                fill="oklch(0.18 0.04 245)"
+              >
+                更多+
+              </text>
             </motion.g>
           )}
         </AnimatePresence>
