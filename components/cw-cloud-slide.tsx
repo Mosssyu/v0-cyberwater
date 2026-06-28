@@ -454,26 +454,25 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </button>
             </div>
 
-            {/* 右：产品大屏示意图（产品预览卡片 · 原始宽高比完整展示 · 不裁切 · 居中留白） */}
+            {/* 右：产品大屏示意图（16:9 预览框 · contain 完整展示不裁切 · 尽量铺满 · 居中） */}
             <div
-              className="relative flex items-center justify-center rounded-xl border p-4 sm:p-5 lg:col-span-3"
+              className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border p-2 sm:p-3 lg:col-span-3"
               style={{
                 borderColor: `${showModule.palette.top}33`,
-                background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}14, oklch(0.14 0.03 245) 72%)`,
+                background: "oklch(0.12 0.025 248)",
+                boxShadow: `0 0 28px -8px ${showModule.palette.glow}`,
               }}
             >
               {productImages[showModule.id] ? (
                 <img
                   src={productImages[showModule.id] || "/placeholder.svg"}
                   alt={`${showModule.label}产品大屏示意`}
-                  className="h-auto w-full rounded-md object-contain"
+                  className="max-h-full max-w-full rounded-md object-contain"
                   loading="lazy"
                   draggable={false}
                 />
               ) : (
-                <div className="flex aspect-video w-full items-center justify-center">
-                  <ProductScene id={showModule.id} palette={showModule.palette} />
-                </div>
+                <ProductScene id={showModule.id} palette={showModule.palette} />
               )}
             </div>
           </motion.div>
