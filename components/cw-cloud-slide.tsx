@@ -143,6 +143,20 @@ const demoStages: { title: string; flow: number; active: string[]; note: string 
   },
 ]
 
+// 各业务模块对应的产品大屏示意图（AI 智能体无图，使用动画示意）
+const productImages: Record<string, string> = {
+  group: "/products/group.png",
+  integrated: "/products/integrated.png",
+  sewage: "/products/sewage.png",
+  plant: "/products/plant.png",
+  pump: "/products/pump.png",
+  pipe: "/products/pipe.png",
+  reservoir: "/products/reservoir.png",
+  flood: "/products/flood.png",
+  iot: "/products/iot.png",
+  sso: "/products/sso.png",
+}
+
 // 单业态阶段轮播展示的候选模块（表达「任一业务模块都可独立建设」）
 const soloRotation = ["plant", "pipe", "pump", "sewage", "reservoir", "flood"]
 
@@ -440,7 +454,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </button>
             </div>
 
-            {/* 右：场景示意动画 */}
+            {/* 右：产品大屏示意图（业务模块用真实大屏截图，AI 智能体用动画示意） */}
             <div
               className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-xl border"
               style={{
@@ -449,7 +463,17 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}14, oklch(0.14 0.03 245) 72%)`,
               }}
             >
-              <ProductScene id={showModule.id} palette={showModule.palette} />
+              {productImages[showModule.id] ? (
+                <img
+                  src={productImages[showModule.id] || "/placeholder.svg"}
+                  alt={`${showModule.label}产品大屏示意`}
+                  className="size-full object-cover"
+                  loading="lazy"
+                  draggable={false}
+                />
+              ) : (
+                <ProductScene id={showModule.id} palette={showModule.palette} />
+              )}
             </div>
           </motion.div>
         </AnimatePresence>
