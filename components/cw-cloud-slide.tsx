@@ -443,9 +443,9 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
             {/* 右：场景示意动画 */}
             <div
-              className="relative flex items-center justify-center overflow-hidden rounded-xl border"
+              className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-xl border"
               style={{
-                minHeight: "200px",
+                minHeight: "240px",
                 borderColor: `${showModule.palette.top}33`,
                 background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}14, oklch(0.14 0.03 245) 72%)`,
               }}

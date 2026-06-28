@@ -285,8 +285,26 @@ export function ProductScene({ id, palette }: { id: string; palette: ModulePalet
   }
 
   return (
-    <svg className="h-full w-full" viewBox={VB} preserveAspectRatio="xMidYMid meet" fill="none">
-      {scene}
-    </svg>
+    <div className="absolute inset-0">
+      {/* 3D 场景效果底图 */}
+      <img
+        src={`/scenes/${id}.png`}
+        alt={`${id} 产品 3D 运营场景示意图`}
+        className="absolute inset-0 size-full object-cover"
+        loading="lazy"
+      />
+      {/* 暗色渐变蒙版，确保叠加的动态节点与文字可读 */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(to top, oklch(0.14 0.03 245 / 0.75), oklch(0.14 0.03 245 / 0.15) 55%, oklch(0.14 0.03 245 / 0.35)), radial-gradient(circle at 50% 42%, ${c}1a, transparent 70%)`,
+        }}
+        aria-hidden="true"
+      />
+      {/* 动态发光节点 / 数据流叠加层 */}
+      <svg className="absolute inset-0 size-full" viewBox={VB} preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+        {scene}
+      </svg>
+    </div>
   )
 }
