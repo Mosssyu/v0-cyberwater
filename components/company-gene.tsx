@@ -2,6 +2,7 @@
 
 import { Layers, Building2, Boxes, BrainCircuit, Droplets } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+import { ParticleSphere } from "@/components/particle-sphere"
 
 type GeneCard = {
   id: string
@@ -129,37 +130,8 @@ export function CompanyGene() {
 
       {/* ---------- 大屏：能力基因图谱舞台 ---------- */}
       <div className="relative mx-auto hidden aspect-[600/480] w-full max-w-[600px] lg:block">
-        {/* 连线层 */}
-        <svg
-          viewBox="0 0 600 480"
-          preserveAspectRatio="xMidYMid meet"
-          className="absolute inset-0 size-full"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="gene-line" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="oklch(0.79 0.13 200)" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="oklch(0.63 0.17 250)" stopOpacity="0.15" />
-            </linearGradient>
-          </defs>
-          {cards.map((c) => (
-            <g key={c.id}>
-              <path d={c.path} fill="none" stroke="url(#gene-line)" strokeWidth="1.5" />
-              <path d={c.path} fill="none" stroke="oklch(0.85 0.13 200)" strokeWidth="1.5" className="gene-flow" />
-              {/* 流动光点 */}
-              <circle r="3" fill="oklch(0.9 0.12 200)">
-                <animateMotion dur="3s" begin={c.begin} repeatCount="indefinite" path={c.path} />
-                <animate
-                  attributeName="opacity"
-                  values="0;1;1;0"
-                  dur="3s"
-                  begin={c.begin}
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </g>
-          ))}
-        </svg>
+        {/* 三维粒子球体神经网络（纯 Canvas 渲染） */}
+        <ParticleSphere className="absolute inset-0 size-full" />
 
         {/* 轨道点缀标签 */}
         {orbitTags.map((t) => (
