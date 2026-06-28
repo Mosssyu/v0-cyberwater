@@ -129,17 +129,7 @@ export function BuildingBlocks({
             <stop offset="0%" stopColor="oklch(0.95 0.08 200 / 0)" />
             <stop offset="100%" stopColor="oklch(0.9 0.1 200 / 0.85)" />
           </linearGradient>
-          {/* 与底图同色的柔和遮罩：盖住底图烘焙的静态积木簇，让动态积木成为唯一主体 */}
-          <radialGradient id="bb-mask" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="oklch(0.115 0.028 250)" stopOpacity={1} />
-            <stop offset="58%" stopColor="oklch(0.115 0.028 250)" stopOpacity={1} />
-            <stop offset="82%" stopColor="oklch(0.115 0.028 250)" stopOpacity={0.7} />
-            <stop offset="100%" stopColor="oklch(0.115 0.028 250)" stopOpacity={0} />
-          </radialGradient>
         </defs>
-
-        {/* 遮罩底图原有积木簇（位于平台正上方的纯深色区域，融合无痕） */}
-        <ellipse cx={ORIGIN_X + 6} cy={128} rx={140} ry={130} fill="url(#bb-mask)" />
 
         {/* 平台中枢上升光束（连接底座与积木塔） */}
         <rect
