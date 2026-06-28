@@ -14,31 +14,33 @@ export type ModuleDef = {
   float?: boolean
 }
 
-// ---------- 等距画布参数 ----------
-const VB_W = 460
-const VB_H = 470
-const CX = 230
-const BASE_Y = 312 // 沙盘底座中心
-// 沙盘等距网格单元
-const CW = 56
-const CH = 28
-// 中央 AI 核心底座（悬浮于沙盘中心上方）
-const HUB_CX = CX
-const HUB_CY = BASE_Y - 56
-// 积木塔基准（坐落于核心底座之上）
-const ORIGIN_X = CX
-const ORIGIN_Y = BASE_Y - 70
-// 玻璃晶体积木尺寸
-const W = 64
-const QH = W / 4 // 16
-const H = 38
-const HALF_W = W / 2 // 32
-const HALF_TH = W / 4 // 16
+// ---------- 全景沙盘画布参数（宽幅，铺满展示区） ----------
+const VB_W = 900
+const VB_H = 520
+const CX = 450
+const GROUND_Y = 268
+const TW = 60 // 等距单元半宽
+const TH = 30 // 等距单元半高
 
 // 沙盘网格坐标 → 屏幕坐标
 function iso(gx: number, gy: number) {
-  return { x: CX + (gx - gy) * CW, y: BASE_Y + (gx + gy) * CH }
+  return { x: CX + (gx - gy) * TW, y: GROUND_Y + (gx + gy) * TH }
 }
+
+// 中央 AI 核心底座中心
+const HUB_CX = CX
+const HUB_CY = GROUND_Y
+
+// 玻璃晶体积木尺寸
+const W = 72
+const QH = W / 4 // 18
+const H = 44
+const HALF_W = W / 2 // 36
+const HALF_TH = W / 4 // 18
+
+// 积木塔基准（坐落于核心底座中心上方）
+const ORIGIN_X = CX
+const ORIGIN_Y = GROUND_Y - 24
 
 // 2×2 占位填充顺序（自底层向上层逐格填充）
 const FOOT: [number, number][] = [
@@ -49,7 +51,6 @@ const FOOT: [number, number][] = [
 ]
 const PER_LAYER = FOOT.length
 
-// 按「激活顺序索引」分配塔内槽位：每层 2×2，自底向上紧凑叠层
 function towerSlot(index: number) {
   const layer = Math.floor(index / PER_LAYER)
   const [fcol, frow] = FOOT[index % PER_LAYER]
@@ -71,26 +72,54 @@ function faces(cx: number, cy: number, w: number, qh: number, h: number) {
 }
 
 // 沙盘建筑节点（业务模块 ↔ 厂网河湖场景点；integrated 映射为中央核心底座本身）
-const SANDBOX_NODES: { id: string; gx: number; gy: number }[] = [
-  { id: "plant", gx: -1.8, gy: -0.2 },
-  { id: "pump", gx: -0.9, gy: -1.5 },
-  { id: "pipe", gx: 0.2, gy: -1.7 },
-  { id: "sso", gx: 1.3, gy: -1.2 },
-  { id: "flood", gx: 1.9, gy: 0.0 },
-  { id: "reservoir", gx: 1.4, gy: 1.2 },
-  { id: "iot", gx: 0.4, gy: 1.8 },
-  { id: "sewage", gx: -0.7, gy: 1.8 },
-  { id: "group", gx: -1.7, gy: 1.0 },
+// 节点在全幅网格上散开布局，避开左侧浮动模块池
+const SANDBOX_NODES: { id: string; gx: number; gy: number; kind: "plant" | "tower" | "pump" | "dam" }[] = [
+  { id: "plant", gx: -2.4, gy: -0.6, kind: "plant" },
+  { id: "pump", gx: -1.6, gy: -2.4, kind: "pump" },
+  { id: "pipe", gx: 0.0, gy: -2.8, kind: "tower" },
+  { id: "sso", gx: 1.7, gy: -2.5, kind: "tower" },
+  { id: "flood", gx: 3.0, gy: -0.8, kind: "tower" },
+  { id: "reservoir", gx: 3.2, gy: 1.1, kind: "dam" },
+  { id: "iot", gx: 1.7, gy: 2.5, kind: "tower" },
+  { id: "sewage", gx: -0.3, gy: 2.7, kind: "plant" },
+  { id: "group", gx: -1.7, gy: 1.6, kind: "tower" },
 ]
 
-// 沙盘底座菱形
-const PLATE = { bw: 212, bh: 112 }
-const platePts = [
-  `${CX},${BASE_Y - PLATE.bh}`,
-  `${CX + PLATE.bw},${BASE_Y}`,
-  `${CX},${BASE_Y + PLATE.bh}`,
-  `${CX - PLATE.bw},${BASE_Y}`,
-].join(" ")
+// 底层管网路由（沿等距网格纵横交错）
+const PIPE_ROUTES: [number, number][][] = [
+  [
+    [-4, 1.6],
+    [-1.6, 1.6],
+    [-1.6, -1.2],
+    [1.6, -1.2],
+    [1.6, 1.6],
+    [4, 1.6],
+  ],
+  [
+    [-3.2, -2.6],
+    [-3.2, -0.4],
+    [0.6, -0.4],
+    [0.6, 2.2],
+    [3.6, 2.2],
+  ],
+  [
+    [-4, -0.6],
+    [-1, -0.6],
+    [-1, 2.6],
+  ],
+]
+
+// 泵站标记（管网拐点 / 河流交汇）
+const PUMP_MARKS: [number, number][] = [
+  [-1.6, -1.2],
+  [1.6, -1.2],
+  [0.6, -0.4],
+  [0.6, 2.2],
+]
+
+function routePts(route: [number, number][]) {
+  return route.map(([gx, gy]) => { const p = iso(gx, gy); return `${p.x},${p.y}` }).join(" ")
+}
 
 export function BuildingBlocks({
   modules,
@@ -110,65 +139,41 @@ export function BuildingBlocks({
   const isActive = (id: string) => activeIds.includes(id)
   const aiActive = ai ? isActive(ai.id) : false
 
-  // 激活的业务模块按选择顺序紧凑堆叠成塔
   const activeBusiness = business.filter((b) => isActive(b.id))
   const slotted = activeBusiness.map((m, i) => ({ m, slot: towerSlot(i) }))
   const drawn = [...slotted].sort((a, b) => a.slot.layer - b.slot.layer || a.slot.depth - b.slot.depth)
 
-  // 悬停未激活模块时，预览下一个槽位的幽灵积木
-  const ghostModule =
-    hoveredId && !isActive(hoveredId) ? business.find((b) => b.id === hoveredId) : undefined
+  const ghostModule = hoveredId && !isActive(hoveredId) ? business.find((b) => b.id === hoveredId) : undefined
   const ghostSlot = ghostModule ? towerSlot(activeBusiness.length) : null
 
   const layersFilled = Math.ceil(activeBusiness.length / PER_LAYER)
-  // 塔尖「更多+」虚框块：尺寸与普通积木一致，居中坐于塔顶
   const capCy = ORIGIN_Y - layersFilled * H
   const CAP = { cx: ORIGIN_X, cy: capCy, w: W, qh: QH, h: H }
-  // AI 核心晶体浮于塔尖之上
-  const AI = { cx: ORIGIN_X, cy: CAP.cy - CAP.h - 12, w: 54, qh: 13.5, h: 27 }
+  const AI = { cx: ORIGIN_X, cy: CAP.cy - CAP.h - 14, w: 58, qh: 14.5, h: 30 }
 
+  // 厂网河湖联动：勾选「厂网河湖一体化 / 管网管理」点亮整张管网与泵站
+  const networkLit = isActive("integrated") || isActive("pipe") || hoveredId === "integrated" || hoveredId === "pipe"
   const integratedLit = isActive("integrated") || hoveredId === "integrated"
+  // 河湖联动：一体化 / 水库 / 防汛
+  const waterLit =
+    isActive("integrated") || isActive("reservoir") || isActive("flood") ||
+    hoveredId === "integrated" || hoveredId === "reservoir" || hoveredId === "flood"
+
+  // 中央核心菱形底座角点
+  const coreR = 1.85
+  const coreTop = iso(-coreR, -coreR)
+  const coreRight = iso(coreR, -coreR)
+  const coreBottom = iso(coreR, coreR)
+  const coreLeft = iso(-coreR, coreR)
+  const corePts = `${coreTop.x},${coreTop.y} ${coreRight.x},${coreRight.y} ${coreBottom.x},${coreBottom.y} ${coreLeft.x},${coreLeft.y}`
 
   return (
     <div
       className="relative w-full"
       style={{ aspectRatio: `${VB_W} / ${VB_H}` }}
       role="img"
-      aria-label="厂网河湖 AI 一体化积木自由组合舱：在数字孪生沙盘上自由组合水务业务模块，实时激活全场景 AI 能力"
+      aria-label="厂网河湖 AI 一体化全景组合舱：在数字孪生沙盘上自由组合水务业务模块，实时激活全场景 AI 能力"
     >
-      {/* 整体氛围光晕 */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl transition-all duration-700"
-        style={{
-          width: aiActive ? "80%" : "58%",
-          height: aiActive ? "70%" : "52%",
-          background: "radial-gradient(circle, oklch(0.7 0.15 210 / 0.4), transparent 70%)",
-          opacity: aiActive ? 0.95 : 0.55,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* AI 叠加完成爆闪 */}
-      <AnimatePresence>
-        {aiActive && (
-          <motion.div
-            key="ai-flash"
-            className="pointer-events-none absolute left-1/2 rounded-full blur-2xl"
-            style={{
-              top: `${(AI.cy / VB_H) * 100}%`,
-              width: "70%",
-              height: "70%",
-              transform: "translate(-50%,-50%)",
-              background: "radial-gradient(circle, oklch(0.96 0.1 200 / 0.75), transparent 60%)",
-            }}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: [0, 0.9, 0], scale: [0.5, 1.15, 1.35] }}
-            transition={{ duration: 1.2, times: [0, 0.28, 1], ease: "easeOut" }}
-            aria-hidden="true"
-          />
-        )}
-      </AnimatePresence>
-
       <svg
         className="relative h-full w-full"
         viewBox={`0 0 ${VB_W} ${VB_H}`}
@@ -184,70 +189,124 @@ export function BuildingBlocks({
             </feMerge>
           </filter>
           <filter id="bb-soft" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="6" />
+            <feGaussianBlur stdDeviation="7" />
           </filter>
-          <linearGradient id="plate-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="oklch(0.26 0.05 245)" />
-            <stop offset="100%" stopColor="oklch(0.17 0.04 250)" />
-          </linearGradient>
-          <radialGradient id="hub-grad" cx="50%" cy="42%" r="60%">
-            <stop offset="0%" stopColor="oklch(0.85 0.13 200 / 0.95)" />
-            <stop offset="55%" stopColor="oklch(0.6 0.15 220 / 0.55)" />
-            <stop offset="100%" stopColor="oklch(0.4 0.1 240 / 0.1)" />
+          <radialGradient id="core-grad" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stopColor="oklch(0.85 0.13 200 / 0.7)" />
+            <stop offset="55%" stopColor="oklch(0.58 0.15 222 / 0.3)" />
+            <stop offset="100%" stopColor="oklch(0.4 0.1 240 / 0)" />
           </radialGradient>
-          <linearGradient id="river-grad" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id="river-grad" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0%" stopColor="oklch(0.55 0.16 235 / 0.1)" />
-            <stop offset="50%" stopColor="oklch(0.78 0.16 215 / 0.85)" />
+            <stop offset="50%" stopColor="oklch(0.74 0.16 215 / 0.8)" />
             <stop offset="100%" stopColor="oklch(0.55 0.16 235 / 0.1)" />
           </linearGradient>
         </defs>
 
-        {/* ===== 底层：厂网河湖数字孪生沙盘 ===== */}
+        {/* ===== 底层：全幅等距科技网格 ===== */}
         <g aria-hidden="true">
-          {/* 底座光晕 */}
-          <ellipse cx={CX} cy={BASE_Y} rx={PLATE.bw + 10} ry={PLATE.bh + 8} fill="oklch(0.6 0.14 215 / 0.12)" filter="url(#bb-soft)" />
-          {/* 底座厚度侧壁 */}
-          <polygon
-            points={`${CX - PLATE.bw},${BASE_Y} ${CX},${BASE_Y + PLATE.bh} ${CX + PLATE.bw},${BASE_Y} ${CX + PLATE.bw},${BASE_Y + 16} ${CX},${BASE_Y + PLATE.bh + 16} ${CX - PLATE.bw},${BASE_Y + 16}`}
-            fill="oklch(0.12 0.03 250)"
-          />
-          {/* 底座顶面 */}
-          <polygon points={platePts} fill="url(#plate-grad)" stroke="oklch(0.6 0.12 215 / 0.6)" strokeWidth={1.4} />
-
-          {/* 等距网格线 */}
-          {Array.from({ length: 7 }).map((_, i) => {
-            const t = -3 + i
-            const a = iso(t, -3)
-            const b = iso(t, 3)
-            const c = iso(-3, t)
-            const d = iso(3, t)
+          {Array.from({ length: 11 }).map((_, i) => {
+            const t = -5 + i
+            const a = iso(t, -5)
+            const b = iso(t, 5)
+            const c = iso(-5, t)
+            const d = iso(5, t)
             return (
-              <g key={`grid-${i}`} stroke="oklch(0.55 0.1 220 / 0.18)" strokeWidth={0.7}>
+              <g key={`grid-${i}`} stroke="oklch(0.5 0.09 222 / 0.14)" strokeWidth={0.7}>
                 <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} />
                 <line x1={c.x} y1={c.y} x2={d.x} y2={d.y} />
               </g>
             )
           })}
+        </g>
 
-          {/* 河流（幽蓝发光曲线）+ 湖泊 */}
+        {/* ===== 河湖水系（横跨全图的发光蓝带 + 湖泊） ===== */}
+        <g aria-hidden="true">
+          <path
+            d="M -30 392 C 150 332 270 452 460 392 S 760 330 940 404"
+            fill="none"
+            stroke={waterLit ? "oklch(0.55 0.14 230 / 0.65)" : "oklch(0.42 0.1 235 / 0.4)"}
+            strokeWidth={13}
+            strokeLinecap="round"
+            filter="url(#bb-soft)"
+          />
+          <path
+            d="M -30 392 C 150 332 270 452 460 392 S 760 330 940 404"
+            fill="none"
+            stroke="url(#river-grad)"
+            strokeWidth={4}
+            strokeLinecap="round"
+            opacity={waterLit ? 1 : 0.5}
+          />
+          <path
+            d="M -30 392 C 150 332 270 452 460 392 S 760 330 940 404"
+            fill="none"
+            stroke="oklch(0.92 0.08 205)"
+            strokeWidth={1.3}
+            strokeLinecap="round"
+            strokeDasharray="2 14"
+            opacity={waterLit ? 0.95 : 0.4}
+          >
+            <animate attributeName="stroke-dashoffset" from="0" to="-64" dur="2.4s" repeatCount="indefinite" />
+          </path>
+          {/* 湖泊（靠近水库节点） */}
           {(() => {
-            const p0 = iso(-2.4, 1.0)
-            const p1 = iso(-0.6, -0.2)
-            const p2 = iso(0.8, 0.9)
-            const p3 = iso(2.2, -0.4)
-            const dPath = `M ${p0.x} ${p0.y} Q ${p1.x} ${p1.y} ${p2.x} ${p2.y} T ${p3.x} ${p3.y}`
-            const lake = iso(1.4, 1.2)
+            const lake = iso(3.2, 1.1)
             return (
-              <>
-                <path d={dPath} fill="none" stroke="oklch(0.45 0.12 235 / 0.5)" strokeWidth={9} strokeLinecap="round" filter="url(#bb-soft)" />
-                <path d={dPath} fill="none" stroke="url(#river-grad)" strokeWidth={3} strokeLinecap="round" />
-                <path d={dPath} fill="none" stroke="oklch(0.92 0.08 205)" strokeWidth={1.2} strokeLinecap="round" strokeDasharray="2 12">
-                  <animate attributeName="stroke-dashoffset" from="0" to="-56" dur="2.6s" repeatCount="indefinite" />
-                </path>
-                <ellipse cx={lake.x} cy={lake.y} rx={26} ry={13} fill="oklch(0.5 0.13 230 / 0.5)" stroke="oklch(0.8 0.12 210 / 0.7)" strokeWidth={1} />
-              </>
+              <ellipse
+                cx={lake.x}
+                cy={lake.y + 8}
+                rx={34}
+                ry={16}
+                fill={waterLit ? "oklch(0.5 0.14 228 / 0.55)" : "oklch(0.42 0.1 232 / 0.35)"}
+                stroke="oklch(0.78 0.12 210 / 0.6)"
+                strokeWidth={1}
+              />
             )
           })()}
+        </g>
+
+        {/* ===== 底层管网（纵横交错的青色光带，联动点亮+流光） ===== */}
+        <g aria-hidden="true">
+          {PIPE_ROUTES.map((route, i) => (
+            <g key={`pipe-${i}`}>
+              <polyline
+                points={routePts(route)}
+                fill="none"
+                stroke={networkLit ? "oklch(0.8 0.14 200 / 0.7)" : "oklch(0.5 0.08 222 / 0.28)"}
+                strokeWidth={networkLit ? 2 : 1.2}
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                filter={networkLit ? "url(#bb-glow)" : undefined}
+              />
+              {networkLit && (
+                <polyline
+                  points={routePts(route)}
+                  fill="none"
+                  stroke="oklch(0.97 0.05 200)"
+                  strokeWidth={1.4}
+                  strokeLinejoin="round"
+                  strokeLinecap="round"
+                  strokeDasharray="3 13"
+                >
+                  <animate attributeName="stroke-dashoffset" from="0" to="-64" dur="1.5s" repeatCount="indefinite" />
+                </polyline>
+              )}
+            </g>
+          ))}
+          {/* 泵站标记 */}
+          {PUMP_MARKS.map(([gx, gy], i) => {
+            const p = iso(gx, gy)
+            const lit = networkLit || isActive("pump") || hoveredId === "pump"
+            return (
+              <g key={`pump-${i}`}>
+                <ellipse cx={p.x} cy={p.y} rx={lit ? 7 : 4} ry={lit ? 3.5 : 2} fill="none" stroke={lit ? "oklch(0.85 0.13 200)" : "oklch(0.5 0.07 225)"} strokeWidth={1}>
+                  {lit && <animate attributeName="rx" values="4;9;4" dur="2s" begin={`${i * 0.3}s`} repeatCount="indefinite" />}
+                </ellipse>
+                <circle cx={p.x} cy={p.y - 3} r={lit ? 2.6 : 1.6} fill={lit ? "oklch(0.92 0.1 200)" : "oklch(0.55 0.06 228)"} filter={lit ? "url(#bb-glow)" : undefined} />
+              </g>
+            )
+          })}
         </g>
 
         {/* ===== 沙盘建筑节点 + 中枢→节点流光 ===== */}
@@ -259,66 +318,97 @@ export function BuildingBlocks({
           const hot = hoveredId === n.id
           const lit = on || hot
           const col = mod.palette.top
-          const beam = `M ${HUB_CX} ${HUB_CY + 4} L ${p.x} ${p.y - 8}`
+          const beam = `M ${HUB_CX} ${HUB_CY} L ${p.x} ${p.y - 6}`
           return (
             <g key={`node-${n.id}`}>
-              {/* 流光赋能：中枢 → 节点 */}
               {lit && (
                 <>
-                  <path d={beam} stroke={col} strokeOpacity={0.45} strokeWidth={1.3} fill="none" strokeDasharray="3 7">
+                  <path d={beam} stroke={col} strokeOpacity={0.5} strokeWidth={1.4} fill="none" strokeDasharray="3 7">
                     <animate attributeName="stroke-dashoffset" from="0" to="-40" dur="1.1s" repeatCount="indefinite" />
                   </path>
-                  <circle r={2.4} fill="oklch(0.96 0.06 205)" filter="url(#bb-glow)">
+                  <circle r={2.6} fill="oklch(0.96 0.06 205)" filter="url(#bb-glow)">
                     <animateMotion dur="1.3s" repeatCount="indefinite" path={beam} />
                   </circle>
                 </>
               )}
-              {/* 节点立柱 + 顶灯 */}
-              <line x1={p.x} y1={p.y} x2={p.x} y2={p.y - (lit ? 16 : 9)} stroke={col} strokeOpacity={lit ? 0.9 : 0.3} strokeWidth={1.6} />
-              <circle
-                cx={p.x}
-                cy={p.y - (lit ? 16 : 9)}
-                r={lit ? 3.4 : 2}
-                fill={lit ? col : "oklch(0.55 0.06 230)"}
-                filter={lit ? "url(#bb-glow)" : undefined}
-              />
-              {/* 地面光环 */}
-              <ellipse cx={p.x} cy={p.y} rx={lit ? 10 : 6} ry={lit ? 5 : 3} fill="none" stroke={col} strokeOpacity={lit ? 0.7 : 0.22} strokeWidth={1}>
-                {lit && <animate attributeName="rx" values="6;13;6" dur="2.4s" repeatCount="indefinite" />}
-                {lit && <animate attributeName="stroke-opacity" values="0.7;0.1;0.7" dur="2.4s" repeatCount="indefinite" />}
-              </ellipse>
+              {/* 厂：矩阵式微型方块建筑 */}
+              {n.kind === "plant" && (
+                <g filter={lit ? "url(#bb-glow)" : undefined}>
+                  {[[-9, 0], [0, 5], [9, 0], [0, -5]].map(([dx, dy], k) => (
+                    <rect
+                      key={k}
+                      x={p.x + dx - 4}
+                      y={p.y + dy - 8}
+                      width={8}
+                      height={8}
+                      rx={1}
+                      fill={lit ? col : "oklch(0.4 0.05 232)"}
+                      fillOpacity={lit ? 0.9 : 0.5}
+                    />
+                  ))}
+                  <ellipse cx={p.x} cy={p.y + 2} rx={lit ? 16 : 11} ry={lit ? 7 : 5} fill="none" stroke={col} strokeOpacity={lit ? 0.6 : 0.22} strokeWidth={1}>
+                    {lit && <animate attributeName="rx" values="11;19;11" dur="2.4s" repeatCount="indefinite" />}
+                  </ellipse>
+                </g>
+              )}
+              {/* 塔：发光立柱节点 */}
+              {n.kind === "tower" && (
+                <g>
+                  <line x1={p.x} y1={p.y} x2={p.x} y2={p.y - (lit ? 18 : 10)} stroke={col} strokeOpacity={lit ? 0.9 : 0.32} strokeWidth={1.8} />
+                  <circle cx={p.x} cy={p.y - (lit ? 18 : 10)} r={lit ? 3.6 : 2.2} fill={lit ? col : "oklch(0.55 0.06 230)"} filter={lit ? "url(#bb-glow)" : undefined} />
+                </g>
+              )}
+              {/* 泵：圆柱节点 */}
+              {n.kind === "pump" && (
+                <g filter={lit ? "url(#bb-glow)" : undefined}>
+                  <ellipse cx={p.x} cy={p.y - 10} rx={6} ry={3} fill={lit ? col : "oklch(0.42 0.05 232)"} />
+                  <rect x={p.x - 6} y={p.y - 10} width={12} height={10} fill={lit ? mod.palette.right : "oklch(0.34 0.04 236)"} fillOpacity={0.8} />
+                  <ellipse cx={p.x} cy={p.y} rx={6} ry={3} fill={lit ? mod.palette.left : "oklch(0.3 0.04 238)"} />
+                </g>
+              )}
+              {/* 坝：水库大坝 */}
+              {n.kind === "dam" && (
+                <g filter={lit ? "url(#bb-glow)" : undefined}>
+                  <polygon points={`${p.x - 14},${p.y} ${p.x - 10},${p.y - 12} ${p.x + 10},${p.y - 12} ${p.x + 14},${p.y}`} fill={lit ? mod.palette.right : "oklch(0.34 0.04 236)"} fillOpacity={0.85} stroke={col} strokeOpacity={lit ? 0.8 : 0.3} strokeWidth={1} />
+                </g>
+              )}
+              {/* 地面光环（除厂外，厂已自带） */}
+              {n.kind !== "plant" && (
+                <ellipse cx={p.x} cy={p.y} rx={lit ? 11 : 6} ry={lit ? 5.5 : 3} fill="none" stroke={col} strokeOpacity={lit ? 0.65 : 0.2} strokeWidth={1}>
+                  {lit && <animate attributeName="rx" values="6;14;6" dur="2.4s" repeatCount="indefinite" />}
+                  {lit && <animate attributeName="stroke-opacity" values="0.65;0.1;0.65" dur="2.4s" repeatCount="indefinite" />}
+                </ellipse>
+              )}
             </g>
           )
         })}
 
-        {/* ===== 中央 AI 核心底座（科幻层叠 + 阵列灯光） ===== */}
+        {/* ===== 中央 AI 核心底座（强蓝光菱形平台 + 阵列灯光） ===== */}
         <g aria-hidden="true">
-          {/* 底座光池 */}
-          <ellipse cx={HUB_CX} cy={HUB_CY + 10} rx={70} ry={34} fill="oklch(0.7 0.15 210 / 0.18)" filter="url(#bb-soft)" />
-          {/* 双层平台 */}
-          {[{ w: 120, th: 30, y: HUB_CY + 14, o: 0.5 }, { w: 92, th: 23, y: HUB_CY + 4, o: 0.85 }].map((r, i) => {
-            const hw = r.w / 2
-            const hh = r.th / 2
-            return (
-              <g key={`hub-${i}`}>
-                <polygon
-                  points={`${HUB_CX},${r.y - hh} ${HUB_CX + hw},${r.y} ${HUB_CX},${r.y + hh} ${HUB_CX - hw},${r.y}`}
-                  fill="url(#hub-grad)"
-                  fillOpacity={r.o}
-                  stroke="oklch(0.85 0.12 205 / 0.8)"
-                  strokeWidth={1}
-                />
-              </g>
-            )
-          })}
-          {/* 阵列灯光点（integrated 联动增亮） */}
+          <ellipse cx={HUB_CX} cy={HUB_CY} rx={210} ry={108} fill="oklch(0.68 0.15 212 / 0.16)" filter="url(#bb-soft)" />
+          {/* 同心菱形 */}
+          {[1, 0.74, 0.5].map((s, i) => (
+            <polygon
+              key={`core-${i}`}
+              points={[
+                `${HUB_CX},${HUB_CY - coreR * 2 * TH * s}`,
+                `${HUB_CX + coreR * 2 * TW * s},${HUB_CY}`,
+                `${HUB_CX},${HUB_CY + coreR * 2 * TH * s}`,
+                `${HUB_CX - coreR * 2 * TW * s},${HUB_CY}`,
+              ].join(" ")}
+              fill={i === 2 ? "url(#core-grad)" : "none"}
+              stroke="oklch(0.78 0.13 205 / 0.55)"
+              strokeWidth={i === 0 ? 1.6 : 1}
+            />
+          ))}
+          {/* 8 颗环形阵列灯 */}
           {Array.from({ length: 8 }).map((_, i) => {
             const ang = (i / 8) * Math.PI * 2
-            const lx = HUB_CX + Math.cos(ang) * 40
-            const ly = HUB_CY + 4 + Math.sin(ang) * 20
+            const lx = HUB_CX + Math.cos(ang) * 90
+            const ly = HUB_CY + Math.sin(ang) * 46
             return (
-              <circle key={`hl-${i}`} cx={lx} cy={ly} r={1.6} fill="oklch(0.95 0.07 205)" opacity={integratedLit ? 0.95 : 0.5} filter="url(#bb-glow)">
-                <animate attributeName="opacity" values={`${integratedLit ? 0.95 : 0.4};0.15;${integratedLit ? 0.95 : 0.4}`} dur="2.2s" begin={`${i * 0.18}s`} repeatCount="indefinite" />
+              <circle key={`hl-${i}`} cx={lx} cy={ly} r={2} fill="oklch(0.95 0.07 205)" opacity={integratedLit ? 0.95 : 0.5} filter="url(#bb-glow)">
+                <animate attributeName="opacity" values={`${integratedLit ? 0.95 : 0.4};0.12;${integratedLit ? 0.95 : 0.4}`} dur="2.2s" begin={`${i * 0.18}s`} repeatCount="indefinite" />
               </circle>
             )
           })}
@@ -342,12 +432,10 @@ export function BuildingBlocks({
                 onMouseLeave={() => onHover(null)}
                 onClick={() => onToggle(m.id)}
               >
-                {/* 玻璃质感：低透明度色面 + 亮边 + 顶面霜光 */}
                 <polygon points={f.left} fill={m.palette.left} fillOpacity={0.52} stroke={m.palette.glow} strokeOpacity={0.5} strokeWidth={0.8} />
                 <polygon points={f.right} fill={m.palette.right} fillOpacity={0.62} stroke={m.palette.glow} strokeOpacity={0.5} strokeWidth={0.8} />
                 <polygon points={f.top} fill={m.palette.top} fillOpacity={isHot ? 0.82 : 0.66} stroke={isHot ? "oklch(0.98 0.04 200)" : "oklch(0.92 0.08 200 / 0.9)"} strokeWidth={isHot ? 1.8 : 1.1} />
                 <polygon points={f.top} fill="oklch(0.99 0.01 200)" fillOpacity={0.16} />
-                {/* 内部流光：竖直高光线（模块激活赋能感） */}
                 <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
                   <animate attributeName="stroke-opacity" values="0.1;0.7;0.1" dur="2.2s" repeatCount="indefinite" />
                 </line>
@@ -372,7 +460,7 @@ export function BuildingBlocks({
           </g>
         )}
 
-        {/* ===== 塔尖「更多+」收束块（持续旋转） ===== */}
+        {/* ===== 塔尖「更多+」虚框收束块（持续旋转） ===== */}
         <motion.g
           initial={false}
           animate={{ opacity: hoveredId ? 0.6 : 1 }}
@@ -392,7 +480,6 @@ export function BuildingBlocks({
               const f = faces(CAP.cx, CAP.cy, CAP.w, CAP.qh, CAP.h)
               return (
                 <>
-                  {/* 虚线线框：透明填充，表达「待扩展」 */}
                   <polygon points={f.left} fill="oklch(0.7 0.12 220 / 0.06)" stroke="oklch(0.85 0.1 210 / 0.7)" strokeWidth={1.1} strokeDasharray="5 4" />
                   <polygon points={f.right} fill="oklch(0.7 0.12 220 / 0.08)" stroke="oklch(0.85 0.1 210 / 0.7)" strokeWidth={1.1} strokeDasharray="5 4" />
                   <polygon points={f.top} fill="oklch(0.7 0.12 210 / 0.1)" stroke="oklch(0.95 0.06 205 / 0.9)" strokeWidth={1.3} strokeDasharray="5 4" />
@@ -462,7 +549,7 @@ export function BuildingBlocks({
         } else {
           const node = SANDBOX_NODES.find((n) => n.id === m.id)
           const p = node ? iso(node.gx, node.gy) : { x: HUB_CX, y: HUB_CY }
-          pos = { cx: p.x, cy: p.y - 18, qh: 4 }
+          pos = { cx: p.x, cy: p.y - 20, qh: 4 }
         }
         return (
           <span

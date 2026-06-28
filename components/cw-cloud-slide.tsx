@@ -307,15 +307,26 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           </div>
         </div>
 
-        {/* 右：模块池面板（唯一选择入口）| 组合体 */}
-        <div className="grid gap-5 sm:grid-cols-[minmax(0,220px)_minmax(0,1fr)]">
-          {/* 产品模块池 */}
-          <div className="rounded-2xl border border-border bg-card/40 p-3.5">
-            <div className="mb-2.5 flex items-center gap-1.5">
+        {/* 右：全景厂网河湖数字孪生舞台（沙盘铺满 + 左侧玻璃浮动模块池） */}
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-[oklch(0.12_0.03_248)]">
+          <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
+
+          {/* 全景沙盘组合体（铺满舞台） */}
+          <BuildingBlocks
+            modules={productModules}
+            activeIds={activeIds}
+            hoveredId={hoveredId}
+            onHover={handleHover}
+            onToggle={toggleModule}
+          />
+
+          {/* 左侧玻璃质感浮动模块池 */}
+          <div className="absolute left-3 top-3 bottom-12 z-10 flex w-[180px] flex-col rounded-xl border border-accent/20 bg-[oklch(0.16_0.03_245/0.72)] p-3 backdrop-blur-md sm:w-[196px]">
+            <div className="mb-2 flex items-center gap-1.5">
               <Boxes className="size-4 text-accent" />
               <span className="text-xs font-semibold text-foreground">产品模块池 · 10+</span>
             </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
               {listedModules.map((m) => {
                 const on = activeIds.includes(m.id)
                 const hot = showId === m.id
@@ -325,11 +336,11 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                     onMouseEnter={() => handleHover(m.id)}
                     onMouseLeave={() => handleHover(null)}
                     onClick={() => toggleModule(m.id)}
-                    className="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-left text-[12px] transition-all duration-300"
+                    className="flex items-center gap-2 rounded-lg border px-2 py-1.5 text-left text-[12px] transition-all duration-300"
                     style={{
-                      borderColor: on ? "oklch(0.7 0.13 210 / 0.5)" : hot ? "oklch(0.6 0.1 215 / 0.6)" : "oklch(0.32 0.03 240 / 0.6)",
-                      backgroundColor: on ? "oklch(0.7 0.14 215 / 0.14)" : hot ? "oklch(0.5 0.06 235 / 0.18)" : "transparent",
-                      opacity: on || hot ? 1 : 0.6,
+                      borderColor: on ? "oklch(0.7 0.13 210 / 0.5)" : hot ? "oklch(0.6 0.1 215 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
+                      backgroundColor: on ? "oklch(0.7 0.14 215 / 0.18)" : hot ? "oklch(0.5 0.06 235 / 0.22)" : "oklch(0.2 0.03 245 / 0.4)",
+                      opacity: on || hot ? 1 : 0.72,
                     }}
                   >
                     <span
@@ -341,8 +352,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                   </button>
                 )
               })}
-              {/* 更多模块持续扩展 */}
-              <div className="flex items-center gap-2 rounded-lg border border-dashed border-accent/30 px-2.5 py-1.5 text-[12px] opacity-70">
+              <div className="flex items-center gap-2 rounded-lg border border-dashed border-accent/30 px-2 py-1.5 text-[12px] opacity-70">
                 <Plus className="size-3 shrink-0 text-accent" />
                 <span className="min-w-0 flex-1 truncate text-foreground/80">更多+</span>
                 <span className="shrink-0 text-[10px] text-muted-foreground">持续扩展</span>
@@ -350,23 +360,10 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             </div>
           </div>
 
-          {/* 组合体 */}
-          <div className="flex flex-col">
-            <div className="flex items-center justify-center">
-              <div className="w-full max-w-[330px]">
-                <BuildingBlocks
-                  modules={productModules}
-                  activeIds={activeIds}
-                  hoveredId={hoveredId}
-                  onHover={handleHover}
-                  onToggle={toggleModule}
-                />
-              </div>
-            </div>
-            <p className="mt-1 text-center text-[11px] text-muted-foreground">
-              已选 {activeIds.filter((id) => id !== "ai").length} / {listedModules.length} 个模块 · 点击模块查看说明并加入组合
-            </p>
-          </div>
+          {/* 中央堆叠体下方居中统计文字 */}
+          <p className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.14_0.03_248/0.8)] px-4 py-1.5 text-center text-[11px] text-muted-foreground backdrop-blur sm:text-[12px]">
+            已选 <span className="font-mono font-semibold text-accent">{activeIds.filter((id) => id !== "ai").length}</span> / {listedModules.length} 个模块 · 点击模块查看说明并加入组合
+          </p>
         </div>
       </div>
 
