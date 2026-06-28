@@ -100,6 +100,11 @@ export function BuildingBlocks({
   // 中枢上升光束顶端（连接平台与塔）
   const beamTopY = CAP.cy - 6
 
+  // 发光承载平台（卡槽底盘）：尺寸略大于 3×3 积木底面，承托整组积木
+  // 积木底面中心约在 (ORIGIN_X, ORIGIN_Y + 2*HALF_TH + H) = (450, 301)
+  const PLATE = { cx: ORIGIN_X, cy: ORIGIN_Y + 2 * HALF_TH + H - 6, w: 212, qh: 53, h: 18 }
+  const plateF = faces(PLATE.cx, PLATE.cy, PLATE.w, PLATE.qh, PLATE.h)
+
   return (
     <div
       className="relative w-full overflow-hidden"
@@ -140,20 +145,42 @@ export function BuildingBlocks({
           </linearGradient>
         </defs>
 
-        {/* 平台中枢上升光束（连接底座与积木塔） */}
+        {/* 中枢上升光束（仅辅助，连接承载平台与塔顶，弱化不喧宾夺主） */}
         <rect
-          x={ORIGIN_X - 7}
+          x={ORIGIN_X - 5}
           y={beamTopY}
-          width={14}
-          height={ORIGIN_Y + 40 - beamTopY}
+          width={10}
+          height={PLATE.cy - beamTopY}
           fill="url(#bb-beam)"
           filter="url(#bb-soft)"
-          opacity={0.7}
+          opacity={0.4}
         />
-        {/* 塔底辉光 */}
-        <ellipse cx={ORIGIN_X} cy={ORIGIN_Y + 46} rx={120} ry={42} fill="oklch(0.7 0.15 210 / 0.22)" filter="url(#bb-soft)" />
 
-        {/* ===== 全息玻璃晶体积木（painter 排序，自底向上堆叠） ===== */}
+        {/* ===== 发光承载平台 / 卡槽底盘（承托整组积木） ===== */}
+        {/* 平台底部投影辉光 */}
+        <ellipse cx={PLATE.cx} cy={PLATE.cy + PLATE.h + 8} rx={PLATE.w / 2 + 16} ry={PLATE.qh * 0.7} fill="oklch(0.7 0.15 210 / 0.3)" filter="url(#bb-soft)" />
+        {/* 平台厚度侧面 */}
+        <polygon points={plateF.left} fill="oklch(0.32 0.07 235 / 0.92)" stroke="oklch(0.8 0.12 205 / 0.8)" strokeWidth={1.2} />
+        <polygon points={plateF.right} fill="oklch(0.4 0.08 230 / 0.92)" stroke="oklch(0.8 0.12 205 / 0.8)" strokeWidth={1.2} />
+        {/* 平台上表面（半透明玻璃发光承载面） */}
+        <polygon points={plateF.top} fill="oklch(0.55 0.13 215 / 0.5)" stroke="oklch(0.92 0.1 205)" strokeWidth={1.6} />
+        {/* 承载面同心发光卡槽环（与积木底面尺寸匹配） */}
+        {[0.74, 0.5, 0.28].map((s, i) => (
+          <polygon
+            key={`ring-${i}`}
+            points={faces(PLATE.cx, PLATE.cy, PLATE.w * s, PLATE.qh * s, 0).top}
+            fill="none"
+            stroke="oklch(0.95 0.09 205)"
+            strokeWidth={1.1}
+            strokeOpacity={0.5}
+          >
+            <animate attributeName="stroke-opacity" values="0.2;0.7;0.2" dur="2.6s" begin={`${i * 0.5}s`} repeatCount="indefinite" />
+          </polygon>
+        ))}
+        {/* 承载面中心向上发光核心 */}
+        <ellipse cx={PLATE.cx} cy={PLATE.cy} rx={26} ry={13} fill="oklch(0.97 0.06 205 / 0.85)" filter="url(#bb-glow)" />
+
+        {/* ===== 全息玻璃晶体积木（painter 排序，自底向上堆叠，完整落座于承载平台） ===== */}
         {drawn.map(({ m, slot }) => {
           const isHot = hoveredId === m.id
           const dim = hoveredId && !isHot ? 0.45 : 1
@@ -180,6 +207,16 @@ export function BuildingBlocks({
                 <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
                   <animate attributeName="stroke-opacity" values="0.12;0.7;0.12" dur="2.2s" repeatCount="indefinite" />
                 </line>
+                {/* 底层积木与承载平台接触处的高亮底边（强化“已安装/卡接”关系） */}
+                {slot.layer === 0 && (
+                  <polyline
+                    points={`${slot.cx - HALF_W},${slot.cy + QH + H} ${slot.cx},${slot.cy + 2 * QH + H} ${slot.cx + HALF_W},${slot.cy + QH + H}`}
+                    fill="none"
+                    stroke="oklch(0.98 0.07 205)"
+                    strokeOpacity={0.85}
+                    strokeWidth={1.6}
+                  />
+                )}
               </motion.g>
             </AnimatePresence>
           )
