@@ -77,9 +77,7 @@ export function BuildingBlocks({
   onToggle: (id: string) => void
 }) {
   const business = modules.filter((m) => !m.float)
-  const ai = modules.find((m) => m.float)
   const isActive = (id: string) => activeIds.includes(id)
-  const aiActive = ai ? isActive(ai.id) : false
 
   const activeBusiness = business.filter((b) => isActive(b.id))
   const slotted = activeBusiness.map((m, i) => ({ m, slot: towerSlot(i) }))
@@ -94,8 +92,6 @@ export function BuildingBlocks({
   const towerTopY = ORIGIN_Y - (filledLayers - 1) * H
   // 「更多+」块：悬浮在整座塔顶中心上方（带旋转 + 上下浮动）
   const CAP = { cx: ORIGIN_X, cy: towerTopY - 30, w: W, qh: QH, h: H }
-  // AI 核心晶体：浮于「更多+」之上
-  const AI = { cx: ORIGIN_X, cy: CAP.cy - CAP.h - 18, w: 50, qh: 12.5, h: 28 }
 
   // 中枢上升光束顶端（连接平台与塔）
   const beamTopY = CAP.cy - 6
@@ -156,21 +152,21 @@ export function BuildingBlocks({
           opacity={0.4}
         />
 
-        {/* ===== 发光承载平台 / 卡槽底盘（承托整组积木） ===== */}
+        {/* ===== 发光承载平台 / 卡槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
         {/* 平台底部投影辉光 */}
-        <ellipse cx={PLATE.cx} cy={PLATE.cy + PLATE.h + 8} rx={PLATE.w / 2 + 16} ry={PLATE.qh * 0.7} fill="oklch(0.7 0.15 210 / 0.3)" filter="url(#bb-soft)" />
+        <ellipse cx={PLATE.cx} cy={PLATE.cy + PLATE.h + 8} rx={PLATE.w / 2 + 16} ry={PLATE.qh * 0.7} fill="oklch(0.55 0.2 255 / 0.32)" filter="url(#bb-soft)" />
         {/* 平台厚度侧面 */}
-        <polygon points={plateF.left} fill="oklch(0.32 0.07 235 / 0.92)" stroke="oklch(0.8 0.12 205 / 0.8)" strokeWidth={1.2} />
-        <polygon points={plateF.right} fill="oklch(0.4 0.08 230 / 0.92)" stroke="oklch(0.8 0.12 205 / 0.8)" strokeWidth={1.2} />
+        <polygon points={plateF.left} fill="oklch(0.28 0.11 255 / 0.94)" stroke="oklch(0.66 0.18 252 / 0.85)" strokeWidth={1.2} />
+        <polygon points={plateF.right} fill="oklch(0.36 0.13 250 / 0.94)" stroke="oklch(0.66 0.18 252 / 0.85)" strokeWidth={1.2} />
         {/* 平台上表面（半透明玻璃发光承载面） */}
-        <polygon points={plateF.top} fill="oklch(0.55 0.13 215 / 0.5)" stroke="oklch(0.92 0.1 205)" strokeWidth={1.6} />
+        <polygon points={plateF.top} fill="oklch(0.48 0.17 252 / 0.52)" stroke="oklch(0.72 0.16 250)" strokeWidth={1.6} />
         {/* 承载面同心发光卡槽环（与积木底面尺寸匹配） */}
         {[0.74, 0.5, 0.28].map((s, i) => (
           <polygon
             key={`ring-${i}`}
             points={faces(PLATE.cx, PLATE.cy, PLATE.w * s, PLATE.qh * s, 0).top}
             fill="none"
-            stroke="oklch(0.95 0.09 205)"
+            stroke="oklch(0.78 0.16 250)"
             strokeWidth={1.1}
             strokeOpacity={0.5}
           >
@@ -178,7 +174,7 @@ export function BuildingBlocks({
           </polygon>
         ))}
         {/* 承载面中心向上发光核心 */}
-        <ellipse cx={PLATE.cx} cy={PLATE.cy} rx={26} ry={13} fill="oklch(0.97 0.06 205 / 0.85)" filter="url(#bb-glow)" />
+        <ellipse cx={PLATE.cx} cy={PLATE.cy} rx={26} ry={13} fill="oklch(0.82 0.15 250 / 0.9)" filter="url(#bb-glow)" />
 
         {/* ===== 全息玻璃晶体积木（painter 排序，自底向上堆叠，完整落座于承载平台） ===== */}
         {drawn.map(({ m, slot }) => {
@@ -276,36 +272,6 @@ export function BuildingBlocks({
             更多+
           </text>
         </motion.g>
-
-        {/* ===== AI 核心晶体（顶部悬浮，持续上下浮动） ===== */}
-        {ai && (
-          <motion.g
-            animate={aiActive ? { y: [0, -7, 0] } : { y: 0 }}
-            transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-            style={{ transformBox: "fill-box", transformOrigin: "center", cursor: "pointer" }}
-            filter="url(#bb-glow)"
-            onMouseEnter={() => onHover(ai.id)}
-            onMouseLeave={() => onHover(null)}
-            onClick={() => onToggle(ai.id)}
-          >
-            {(() => {
-              const f = faces(AI.cx, AI.cy, AI.w, AI.qh, AI.h)
-              const op = aiActive ? 1 : 0.4
-              return (
-                <>
-                  <polygon points={f.left} fill="oklch(0.55 0.13 250)" fillOpacity={0.85 * op} />
-                  <polygon points={f.right} fill="oklch(0.68 0.12 240)" fillOpacity={0.9 * op} />
-                  <polygon points={f.top} fill="oklch(0.97 0.03 220)" fillOpacity={op} stroke="oklch(0.99 0.02 210)" strokeWidth={1.5} strokeOpacity={op} />
-                  {aiActive && (
-                    <polygon points={f.top} fill="none" stroke="oklch(0.99 0.04 205)" strokeWidth={1.2}>
-                      <animate attributeName="stroke-opacity" values="0.2;1;0.2" dur="1.8s" repeatCount="indefinite" />
-                    </polygon>
-                  )}
-                </>
-              )
-            })()}
-          </motion.g>
-        )}
       </svg>
     </div>
   )
