@@ -106,7 +106,7 @@ export function BuildingBlocks({
     >
       {/* ===== 底图：数字孪生沙盘（发光平台 + 厂网河湖设施） ===== */}
       <img
-        src="/scenes/cw-sandbox-base.png"
+        src="/scenes/cw-sandbox-empty.png"
         alt=""
         aria-hidden="true"
         className="absolute inset-0 size-full object-cover object-center"
