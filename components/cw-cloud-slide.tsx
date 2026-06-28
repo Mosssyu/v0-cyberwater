@@ -454,25 +454,40 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </button>
             </div>
 
-            {/* 右：产品大屏示意图（16:9 预览框 · contain 完整展示不裁切 · 尽量铺满 · 居中） */}
+            {/* 右：产品预览面板（图片作为卡片主内容区，与外层一体化，非框中框） */}
             <div
-              className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border p-2 sm:p-3 lg:col-span-3"
+              className="group relative aspect-video overflow-hidden rounded-xl lg:col-span-3"
               style={{
-                borderColor: `${showModule.palette.top}33`,
+                border: `1px solid ${showModule.palette.top}26`,
                 background: "oklch(0.12 0.025 248)",
-                boxShadow: `0 0 28px -8px ${showModule.palette.glow}`,
+                boxShadow: `0 0 40px -14px ${showModule.palette.glow}, inset 0 0 0 1px oklch(1 0 0 / 0.02)`,
               }}
             >
               {productImages[showModule.id] ? (
-                <img
-                  src={productImages[showModule.id] || "/placeholder.svg"}
-                  alt={`${showModule.label}产品大屏示意`}
-                  className="max-h-full max-w-full rounded-md object-contain"
-                  loading="lazy"
-                  draggable={false}
-                />
+                <>
+                  {/* 图片直接铺满卡片内容区，共享卡片圆角 */}
+                  <img
+                    src={productImages[showModule.id] || "/placeholder.svg"}
+                    alt={`${showModule.label}产品大屏示意`}
+                    className="size-full object-cover"
+                    loading="lazy"
+                    draggable={false}
+                  />
+                  {/* 边缘柔化暗角：让图片矩形边界自然融入卡片背景 */}
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    aria-hidden="true"
+                    style={{
+                      boxShadow: `inset 0 0 36px 6px oklch(0.1 0.025 248 / 0.55)`,
+                      background:
+                        "radial-gradient(120% 120% at 50% 50%, transparent 62%, oklch(0.1 0.025 248 / 0.5) 100%)",
+                    }}
+                  />
+                </>
               ) : (
-                <ProductScene id={showModule.id} palette={showModule.palette} />
+                <div className="flex size-full items-center justify-center p-3">
+                  <ProductScene id={showModule.id} palette={showModule.palette} />
+                </div>
               )}
             </div>
           </motion.div>
