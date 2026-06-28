@@ -397,10 +397,10 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="grid gap-5 overflow-hidden rounded-2xl border border-border bg-card/40 p-5 lg:grid-cols-2"
+            className="grid items-center gap-5 overflow-hidden rounded-2xl border border-border bg-card/40 p-5 lg:grid-cols-5"
           >
             {/* 左：产品说明 */}
-            <div className="flex flex-col">
+            <div className="flex flex-col lg:col-span-2">
               <div className="flex items-center gap-3">
                 <span
                   className="flex size-11 items-center justify-center rounded-xl"
@@ -454,9 +454,9 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </button>
             </div>
 
-            {/* 右：产品大屏示意图（完整展示整张大屏，contain 不裁切、居中、留白） */}
+            {/* 右：产品大屏示意图（产品预览卡片 · 原始宽高比完整展示 · 不裁切 · 居中留白） */}
             <div
-              className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border p-3 sm:p-4"
+              className="relative flex items-center justify-center rounded-xl border p-4 sm:p-5 lg:col-span-3"
               style={{
                 borderColor: `${showModule.palette.top}33`,
                 background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}14, oklch(0.14 0.03 245) 72%)`,
@@ -466,12 +466,14 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 <img
                   src={productImages[showModule.id] || "/placeholder.svg"}
                   alt={`${showModule.label}产品大屏示意`}
-                  className="max-h-full max-w-full object-contain"
+                  className="h-auto w-full rounded-md object-contain"
                   loading="lazy"
                   draggable={false}
                 />
               ) : (
-                <ProductScene id={showModule.id} palette={showModule.palette} />
+                <div className="flex aspect-video w-full items-center justify-center">
+                  <ProductScene id={showModule.id} palette={showModule.palette} />
+                </div>
               )}
             </div>
           </motion.div>
