@@ -22,19 +22,24 @@ const VB_H = 520
 const ORIGIN_X = 450
 const ORIGIN_Y = 240
 
-// 玻璃晶体积木尺寸
-const W = 70
-const QH = W / 4 // 17.5
-const H = 42
-const HALF_W = W / 2 // 35
-const HALF_TH = W / 4 // 17.5
+// 玻璃晶体积木尺寸（适配 3×3 占位）
+const W = 54
+const QH = W / 4 // 13.5
+const H = 34
+const HALF_W = W / 2 // 27
+const HALF_TH = W / 4 // 13.5
 
-// 2×2 占位填充顺序（自底层向上层逐格填充）
+// 3×3 占位填充顺序（自后向前、自底层向上层逐格填充）
 const FOOT: [number, number][] = [
   [0, 0],
   [1, 0],
   [0, 1],
+  [2, 0],
   [1, 1],
+  [0, 2],
+  [2, 1],
+  [1, 2],
+  [2, 2],
 ]
 const PER_LAYER = FOOT.length
 
@@ -83,19 +88,17 @@ export function BuildingBlocks({
   const ghostModule = hoveredId && !isActive(hoveredId) ? business.find((b) => b.id === hoveredId) : undefined
   const ghostSlot = ghostModule ? towerSlot(activeBusiness.length) : null
 
-  // 「更多+」始终占据堆叠塔的下一个槽位：实体积木最多 11 个，第 12 格为「更多+」
-  const MAX_BLOCKS = 11
-  const moreIndex = Math.min(activeBusiness.length, MAX_BLOCKS)
-  const moreSlot = towerSlot(moreIndex)
-  const CAP = { cx: moreSlot.cx, cy: moreSlot.cy, w: W, qh: QH, h: H }
+  // 已填充层数（每层 3×3 = 9 格）
+  const filledLayers = Math.max(1, Math.ceil(activeBusiness.length / PER_LAYER))
+  // 塔顶高度（后排顶面中心约 ORIGIN_Y - (filledLayers-1)*H）
+  const towerTopY = ORIGIN_Y - (filledLayers - 1) * H
+  // 「更多+」块：悬浮在整座塔顶中心上方（带旋转 + 上下浮动）
+  const CAP = { cx: ORIGIN_X, cy: towerTopY - 30, w: W, qh: QH, h: H }
+  // AI 核心晶体：浮于「更多+」之上
+  const AI = { cx: ORIGIN_X, cy: CAP.cy - CAP.h - 18, w: 50, qh: 12.5, h: 28 }
 
-  // 塔顶最高层（含「更多+」格），用于定位 AI 中枢与上升光束
-  const topLayer = Math.max(0, Math.floor(moreIndex / PER_LAYER))
-  const towerTopY = ORIGIN_Y - (topLayer + 1) * H
-  const AI = { cx: ORIGIN_X, cy: towerTopY - 22, w: 56, qh: 14, h: 30 }
-
-  // 中枢上升光束顶端（随塔高变化）
-  const beamTopY = towerTopY - 10
+  // 中枢上升光束顶端（连接平台与塔）
+  const beamTopY = CAP.cy - 6
 
   return (
     <div
