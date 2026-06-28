@@ -121,11 +121,11 @@ export function BuildingBlocks({
   const ghostSlot = ghostModule ? towerSlot(activeBusiness.length) : null
 
   const layersFilled = Math.ceil(activeBusiness.length / PER_LAYER)
-  // 塔尖「更多+」收束块（无积木时坐于核心底座）
+  // 塔尖「更多+」虚框块：尺寸与普通积木一致，居中坐于塔顶
   const capCy = ORIGIN_Y - layersFilled * H
-  const CAP = { cx: ORIGIN_X, cy: capCy, w: W * 0.7, qh: (W * 0.7) / 4, h: H * 0.8 }
+  const CAP = { cx: ORIGIN_X, cy: capCy, w: W, qh: QH, h: H }
   // AI 核心晶体浮于塔尖之上
-  const AI = { cx: ORIGIN_X, cy: CAP.cy - CAP.h - 10, w: 54, qh: 13.5, h: 27 }
+  const AI = { cx: ORIGIN_X, cy: CAP.cy - CAP.h - 12, w: 54, qh: 13.5, h: 27 }
 
   const integratedLit = isActive("integrated") || hoveredId === "integrated"
 
@@ -392,20 +392,21 @@ export function BuildingBlocks({
               const f = faces(CAP.cx, CAP.cy, CAP.w, CAP.qh, CAP.h)
               return (
                 <>
-                  <polygon points={f.left} fill="oklch(0.6 0.13 245)" fillOpacity={0.92} />
-                  <polygon points={f.right} fill="oklch(0.72 0.12 235)" fillOpacity={0.92} />
-                  <polygon points={f.top} fill="oklch(0.96 0.03 220)" stroke="oklch(0.99 0.02 210)" strokeWidth={1.4} />
+                  {/* 虚线线框：透明填充，表达「待扩展」 */}
+                  <polygon points={f.left} fill="oklch(0.7 0.12 220 / 0.06)" stroke="oklch(0.85 0.1 210 / 0.7)" strokeWidth={1.1} strokeDasharray="5 4" />
+                  <polygon points={f.right} fill="oklch(0.7 0.12 220 / 0.08)" stroke="oklch(0.85 0.1 210 / 0.7)" strokeWidth={1.1} strokeDasharray="5 4" />
+                  <polygon points={f.top} fill="oklch(0.7 0.12 210 / 0.1)" stroke="oklch(0.95 0.06 205 / 0.9)" strokeWidth={1.3} strokeDasharray="5 4" />
                 </>
               )
             })()}
           </motion.g>
           <text
             x={CAP.cx}
-            y={CAP.cy + CAP.h / 2 + 1}
+            y={CAP.cy + CAP.qh + CAP.h / 2}
             textAnchor="middle"
             dominantBaseline="middle"
-            style={{ fontSize: 12, fontWeight: 700, letterSpacing: 0.5 }}
-            fill="oklch(0.18 0.04 245)"
+            style={{ fontSize: 13, fontWeight: 700, letterSpacing: 0.5 }}
+            fill="oklch(0.95 0.05 205)"
           >
             更多+
           </text>
