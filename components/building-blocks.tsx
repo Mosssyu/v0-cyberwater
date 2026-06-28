@@ -10,27 +10,39 @@ export type ModuleDef = {
   col: number
   row: number
   palette: ModulePalette
-  /** AI 智能体：浮于组合体上方的智能中枢 */
+  /** AI 智能体：浮于积木塔上方的智能中枢 */
   float?: boolean
 }
 
-// 等距投影参数（viewBox 360 x 300）
+// 等距投影参数（viewBox 360 x 320）
 const VB_W = 360
-const VB_H = 300
+const VB_H = 320
 const ORIGIN_X = 180
-const ORIGIN_Y = 116
-const W = 52 // 立方体宽
-const QH = W / 4 // 顶面菱形半高 = 13
-const H = 30 // 立方体高
-const HALF_W = W / 2 // 26
-const HALF_TH = W / 4 // 13（菱形半高，用于平铺）
+const ORIGIN_Y = 150 // 塔底基准点
+const W = 56 // 立方体宽
+const QH = W / 4 // 顶面菱形半高 = 14
+const H = 32 // 立方体高
+const HALF_W = W / 2 // 28
+const HALF_TH = W / 4 // 14
 
-const AI = { cx: 180, cy: 60, w: 62, qh: 15.5, h: 30 }
+// 2×2 占位填充顺序（自底层向上层逐格填充）
+const FOOT: [number, number][] = [
+  [0, 0],
+  [1, 0],
+  [0, 1],
+  [1, 1],
+]
+const PER_LAYER = FOOT.length
 
-function cellCenter(col: number, row: number) {
+// 根据「业务模块索引」分配塔内固定槽位：每层 2×2，自底向上叠层
+function towerSlot(index: number) {
+  const layer = Math.floor(index / PER_LAYER)
+  const [fcol, frow] = FOOT[index % PER_LAYER]
   return {
-    cx: ORIGIN_X + (col - row) * HALF_W,
-    cy: ORIGIN_Y + (col + row) * HALF_TH,
+    layer,
+    depth: fcol + frow, // 同层内绘制顺序（小者在后）
+    cx: ORIGIN_X + (fcol - frow) * HALF_W,
+    cy: ORIGIN_Y + (fcol + frow) * HALF_TH - layer * H,
   }
 }
 
@@ -61,22 +73,29 @@ export function BuildingBlocks({
   const isActive = (id: string) => activeIds.includes(id)
   const aiActive = ai ? isActive(ai.id) : false
 
-  // 业务模块按等距画家算法排序（后绘制者在上层）
-  const drawn = [...business].sort((a, b) => a.col + a.row - (b.col + b.row) || a.col - b.col)
+  // 为每个业务模块分配固定塔槽，并按等距画家算法排序（先画底层/后排）
+  const slotted = business.map((m, i) => ({ m, slot: towerSlot(i) }))
+  const drawn = [...slotted].sort(
+    (a, b) => a.slot.layer - b.slot.layer || a.slot.depth - b.slot.depth,
+  )
+
+  // AI 晶体浮于塔顶上方
+  const topLayer = Math.max(0, Math.floor((business.length - 1) / PER_LAYER))
+  const AI = { cx: ORIGIN_X, cy: ORIGIN_Y - (topLayer + 1) * H - 6, w: 60, qh: 15, h: 30 }
 
   return (
     <div
       className="relative w-full"
       style={{ aspectRatio: `${VB_W} / ${VB_H}` }}
       role="img"
-      aria-label="CW-Cloud 模块池组合体：从 10+ 类水务产品模块中按需选择，自由组合为一体化智能运营平台"
+      aria-label="CW-Cloud 积木塔：从 10+ 类水务产品模块中按需选择，自底向上层叠组合为一体化智能运营平台"
     >
-      {/* 组合体整体光晕（AI 叠加后增强） */}
+      {/* 塔体整体光晕（AI 叠加后增强） */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl transition-all duration-700"
         style={{
-          width: aiActive ? "82%" : "56%",
-          height: aiActive ? "74%" : "50%",
+          width: aiActive ? "70%" : "48%",
+          height: aiActive ? "78%" : "56%",
           background: "radial-gradient(circle, oklch(0.7 0.14 210 / 0.42), transparent 70%)",
           opacity: aiActive ? 0.92 : 0.5,
         }}
@@ -90,8 +109,8 @@ export function BuildingBlocks({
             key="ai-flash"
             className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full blur-xl"
             style={{
-              width: "94%",
-              height: "84%",
+              width: "82%",
+              height: "88%",
               background: "radial-gradient(circle, oklch(0.95 0.1 200 / 0.7), transparent 62%)",
             }}
             initial={{ opacity: 0, scale: 0.55 }}
@@ -102,7 +121,12 @@ export function BuildingBlocks({
         )}
       </AnimatePresence>
 
-      <svg className="relative h-full w-full" viewBox={`0 0 ${VB_W} ${VB_H}`} preserveAspectRatio="xMidYMid meet" fill="none">
+      <svg
+        className="relative h-full w-full"
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        preserveAspectRatio="xMidYMid meet"
+        fill="none"
+      >
         <defs>
           <filter id="bb-glow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="3" result="b" />
@@ -113,134 +137,118 @@ export function BuildingBlocks({
           </filter>
         </defs>
 
-        {/* 底盘：所有模块的占位菱形（表达「模块库」全貌；未选模块弱化、可点选） */}
-        <g>
-          {business.map((m) => {
-            if (isActive(m.id)) return null
-            const { cx, cy } = cellCenter(m.col, m.row)
-            const f = faces(cx, cy, W, QH, 0)
-            const isHot = hoveredId === m.id
+        {/* 业务模块立方体：激活为实心彩块、未激活为半透明线框，构成完整塔体轮廓 */}
+        {drawn.map(({ m, slot }) => {
+          const active = isActive(m.id)
+          const isHot = hoveredId === m.id
+          const dim = hoveredId && !isHot ? 0.35 : 1
+
+          if (!active) {
+            // 未激活：塔内空位线框，提示「可加入组合」
+            const f = faces(slot.cx, slot.cy, W, QH, H)
             return (
               <g
-                key={`tile-${m.id}`}
-                style={{ cursor: "pointer" }}
+                key={`ghost-${m.id}`}
+                style={{ cursor: "pointer", opacity: dim }}
                 onMouseEnter={() => onHover(m.id)}
                 onMouseLeave={() => onHover(null)}
                 onClick={() => onToggle(m.id)}
               >
+                <polygon points={f.left} fill={m.palette.left} fillOpacity={isHot ? 0.32 : 0.07} />
+                <polygon points={f.right} fill={m.palette.right} fillOpacity={isHot ? 0.32 : 0.07} />
                 <polygon
                   points={f.top}
-                  fill={isHot ? "oklch(0.7 0.14 210 / 0.22)" : "oklch(0.5 0.06 235 / 0.1)"}
-                  stroke={isHot ? "oklch(0.82 0.13 205 / 0.8)" : "oklch(0.55 0.07 230 / 0.4)"}
+                  fill={m.palette.top}
+                  fillOpacity={isHot ? 0.3 : 0.05}
+                  stroke={isHot ? "oklch(0.85 0.12 205 / 0.9)" : "oklch(0.6 0.07 230 / 0.4)"}
                   strokeWidth={isHot ? 1.3 : 0.8}
                   strokeDasharray={isHot ? undefined : "3 3"}
                 />
-                <circle cx={cx} cy={cy} r={1.6} fill={isHot ? "oklch(0.85 0.12 205)" : "oklch(0.6 0.06 230 / 0.6)"} />
               </g>
             )
-          })}
-        </g>
+          }
 
-        {/* AI → 各业务模块的连接光束（AI 激活时） */}
-        {aiActive && ai && (
-          <g>
-            {business.filter((m) => isActive(m.id)).map((m) => {
-              const { cx, cy } = cellCenter(m.col, m.row)
-              return (
-                <motion.line
-                  key={`beam-${m.id}`}
-                  x1={AI.cx}
-                  y1={AI.cy + AI.qh + AI.h}
-                  x2={cx}
-                  y2={cy}
-                  stroke="oklch(0.85 0.14 200)"
-                  strokeWidth={1.3}
-                  className="gene-flow"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.5 }}
-                  transition={{ duration: 0.6 }}
-                />
-              )
-            })}
-          </g>
-        )}
-
-        {/* 业务模块立方体（激活时升起叠加） */}
-        {drawn.map((m) => {
-          const active = isActive(m.id)
-          const { cx, cy } = cellCenter(m.col, m.row)
-          const f = faces(cx, cy, W, QH, H)
-          const isHot = hoveredId === m.id
-          const dim = hoveredId && !isHot ? 0.4 : 1
+          // 激活：实心立方体，自下方升入塔槽
+          const f = faces(slot.cx, slot.cy, W, QH, H)
           return (
             <AnimatePresence key={`cube-${m.id}`}>
-              {active && (
-                <motion.g
-                  initial={{ opacity: 0, y: -34, scale: 0.6 }}
-                  animate={{ opacity: dim, y: isHot ? -7 : 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -34, scale: 0.6 }}
-                  transition={{ type: "spring", stiffness: 170, damping: 19, mass: 0.7 }}
-                  style={{ transformBox: "fill-box", transformOrigin: "center", cursor: "pointer" }}
-                  filter="url(#bb-glow)"
-                  onMouseEnter={() => onHover(m.id)}
-                  onMouseLeave={() => onHover(null)}
-                  onClick={() => onToggle(m.id)}
-                >
-                  <polygon points={f.left} fill={m.palette.left} fillOpacity={0.95} />
-                  <polygon points={f.right} fill={m.palette.right} fillOpacity={0.95} />
-                  <polygon
-                    points={f.top}
-                    fill={m.palette.top}
-                    stroke={isHot ? "oklch(0.95 0.05 200)" : "oklch(0.88 0.09 200 / 0.7)"}
-                    strokeWidth={isHot ? 1.6 : 0.8}
-                  />
-                </motion.g>
-              )}
+              <motion.g
+                initial={{ opacity: 0, y: 30, scale: 0.7 }}
+                animate={{ opacity: dim, y: isHot ? -8 : 0, scale: 1 }}
+                exit={{ opacity: 0, y: 30, scale: 0.7 }}
+                transition={{ type: "spring", stiffness: 180, damping: 20, mass: 0.7 }}
+                style={{ transformBox: "fill-box", transformOrigin: "center", cursor: "pointer" }}
+                filter="url(#bb-glow)"
+                onMouseEnter={() => onHover(m.id)}
+                onMouseLeave={() => onHover(null)}
+                onClick={() => onToggle(m.id)}
+              >
+                <polygon points={f.left} fill={m.palette.left} fillOpacity={0.96} />
+                <polygon points={f.right} fill={m.palette.right} fillOpacity={0.96} />
+                <polygon
+                  points={f.top}
+                  fill={m.palette.top}
+                  stroke={isHot ? "oklch(0.96 0.05 200)" : "oklch(0.9 0.09 200 / 0.75)"}
+                  strokeWidth={isHot ? 1.8 : 0.9}
+                />
+              </motion.g>
             </AnimatePresence>
           )
         })}
 
-        {/* AI 智能体：顶部半透明晶体中枢 */}
+        {/* AI 智能体：塔顶悬浮半透明晶体（持续轻微上下浮动） */}
         {ai && (
           <AnimatePresence>
             {aiActive && (
               <motion.g
-                initial={{ opacity: 0, y: -40, scale: 0.5 }}
-                animate={{ opacity: hoveredId && hoveredId !== ai.id ? 0.45 : 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -40, scale: 0.5 }}
+                initial={{ opacity: 0, y: -44, scale: 0.5 }}
+                animate={{ opacity: hoveredId && hoveredId !== ai.id ? 0.4 : 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -44, scale: 0.5 }}
                 transition={{ type: "spring", stiffness: 150, damping: 18, mass: 0.8 }}
                 style={{ transformBox: "fill-box", transformOrigin: "center", cursor: "pointer" }}
-                filter="url(#bb-glow)"
                 onMouseEnter={() => onHover(ai.id)}
                 onMouseLeave={() => onHover(null)}
                 onClick={() => onToggle(ai.id)}
               >
-                {(() => {
-                  const f = faces(AI.cx, AI.cy, AI.w, AI.qh, AI.h)
-                  return (
-                    <>
-                      <polygon points={f.left} fill={ai.palette.left} fillOpacity={0.5} />
-                      <polygon points={f.right} fill={ai.palette.right} fillOpacity={0.5} />
-                      <polygon
-                        points={f.top}
-                        fill={ai.palette.top}
-                        fillOpacity={0.62}
-                        stroke="oklch(0.95 0.05 205)"
-                        strokeWidth={1.2}
-                      />
-                    </>
-                  )
-                })()}
+                <motion.g
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 3.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                  filter="url(#bb-glow)"
+                >
+                  {(() => {
+                    const f = faces(AI.cx, AI.cy, AI.w, AI.qh, AI.h)
+                    return (
+                      <>
+                        <polygon points={f.left} fill={ai.palette.left} fillOpacity={0.5} />
+                        <polygon points={f.right} fill={ai.palette.right} fillOpacity={0.5} />
+                        <polygon
+                          points={f.top}
+                          fill={ai.palette.top}
+                          fillOpacity={0.66}
+                          stroke="oklch(0.96 0.05 205)"
+                          strokeWidth={1.3}
+                        />
+                      </>
+                    )
+                  })()}
+                </motion.g>
               </motion.g>
             )}
           </AnimatePresence>
         )}
       </svg>
 
-      {/* 悬停模块标签（仅悬停时显示，避免堆满标签） */}
+      {/* 悬停模块标签（仅悬停时显示） */}
       {modules.map((m) => {
         if (hoveredId !== m.id) return null
-        const pos = m.float ? { cx: AI.cx, cy: AI.cy, qh: AI.qh } : { ...cellCenter(m.col, m.row), qh: QH }
+        let pos: { cx: number; cy: number; qh: number }
+        if (m.float) {
+          pos = { cx: AI.cx, cy: AI.cy, qh: AI.qh }
+        } else {
+          const i = business.findIndex((b) => b.id === m.id)
+          const s = towerSlot(i < 0 ? 0 : i)
+          pos = { cx: s.cx, cy: s.cy, qh: QH }
+        }
         return (
           <span
             key={`lbl-${m.id}`}
