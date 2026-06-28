@@ -454,11 +454,10 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </button>
             </div>
 
-            {/* 右：产品大屏示意图（业务模块用真实大屏截图，AI 智能体用动画示意） */}
+            {/* 右：产品大屏示意图（完整展示整张大屏，contain 不裁切、居中、留白） */}
             <div
-              className="relative flex aspect-[16/10] items-center justify-center overflow-hidden rounded-xl border"
+              className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border p-4 sm:p-5"
               style={{
-                minHeight: "240px",
                 borderColor: `${showModule.palette.top}33`,
                 background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}14, oklch(0.14 0.03 245) 72%)`,
               }}
@@ -467,7 +466,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 <img
                   src={productImages[showModule.id] || "/placeholder.svg"}
                   alt={`${showModule.label}产品大屏示意`}
-                  className="size-full object-cover"
+                  className="max-h-full max-w-full object-contain"
                   loading="lazy"
                   draggable={false}
                 />
