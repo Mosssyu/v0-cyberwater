@@ -390,56 +390,17 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           <span className="text-[11px] text-muted-foreground">（在上方模块池或组合体中选择 / 悬停，下方实时呈现该产品说明与示意动画）</span>
         </div>
 
-        {/* 聚焦舞台：中心主屏最大最亮，四周向中心收束（透视包围感） */}
-        <div
-          className="relative overflow-hidden rounded-2xl border border-border"
-          style={{
-            perspective: "1200px",
-            background:
-              "radial-gradient(105% 85% at 50% 44%, oklch(0.26 0.07 240 / 0.95) 0%, oklch(0.16 0.045 246 / 0.9) 38%, oklch(0.09 0.025 248 / 0.99) 100%)",
-          }}
-        >
-          {/* 背景向中心汇聚的发光导引线（更密更亮） */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-70"
-            aria-hidden="true"
-            style={{
-              background:
-                "conic-gradient(from 0deg at 50% 46%, transparent 0deg, oklch(0.65 0.18 235 / 0.16) 10deg, transparent 24deg, transparent 66deg, oklch(0.65 0.18 235 / 0.16) 80deg, transparent 96deg, transparent 156deg, oklch(0.65 0.18 235 / 0.16) 170deg, transparent 186deg, transparent 246deg, oklch(0.65 0.18 235 / 0.16) 260deg, transparent 276deg, transparent 318deg, oklch(0.65 0.18 235 / 0.16) 332deg, transparent 348deg)",
-              maskImage: "radial-gradient(circle at 50% 46%, black 6%, transparent 64%)",
-              WebkitMaskImage: "radial-gradient(circle at 50% 46%, black 6%, transparent 64%)",
-            }}
-          />
-          {/* 中心聚光高光 */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            aria-hidden="true"
-            style={{
-              background: "radial-gradient(38% 42% at 50% 46%, oklch(0.6 0.16 230 / 0.22) 0%, transparent 70%)",
-            }}
-          />
-          {/* 边缘收束暗角，强化中心聚焦（更深更厚） */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            aria-hidden="true"
-            style={{ boxShadow: "inset 0 0 180px 70px oklch(0.06 0.02 248 / 0.95)" }}
-          />
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={showModule.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="relative grid items-center gap-5 p-5 sm:p-6 lg:grid-cols-5 lg:gap-7"
-              style={{ transformStyle: "preserve-3d" }}
-            >
-            {/* 左：产品说明��轻微透视朝中心倾斜，作为环绕主屏的辅助面板） */}
-            <div
-              className="flex flex-col lg:col-span-2"
-              style={{ transform: "rotateY(-17deg) translateZ(-60px) scale(0.92)", transformOrigin: "right center" }}
-            >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={showModule.id}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="grid gap-5 overflow-hidden rounded-2xl border border-border bg-card/40 p-5 lg:grid-cols-2"
+          >
+            {/* 左：产品说明 */}
+            <div className="flex flex-col">
               <div className="flex items-center gap-3">
                 <span
                   className="flex size-11 items-center justify-center rounded-xl"
@@ -493,14 +454,12 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               </button>
             </div>
 
-            {/* 右：产品大屏示意图（绝对视觉中心 · 主屏最大最亮 · 完整展示不裁切） */}
+            {/* 右：产品大屏示意图（完整展示整张大屏，contain 不裁切、居中、留白） */}
             <div
-              className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border p-2 sm:p-3 lg:col-span-3"
+              className="relative flex aspect-video items-center justify-center overflow-hidden rounded-xl border p-3 sm:p-4"
               style={{
-                borderColor: `${showModule.palette.top}77`,
-                background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}26, oklch(0.1 0.025 248) 76%)`,
-                boxShadow: `0 0 80px -4px ${showModule.palette.glow}, 0 36px 90px -24px oklch(0.04 0.02 248 / 0.95)`,
-                transform: "translateZ(0px)",
+                borderColor: `${showModule.palette.top}33`,
+                background: `radial-gradient(circle at 50% 45%, ${showModule.palette.top}14, oklch(0.14 0.03 245) 72%)`,
               }}
             >
               {productImages[showModule.id] ? (
@@ -515,9 +474,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 <ProductScene id={showModule.id} palette={showModule.palette} />
               )}
             </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   )
