@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { Activity, ArrowUpRight } from "lucide-react"
 
 type Milestone = {
   year: string
   title: string
   desc: string
-  /** 关键节点：2018 / 2022 / 2026（置于轴线下方重点强调） */
+  /** 重点高亮节点：2018 / 2022 / 2026 */
   key: boolean
 }
 
@@ -14,7 +15,7 @@ const milestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: "中信国安 + 中国建筑标准设计研究院相关团队创立云建标，开始布局城市数字化服务。",
+    desc: "中国首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务。",
     key: false,
   },
   {
@@ -26,30 +27,30 @@ const milestones: Milestone[] = [
   {
     year: "2018",
     title: "北控水务战略入股",
-    desc: "北控水务战略入股，云建标深入头部水务集团运营体系，从技术能力真正进入真实水务运营场景。",
+    desc: "北控水务战略入股，深度融入头部水务集团运营体系，从技术能力真正进入实战水务运营场景。",
     key: true,
   },
   {
     year: "2020",
     title: "加入水协智慧委",
-    desc: "成为水协智慧委筹委委员单位，进一步参与智慧水务行业实践与交流，沉淀管理标准与业务流程。",
+    desc: "成为水协智慧委委员单位，进一步参与智慧水务行业实践与交流，沉淀管理标准与业务流程。",
     key: false,
   },
   {
     year: "2022",
     title: "全面对外服务",
-    desc: "逐步掌握水务全业务核心产品能力，从集团内部场景沉淀走向行业市场，开始规模化服务行业客户。",
+    desc: "逐步建立水务 SaaS 产品能力，从集团内部场景沉淀走向行业市场，开始规模化服务行业客户。",
     key: true,
   },
   {
     year: "2025",
     title: "智水积木云产品化",
-    desc: "推进管理、技术、产品体系重构，沉淀并打造积木云平台，并结合大模型前瞻布局水务智能体产品化。",
+    desc: "构建管理、技术、产品体系重构，沉淀并打造智水云平台，并结合大型项目积累形成高水准产品化能力。",
     key: false,
   },
   {
     year: "2026",
-    title: " AI 智能运营平台发布",
+    title: "AI 智能运营平台发布",
     desc: "深度融合大模型、智能体与数字孪生，实现感知、认知、决策、执行全链路智能闭环。",
     key: true,
   },
@@ -75,79 +76,161 @@ export function GrowthTimeline() {
   }, [paused])
 
   return (
-    <div
-      className="relative mt-12"
+    <section
+      className="relative overflow-hidden rounded-3xl border border-accent/15 bg-[oklch(0.12_0.03_248)] px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* ===== 大屏：上下交替时间轴（上-下-上-下，按年份顺序） ===== */}
-      <div className="relative hidden lg:block">
-        {/* 中轴基线（从左到右生长） */}
-        <div
-          className="tl-line-grow pointer-events-none absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-accent/45 to-transparent"
+      {/* 背景：网格 + 径向冷光 + 微弱流光 */}
+      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute inset-0"
+        aria-hidden="true"
+        style={{
+          background:
+            "radial-gradient(80% 60% at 50% 0%, oklch(0.5 0.14 235 / 0.16) 0%, transparent 60%)",
+        }}
+      />
+
+      {/* 标题区 */}
+      <div className="relative flex items-start gap-3.5">
+        <span
+          className="cw-node-breathe mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-xl border border-accent/40 bg-accent/[0.08]"
           aria-hidden="true"
-        />
+        >
+          <Activity className="size-5 text-accent" />
+        </span>
+        <div className="min-w-0">
+          <div className="flex items-center gap-3">
+            <h2 className="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+              水务数字化能力演进轨迹
+            </h2>
+            <span
+              className="hidden h-px w-16 bg-gradient-to-r from-accent/60 to-transparent sm:block"
+              aria-hidden="true"
+            />
+          </div>
+          <p className="mt-1.5 text-pretty text-xs leading-relaxed text-muted-foreground sm:text-sm">
+            十年项目实践沉淀，持续形成标准化、产品化、智能化能力。
+          </p>
+        </div>
+      </div>
+
+      {/* ===== 桌面端：横向能量轨迹时间轴 ===== */}
+      <div className="relative mt-12 hidden lg:block">
+        {/* 主线：多层叠加的流动数据能量轨迹 */}
+        <div className="pointer-events-none absolute inset-x-0 top-7 h-px" aria-hidden="true">
+          {/* 底层暗线 */}
+          <div className="absolute inset-0 bg-accent/15" />
+          {/* 上层流动渐变光带 */}
+          <div
+            className="cw-rail-flow absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent 0%, oklch(0.82 0.14 205 / 0.7) 20%, oklch(0.9 0.12 200 / 0.95) 50%, oklch(0.82 0.14 205 / 0.7) 80%, transparent 100%)",
+              boxShadow: "0 0 10px 0 oklch(0.78 0.14 205 / 0.5)",
+            }}
+          />
+          {/* 两端能量延展箭头 */}
+          <span className="absolute -left-1 top-1/2 size-2 -translate-y-1/2 rotate-45 border-b border-l border-accent/50" />
+          <span className="absolute -right-1 top-1/2 size-2 -translate-y-1/2 rotate-45 border-r border-t border-accent/50" />
+        </div>
+        {/* 穿梭光点 */}
+        <div className="pointer-events-none absolute inset-x-0 top-7 h-px" aria-hidden="true">
+          <span
+            className="cw-spark-run absolute top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-[oklch(0.95_0.1_200)]"
+            style={{ boxShadow: "0 0 10px 2px oklch(0.85 0.14 205 / 0.9)", ["--spark-dur" as string]: "7s" }}
+          />
+          <span
+            className="cw-spark-run absolute top-1/2 size-1 -translate-y-1/2 rounded-full bg-[oklch(0.9_0.1_205)]"
+            style={{ boxShadow: "0 0 8px 1px oklch(0.85 0.14 205 / 0.8)", ["--spark-dur" as string]: "9s", ["--spark-delay" as string]: "2.5s" }}
+          />
+        </div>
 
         <ol className="relative grid grid-cols-7 gap-x-4">
           {milestones.map((m, i) => {
             const isActive = i === active
-            const isUp = i % 2 === 0
             return (
-              <li key={m.year} className="relative flex h-[19rem] flex-col items-center">
-                {/* 上半区 */}
-                <div className="flex h-1/2 w-full flex-col items-center justify-end">
-                  {isUp ? (
-                    <div
-                      className="tl-item-up flex flex-col items-center"
-                      style={{ animationDelay: `${i * 0.1}s` }}
-                    >
-                      <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
-                      <Stem direction="down" active={isActive} />
-                    </div>
-                  ) : null}
-                </div>
+              <li key={m.year} className="relative flex flex-col items-center">
+                {/* 节点行（与主线对齐：top-7 ≈ 1.75rem，这里用 h-14 容纳节点 + 年份） */}
+                <div className="relative flex h-14 w-full flex-col items-center justify-start">
+                  {/* 年份（线上方） */}
+                  <span
+                    className={[
+                      "font-mono text-sm font-bold tabular-nums transition-colors duration-300",
+                      m.key ? "text-accent" : isActive ? "text-foreground/90" : "text-muted-foreground/70",
+                    ].join(" ")}
+                  >
+                    {m.year}
+                  </span>
 
-                {/* 轴线节点 */}
-                <button
-                  type="button"
-                  onClick={() => setActive(i)}
-                  className="group relative z-10 flex h-0 items-center justify-center outline-none"
-                  aria-pressed={isActive}
-                  aria-label={`${m.year} ${m.title}`}
-                >
-                  {isActive ? (
+                  {/* 重点节点上方扫描光柱 */}
+                  {m.key ? (
                     <span
-                      className="absolute size-10 rounded-full border border-accent/50"
-                      style={{ animation: "ring-pulse 2s ease-in-out infinite" }}
+                      className="cw-beam pointer-events-none absolute -top-3 h-6 w-px"
+                      style={{
+                        background: "linear-gradient(to top, oklch(0.85 0.14 205 / 0.8), transparent)",
+                      }}
                       aria-hidden="true"
                     />
                   ) : null}
-                  <span
-                    className={[
-                      "relative inline-flex shrink-0 items-center justify-center rounded-full border font-bold transition-all duration-500",
-                      m.key ? "size-7 text-xs" : "size-5 text-[0px]",
-                      isActive
-                        ? "scale-125 border-accent bg-accent text-background shadow-[0_0_20px_3px_oklch(0.79_0.13_200/0.8)]"
-                        : m.key
-                          ? "border-accent/70 bg-accent/20 text-accent shadow-[0_0_14px_-2px_oklch(0.79_0.13_200/0.65)]"
-                          : "border-accent/40 bg-card text-transparent group-hover:border-accent/70",
-                    ].join(" ")}
-                  >
-                    {m.key ? "★" : <span className="size-1.5 rounded-full bg-accent/70" aria-hidden="true" />}
-                  </span>
-                </button>
 
-                {/* 下半区 */}
-                <div className="flex h-1/2 w-full flex-col items-center justify-start">
-                  {!isUp ? (
-                    <div
-                      className="tl-item-down flex flex-col items-center"
-                      style={{ animationDelay: `${i * 0.1 + 0.05}s` }}
+                  {/* 节点本体（位于主线 top-7 处） */}
+                  <button
+                    type="button"
+                    onClick={() => setActive(i)}
+                    className="group absolute top-7 flex -translate-y-1/2 items-center justify-center outline-none"
+                    aria-pressed={isActive}
+                    aria-label={`${m.year} ${m.title}`}
+                  >
+                    {isActive ? (
+                      <span
+                        className="absolute size-9 rounded-full border border-accent/50"
+                        style={{ animation: "ring-pulse 2s ease-in-out infinite" }}
+                        aria-hidden="true"
+                      />
+                    ) : null}
+                    <span
+                      className={[
+                        "relative inline-flex shrink-0 items-center justify-center rounded-full border transition-all duration-300",
+                        m.key
+                          ? "size-4 border-accent bg-accent/30"
+                          : "size-2.5 border-accent/45 bg-[oklch(0.16_0.03_245)]",
+                        m.key ? "cw-node-breathe" : "",
+                        isActive && m.key ? "scale-125" : "",
+                      ].join(" ")}
                     >
-                      <Stem direction="up" active={isActive} />
-                      <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
-                    </div>
-                  ) : null}
+                      {m.key ? (
+                        <span className="size-1.5 rounded-full bg-[oklch(0.95_0.1_200)]" aria-hidden="true" />
+                      ) : null}
+                    </span>
+                  </button>
+                </div>
+
+                {/* 连接竖线：重点节点更亮 + 能量下行流动 */}
+                <span
+                  className={[
+                    "h-7 w-px flex-none transition-opacity duration-300",
+                    m.key ? "cw-stem-flow" : "",
+                    isActive ? "opacity-100" : "opacity-70",
+                  ].join(" ")}
+                  style={
+                    m.key
+                      ? {
+                          backgroundImage:
+                            "linear-gradient(to bottom, oklch(0.85 0.14 205 / 0.9) 0%, oklch(0.85 0.14 205 / 0.9) 45%, transparent 45%, transparent 100%)",
+                          filter: "drop-shadow(0 0 4px oklch(0.8 0.14 205 / 0.7))",
+                        }
+                      : {
+                          background: "linear-gradient(to bottom, oklch(0.7 0.1 215 / 0.4), oklch(0.7 0.1 215 / 0.08))",
+                        }
+                  }
+                  aria-hidden="true"
+                />
+
+                {/* 卡片 */}
+                <div className="mt-2 w-full">
+                  <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
                 </div>
               </li>
             )
@@ -155,10 +238,10 @@ export function GrowthTimeline() {
         </ol>
       </div>
 
-      {/* ===== 移动端：纵向时间轴 ===== */}
-      <ol className="relative space-y-4 lg:hidden">
+      {/* ===== 移动端：纵向能量轨迹 ===== */}
+      <ol className="relative mt-8 space-y-4 lg:hidden">
         <span
-          className="pointer-events-none absolute bottom-2 left-[7px] top-2 w-px bg-gradient-to-b from-accent/40 via-accent/30 to-transparent"
+          className="pointer-events-none absolute bottom-2 left-[7px] top-2 w-px bg-gradient-to-b from-accent/50 via-accent/30 to-transparent"
           aria-hidden="true"
         />
         {milestones.map((m, i) => {
@@ -167,54 +250,21 @@ export function GrowthTimeline() {
             <li key={m.year} className="relative pl-7">
               <span
                 className={[
-                  "absolute left-0 top-1.5 inline-flex size-4 items-center justify-center rounded-full border",
+                  "absolute left-0 top-2 inline-flex items-center justify-center rounded-full border",
                   m.key
-                    ? "border-accent bg-accent/20 text-[8px] text-accent"
-                    : "border-accent/40 bg-card",
+                    ? "cw-node-breathe size-4 border-accent bg-accent/30"
+                    : "size-3 border-accent/45 bg-[oklch(0.16_0.03_245)]",
                 ].join(" ")}
                 aria-hidden="true"
               >
-                {m.key ? "★" : null}
+                {m.key ? <span className="size-1.5 rounded-full bg-[oklch(0.95_0.1_200)]" /> : null}
               </span>
-              <button
-                type="button"
-                onClick={() => setActive(i)}
-                className={[
-                  "w-full rounded-xl border p-3 text-left transition-colors",
-                  m.key
-                    ? "border-accent/40 bg-card/70"
-                    : "border-border bg-card/40",
-                  isActive ? "ring-1 ring-accent/50" : "",
-                ].join(" ")}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-sm font-bold tabular-nums text-accent">{m.year}</span>
-                  <span className="text-sm font-semibold text-foreground">{m.title}</span>
-                </div>
-                <p className="mt-1.5 text-pretty text-xs leading-relaxed text-muted-foreground">{m.desc}</p>
-              </button>
+              <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
             </li>
           )
         })}
       </ol>
-    </div>
-  )
-}
-
-/** 卡片与轴线之间的连接茎 */
-function Stem({ direction, active }: { direction: "up" | "down"; active: boolean }) {
-  return (
-    <span
-      className={[
-        "h-6 w-px flex-none transition-colors duration-300",
-        direction === "down"
-          ? "bg-gradient-to-b from-accent/55 to-accent/15"
-          : "bg-gradient-to-t from-accent/55 to-accent/15",
-        active ? "opacity-100" : "opacity-60",
-        direction === "down" ? "mt-2" : "mb-2",
-      ].join(" ")}
-      aria-hidden="true"
-    />
+    </section>
   )
 }
 
@@ -234,19 +284,40 @@ function NodeCard({
       onClick={onSelect}
       aria-pressed={active}
       className={[
-        "group flex w-full flex-col rounded-xl border px-3.5 py-3 text-left outline-none transition-all duration-300",
-        active
-          ? "border-accent/60 bg-card/85 shadow-lg shadow-accent/15"
-          : isKey
-            ? "border-accent/35 bg-card/65 hover:border-accent/55"
-            : "border-border bg-card/40 hover:border-accent/45",
+        "group relative flex w-full flex-col overflow-hidden rounded-xl border px-3.5 py-3 text-left outline-none transition-all duration-300",
+        isKey
+          ? active
+            ? "border-accent/70 bg-[oklch(0.17_0.04_245)]"
+            : "border-accent/45 bg-[oklch(0.15_0.035_246)] hover:border-accent/65"
+          : active
+            ? "border-accent/40 bg-[oklch(0.15_0.03_246)]"
+            : "border-border/70 bg-[oklch(0.14_0.025_247)]/60 hover:border-accent/35",
       ].join(" ")}
+      style={
+        isKey
+          ? {
+              boxShadow: active
+                ? "0 0 24px -4px oklch(0.78 0.14 205 / 0.55), inset 0 0 18px -10px oklch(0.8 0.14 205 / 0.6)"
+                : "0 0 16px -6px oklch(0.78 0.14 205 / 0.4)",
+            }
+          : undefined
+      }
     >
+      {/* HUD 边角装饰（仅重点卡片） */}
+      {isKey ? (
+        <>
+          <span className="pointer-events-none absolute left-0 top-0 size-3 border-l border-t border-accent/60" aria-hidden="true" />
+          <span className="pointer-events-none absolute right-0 top-0 size-3 border-r border-t border-accent/60" aria-hidden="true" />
+          <span className="pointer-events-none absolute bottom-0 left-0 size-3 border-b border-l border-accent/60" aria-hidden="true" />
+          <span className="pointer-events-none absolute bottom-0 right-0 size-3 border-b border-r border-accent/60" aria-hidden="true" />
+        </>
+      ) : null}
+
       <div className="flex items-center gap-2">
         <span
           className={[
             "font-mono text-sm font-bold tabular-nums transition-colors duration-300",
-            active ? "text-accent" : isKey ? "text-foreground" : "text-muted-foreground",
+            isKey || active ? "text-accent" : "text-muted-foreground",
           ].join(" ")}
         >
           {milestone.year}
@@ -260,7 +331,7 @@ function NodeCard({
       <span
         className={[
           "mt-1 text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
-          active ? "text-foreground" : "text-foreground/90",
+          isKey ? "text-foreground" : "text-foreground/85",
         ].join(" ")}
       >
         {milestone.title}
@@ -268,6 +339,14 @@ function NodeCard({
       <span className="mt-1.5 block text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
         {milestone.desc}
       </span>
+
+      {/* 重点卡片底部箭头装饰 */}
+      {isKey ? (
+        <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-medium text-accent/80 transition-colors group-hover:text-accent">
+          关键里程碑
+          <ArrowUpRight className="size-3" />
+        </span>
+      ) : null}
     </button>
   )
 }

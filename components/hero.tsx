@@ -42,16 +42,8 @@ export function Hero() {
         </div>
       </div>
 
-      {/* 下方：十年水务数字化实践沉淀 */}
+      {/* 下方：水务数字化能力演进轨迹 */}
       <div className="relative z-[1] mx-auto max-w-7xl px-6 pb-20">
-        {/* 区块标签：小圆点 + 标题 + 细线（弱化处理，不与主标题抢层级） */}
-        <div className="flex items-center gap-3">
-          <span className="size-1.5 shrink-0 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
-          <h2 className="text-sm font-semibold tracking-wide text-foreground/90 whitespace-nowrap">
-            十年水务数字化实践沉淀
-          </h2>
-          <span className="h-px flex-1 bg-gradient-to-r from-accent/40 to-transparent" aria-hidden="true" />
-        </div>
         <GrowthTimeline />
       </div>
     </section>
