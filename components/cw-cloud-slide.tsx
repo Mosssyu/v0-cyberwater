@@ -364,7 +364,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
       {/* 产品示意区：左 产品模块池 10+ ｜ 右 产品示意图 + 图下文字描述 */}
       <div className="relative mt-6">
         <div className="mb-3 flex items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">���品示意</span>
+          <span className="text-sm font-semibold text-foreground">产品示意</span>
           <span className="text-[11px] text-muted-foreground">（左侧模块池选择 / 悬停，右侧实时呈现该产品大屏与说明）</span>
         </div>
 
