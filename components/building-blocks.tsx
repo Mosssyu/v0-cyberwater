@@ -103,8 +103,7 @@ export function BuildingBlocks({
 
   return (
     <div
-      className="relative w-full overflow-hidden"
-      style={{ aspectRatio: `${VB_W} / ${VB_H}` }}
+      className="relative size-full overflow-hidden"
       role="img"
       aria-label="厂网河湖 AI 一体化数字孪生沙盘：在发光全息底座上自由组合水务业务模块，叠加 AI 智能中枢"
     >
@@ -218,7 +217,7 @@ export function BuildingBlocks({
           )
         })}
 
-        {/* 幽灵预览块（悬停未选模块时，预览下一个槽位） */}
+        {/* 幽灵预览块（悬停未选模块���，预览下一个槽位） */}
         {ghostModule && ghostSlot && (
           <g style={{ pointerEvents: "none" }}>
             {(() => {

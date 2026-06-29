@@ -10,7 +10,6 @@ import {
   Sparkles,
   Building2,
   BrainCircuit,
-  ChevronRight,
   RotateCcw,
   Check,
   Plus,
@@ -239,124 +238,167 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.16_0.03_245)] p-6 sm:p-8 lg:p-10">
-      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
-
-      {/* 顶部流程条（5 步，与组合体联动高亮） */}
-      <div className="relative flex flex-wrap items-center justify-center gap-x-1.5 gap-y-2 rounded-2xl border border-border bg-card/40 px-3 py-2.5">
-        {flowSteps.map((s, i) => {
-          const on = i <= flowIdx
-          const current = i === flowIdx
-          return (
-            <div key={s.label} className="flex items-center gap-1.5">
-              <span
-                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs transition-all duration-500"
-                style={{
-                  color: on ? "oklch(0.9 0.08 200)" : "oklch(0.62 0.02 240)",
-                  backgroundColor: current ? "oklch(0.7 0.14 215 / 0.18)" : "transparent",
-                  fontWeight: current ? 600 : 400,
-                }}
-              >
-                <s.icon className="size-3.5" style={{ color: on ? "oklch(0.82 0.13 205)" : "oklch(0.55 0.04 240)" }} />
-                {s.label}
-              </span>
-              {i < flowSteps.length - 1 && (
-                <ChevronRight
-                  className="size-3.5 transition-colors duration-500"
-                  style={{ color: on ? "oklch(0.8 0.13 205)" : "oklch(0.4 0.04 240)" }}
-                />
-              )}
-            </div>
-          )
-        })}
-      </div>
-
-      {/* 主区：左标题文案 | 右模块池 + 组合体 */}
-      <div className="relative mt-6 grid gap-8 lg:grid-cols-[minmax(0,330px)_minmax(0,1fr)]">
-        {/* 左：标题 + 文案 + 说明标签 */}
-        <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.06] px-3 py-1 font-mono text-xs text-accent">
-            <span className="size-1.5 rounded-full bg-accent" />
-            CW-Cloud
-          </span>
-          <h3 className="mt-4 text-balance text-3xl font-bold leading-[1.15] tracking-tight text-foreground sm:text-4xl">
-            CW-Cloud
-            <br />
-            <span className="text-gradient">水务 AI 运营平台</span>
-          </h3>
-          <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">
-            从单一业态到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
-          </p>
-
-          {/* CTA 行动引导区 */}
-          <div className="mt-6 flex flex-1 flex-col justify-end">
-            <div className="rounded-2xl border border-accent/20 bg-accent/[0.05] p-5">
-              <div className="flex items-center gap-2">
-                <Sparkles className="size-4 text-accent" />
-                <span className="text-sm font-semibold text-foreground">按需组合，从一个模块开始</span>
-              </div>
-              <p className="mt-2 text-pretty text-[12px] leading-relaxed text-muted-foreground">
-                右侧实时演示模块的自由组合与一体化运营，可结合您的业务场景定制专属方案。
-              </p>
-              <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
-                <a
-                  href="#contact"
-                  className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-xs font-semibold text-accent-foreground transition-opacity hover:opacity-90"
-                >
-                  预约产品演示
-                  <ChevronRight className="size-3.5" />
-                </a>
-                <a
-                  href="#cases"
-                  className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-card/60 px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:border-accent/40"
-                >
-                  查看落地案例
-                </a>
-              </div>
-            </div>
-          </div>
+    <div className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.1_0.03_248)]">
+      {/* ===== 主视觉舞台：右侧数字孪生场景为绝对主角，左/上/下为轻量叠加 ===== */}
+      <div className="relative min-h-[600px] w-full lg:min-h-[680px]">
+        {/* 底图：全幅数字孪生沙盘（发光平台 + 中心积木组合体） */}
+        <div className="absolute inset-0">
+          <BuildingBlocks
+            modules={productModules}
+            activeIds={activeIds}
+            hoveredId={hoveredId}
+            onHover={handleHover}
+            onToggle={toggleModule}
+          />
         </div>
 
-        {/* 右：上方五大特性行（一行铺开）+ 下方全景沙盘舞台（与特性行左边框对齐） */}
-        <div className="flex flex-col gap-4">
-          {/* 五大产品特性标签（横向一行，等宽铺开） */}
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+        {/* 左侧可读性渐隐遮罩（让文案浮于场景之上，不压实心面板） */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+          style={{
+            background:
+              "linear-gradient(90deg, oklch(0.09 0.03 248 / 0.96) 0%, oklch(0.09 0.03 248 / 0.7) 30%, oklch(0.09 0.03 248 / 0.15) 52%, transparent 68%)",
+          }}
+        />
+        {/* 顶部 / 底部轻微压暗，提升标签与流程可读性 */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+          style={{
+            background:
+              "linear-gradient(180deg, oklch(0.09 0.03 248 / 0.55) 0%, transparent 22%, transparent 70%, oklch(0.09 0.03 248 / 0.85) 100%)",
+          }}
+        />
+
+        {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
+        <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
+          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光） */}
+          <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-2.5">
             {highlights.map((h) => (
               <div
                 key={h.title}
-                className="flex flex-col gap-1.5 rounded-xl border border-accent/15 bg-accent/[0.04] px-3 py-2.5"
+                className="pointer-events-auto flex items-center gap-2 rounded-xl border border-accent/20 bg-[oklch(0.12_0.04_248/0.6)] px-3 py-2 backdrop-blur-sm transition-colors hover:border-accent/40"
+                style={{ boxShadow: "0 0 18px -8px oklch(0.7 0.14 215 / 0.5)" }}
               >
-                <div className="flex items-center gap-2">
-                  <span
-                    className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.08]"
-                    aria-hidden="true"
-                  >
-                    <h.icon className="size-4 text-accent" />
-                  </span>
-                  <span className="text-sm font-bold text-foreground">{h.title}</span>
-                </div>
-                <span className="text-pretty text-[11px] leading-snug text-muted-foreground">{h.desc}</span>
+                <span
+                  className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.1]"
+                  aria-hidden="true"
+                >
+                  <h.icon className="size-4 text-accent" />
+                </span>
+                <span className="flex flex-col leading-tight">
+                  <span className="text-[13px] font-bold text-foreground">{h.title}</span>
+                  <span className="text-[10px] text-muted-foreground">{h.desc}</span>
+                </span>
               </div>
             ))}
           </div>
 
-          {/* 全景厂网河湖数字孪生舞台（沙盘铺满） */}
-          <div className="relative flex-1 overflow-hidden rounded-2xl border border-border bg-[oklch(0.12_0.03_248)]">
-            <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
-
-            {/* 全景沙盘组合体（铺满舞台） */}
-            <BuildingBlocks
-              modules={productModules}
-              activeIds={activeIds}
-              hoveredId={hoveredId}
-              onHover={handleHover}
-              onToggle={toggleModule}
-            />
-
-            {/* 中央堆叠体下方居中统计文字 */}
-            <p className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.14_0.03_248/0.8)] px-4 py-1.5 text-center text-[11px] text-muted-foreground backdrop-blur sm:text-[12px]">
-              已选 <span className="font-mono font-semibold text-accent">{activeIds.filter((id) => id !== "ai").length}</span> / {listedModules.length} 个模块 · 点击下方模块加入组合
+          {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
+          <div className="pointer-events-auto mt-10 max-w-md lg:mt-14 lg:max-w-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-1 font-mono text-xs text-accent backdrop-blur-sm">
+              <span className="size-1.5 rounded-full bg-accent" />
+              CW-Cloud
+            </span>
+            <h3 className="mt-5 text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
+              CW-Cloud
+              <br />
+              <span className="text-gradient">水务 AI 运营平台</span>
+            </h3>
+            <p className="mt-5 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
+              从单一业务到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
             </p>
+          </div>
+
+          {/* 弹性占位：把流程/状态推到底部 */}
+          <div className="flex-1" />
+
+          {/* 底部状态胶囊（低调半透明） */}
+          <div className="mb-4 flex justify-center lg:justify-start">
+            <span className="pointer-events-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.12_0.04_248/0.7)] px-4 py-1.5 text-[11px] text-muted-foreground backdrop-blur-sm sm:text-[12px]">
+              已选{" "}
+              <span className="font-mono font-semibold text-accent">
+                {activeIds.filter((id) => id !== "ai").length}
+              </span>{" "}
+              / {listedModules.length} 个模块 · 点击下方模块加入组合
+            </span>
+          </div>
+
+          {/* 底部横向发光流程路径（替代竖向箭头，融入场景） */}
+          <div className="pointer-events-auto flex items-center overflow-x-auto pb-1">
+            {flowSteps.map((s, i) => {
+              const done = i <= flowIdx
+              const current = i === flowIdx
+              return (
+                <div key={s.label} className="flex flex-1 items-center">
+                  {/* 节点 */}
+                  <div className="flex shrink-0 flex-col items-center gap-2">
+                    <span
+                      className="relative flex items-center justify-center transition-all duration-500"
+                      style={{
+                        width: current ? 52 : 38,
+                        height: current ? 52 : 38,
+                        clipPath: current
+                          ? "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)"
+                          : "none",
+                        borderRadius: current ? 0 : 9999,
+                        border: `1.5px solid ${
+                          current
+                            ? "oklch(0.85 0.15 200)"
+                            : done
+                              ? "oklch(0.7 0.13 210 / 0.7)"
+                              : "oklch(0.4 0.04 240 / 0.6)"
+                        }`,
+                        backgroundColor: current
+                          ? "oklch(0.7 0.16 210 / 0.22)"
+                          : done
+                            ? "oklch(0.5 0.1 220 / 0.25)"
+                            : "oklch(0.18 0.03 245 / 0.5)",
+                        boxShadow: current ? "0 0 22px 1px oklch(0.7 0.16 205 / 0.75)" : "none",
+                        backdropFilter: "blur(4px)",
+                      }}
+                    >
+                      <s.icon
+                        className="transition-colors duration-500"
+                        style={{
+                          width: current ? 20 : 16,
+                          height: current ? 20 : 16,
+                          color: done ? "oklch(0.92 0.1 200)" : "oklch(0.55 0.04 240)",
+                        }}
+                      />
+                    </span>
+                    <span
+                      className="whitespace-nowrap text-center text-[11px] leading-tight transition-colors duration-500 sm:text-[12px]"
+                      style={{
+                        color: current
+                          ? "oklch(0.95 0.06 200)"
+                          : done
+                            ? "oklch(0.82 0.05 220)"
+                            : "oklch(0.6 0.02 240)",
+                        fontWeight: current ? 700 : 500,
+                      }}
+                    >
+                      {s.label}
+                    </span>
+                  </div>
+
+                  {/* 连接线 */}
+                  {i < flowSteps.length - 1 && (
+                    <span
+                      className="mx-1.5 mb-6 h-px flex-1 transition-colors duration-500 sm:mx-2.5"
+                      style={{
+                        background:
+                          i < flowIdx
+                            ? "linear-gradient(90deg, oklch(0.78 0.14 205 / 0.9), oklch(0.7 0.13 215 / 0.6))"
+                            : "oklch(0.4 0.04 240 / 0.4)",
+                        boxShadow: i < flowIdx ? "0 0 8px 0 oklch(0.7 0.14 205 / 0.6)" : "none",
+                      }}
+                    />
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
