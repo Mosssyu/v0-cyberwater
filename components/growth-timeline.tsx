@@ -67,9 +67,87 @@ const NODE_Y = [96, 72, 44, 76, 40, 78, 50]
 /* 7 列中心 x（百分比），与 SVG viewBox x（÷700）一一对应 */
 const colX = (i: number) => ((i + 0.5) / milestones.length) * 100
 
-/* 流动波形主路径（viewBox 0 0 700 132，preserveAspectRatio=none 横向拉伸铺满） */
-const WAVE_PATH =
-  "M0,108 C20,104 34,99 50,96 C92,90 112,80 150,72 C198,62 210,50 250,44 C298,38 322,72 350,76 C398,82 414,46 450,40 C500,33 522,74 550,78 C602,82 622,56 650,50 C672,47 686,46 700,45"
+/* ===== 交织水脉：Catmull-Rom 样条 + 多相位正弦偏移，生成相互编织的曲线 ===== */
+type Pt = { x: number; y: number }
+
+/* 主水脉锚点（穿过 7 个节点 + 两端，viewBox 0 0 700 132） */
+const ANCHORS: [number, number][] = [
+  [0, 110],
+  [50, 96],
+  [150, 72],
+  [250, 44],
+  [350, 76],
+  [450, 40],
+  [550, 78],
+  [650, 50],
+  [700, 46],
+]
+
+function sampleSpline(anchors: [number, number][], perSeg = 18): Pt[] {
+  const P = anchors.map(([x, y]) => ({ x, y }))
+  const n = P.length
+  const out: Pt[] = []
+  for (let i = 0; i < n - 1; i++) {
+    const p0 = P[i - 1] ?? P[i]
+    const p1 = P[i]
+    const p2 = P[i + 1]
+    const p3 = P[i + 2] ?? P[i + 1]
+    for (let s = 0; s < perSeg; s++) {
+      const t = s / perSeg
+      const t2 = t * t
+      const t3 = t2 * t
+      const x =
+        0.5 *
+        (2 * p1.x + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3)
+      const y =
+        0.5 *
+        (2 * p1.y + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3)
+      out.push({ x, y })
+    }
+  }
+  out.push({ x: P[n - 1].x, y: P[n - 1].y })
+  return out
+}
+
+const BASE_PTS = sampleSpline(ANCHORS)
+
+function toPath(pts: Pt[]): string {
+  return pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ")
+}
+
+/* 在主水脉基础上叠加正弦垂直偏移，得到相互交织（异相则交叉）的辅流线 */
+function strandPath(amp: number, phase: number, freq: number): string {
+  const pts = BASE_PTS.map((p) => ({
+    x: p.x,
+    y: p.y + amp * Math.sin((freq * p.x) / 700 * Math.PI * 2 + phase) * (0.4 + (0.6 * p.x) / 700),
+  }))
+  return toPath(pts)
+}
+
+const MAIN_PATH = toPath(BASE_PTS)
+const STRAND_A = strandPath(5.5, 0, 3.4)
+const STRAND_B = strandPath(5.5, Math.PI, 3.4)
+const STRAND_C = strandPath(9, Math.PI / 2, 2.5)
+
+/* 液体粒子喷涌：大小/速度/相位错落，沿主水脉非匀速流动 */
+const PARTICLES = Array.from({ length: 16 }).map((_, i) => {
+  const r = [0.7, 1.1, 1.5, 0.9, 1.3, 0.8][i % 6]
+  const dur = 4.2 + (i % 5) * 1.25
+  const begin = -(i * 0.73)
+  const fill = ["#aef6ff", "#7fe9ff", "#4facfe", "#00f2fe"][i % 4]
+  const op = 0.5 + (i % 4) * 0.12
+  return { r, dur, begin, fill, op }
+})
+
+/* 终点水滴四周的水花溅射粒子 */
+const SPLASH = [
+  { dx: "-15px", dy: "-7px", dur: "2.4s", delay: "0s" },
+  { dx: "13px", dy: "-11px", dur: "2.9s", delay: "0.6s" },
+  { dx: "17px", dy: "5px", dur: "2.2s", delay: "1.1s" },
+  { dx: "-13px", dy: "9px", dur: "3.0s", delay: "0.3s" },
+  { dx: "3px", dy: "-17px", dur: "2.6s", delay: "0.9s" },
+  { dx: "-5px", dy: "15px", dur: "3.2s", delay: "1.5s" },
+]
 
 export function GrowthTimeline() {
   const [active, setActive] = useState(keyIndices[0])
@@ -132,11 +210,10 @@ export function GrowthTimeline() {
         </div>
       </div>
 
-      {/* ===== 桌面端：波浪能量轨迹 ===== */}
+      {/* ===== 桌面端：交织水脉能量轨迹 ===== */}
       <div className="relative mt-8 hidden lg:block">
-        {/* 波形带 */}
         <div className="relative w-full" style={{ height: BAND_H }}>
-          {/* 流动波形主线（SVG） */}
+          {/* 交织水脉（SVG 多轨编织） */}
           <svg
             className="absolute inset-0 size-full overflow-visible"
             viewBox={`0 0 700 ${BAND_H}`}
@@ -145,28 +222,32 @@ export function GrowthTimeline() {
             aria-hidden="true"
           >
             <defs>
-              {/* 水流蓝主渐变：#00f2fe → #4facfe（两端半透明，中段水脉明亮） */}
+              {/* 水流蓝主渐变：#00f2fe → #4facfe */}
               <linearGradient id="cwWaveGrad" x1="0" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse">
                 <stop offset="0" stopColor="#00f2fe" stopOpacity="0.08" />
-                <stop offset="0.28" stopColor="#00f2fe" stopOpacity="0.7" />
-                <stop offset="0.6" stopColor="#33d6fe" stopOpacity="0.85" />
-                <stop offset="1" stopColor="#4facfe" stopOpacity="0.9" />
+                <stop offset="0.28" stopColor="#00f2fe" stopOpacity="0.75" />
+                <stop offset="0.6" stopColor="#33d6fe" stopOpacity="0.9" />
+                <stop offset="1" stopColor="#4facfe" stopOpacity="0.95" />
               </linearGradient>
-              {/* 柔性泛光（多层模糊叠加，宽柔光包裹细亮芯，不尖锐） */}
+              <linearGradient id="cwStrandGrad" x1="0" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#00f2fe" stopOpacity="0.05" />
+                <stop offset="0.5" stopColor="#4facfe" stopOpacity="0.6" />
+                <stop offset="1" stopColor="#aef6ff" stopOpacity="0.75" />
+              </linearGradient>
+              {/* 柔性泛光（多层模糊，液体发光感） */}
               <filter id="cwWaveGlow" x="-10%" y="-160%" width="120%" height="420%">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="wide" />
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2.6" result="mid" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="mid" />
                 <feMerge>
                   <feMergeNode in="wide" />
                   <feMergeNode in="mid" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
-              {/* 柔和外侧光晕（更大扩散，营造水汽弥散感） */}
               <filter id="cwWaveHalo" x="-12%" y="-200%" width="124%" height="500%">
                 <feGaussianBlur stdDeviation="9" />
               </filter>
-              {/* 水滴拖尾渐变（沿运动方向，前端亮、尾端淡） */}
+              {/* 水滴拖尾渐变 */}
               <linearGradient id="cwCometTail" x1="0" y1="0" x2="1" y2="0">
                 <stop offset="0" stopColor="#4facfe" stopOpacity="0" />
                 <stop offset="0.6" stopColor="#00f2fe" stopOpacity="0.45" />
@@ -174,133 +255,166 @@ export function GrowthTimeline() {
               </linearGradient>
             </defs>
 
-            {/* 外侧水汽光晕（最底层，宽而极淡，柔和弥散） */}
-            <path
-              d={WAVE_PATH}
-              stroke="#4facfe"
-              strokeOpacity="0.18"
-              strokeWidth="11"
-              strokeLinecap="round"
-              filter="url(#cwWaveHalo)"
-            />
-            {/* 底层暗轨 */}
-            <path d={WAVE_PATH} stroke="#4facfe" strokeOpacity="0.14" strokeWidth="1.4" />
+            {/* 外侧水汽光晕（最底层，宽柔弥散） */}
+            <path d={MAIN_PATH} stroke="#4facfe" strokeOpacity="0.16" strokeWidth="11" strokeLinecap="round" filter="url(#cwWaveHalo)" />
 
-            {/* 上偏移细流光线（水流分层） */}
+            {/* —— 交织辅流线 A（与 B 异相，相互穿插交叉） —— */}
             <path
-              d={WAVE_PATH}
-              stroke="#00f2fe"
+              d={STRAND_A}
+              stroke="url(#cwStrandGrad)"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeDasharray="10 16"
+              filter="url(#cwWaveGlow)"
+              opacity="0.85"
+            >
+              <animate attributeName="stroke-dashoffset" from="0" to="-78" dur="2.8s" repeatCount="indefinite" />
+            </path>
+            {/* —— 交织辅流线 B —— */}
+            <path
+              d={STRAND_B}
+              stroke="url(#cwStrandGrad)"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeDasharray="8 20"
+              filter="url(#cwWaveGlow)"
+              opacity="0.8"
+            >
+              <animate attributeName="stroke-dashoffset" from="0" to="-92" dur="3.6s" repeatCount="indefinite" />
+            </path>
+            {/* —— 大幅缠绕流线 C（更细、更透，缠绕主脉） —— */}
+            <path
+              d={STRAND_C}
+              stroke="#7fe9ff"
               strokeOpacity="0.4"
-              strokeWidth="0.8"
+              strokeWidth="0.9"
               strokeLinecap="round"
-              transform="translate(0,-4)"
-              strokeDasharray="6 22"
+              strokeDasharray="4 26"
               filter="url(#cwWaveGlow)"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-84" dur="2.6s" repeatCount="indefinite" />
-            </path>
-            {/* 下偏移细流光线 */}
-            <path
-              d={WAVE_PATH}
-              stroke="#4facfe"
-              strokeOpacity="0.38"
-              strokeWidth="0.8"
-              strokeLinecap="round"
-              transform="translate(0,4)"
-              strokeDasharray="5 26"
-              filter="url(#cwWaveGlow)"
-            >
-              <animate attributeName="stroke-dashoffset" from="0" to="-93" dur="3.4s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-120" dur="4.4s" repeatCount="indefinite" />
             </path>
 
-            {/* 发光主轨（渐变 + 较连续的流动虚线，柔和不尖锐） */}
+            {/* —— 主水脉（最粗最亮，3px） —— */}
+            <path d={MAIN_PATH} stroke="#0a3a55" strokeOpacity="0.4" strokeWidth="3.2" strokeLinecap="round" />
             <path
-              d={WAVE_PATH}
+              d={MAIN_PATH}
               stroke="url(#cwWaveGrad)"
-              strokeWidth="1.6"
+              strokeWidth="3"
               strokeLinecap="round"
               filter="url(#cwWaveGlow)"
-              strokeDasharray="26 8"
+              strokeDasharray="34 10"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-68" dur="2s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-88" dur="2.4s" repeatCount="indefinite" />
             </path>
 
-            {/* 向右流动的水滴光点 + 拖尾（柔光水滴，源源汇入 2026） */}
+            {/* —— 大水滴光点 + 拖尾（源源汇入 2026） —— */}
             <g opacity="0.9">
-              <rect x="-26" y="-1.2" width="26" height="2.4" rx="1.2" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
-                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+              <rect x="-26" y="-1.3" width="26" height="2.6" rx="1.3" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
+                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </rect>
-              <circle r="2.4" fill="#aef6ff" filter="url(#cwWaveGlow)">
-                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+              <circle r="2.6" fill="#aef6ff" filter="url(#cwWaveGlow)">
+                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </circle>
             </g>
             <g opacity="0.78">
               <rect x="-18" y="-0.9" width="18" height="1.8" rx="0.9" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
-                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </rect>
-              <circle r="1.8" fill="#7fe9ff" filter="url(#cwWaveGlow)">
-                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+              <circle r="1.9" fill="#7fe9ff" filter="url(#cwWaveGlow)">
+                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </circle>
             </g>
-            <circle r="1.3" fill="#4facfe" filter="url(#cwWaveGlow)" opacity="0.72">
-              <animateMotion dur="10s" begin="4s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
-            </circle>
 
-            {/* 轨道粒子（沿曲线附近分��，轻微明灭） */}
-            {[
-              [60, 102],
-              [165, 70],
-              [255, 43],
-              [352, 78],
-              [452, 38],
-              [552, 80],
-              [648, 49],
-              [115, 86],
-              [300, 60],
-              [500, 56],
-            ].map(([px, py], idx) => (
-              <circle
-                key={idx}
-                cx={px}
-                cy={py}
-                r={idx % 2 === 0 ? 0.9 : 0.7}
-                fill="#7fe9ff"
-                filter="url(#cwWaveGlow)"
-              >
+            {/* —— 液体粒子喷涌（大小/速度错落，非匀速 spline 流动，波光粼粼） —— */}
+            {PARTICLES.map((p, i) => (
+              <circle key={i} r={p.r} fill={p.fill} opacity={p.op} filter="url(#cwWaveGlow)">
+                <animateMotion
+                  dur={`${p.dur}s`}
+                  begin={`${p.begin}s`}
+                  repeatCount="indefinite"
+                  rotate="auto"
+                  path={MAIN_PATH}
+                  calcMode="spline"
+                  keyTimes="0;1"
+                  keySplines={i % 2 === 0 ? "0.45 0 0.55 1" : "0.3 0 0.7 1"}
+                />
                 <animate
                   attributeName="opacity"
-                  values="0.15;0.85;0.15"
-                  dur={`${2.4 + (idx % 4) * 0.6}s`}
-                  begin={`${(idx % 5) * 0.4}s`}
+                  values={`0;${p.op};${p.op};0`}
+                  keyTimes="0;0.12;0.85;1"
+                  dur={`${p.dur}s`}
+                  begin={`${p.begin}s`}
                   repeatCount="indefinite"
                 />
               </circle>
             ))}
-
-            {/* 末端：水流柔和汇入终点（无尖锐箭头，改为呼吸晕散光点） */}
-            <g filter="url(#cwWaveGlow)">
-              {/* 外层柔光晕（吸纳水流） */}
-              <circle cx="694" cy="45.5" r="6" fill="#4facfe" opacity="0.22">
-                <animate attributeName="r" values="5;9;5" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.28;0.1;0.28" dur="3s" repeatCount="indefinite" />
-              </circle>
-              {/* 内层亮芯 */}
-              <circle cx="694" cy="45.5" r="2.2" fill="#aef6ff" opacity="0.9">
-                <animate attributeName="opacity" values="0.65;1;0.65" dur="2.2s" repeatCount="indefinite" />
-              </circle>
-            </g>
           </svg>
 
-          {/* 年份 + 节点 + 光柱（HTML 绝对定位，贴合波形） */}
+          {/* 年份 + 节点 + 全息底座 + 终点水滴（HTML 绝对定位，贴合波形） */}
           {milestones.map((m, i) => {
             const y = NODE_Y[i]
             const isActive = i === active
+            const isLast = i === milestones.length - 1
             return (
               <div
                 key={m.year}
                 className="absolute -translate-x-1/2"
                 style={{ left: `${colX(i)}%`, top: 0, bottom: 0 }}
               >
+                {/* 终点悬浮水滴（仅 2026，取代锐利箭头，四周水花溅射） */}
+                {isLast ? (
+                  <span
+                    className="pointer-events-none absolute left-1/2 -translate-x-1/2"
+                    style={{ top: y - 52 }}
+                    aria-hidden="true"
+                  >
+                    {/* 水花溅射 */}
+                    {SPLASH.map((s, si) => (
+                      <span
+                        key={si}
+                        className="cw-splash absolute left-1/2 top-1/2 size-1 rounded-full"
+                        style={
+                          {
+                            backgroundColor: "#aef6ff",
+                            boxShadow: "0 0 5px 1px rgb(0 242 254 / 0.9)",
+                            ["--dx" as string]: s.dx,
+                            ["--dy" as string]: s.dy,
+                            ["--sp-dur" as string]: s.dur,
+                            ["--sp-delay" as string]: s.delay,
+                          } as React.CSSProperties
+                        }
+                      />
+                    ))}
+                    {/* 立体发光水滴 */}
+                    <span className="cw-drop-float relative block">
+                      <svg width="26" height="34" viewBox="0 0 26 34" fill="none" aria-hidden="true">
+                        <defs>
+                          <radialGradient id="cwDrop" cx="40%" cy="32%" r="70%">
+                            <stop offset="0" stopColor="#eafdff" />
+                            <stop offset="0.4" stopColor="#7fe9ff" />
+                            <stop offset="1" stopColor="#0091ea" />
+                          </radialGradient>
+                          <filter id="cwDropGlow" x="-60%" y="-60%" width="220%" height="220%">
+                            <feGaussianBlur stdDeviation="2.4" result="b" />
+                            <feMerge>
+                              <feMergeNode in="b" />
+                              <feMergeNode in="SourceGraphic" />
+                            </feMerge>
+                          </filter>
+                        </defs>
+                        <path
+                          d="M13 1 C13 1 23 16 23 23 A10 10 0 1 1 3 23 C3 16 13 1 13 1 Z"
+                          fill="url(#cwDrop)"
+                          filter="url(#cwDropGlow)"
+                        />
+                        {/* 内部高光 */}
+                        <ellipse className="cw-drop-glow" cx="9.5" cy="20" rx="2.6" ry="4" fill="#ffffff" opacity="0.7" />
+                      </svg>
+                    </span>
+                  </span>
+                ) : null}
+
                 {/* 年份（节点上方） */}
                 <span
                   className={[
@@ -314,13 +428,13 @@ export function GrowthTimeline() {
                 </span>
 
                 {/* 重点节点上方扫描光柱 */}
-                {m.key ? (
+                {m.key && !isLast ? (
                   <span
                     className="cw-beam pointer-events-none absolute left-1/2 -translate-x-1/2 w-px"
                     style={{
                       top: y - 30,
                       height: 24,
-                      background: "linear-gradient(to top, oklch(0.85 0.14 205 / 0.85), transparent)",
+                      background: "linear-gradient(to top, rgb(127 233 255 / 0.85), transparent)",
                     }}
                     aria-hidden="true"
                   />
@@ -335,12 +449,13 @@ export function GrowthTimeline() {
                   aria-pressed={isActive}
                   aria-label={`${m.year} ${m.title}`}
                 >
-                  {/* 水滴落水般的向外扩散水波纹：重点节点常驻，其余节点选中时触发 */}
                   {m.key || isActive ? <span className="cw-ripple" aria-hidden="true" /> : null}
                   <span
                     className={[
                       "relative inline-flex shrink-0 items-center justify-center rounded-full border transition-all duration-300",
-                      m.key ? "size-4 border-accent bg-accent/30 cw-node-breathe" : "size-2.5 border-accent/45 bg-[oklch(0.16_0.03_245)]",
+                      m.key
+                        ? "size-4 border-accent bg-accent/30 cw-node-breathe"
+                        : "size-2.5 border-accent/45 bg-[oklch(0.16_0.03_245)]",
                       isActive && m.key ? "scale-125" : "",
                     ].join(" ")}
                   >
@@ -348,7 +463,22 @@ export function GrowthTimeline() {
                   </span>
                 </button>
 
-                {/* 连接竖线：从节点向下延伸到带底（重点更亮 + 能量下行 + 粒子） */}
+                {/* 全息光锥（仅重点节点：从卡片顶部向上直射到水脉，上窄下宽） */}
+                {m.key ? (
+                  <span
+                    className="cw-holo-cone pointer-events-none absolute left-1/2 -translate-x-1/2"
+                    style={{
+                      top: y,
+                      height: BAND_H - y,
+                      width: 26,
+                      clipPath: "polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",
+                      background: "linear-gradient(to top, rgb(0 242 254 / 0.22), rgb(79 172 254 / 0.05) 70%, transparent)",
+                    }}
+                    aria-hidden="true"
+                  />
+                ) : null}
+
+                {/* 连接竖线 */}
                 <span
                   className={[
                     "absolute left-1/2 w-px -translate-x-1/2 transition-opacity duration-300",
@@ -361,8 +491,8 @@ export function GrowthTimeline() {
                     ...(m.key
                       ? {
                           backgroundImage:
-                            "linear-gradient(to bottom, oklch(0.85 0.14 205 / 0.9) 0%, oklch(0.85 0.14 205 / 0.9) 45%, transparent 45%, transparent 100%)",
-                          filter: "drop-shadow(0 0 4px oklch(0.8 0.14 205 / 0.7))",
+                            "linear-gradient(to bottom, rgb(127 233 255 / 0.9) 0%, rgb(127 233 255 / 0.9) 45%, transparent 45%, transparent 100%)",
+                          filter: "drop-shadow(0 0 4px rgb(0 242 254 / 0.7))",
                         }
                       : {
                           background: "linear-gradient(to bottom, oklch(0.7 0.1 215 / 0.45), oklch(0.7 0.1 215 / 0.06))",
@@ -370,7 +500,24 @@ export function GrowthTimeline() {
                   }}
                   aria-hidden="true"
                 />
-                {/* ���点光柱内向下流动的粒子 */}
+
+                {/* 全息投影底座（仅重点节点：卡片顶部的发光光带） */}
+                {m.key ? (
+                  <span
+                    className="cw-holo-base pointer-events-none absolute left-1/2"
+                    style={{
+                      bottom: -2,
+                      width: 30,
+                      height: 7,
+                      borderRadius: "50%",
+                      background: "radial-gradient(closest-side, rgb(0 242 254 / 0.7), rgb(79 172 254 / 0.18) 60%, transparent)",
+                      filter: "blur(0.5px)",
+                    }}
+                    aria-hidden="true"
+                  />
+                ) : null}
+
+                {/* 重点光柱内向下流动的粒子 */}
                 {m.key ? (
                   <span
                     className="pointer-events-none absolute left-1/2 w-1 -translate-x-1/2 overflow-hidden"
@@ -383,8 +530,8 @@ export function GrowthTimeline() {
                         className="cw-stem-particle absolute left-1/2 size-1 -translate-x-1/2 rounded-full"
                         style={
                           {
-                            backgroundColor: "oklch(0.96 0.08 200)",
-                            boxShadow: "0 0 6px 1px oklch(0.85 0.14 205 / 0.9)",
+                            backgroundColor: "#eafdff",
+                            boxShadow: "0 0 6px 1px rgb(0 242 254 / 0.9)",
                             ["--p-dur" as string]: `${1.6 + p * 0.3}s`,
                             ["--p-delay" as string]: `${p * 0.5}s`,
                           } as React.CSSProperties

@@ -638,6 +638,83 @@
   animation-delay: var(--p-delay, 0s);
 }
 
+/* 终点悬浮水滴：上下呼吸漂浮 */
+@keyframes cw-drop-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.05);
+  }
+}
+.cw-drop-float {
+  animation: cw-drop-float 3.4s ease-in-out infinite;
+}
+
+/* 水滴内高光流动 */
+@keyframes cw-drop-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.cw-drop-glow {
+  animation: cw-drop-glow 2.4s ease-in-out infinite;
+}
+
+/* 水花溅射粒子：从中心向外扩散并淡出 */
+@keyframes cw-splash {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.5);
+    opacity: 0;
+  }
+}
+.cw-splash {
+  animation: cw-splash var(--sp-dur, 2.6s) ease-out infinite;
+  animation-delay: var(--sp-delay, 0s);
+}
+
+/* 全息投影底座：横向光带呼吸缩放 */
+@keyframes cw-holo-base {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateX(-50%) scaleX(0.9);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) scaleX(1.3);
+  }
+}
+.cw-holo-base {
+  animation: cw-holo-base 3s ease-in-out infinite;
+}
+
+/* 全息光锥：轻微亮度起伏 */
+@keyframes cw-holo-cone {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+.cw-holo-cone {
+  animation: cw-holo-cone 3.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cw-rail-flow,
   .cw-spark-run,
@@ -646,11 +723,17 @@
   .cw-stem-flow,
   .cw-ripple,
   .cw-ripple::before,
-  .cw-stem-particle {
+  .cw-stem-particle,
+  .cw-drop-float,
+  .cw-drop-glow,
+  .cw-splash,
+  .cw-holo-base,
+  .cw-holo-cone {
     animation: none !important;
   }
   .cw-ripple,
-  .cw-ripple::before {
+  .cw-ripple::before,
+  .cw-splash {
     display: none;
   }
 }
