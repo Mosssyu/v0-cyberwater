@@ -341,157 +341,151 @@ export function CwCloudSlide({ active }: { active: boolean }) {
         </div>
       </div>
 
-      {/* 横向产品模块池（铺在沙盘下方，与上方积木联动） */}
-      <div className="relative mt-6 rounded-2xl border border-border bg-card/40 p-4">
-        <div className="mb-3 flex items-center gap-1.5">
-          <Boxes className="size-4 text-accent" />
-          <span className="text-xs font-semibold text-foreground">产品模块池 · 10+</span>
-          <span className="ml-1 text-[11px] text-muted-foreground">（横向铺开，悬停 / 点击与上方积木实时联动）</span>
-        </div>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
-          {listedModules.map((m) => {
-            const on = activeIds.includes(m.id)
-            const hot = showId === m.id
-            return (
-              <button
-                key={m.id}
-                onMouseEnter={() => handleHover(m.id)}
-                onMouseLeave={() => handleHover(null)}
-                onClick={() => toggleModule(m.id)}
-                className="flex items-center gap-2 rounded-xl border px-2.5 py-2 text-left text-[12px] transition-all duration-300"
-                style={{
-                  borderColor: on ? "oklch(0.7 0.13 210 / 0.55)" : hot ? "oklch(0.6 0.1 215 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
-                  backgroundColor: on ? "oklch(0.7 0.14 215 / 0.16)" : hot ? "oklch(0.5 0.06 235 / 0.2)" : "oklch(0.2 0.03 245 / 0.35)",
-                  opacity: on || hot ? 1 : 0.78,
-                }}
-              >
-                <span
-                  className="size-2.5 shrink-0 rounded-[3px]"
-                  style={{ backgroundColor: m.palette.top, boxShadow: on ? `0 0 7px 1px ${m.palette.glow}` : "none" }}
-                />
-                <span className="min-w-0 flex-1 truncate text-foreground/90">{m.label}</span>
-                {on && <Check className="size-3.5 shrink-0 text-accent" />}
-              </button>
-            )
-          })}
-          {/* 更多模块持续扩展 */}
-          <div className="flex items-center gap-2 rounded-xl border border-dashed border-accent/30 px-2.5 py-2 text-[12px] opacity-70">
-            <Plus className="size-3.5 shrink-0 text-accent" />
-            <span className="min-w-0 flex-1 truncate text-foreground/80">更多+</span>
-            <span className="shrink-0 text-[10px] text-muted-foreground">持续扩展</span>
-          </div>
-        </div>
-      </div>
-
-      {/* 聚焦产品展示区：说明 + 专属场景示意动画 */}
-      <div className="relative mt-8">
+      {/* 产品示意区：左 产品模块池 10+ ｜ 右 产品示意图 + 图下文字描述 */}
+      <div className="relative mt-6">
         <div className="mb-3 flex items-center gap-2">
           <span className="text-sm font-semibold text-foreground">产品示意</span>
-          <span className="text-[11px] text-muted-foreground">（在上方模块池或组合体中选择 / 悬停，下方实时呈现该产品说明与示意动画）</span>
+          <span className="text-[11px] text-muted-foreground">（左侧模块池选择 / 悬停，右侧实时呈现该产品大屏与说明）</span>
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={showModule.id}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="grid items-center gap-5 overflow-hidden rounded-2xl border border-border bg-card/40 p-5 lg:grid-cols-5"
-          >
-            {/* 左：产品说明 */}
-            <div className="flex flex-col lg:col-span-2">
-              <div className="flex items-center gap-3">
-                <span
-                  className="flex size-11 items-center justify-center rounded-xl"
-                  style={{ backgroundColor: `${showModule.palette.top}20` }}
-                >
-                  <showInfo.icon className="size-5.5" style={{ color: showModule.palette.top }} />
-                </span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-foreground">{showModule.label}</span>
-                    <span
-                      className="rounded-full px-2 py-0.5 text-[10px] font-medium"
-                      style={{
-                        color: showInPlatform ? "oklch(0.88 0.1 200)" : "oklch(0.62 0.02 240)",
-                        backgroundColor: showInPlatform ? "oklch(0.7 0.14 215 / 0.16)" : "oklch(0.4 0.03 240 / 0.3)",
-                      }}
-                    >
-                      {showInPlatform ? "已在组合中" : "未加入组合"}
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-muted-foreground">产品模块</span>
-                </div>
-              </div>
-
-              <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">{showInfo.desc}</p>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                {showInfo.features.map((f) => (
-                  <span
-                    key={f}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-secondary/30 px-2.5 py-1 text-[11px] text-foreground/85"
-                  >
-                    <span className="size-1.5 rounded-[2px]" style={{ backgroundColor: showModule.palette.top }} />
-                    {f}
-                  </span>
-                ))}
-              </div>
-
-              <button
-                onClick={() => toggleModule(showModule.id)}
-                className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
-                style={{
-                  marginTop: "1.25rem",
-                  borderColor: showInPlatform ? "oklch(0.4 0.03 240 / 0.5)" : "oklch(0.7 0.13 215 / 0.55)",
-                  color: showInPlatform ? "oklch(0.7 0.02 240)" : "oklch(0.88 0.1 200)",
-                  backgroundColor: showInPlatform ? "transparent" : "oklch(0.7 0.14 215 / 0.12)",
-                }}
-              >
-                {showInPlatform ? <RotateCcw className="size-3.5" /> : <Plus className="size-3.5" />}
-                {showInPlatform ? "从组合中移除" : "加入组合"}
-              </button>
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
+          {/* 左：产品模块池 10+（竖向列表，与组合体实时联动） */}
+          <div className="rounded-2xl border border-border bg-card/40 p-3.5">
+            <div className="mb-3 flex items-center gap-1.5">
+              <Boxes className="size-4 text-accent" />
+              <span className="text-xs font-semibold text-foreground">产品模块池 · 10+</span>
             </div>
-
-            {/* 右：产品预览面板（图片作为卡片主内容区，与外层一体化，非框中框） */}
-            <div
-              className="group relative aspect-video overflow-hidden rounded-xl lg:col-span-3"
-              style={{
-                border: `1px solid ${showModule.palette.top}26`,
-                background: "oklch(0.12 0.025 248)",
-                boxShadow: `0 0 40px -14px ${showModule.palette.glow}, inset 0 0 0 1px oklch(1 0 0 / 0.02)`,
-              }}
-            >
-              {productImages[showModule.id] ? (
-                <>
-                  {/* 图片直接铺满卡片内容区，共享卡片圆角 */}
-                  <img
-                    src={productImages[showModule.id] || "/placeholder.svg"}
-                    alt={`${showModule.label}产品大屏示意`}
-                    className="size-full object-cover"
-                    loading="lazy"
-                    draggable={false}
-                  />
-                  {/* 边缘柔化暗角：让图片矩形边界自然融入卡片背景 */}
-                  <div
-                    className="pointer-events-none absolute inset-0"
-                    aria-hidden="true"
+            <div className="flex flex-col gap-1.5">
+              {listedModules.map((m) => {
+                const on = activeIds.includes(m.id)
+                const hot = showId === m.id
+                return (
+                  <button
+                    key={m.id}
+                    onMouseEnter={() => handleHover(m.id)}
+                    onMouseLeave={() => handleHover(null)}
+                    onClick={() => toggleModule(m.id)}
+                    className="flex items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-[12px] transition-all duration-300"
                     style={{
-                      boxShadow: `inset 0 0 36px 6px oklch(0.1 0.025 248 / 0.55)`,
-                      background:
-                        "radial-gradient(120% 120% at 50% 50%, transparent 62%, oklch(0.1 0.025 248 / 0.5) 100%)",
+                      borderColor: on ? "oklch(0.7 0.13 210 / 0.55)" : hot ? "oklch(0.6 0.1 215 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
+                      backgroundColor: on ? "oklch(0.7 0.14 215 / 0.16)" : hot ? "oklch(0.5 0.06 235 / 0.2)" : "oklch(0.2 0.03 245 / 0.35)",
+                      opacity: on || hot ? 1 : 0.78,
                     }}
-                  />
-                </>
-              ) : (
-                <div className="flex size-full items-center justify-center p-3">
-                  <ProductScene id={showModule.id} palette={showModule.palette} />
-                </div>
-              )}
+                  >
+                    <span
+                      className="size-2.5 shrink-0 rounded-[3px]"
+                      style={{ backgroundColor: m.palette.top, boxShadow: on ? `0 0 7px 1px ${m.palette.glow}` : "none" }}
+                    />
+                    <span className="min-w-0 flex-1 truncate text-foreground/90">{m.label}</span>
+                    {on && <Check className="size-3.5 shrink-0 text-accent" />}
+                  </button>
+                )
+              })}
+              {/* 更多模块持续扩展 */}
+              <div className="flex items-center gap-2 rounded-lg border border-dashed border-accent/30 px-2.5 py-2 text-[12px] opacity-70">
+                <Plus className="size-3.5 shrink-0 text-accent" />
+                <span className="min-w-0 flex-1 truncate text-foreground/80">更多+</span>
+                <span className="shrink-0 text-[10px] text-muted-foreground">持续扩展</span>
+              </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
+          </div>
+
+          {/* 右：产品示意图 + 图下方文字描述 */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={showModule.id}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card/40"
+            >
+              {/* 上：产品大屏示意图 */}
+              <div
+                className="relative aspect-video w-full overflow-hidden"
+                style={{ background: "oklch(0.12 0.025 248)" }}
+              >
+                {productImages[showModule.id] ? (
+                  <>
+                    <img
+                      src={productImages[showModule.id] || "/placeholder.svg"}
+                      alt={`${showModule.label}产品大屏示意`}
+                      className="size-full object-cover"
+                      loading="lazy"
+                      draggable={false}
+                    />
+                    {/* 边缘柔化暗角，让图片自然融入卡片 */}
+                    <div
+                      className="pointer-events-none absolute inset-0"
+                      aria-hidden="true"
+                      style={{
+                        background:
+                          "radial-gradient(120% 120% at 50% 50%, transparent 64%, oklch(0.1 0.025 248 / 0.5) 100%)",
+                      }}
+                    />
+                  </>
+                ) : (
+                  <div className="flex size-full items-center justify-center p-4">
+                    <ProductScene id={showModule.id} palette={showModule.palette} />
+                  </div>
+                )}
+              </div>
+
+              {/* 下：产品文字描述 */}
+              <div className="flex flex-col border-t border-border p-5">
+                <div className="flex items-center gap-3">
+                  <span
+                    className="flex size-11 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: `${showModule.palette.top}20` }}
+                  >
+                    <showInfo.icon className="size-5.5" style={{ color: showModule.palette.top }} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-lg font-bold text-foreground">{showModule.label}</span>
+                      <span
+                        className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                        style={{
+                          color: showInPlatform ? "oklch(0.88 0.1 200)" : "oklch(0.62 0.02 240)",
+                          backgroundColor: showInPlatform ? "oklch(0.7 0.14 215 / 0.16)" : "oklch(0.4 0.03 240 / 0.3)",
+                        }}
+                      >
+                        {showInPlatform ? "已在组合中" : "未加入组合"}
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-muted-foreground">产品模块</span>
+                  </div>
+                  <button
+                    onClick={() => toggleModule(showModule.id)}
+                    className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
+                    style={{
+                      borderColor: showInPlatform ? "oklch(0.4 0.03 240 / 0.5)" : "oklch(0.7 0.13 215 / 0.55)",
+                      color: showInPlatform ? "oklch(0.7 0.02 240)" : "oklch(0.88 0.1 200)",
+                      backgroundColor: showInPlatform ? "transparent" : "oklch(0.7 0.14 215 / 0.12)",
+                    }}
+                  >
+                    {showInPlatform ? <RotateCcw className="size-3.5" /> : <Plus className="size-3.5" />}
+                    {showInPlatform ? "移除" : "加入组合"}
+                  </button>
+                </div>
+
+                <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">{showInfo.desc}</p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {showInfo.features.map((f) => (
+                    <span
+                      key={f}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-secondary/30 px-2.5 py-1 text-[11px] text-foreground/85"
+                    >
+                      <span className="size-1.5 rounded-[2px]" style={{ backgroundColor: showModule.palette.top }} />
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   )
