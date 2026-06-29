@@ -296,27 +296,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             从单一业态到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
           </p>
 
-          {/* 五大产品特性标签 */}
-          <div className="mt-5 flex flex-col gap-2">
-            {highlights.map((h) => (
-              <div
-                key={h.title}
-                className="flex items-center gap-3 rounded-xl border border-accent/15 bg-accent/[0.04] px-3 py-2.5"
-              >
-                <span
-                  className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.08]"
-                  aria-hidden="true"
-                >
-                  <h.icon className="size-4.5 text-accent" />
-                </span>
-                <div className="min-w-0">
-                  <span className="text-sm font-bold text-foreground">{h.title}</span>
-                  <span className="ml-2 text-[12px] text-muted-foreground">{h.desc}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
           {/* 当前阶段说明 + 重置 */}
           <div className="mt-5 rounded-xl border border-accent/20 bg-accent/[0.05] p-3.5">
             <div className="flex items-center justify-between gap-2">
@@ -337,30 +316,54 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           </div>
         </div>
 
-        {/* 右：全景厂网河湖数字孪生舞台（沙盘铺满） */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-[oklch(0.12_0.03_248)]">
-          <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
+        {/* 右：上方五大特性行（一行铺开）+ 下方全景沙盘舞台（与特性行左边框对齐） */}
+        <div className="flex flex-col gap-4">
+          {/* 五大产品特性标签（横向一行，等宽铺开） */}
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+            {highlights.map((h) => (
+              <div
+                key={h.title}
+                className="flex flex-col gap-1.5 rounded-xl border border-accent/15 bg-accent/[0.04] px-3 py-2.5"
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.08]"
+                    aria-hidden="true"
+                  >
+                    <h.icon className="size-4 text-accent" />
+                  </span>
+                  <span className="text-sm font-bold text-foreground">{h.title}</span>
+                </div>
+                <span className="text-pretty text-[11px] leading-snug text-muted-foreground">{h.desc}</span>
+              </div>
+            ))}
+          </div>
 
-          {/* 全景沙盘组合体（铺满舞台） */}
-          <BuildingBlocks
-            modules={productModules}
-            activeIds={activeIds}
-            hoveredId={hoveredId}
-            onHover={handleHover}
-            onToggle={toggleModule}
-          />
+          {/* 全景厂网河湖数字孪生舞台（沙盘铺满） */}
+          <div className="relative flex-1 overflow-hidden rounded-2xl border border-border bg-[oklch(0.12_0.03_248)]">
+            <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
 
-          {/* 中央堆叠体下方居中统计文字 */}
-          <p className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.14_0.03_248/0.8)] px-4 py-1.5 text-center text-[11px] text-muted-foreground backdrop-blur sm:text-[12px]">
-            已选 <span className="font-mono font-semibold text-accent">{activeIds.filter((id) => id !== "ai").length}</span> / {listedModules.length} 个模块 · 点击下方模块加入组合
-          </p>
+            {/* 全景沙盘组合体（铺满舞台） */}
+            <BuildingBlocks
+              modules={productModules}
+              activeIds={activeIds}
+              hoveredId={hoveredId}
+              onHover={handleHover}
+              onToggle={toggleModule}
+            />
+
+            {/* 中央堆叠体下方居中统计文字 */}
+            <p className="absolute bottom-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.14_0.03_248/0.8)] px-4 py-1.5 text-center text-[11px] text-muted-foreground backdrop-blur sm:text-[12px]">
+              已选 <span className="font-mono font-semibold text-accent">{activeIds.filter((id) => id !== "ai").length}</span> / {listedModules.length} 个模块 · 点击下方模块加入组合
+            </p>
+          </div>
         </div>
       </div>
 
       {/* 产品示意区：左 产品模块池 10+ ｜ 右 产品示意图 + 图下文字描述 */}
       <div className="relative mt-6">
         <div className="mb-3 flex items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">产品示意</span>
+          <span className="text-sm font-semibold text-foreground">���品示意</span>
           <span className="text-[11px] text-muted-foreground">（左侧模块池选择 / 悬停，右侧实时呈现该产品大屏与说明）</span>
         </div>
 
