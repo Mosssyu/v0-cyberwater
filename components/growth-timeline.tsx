@@ -131,9 +131,9 @@ const STRAND_C = strandPath(9, Math.PI / 2, 2.5)
 
 /* 液体粒子喷涌：大小/速度/相位错落，沿主水脉非匀速流动 */
 const PARTICLES = Array.from({ length: 16 }).map((_, i) => {
-  const r = [1.1, 1.7, 2.3, 1.4, 2.0, 1.3][i % 6]
-  const dur = 4.2 + (i % 5) * 1.25
-  const begin = -(i * 0.73)
+  const r = [0.8, 1.3, 1.8, 1.0, 1.5, 0.9][i % 6]
+  const dur = 6.4 + (i % 5) * 1.9
+  const begin = -(i * 1.05)
   const fill = ["#aef6ff", "#7fe9ff", "#4facfe", "#00f2fe"][i % 4]
   const op = 0.5 + (i % 4) * 0.12
   return { r, dur, begin, fill, op }
@@ -255,74 +255,88 @@ export function GrowthTimeline() {
               </linearGradient>
             </defs>
 
-            {/* 外侧水汽光晕（最底层，宽柔弥散，加粗增亮） */}
-            <path d={MAIN_PATH} stroke="#4facfe" strokeOpacity="0.2" strokeWidth="16" strokeLinecap="round" filter="url(#cwWaveHalo)" />
+            {/* 外侧水汽光晕（最底层，宽柔弥散，细一档） */}
+            <path d={MAIN_PATH} stroke="#4facfe" strokeOpacity="0.18" strokeWidth="13" strokeLinecap="round" filter="url(#cwWaveHalo)" />
 
             {/* —— 交织辅流线 A（与 B 异相，相互穿插交叉） —— */}
             <path
               d={STRAND_A}
               stroke="url(#cwStrandGrad)"
-              strokeWidth="2.2"
+              strokeWidth="1.6"
               strokeLinecap="round"
               strokeDasharray="12 16"
               filter="url(#cwWaveGlow)"
               opacity="0.9"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-84" dur="2.8s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-84" dur="4.4s" repeatCount="indefinite" />
             </path>
             {/* —— 交织辅流线 B —— */}
             <path
               d={STRAND_B}
               stroke="url(#cwStrandGrad)"
-              strokeWidth="2.2"
+              strokeWidth="1.6"
               strokeLinecap="round"
               strokeDasharray="10 20"
               filter="url(#cwWaveGlow)"
               opacity="0.85"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-96" dur="3.6s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-96" dur="5.6s" repeatCount="indefinite" />
             </path>
             {/* —— 大幅缠绕流线 C（缠绕主脉） —— */}
             <path
               d={STRAND_C}
               stroke="#7fe9ff"
               strokeOpacity="0.5"
-              strokeWidth="1.5"
+              strokeWidth="1.1"
               strokeLinecap="round"
               strokeDasharray="5 26"
               filter="url(#cwWaveGlow)"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-124" dur="4.4s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-124" dur="6.8s" repeatCount="indefinite" />
             </path>
 
-            {/* —— 主水脉（最粗最亮，加粗到 4.5px） —— */}
-            <path d={MAIN_PATH} stroke="#0a3a55" strokeOpacity="0.5" strokeWidth="5" strokeLinecap="round" />
+            {/* —— 主水脉（细一档到 3.5px） —— */}
+            <path d={MAIN_PATH} stroke="#0a3a55" strokeOpacity="0.5" strokeWidth="4" strokeLinecap="round" />
             <path
               d={MAIN_PATH}
               stroke="url(#cwWaveGrad)"
-              strokeWidth="4.5"
+              strokeWidth="3.5"
               strokeLinecap="round"
               filter="url(#cwWaveGlow)"
               strokeDasharray="40 10"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="2.4s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="3.8s" repeatCount="indefinite" />
             </path>
 
-            {/* —— 大水滴光点 + 拖尾（源源流动） —— */}
+            {/* —— 末端箭头（2026 之后，指向右方，引导水流流向终点） —— */}
+            <g filter="url(#cwWaveGlow)">
+              <path
+                d="M686,40.5 L700,46 L686,51.5"
+                stroke="#aef6ff"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              >
+                <animate attributeName="opacity" values="0.55;1;0.55" dur="3s" repeatCount="indefinite" />
+              </path>
+            </g>
+
+            {/* —— 大水滴光点 + 拖尾（源源流动，细一档 + 放慢） —— */}
             <g opacity="0.95">
-              <rect x="-34" y="-1.8" width="34" height="3.6" rx="1.8" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
-                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+              <rect x="-30" y="-1.5" width="30" height="3" rx="1.5" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
+                <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </rect>
-              <circle r="3.6" fill="#aef6ff" filter="url(#cwWaveGlow)">
-                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+              <circle r="3" fill="#aef6ff" filter="url(#cwWaveGlow)">
+                <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </circle>
             </g>
             <g opacity="0.85">
-              <rect x="-24" y="-1.3" width="24" height="2.6" rx="1.3" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
-                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+              <rect x="-20" y="-1.1" width="20" height="2.2" rx="1.1" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
+                <animateMotion dur="12s" begin="3s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </rect>
-              <circle r="2.7" fill="#7fe9ff" filter="url(#cwWaveGlow)">
-                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+              <circle r="2.2" fill="#7fe9ff" filter="url(#cwWaveGlow)">
+                <animateMotion dur="12s" begin="3s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
               </circle>
             </g>
 
@@ -356,8 +370,8 @@ export function GrowthTimeline() {
             const y = NODE_Y[i]
             const isActive = i === active
             const isLast = i === milestones.length - 1
-            /* 悬浮水滴改挂在 2025 上方，避免与 2026 年份文字重叠 */
-            const hasDrop = m.year === "2025"
+            /* 悬浮水滴挂在 2026 上方（年份文字上方更高处，避免重叠） */
+            const hasDrop = m.year === "2026"
             return (
               <div
                 key={m.year}
@@ -368,7 +382,7 @@ export function GrowthTimeline() {
                 {hasDrop ? (
                   <span
                     className="pointer-events-none absolute left-1/2 -translate-x-1/2"
-                    style={{ top: y - 52 }}
+                    style={{ top: y - 82 }}
                     aria-hidden="true"
                   >
                     {/* 水花溅射 */}
