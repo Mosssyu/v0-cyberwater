@@ -19,7 +19,7 @@ type GeneCard = {
 const cards: GeneCard[] = [
   {
     id: "standard",
-    title: "运营管理标准化体系",
+    title: "运营标准化体系",
     desc: "数字化建设标准、运营考核指标、水务知识库",
     icon: Layers,
     corner: "tl",
