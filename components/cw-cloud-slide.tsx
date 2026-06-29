@@ -216,7 +216,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   }, [custom, stageIdx, soloPick])
 
   const flowIdx = custom ? inferFlow(custom) : demoStages[stageIdx].flow
-  const activeStage = custom ? inferFlow(custom) : stageIdx
 
   // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
   const showId = hoveredId ?? focusId
@@ -237,21 +236,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
       const base = prev ?? activeIds
       return base.includes(id) ? base.filter((x) => x !== id) : [...base, id]
     })
-  }
-
-  const reset = () => {
-    setCustom(null)
-    setPaused(false)
-    setStageIdx(0)
-    setHoveredId(null)
-  }
-
-  // 点击阶段清单：切换到该阶段并暂停自动轮播
-  const selectStage = (i: number) => {
-    setCustom(null)
-    setPaused(true)
-    setStageIdx(i)
-    setHoveredId(null)
   }
 
   return (
@@ -304,55 +288,32 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             从单一业态到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
           </p>
 
-          {/* 全量阶段清单（一次性展示，当前阶段高亮，点击可切换） */}
-          <div className="mt-5">
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <span className="text-[11px] font-medium text-muted-foreground">
-                能力演进 · {custom ? "自定义组合" : demoStages[activeStage].title}
-              </span>
-              {custom && (
-                <button
-                  onClick={reset}
-                  className="inline-flex items-center gap-1 rounded-md border border-border bg-card/60 px-2 py-0.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+          {/* CTA 行动引导区 */}
+          <div className="mt-6 flex flex-1 flex-col justify-end">
+            <div className="rounded-2xl border border-accent/20 bg-accent/[0.05] p-5">
+              <div className="flex items-center gap-2">
+                <Sparkles className="size-4 text-accent" />
+                <span className="text-sm font-semibold text-foreground">按需组合，从一个模块开始</span>
+              </div>
+              <p className="mt-2 text-pretty text-[12px] leading-relaxed text-muted-foreground">
+                右侧实时演示模块的自由组合与一体化运营，可结合您的业务场景定制专属方案。
+              </p>
+              <div className="mt-4 flex flex-col gap-2.5 sm:flex-row">
+                <a
+                  href="#contact"
+                  className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-accent px-4 py-2.5 text-xs font-semibold text-accent-foreground transition-opacity hover:opacity-90"
                 >
-                  <RotateCcw className="size-3" />
-                  重置
-                </button>
-              )}
+                  预约产品演示
+                  <ChevronRight className="size-3.5" />
+                </a>
+                <a
+                  href="#cases"
+                  className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-card/60 px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:border-accent/40"
+                >
+                  查看落地案例
+                </a>
+              </div>
             </div>
-            <ul className="flex flex-col gap-1.5">
-              {demoStages.map((s, i) => {
-                const on = !custom && i === activeStage
-                return (
-                  <li key={s.title}>
-                    <button
-                      onClick={() => selectStage(i)}
-                      className="flex w-full items-start gap-2.5 rounded-lg border px-2.5 py-1.5 text-left transition-colors duration-300"
-                      style={{
-                        borderColor: on ? "oklch(0.7 0.13 210 / 0.55)" : "oklch(0.32 0.03 240 / 0.4)",
-                        backgroundColor: on ? "oklch(0.7 0.14 215 / 0.12)" : "oklch(0.2 0.03 245 / 0.25)",
-                      }}
-                    >
-                      <span
-                        className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full font-mono text-[10px] font-semibold"
-                        style={{
-                          color: on ? "oklch(0.95 0.02 210)" : "oklch(0.6 0.02 240)",
-                          backgroundColor: on ? "oklch(0.6 0.16 215 / 0.5)" : "oklch(0.3 0.03 240 / 0.6)",
-                        }}
-                      >
-                        {i + 1}
-                      </span>
-                      <span className="min-w-0">
-                        <span className={`text-[12px] font-semibold ${on ? "text-foreground" : "text-foreground/70"}`}>
-                          {s.title}
-                        </span>
-                        <span className="ml-1.5 text-[11px] leading-snug text-muted-foreground">{s.note}</span>
-                      </span>
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
           </div>
         </div>
 
