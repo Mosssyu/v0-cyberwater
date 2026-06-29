@@ -606,8 +606,8 @@
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  border: 1px solid oklch(0.85 0.14 205 / 0.6);
-  box-shadow: 0 0 10px -2px oklch(0.82 0.14 205 / 0.6);
+  border: 1px solid rgb(0 242 254 / 0.55);
+  box-shadow: 0 0 10px -2px rgb(79 172 254 / 0.6);
   animation: cw-ripple 2.6s ease-out infinite;
 }
 .cw-ripple::before {
@@ -616,7 +616,7 @@
   animation-delay: 1.3s;
 }
 
-/* 光柱内粒子向下流动 */
+/* 光柱内粒���向下流动 */
 @keyframes cw-stem-particle {
   0% {
     top: 0%;
