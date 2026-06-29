@@ -146,21 +146,23 @@ export function GrowthTimeline() {
           >
             <defs>
               <linearGradient id="cwWaveGrad" x1="0" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.12" />
-                <stop offset="0.5" stopColor="oklch(0.95 0.1 198)" stopOpacity="1" />
-                <stop offset="1" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.12" />
+                <stop offset="0" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.1" />
+                <stop offset="0.5" stopColor="oklch(0.92 0.1 200)" stopOpacity="0.82" />
+                <stop offset="1" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.1" />
               </linearGradient>
-              {/* 强发光（主轨中心最亮） */}
-              <filter id="cwWaveGlow" x="-5%" y="-60%" width="110%" height="220%">
-                <feGaussianBlur stdDeviation="2.4" result="b" />
+              {/* 柔性泛光（多层模糊叠加，宽柔光包裹细亮芯，不尖锐） */}
+              <filter id="cwWaveGlow" x="-10%" y="-160%" width="120%" height="420%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="wide" />
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2.6" result="mid" />
                 <feMerge>
-                  <feMergeNode in="b" />
+                  <feMergeNode in="wide" />
+                  <feMergeNode in="mid" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
-              {/* 柔和外侧光晕 */}
-              <filter id="cwWaveHalo" x="-10%" y="-120%" width="120%" height="340%">
-                <feGaussianBlur stdDeviation="6" />
+              {/* 柔和外侧光晕（更大扩散，营造水汽弥散感） */}
+              <filter id="cwWaveHalo" x="-12%" y="-200%" width="124%" height="500%">
+                <feGaussianBlur stdDeviation="9" />
               </filter>
               {/* 流星拖尾渐变（沿运动方向） */}
               <linearGradient id="cwCometTail" x1="0" y1="0" x2="1" y2="0">
@@ -169,12 +171,12 @@ export function GrowthTimeline() {
               </linearGradient>
             </defs>
 
-            {/* 外侧蓝色光晕（最底层，宽而淡） */}
+            {/* 外侧蓝色光晕（最底层，宽而极淡，柔和弥散） */}
             <path
               d={WAVE_PATH}
               stroke="oklch(0.7 0.16 220)"
-              strokeOpacity="0.28"
-              strokeWidth="7"
+              strokeOpacity="0.2"
+              strokeWidth="10"
               strokeLinecap="round"
               filter="url(#cwWaveHalo)"
             />
@@ -208,40 +210,40 @@ export function GrowthTimeline() {
               <animate attributeName="stroke-dashoffset" from="0" to="-93" dur="3.4s" repeatCount="indefinite" />
             </path>
 
-            {/* 发光主轨（渐变 + 流动虚线，中心最亮） */}
+            {/* 发光主轨（渐变 + 较连续的流动虚线，柔和不尖锐） */}
             <path
               d={WAVE_PATH}
               stroke="url(#cwWaveGrad)"
-              strokeWidth="1.8"
+              strokeWidth="1.6"
               strokeLinecap="round"
               filter="url(#cwWaveGlow)"
-              strokeDasharray="16 10"
+              strokeDasharray="26 8"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-52" dur="1.5s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-68" dur="2s" repeatCount="indefinite" />
             </path>
 
-            {/* 向右推进的流星光点 + 拖尾 */}
-            <g>
-              <rect x="-22" y="-1.3" width="22" height="2.6" rx="1.3" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
+            {/* 向右推进的流星光点 + 拖尾（柔光，弱化硬芯） */}
+            <g opacity="0.85">
+              <rect x="-26" y="-1.2" width="26" height="2.4" rx="1.2" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
                 <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
               </rect>
-              <circle r="2.8" fill="oklch(0.98 0.06 198)" filter="url(#cwWaveGlow)">
+              <circle r="2.4" fill="oklch(0.9 0.07 200)" filter="url(#cwWaveGlow)">
                 <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
               </circle>
             </g>
-            <g>
-              <rect x="-16" y="-1" width="16" height="2" rx="1" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
+            <g opacity="0.75">
+              <rect x="-18" y="-0.9" width="18" height="1.8" rx="0.9" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
                 <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
               </rect>
-              <circle r="2" fill="oklch(0.92 0.1 205)" filter="url(#cwWaveGlow)">
+              <circle r="1.8" fill="oklch(0.88 0.09 205)" filter="url(#cwWaveGlow)">
                 <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
               </circle>
             </g>
-            <circle r="1.4" fill="oklch(0.9 0.11 210)" filter="url(#cwWaveGlow)" opacity="0.8">
+            <circle r="1.3" fill="oklch(0.86 0.1 210)" filter="url(#cwWaveGlow)" opacity="0.7">
               <animateMotion dur="10s" begin="4s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
             </circle>
 
-            {/* 轨道粒子（沿曲线附近分布，轻微明灭） */}
+            {/* 轨道粒子（沿曲线附近分��，轻微明灭） */}
             {[
               [60, 102],
               [165, 70],
@@ -371,7 +373,7 @@ export function GrowthTimeline() {
                   }}
                   aria-hidden="true"
                 />
-                {/* 重点光柱内向下流动的粒子 */}
+                {/* ���点光柱内向下流动的粒子 */}
                 {m.key ? (
                   <span
                     className="pointer-events-none absolute left-1/2 w-1 -translate-x-1/2 overflow-hidden"
