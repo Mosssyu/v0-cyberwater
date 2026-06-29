@@ -33,7 +33,7 @@ export function Products() {
             核心产品
           </h2>
           <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            CW-Cloud 水务 AI 运营平台与 CW-3DP 三维数字孪生，从智能运营到空间仿真，构建端到端的智慧水务能力。
+            CW-Cloud 水务AI运营平台与 CW-3DP 三维数字孪生，从智能运营到空间仿真，构建端到端的智慧水务能力。
           </p>
         </div>
 

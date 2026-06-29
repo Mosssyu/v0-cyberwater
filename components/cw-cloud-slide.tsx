@@ -22,6 +22,7 @@ import {
   GitFork,
   Cpu,
   CloudRain,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react"
 import { BuildingBlocks, type ModuleDef } from "@/components/building-blocks"
@@ -168,7 +169,14 @@ const flowSteps = [
   { icon: Sparkles, label: "AI 持续升级" },
 ]
 
-const descriptors = ["单业态可独立建设", "多模块可自由组合", "集团级可统一运营", "AI 能力可持续叠加"]
+// CW-Cloud 水务AI运营平台 · 五大产品特性标签
+const highlights: { icon: LucideIcon; title: string; desc: string }[] = [
+  { icon: Building2, title: "全场景", desc: "覆盖厂、站、网、河湖" },
+  { icon: BrainCircuit, title: "智决策", desc: "AI 赋能分析与决策" },
+  { icon: Boxes, title: "易组合", desc: "模块配置，自由扩展" },
+  { icon: ShieldCheck, title: "便维护", desc: "一体化架构，运行稳定" },
+  { icon: TrendingUp, title: "懂业务", desc: "行业标准，水务知识" },
+]
 
 // 由当前激活模块集合推断所处阶段（用于流程条/说明联动）
 function inferFlow(active: string[]) {
@@ -280,24 +288,32 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             CW-Cloud
           </span>
           <h3 className="mt-4 text-balance text-3xl font-bold leading-[1.15] tracking-tight text-foreground sm:text-4xl">
-            新一代 AI 水务
+            CW-Cloud
             <br />
-            <span className="text-gradient">智能运营平台</span>
+            <span className="text-gradient">水务 AI 运营平台</span>
           </h3>
           <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">
             从单一业态到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
           </p>
 
-          {/* 说明标签 */}
-          <div className="mt-4 flex flex-wrap gap-1.5">
-            {descriptors.map((d) => (
-              <span
-                key={d}
-                className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary/30 px-2.5 py-1 text-[11px] text-foreground/80"
+          {/* 五大产品特性标签 */}
+          <div className="mt-5 flex flex-col gap-2">
+            {highlights.map((h) => (
+              <div
+                key={h.title}
+                className="flex items-center gap-3 rounded-xl border border-accent/15 bg-accent/[0.04] px-3 py-2.5"
               >
-                <span className="size-1 rounded-full bg-accent" />
-                {d}
-              </span>
+                <span
+                  className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.08]"
+                  aria-hidden="true"
+                >
+                  <h.icon className="size-4.5 text-accent" />
+                </span>
+                <div className="min-w-0">
+                  <span className="text-sm font-bold text-foreground">{h.title}</span>
+                  <span className="ml-2 text-[12px] text-muted-foreground">{h.desc}</span>
+                </div>
+              </div>
             ))}
           </div>
 
