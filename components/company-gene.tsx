@@ -18,18 +18,18 @@ type GeneCard = {
 
 const cards: GeneCard[] = [
   {
-    id: "scene",
-    title: "运营场景基因",
-    desc: "深度理解水厂、泵站、管网、集团运营等真实管理场景",
+    id: "standard",
+    title: "运营管理标准化体系",
+    desc: "数字化建设标准、运营考核指标、水务知识库",
     icon: Layers,
     corner: "tl",
     path: "M300,232 Q200,150 132,120",
     begin: "0s",
   },
   {
-    id: "product",
-    title: "产品化沉淀基因",
-    desc: "将项目经验转化为标准模块、业务模型和配置能力",
+    id: "scene",
+    title: "多项目多场景沉淀",
+    desc: "380+ 水厂、2000+ 河道 / 管网、1000+ 泵闸 / 厂站",
     icon: Boxes,
     corner: "tr",
     path: "M300,232 Q400,150 468,120",
@@ -37,17 +37,17 @@ const cards: GeneCard[] = [
   },
   {
     id: "group",
-    title: "集团化管理基因",
-    desc: "支撑集团、区域、公司、厂站多层级协同运营",
+    title: "集团化多业态",
+    desc: "多层级管理、一厂一策、供排一体化",
     icon: Building2,
     corner: "bl",
     path: "M300,232 Q200,318 132,356",
     begin: "1.2s",
   },
   {
-    id: "ai",
-    title: "AI 演进基因",
-    desc: "围绕问数、报表、告警、工单和知识持续构建智能体能力",
+    id: "fusion",
+    title: "技术和业务融合",
+    desc: "数据驱动、AI 赋能、工艺运营联动",
     icon: BrainCircuit,
     corner: "br",
     path: "M300,232 Q400,318 468,356",
@@ -109,7 +109,7 @@ function Core() {
           <span className="core-flicker-anim mt-1 text-center text-sm font-bold leading-tight text-foreground">
             水务运营
             <br />
-            认知
+            基因
           </span>
         </div>
       </div>
