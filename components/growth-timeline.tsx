@@ -139,6 +139,32 @@ const PARTICLES = Array.from({ length: 16 }).map((_, i) => {
   return { r, dur, begin, fill, op }
 })
 
+/* 上升粒子：沿水脉各处从波面向上漂浮并淡出（能量蒸腾感） */
+const yAtX = (x: number) => {
+  // 在采样点中找最接近 x 的波面 y
+  let best = BASE_PTS[0]
+  let bestD = Infinity
+  for (const p of BASE_PTS) {
+    const d = Math.abs(p.x - x)
+    if (d < bestD) {
+      bestD = d
+      best = p
+    }
+  }
+  return best.y
+}
+const RISE_PARTICLES = Array.from({ length: 26 }).map((_, i) => {
+  const x = 18 + (664 / 26) * i + ((i * 53) % 17) - 8
+  const baseY = yAtX(x)
+  const rise = 26 + ((i * 37) % 22) // 上升高度
+  const r = [0.6, 0.9, 1.2, 0.7][i % 4]
+  const dur = 3.4 + ((i * 31) % 28) / 10 // 3.4 ~ 6.1s
+  const begin = -((i * 0.47) % dur)
+  const fill = ["#aef6ff", "#7fe9ff", "#4facfe"][i % 3]
+  const drift = ((i % 5) - 2) * 2.2 // 轻微横向漂移
+  return { x, baseY, rise, r, dur, begin, fill, drift }
+})
+
 /* 终点水滴四周的水花溅射粒子 */
 const SPLASH = [
   { dx: "-15px", dy: "-7px", dur: "2.4s", delay: "0s" },
@@ -357,6 +383,41 @@ export function GrowthTimeline() {
                   attributeName="opacity"
                   values={`0;${p.op};${p.op};0`}
                   keyTimes="0;0.12;0.85;1"
+                  dur={`${p.dur}s`}
+                  begin={`${p.begin}s`}
+                  repeatCount="indefinite"
+                />
+              </circle>
+            ))}
+
+            {/* —— 上升粒子：从波面向上漂浮并淡出（能量蒸腾） —— */}
+            {RISE_PARTICLES.map((p, i) => (
+              <circle key={`rise-${i}`} cx={p.x} cy={p.baseY} r={p.r} fill={p.fill} filter="url(#cwWaveGlow)">
+                <animate
+                  attributeName="cy"
+                  values={`${p.baseY};${p.baseY - p.rise}`}
+                  dur={`${p.dur}s`}
+                  begin={`${p.begin}s`}
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="cx"
+                  values={`${p.x};${p.x + p.drift}`}
+                  dur={`${p.dur}s`}
+                  begin={`${p.begin}s`}
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="opacity"
+                  values="0;0.85;0"
+                  keyTimes="0;0.3;1"
+                  dur={`${p.dur}s`}
+                  begin={`${p.begin}s`}
+                  repeatCount="indefinite"
+                />
+                <animate
+                  attributeName="r"
+                  values={`${p.r};${(p.r * 0.4).toFixed(2)}`}
                   dur={`${p.dur}s`}
                   begin={`${p.begin}s`}
                   repeatCount="indefinite"
