@@ -337,9 +337,9 @@ export function GrowthTimeline() {
             {/* —— 末端箭头（2026 之后，指向右方，引导水流流向终点） —— */}
             <g filter="url(#cwWaveGlow)">
               <path
-                d="M686,40.5 L700,46 L686,51.5"
+                d="M689,42 L700,46 L689,50"
                 stroke="#aef6ff"
-                strokeWidth="2"
+                strokeWidth="1.1"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 fill="none"
