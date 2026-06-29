@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Activity, ArrowUpRight } from "lucide-react"
+import { Activity, ArrowRight, ChevronLeft } from "lucide-react"
 
 type Milestone = {
   year: string
@@ -61,6 +61,16 @@ const keyIndices = milestones.reduce<number[]>((acc, m, i) => {
   return acc
 }, [])
 
+/* 波形带高度（px）；节点在带内的纵向落点（贴合波峰/波谷） */
+const BAND_H = 132
+const NODE_Y = [96, 72, 44, 76, 40, 78, 50]
+/* 7 列中心 x（百分比），与 SVG viewBox x（÷700）一一对应 */
+const colX = (i: number) => ((i + 0.5) / milestones.length) * 100
+
+/* 流动波形主路径（viewBox 0 0 700 132，preserveAspectRatio=none 横向拉伸铺满） */
+const WAVE_PATH =
+  "M0,108 C20,104 34,99 50,96 C92,90 112,80 150,72 C198,62 210,50 250,44 C298,38 322,72 350,76 C398,82 414,46 450,40 C500,33 522,74 550,78 C602,82 622,56 650,50 C672,47 686,46 700,45"
+
 export function GrowthTimeline() {
   const [active, setActive] = useState(keyIndices[0])
   const [paused, setPaused] = useState(false)
@@ -77,164 +87,198 @@ export function GrowthTimeline() {
 
   return (
     <section
-      className="relative overflow-hidden rounded-3xl border border-accent/15 bg-[oklch(0.12_0.03_248)] px-5 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12"
+      className="relative overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* 背景：网格 + 径向冷光 + 微弱流光 */}
-      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
+      {/* 背景：网格 + 顶部径向冷光 */}
+      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-25" aria-hidden="true" />
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
         style={{
-          background:
-            "radial-gradient(80% 60% at 50% 0%, oklch(0.5 0.14 235 / 0.16) 0%, transparent 60%)",
+          background: "radial-gradient(70% 80% at 50% 30%, oklch(0.5 0.14 235 / 0.14) 0%, transparent 65%)",
         }}
       />
 
-      {/* 标题区 */}
-      <div className="relative flex items-start gap-3.5">
-        <span
-          className="cw-node-breathe mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-xl border border-accent/40 bg-accent/[0.08]"
-          aria-hidden="true"
-        >
-          <Activity className="size-5 text-accent" />
+      {/* 标题区：六边形发光徽章 + 标题 + EVOLUTION + 箭头装饰 */}
+      <div className="relative flex items-center gap-3.5 px-1">
+        <span className="relative flex size-11 shrink-0 items-center justify-center" aria-hidden="true">
+          <span
+            className="cw-node-breathe absolute inset-0"
+            style={{
+              clipPath: "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
+              border: "1.5px solid oklch(0.78 0.14 205 / 0.6)",
+              background: "oklch(0.7 0.14 210 / 0.12)",
+            }}
+          />
+          <Activity className="relative size-5 text-accent" />
         </span>
         <div className="min-w-0">
           <div className="flex items-center gap-3">
             <h2 className="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">
               水务数字化能力演进轨迹
             </h2>
-            <span
-              className="hidden h-px w-16 bg-gradient-to-r from-accent/60 to-transparent sm:block"
-              aria-hidden="true"
-            />
+            {/* 递减箭头装饰 */}
+            <span className="hidden items-center gap-0.5 sm:flex" aria-hidden="true">
+              <ChevronLeft className="size-4 text-accent/80" />
+              <ChevronLeft className="size-3.5 text-accent/55" />
+              <ChevronLeft className="size-3 text-accent/35" />
+            </span>
           </div>
-          <p className="mt-1.5 text-pretty text-xs leading-relaxed text-muted-foreground sm:text-sm">
-            十年项目实践沉淀，持续形成标准化、产品化、智能化能力。
-          </p>
+          <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-[0.35em] text-accent/55">
+            Evolution
+          </span>
         </div>
       </div>
 
-      {/* ===== 桌面端：横向能量轨迹时间轴 ===== */}
-      <div className="relative mt-12 hidden lg:block">
-        {/* 主线：多层叠加的流动数据能量轨迹 */}
-        <div className="pointer-events-none absolute inset-x-0 top-7 h-px" aria-hidden="true">
-          {/* 底层暗线 */}
-          <div className="absolute inset-0 bg-accent/15" />
-          {/* 上层流动渐变光带 */}
-          <div
-            className="cw-rail-flow absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent 0%, oklch(0.82 0.14 205 / 0.7) 20%, oklch(0.9 0.12 200 / 0.95) 50%, oklch(0.82 0.14 205 / 0.7) 80%, transparent 100%)",
-              boxShadow: "0 0 10px 0 oklch(0.78 0.14 205 / 0.5)",
-            }}
-          />
-          {/* 两端能量延展箭头 */}
-          <span className="absolute -left-1 top-1/2 size-2 -translate-y-1/2 rotate-45 border-b border-l border-accent/50" />
-          <span className="absolute -right-1 top-1/2 size-2 -translate-y-1/2 rotate-45 border-r border-t border-accent/50" />
-        </div>
-        {/* 穿梭光点 */}
-        <div className="pointer-events-none absolute inset-x-0 top-7 h-px" aria-hidden="true">
-          <span
-            className="cw-spark-run absolute top-1/2 size-1.5 -translate-y-1/2 rounded-full bg-[oklch(0.95_0.1_200)]"
-            style={{ boxShadow: "0 0 10px 2px oklch(0.85 0.14 205 / 0.9)", ["--spark-dur" as string]: "7s" }}
-          />
-          <span
-            className="cw-spark-run absolute top-1/2 size-1 -translate-y-1/2 rounded-full bg-[oklch(0.9_0.1_205)]"
-            style={{ boxShadow: "0 0 8px 1px oklch(0.85 0.14 205 / 0.8)", ["--spark-dur" as string]: "9s", ["--spark-delay" as string]: "2.5s" }}
-          />
-        </div>
+      {/* ===== 桌面端：波浪能量轨迹 ===== */}
+      <div className="relative mt-8 hidden lg:block">
+        {/* 波形带 */}
+        <div className="relative w-full" style={{ height: BAND_H }}>
+          {/* 流动波形主线（SVG） */}
+          <svg
+            className="absolute inset-0 size-full overflow-visible"
+            viewBox={`0 0 700 ${BAND_H}`}
+            preserveAspectRatio="none"
+            fill="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="cwWaveGrad" x1="0" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.15" />
+                <stop offset="0.5" stopColor="oklch(0.92 0.12 200)" stopOpacity="0.95" />
+                <stop offset="1" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.15" />
+              </linearGradient>
+              <filter id="cwWaveGlow" x="-5%" y="-40%" width="110%" height="180%">
+                <feGaussianBlur stdDeviation="2.4" result="b" />
+                <feMerge>
+                  <feMergeNode in="b" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
 
-        <ol className="relative grid grid-cols-7 gap-x-4">
+            {/* 底层暗轨 */}
+            <path d={WAVE_PATH} stroke="oklch(0.7 0.1 215)" strokeOpacity="0.18" strokeWidth="1.4" />
+            {/* 发光主轨（渐变 + 流动虚线） */}
+            <path
+              d={WAVE_PATH}
+              stroke="url(#cwWaveGrad)"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              filter="url(#cwWaveGlow)"
+              strokeDasharray="14 10"
+            >
+              <animate attributeName="stroke-dashoffset" from="0" to="-48" dur="1.6s" repeatCount="indefinite" />
+            </path>
+            {/* 穿梭光点（沿路径运动） */}
+            <circle r="2.6" fill="oklch(0.97 0.08 200)" filter="url(#cwWaveGlow)">
+              <animateMotion dur="7s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+            </circle>
+            <circle r="1.8" fill="oklch(0.9 0.1 205)" filter="url(#cwWaveGlow)">
+              <animateMotion dur="9s" begin="2.5s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+            </circle>
+            {/* 末端能量箭头 */}
+            <path d="M690,41 L700,45 L690,49" stroke="oklch(0.88 0.12 202)" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
+
+          {/* 年份 + 节点 + 光柱（HTML 绝对定位，贴合波形） */}
           {milestones.map((m, i) => {
+            const y = NODE_Y[i]
             const isActive = i === active
             return (
-              <li key={m.year} className="relative flex flex-col items-center">
-                {/* 节点行（与主线对齐：top-7 ≈ 1.75rem，这里用 h-14 容纳节点 + 年份） */}
-                <div className="relative flex h-14 w-full flex-col items-center justify-start">
-                  {/* 年份（线上方） */}
-                  <span
-                    className={[
-                      "font-mono text-sm font-bold tabular-nums transition-colors duration-300",
-                      m.key ? "text-accent" : isActive ? "text-foreground/90" : "text-muted-foreground/70",
-                    ].join(" ")}
-                  >
-                    {m.year}
-                  </span>
+              <div
+                key={m.year}
+                className="absolute -translate-x-1/2"
+                style={{ left: `${colX(i)}%`, top: 0, bottom: 0 }}
+              >
+                {/* 年份（节点上方） */}
+                <span
+                  className={[
+                    "absolute left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap font-mono font-bold tabular-nums transition-colors duration-300",
+                    m.key ? "text-accent" : isActive ? "text-foreground/90" : "text-muted-foreground/70",
+                    m.key ? "text-lg" : "text-[13px]",
+                  ].join(" ")}
+                  style={{ top: y - 14 }}
+                >
+                  {m.year}
+                </span>
 
-                  {/* 重点节点上方扫描光柱 */}
-                  {m.key ? (
+                {/* 重点节点上方扫描光柱 */}
+                {m.key ? (
+                  <span
+                    className="cw-beam pointer-events-none absolute left-1/2 -translate-x-1/2 w-px"
+                    style={{
+                      top: y - 30,
+                      height: 24,
+                      background: "linear-gradient(to top, oklch(0.85 0.14 205 / 0.85), transparent)",
+                    }}
+                    aria-hidden="true"
+                  />
+                ) : null}
+
+                {/* 节点本体 */}
+                <button
+                  type="button"
+                  onClick={() => setActive(i)}
+                  className="group absolute left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center outline-none"
+                  style={{ top: y }}
+                  aria-pressed={isActive}
+                  aria-label={`${m.year} ${m.title}`}
+                >
+                  {isActive ? (
                     <span
-                      className="cw-beam pointer-events-none absolute -top-3 h-6 w-px"
-                      style={{
-                        background: "linear-gradient(to top, oklch(0.85 0.14 205 / 0.8), transparent)",
-                      }}
+                      className="absolute size-9 rounded-full border border-accent/50"
+                      style={{ animation: "ring-pulse 2s ease-in-out infinite" }}
                       aria-hidden="true"
                     />
                   ) : null}
-
-                  {/* 节点本体（位于主线 top-7 处） */}
-                  <button
-                    type="button"
-                    onClick={() => setActive(i)}
-                    className="group absolute top-7 flex -translate-y-1/2 items-center justify-center outline-none"
-                    aria-pressed={isActive}
-                    aria-label={`${m.year} ${m.title}`}
+                  <span
+                    className={[
+                      "relative inline-flex shrink-0 items-center justify-center rounded-full border transition-all duration-300",
+                      m.key ? "size-4 border-accent bg-accent/30 cw-node-breathe" : "size-2.5 border-accent/45 bg-[oklch(0.16_0.03_245)]",
+                      isActive && m.key ? "scale-125" : "",
+                    ].join(" ")}
                   >
-                    {isActive ? (
-                      <span
-                        className="absolute size-9 rounded-full border border-accent/50"
-                        style={{ animation: "ring-pulse 2s ease-in-out infinite" }}
-                        aria-hidden="true"
-                      />
-                    ) : null}
-                    <span
-                      className={[
-                        "relative inline-flex shrink-0 items-center justify-center rounded-full border transition-all duration-300",
-                        m.key
-                          ? "size-4 border-accent bg-accent/30"
-                          : "size-2.5 border-accent/45 bg-[oklch(0.16_0.03_245)]",
-                        m.key ? "cw-node-breathe" : "",
-                        isActive && m.key ? "scale-125" : "",
-                      ].join(" ")}
-                    >
-                      {m.key ? (
-                        <span className="size-1.5 rounded-full bg-[oklch(0.95_0.1_200)]" aria-hidden="true" />
-                      ) : null}
-                    </span>
-                  </button>
-                </div>
+                    {m.key ? <span className="size-1.5 rounded-full bg-[oklch(0.96_0.09_200)]" aria-hidden="true" /> : null}
+                  </span>
+                </button>
 
-                {/* 连接竖线：重点节点更亮 + 能量下行流动 */}
+                {/* 连接竖线：从节点向下延伸到带底（重点更亮 + 能量下行） */}
                 <span
                   className={[
-                    "h-7 w-px flex-none transition-opacity duration-300",
+                    "absolute left-1/2 w-px -translate-x-1/2 transition-opacity duration-300",
                     m.key ? "cw-stem-flow" : "",
                     isActive ? "opacity-100" : "opacity-70",
                   ].join(" ")}
-                  style={
-                    m.key
+                  style={{
+                    top: y,
+                    height: BAND_H - y,
+                    ...(m.key
                       ? {
                           backgroundImage:
                             "linear-gradient(to bottom, oklch(0.85 0.14 205 / 0.9) 0%, oklch(0.85 0.14 205 / 0.9) 45%, transparent 45%, transparent 100%)",
                           filter: "drop-shadow(0 0 4px oklch(0.8 0.14 205 / 0.7))",
                         }
                       : {
-                          background: "linear-gradient(to bottom, oklch(0.7 0.1 215 / 0.4), oklch(0.7 0.1 215 / 0.08))",
-                        }
-                  }
+                          background: "linear-gradient(to bottom, oklch(0.7 0.1 215 / 0.45), oklch(0.7 0.1 215 / 0.06))",
+                        }),
+                  }}
                   aria-hidden="true"
                 />
-
-                {/* 卡片 */}
-                <div className="mt-2 w-full">
-                  <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
-                </div>
-              </li>
+              </div>
             )
           })}
+        </div>
+
+        {/* 卡片行 */}
+        <ol className="mt-3 grid grid-cols-7 gap-x-3.5">
+          {milestones.map((m, i) => (
+            <li key={m.year}>
+              <NodeCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
+            </li>
+          ))}
         </ol>
       </div>
 
@@ -244,25 +288,20 @@ export function GrowthTimeline() {
           className="pointer-events-none absolute bottom-2 left-[7px] top-2 w-px bg-gradient-to-b from-accent/50 via-accent/30 to-transparent"
           aria-hidden="true"
         />
-        {milestones.map((m, i) => {
-          const isActive = i === active
-          return (
-            <li key={m.year} className="relative pl-7">
-              <span
-                className={[
-                  "absolute left-0 top-2 inline-flex items-center justify-center rounded-full border",
-                  m.key
-                    ? "cw-node-breathe size-4 border-accent bg-accent/30"
-                    : "size-3 border-accent/45 bg-[oklch(0.16_0.03_245)]",
-                ].join(" ")}
-                aria-hidden="true"
-              >
-                {m.key ? <span className="size-1.5 rounded-full bg-[oklch(0.95_0.1_200)]" /> : null}
-              </span>
-              <NodeCard milestone={m} active={isActive} onSelect={() => setActive(i)} />
-            </li>
-          )
-        })}
+        {milestones.map((m, i) => (
+          <li key={m.year} className="relative pl-7">
+            <span
+              className={[
+                "absolute left-0 top-2 inline-flex items-center justify-center rounded-full border",
+                m.key ? "cw-node-breathe size-4 border-accent bg-accent/30" : "size-3 border-accent/45 bg-[oklch(0.16_0.03_245)]",
+              ].join(" ")}
+              aria-hidden="true"
+            >
+              {m.key ? <span className="size-1.5 rounded-full bg-[oklch(0.96_0.09_200)]" /> : null}
+            </span>
+            <NodeCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
+          </li>
+        ))}
       </ol>
     </section>
   )
@@ -284,20 +323,20 @@ function NodeCard({
       onClick={onSelect}
       aria-pressed={active}
       className={[
-        "group relative flex w-full flex-col overflow-hidden rounded-xl border px-3.5 py-3 text-left outline-none transition-all duration-300",
+        "group relative flex h-full w-full flex-col overflow-hidden rounded-xl border px-3.5 py-3 text-left outline-none transition-all duration-300",
         isKey
           ? active
             ? "border-accent/70 bg-[oklch(0.17_0.04_245)]"
             : "border-accent/45 bg-[oklch(0.15_0.035_246)] hover:border-accent/65"
           : active
             ? "border-accent/40 bg-[oklch(0.15_0.03_246)]"
-            : "border-border/70 bg-[oklch(0.14_0.025_247)]/60 hover:border-accent/35",
+            : "border-border/60 bg-[oklch(0.14_0.025_247)]/50 hover:border-accent/30",
       ].join(" ")}
       style={
         isKey
           ? {
               boxShadow: active
-                ? "0 0 24px -4px oklch(0.78 0.14 205 / 0.55), inset 0 0 18px -10px oklch(0.8 0.14 205 / 0.6)"
+                ? "0 0 26px -4px oklch(0.78 0.14 205 / 0.6), inset 0 0 18px -10px oklch(0.8 0.14 205 / 0.6)"
                 : "0 0 16px -6px oklch(0.78 0.14 205 / 0.4)",
             }
           : undefined
@@ -313,38 +352,25 @@ function NodeCard({
         </>
       ) : null}
 
-      <div className="flex items-center gap-2">
-        <span
-          className={[
-            "font-mono text-sm font-bold tabular-nums transition-colors duration-300",
-            isKey || active ? "text-accent" : "text-muted-foreground",
-          ].join(" ")}
-        >
-          {milestone.year}
-        </span>
-        {isKey ? (
-          <span className="inline-flex items-center rounded-full border border-accent/40 bg-accent/10 px-1.5 py-0.5 text-[9px] font-medium text-accent">
-            里程碑
-          </span>
-        ) : null}
-      </div>
       <span
         className={[
-          "mt-1 text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
-          isKey ? "text-foreground" : "text-foreground/85",
+          "text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
+          isKey ? "text-accent" : "text-foreground/85",
         ].join(" ")}
       >
         {milestone.title}
       </span>
-      <span className="mt-1.5 block text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
+      <span className="mt-1.5 block flex-1 text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
         {milestone.desc}
       </span>
 
-      {/* 重点卡片底部箭头装饰 */}
+      {/* 重点卡片右下角箭头按钮 */}
       {isKey ? (
-        <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-medium text-accent/80 transition-colors group-hover:text-accent">
-          关键里程碑
-          <ArrowUpRight className="size-3" />
+        <span
+          className="mt-2 inline-flex size-6 items-center justify-center self-end rounded-md border border-accent/50 bg-accent/10 text-accent transition-colors group-hover:bg-accent/20"
+          aria-hidden="true"
+        >
+          <ArrowRight className="size-3.5" />
         </span>
       ) : null}
     </button>
