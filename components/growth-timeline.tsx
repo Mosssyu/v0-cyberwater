@@ -146,41 +146,143 @@ export function GrowthTimeline() {
           >
             <defs>
               <linearGradient id="cwWaveGrad" x1="0" y1="0" x2="700" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.15" />
-                <stop offset="0.5" stopColor="oklch(0.92 0.12 200)" stopOpacity="0.95" />
-                <stop offset="1" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.15" />
+                <stop offset="0" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.12" />
+                <stop offset="0.5" stopColor="oklch(0.95 0.1 198)" stopOpacity="1" />
+                <stop offset="1" stopColor="oklch(0.78 0.14 205)" stopOpacity="0.12" />
               </linearGradient>
-              <filter id="cwWaveGlow" x="-5%" y="-40%" width="110%" height="180%">
+              {/* 强发光（主轨中心最亮） */}
+              <filter id="cwWaveGlow" x="-5%" y="-60%" width="110%" height="220%">
                 <feGaussianBlur stdDeviation="2.4" result="b" />
                 <feMerge>
                   <feMergeNode in="b" />
                   <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
+              {/* 柔和外侧光晕 */}
+              <filter id="cwWaveHalo" x="-10%" y="-120%" width="120%" height="340%">
+                <feGaussianBlur stdDeviation="6" />
+              </filter>
+              {/* 流星拖尾渐变（沿运动方向） */}
+              <linearGradient id="cwCometTail" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stopColor="oklch(0.95 0.09 200)" stopOpacity="0" />
+                <stop offset="1" stopColor="oklch(0.97 0.08 200)" stopOpacity="0.9" />
+              </linearGradient>
             </defs>
 
+            {/* 外侧蓝色光晕（最底层，宽而淡） */}
+            <path
+              d={WAVE_PATH}
+              stroke="oklch(0.7 0.16 220)"
+              strokeOpacity="0.28"
+              strokeWidth="7"
+              strokeLinecap="round"
+              filter="url(#cwWaveHalo)"
+            />
             {/* 底层暗轨 */}
-            <path d={WAVE_PATH} stroke="oklch(0.7 0.1 215)" strokeOpacity="0.18" strokeWidth="1.4" />
-            {/* 发光主轨（渐变 + 流动虚线） */}
+            <path d={WAVE_PATH} stroke="oklch(0.7 0.1 215)" strokeOpacity="0.16" strokeWidth="1.4" />
+
+            {/* 上偏移细流光线（水流分层） */}
+            <path
+              d={WAVE_PATH}
+              stroke="oklch(0.88 0.1 200)"
+              strokeOpacity="0.45"
+              strokeWidth="0.8"
+              strokeLinecap="round"
+              transform="translate(0,-4)"
+              strokeDasharray="6 22"
+              filter="url(#cwWaveGlow)"
+            >
+              <animate attributeName="stroke-dashoffset" from="0" to="-84" dur="2.6s" repeatCount="indefinite" />
+            </path>
+            {/* 下偏移细流光线 */}
+            <path
+              d={WAVE_PATH}
+              stroke="oklch(0.82 0.13 210)"
+              strokeOpacity="0.4"
+              strokeWidth="0.8"
+              strokeLinecap="round"
+              transform="translate(0,4)"
+              strokeDasharray="5 26"
+              filter="url(#cwWaveGlow)"
+            >
+              <animate attributeName="stroke-dashoffset" from="0" to="-93" dur="3.4s" repeatCount="indefinite" />
+            </path>
+
+            {/* 发光主轨（渐变 + 流动虚线，中心最亮） */}
             <path
               d={WAVE_PATH}
               stroke="url(#cwWaveGrad)"
-              strokeWidth="1.6"
+              strokeWidth="1.8"
               strokeLinecap="round"
               filter="url(#cwWaveGlow)"
-              strokeDasharray="14 10"
+              strokeDasharray="16 10"
             >
-              <animate attributeName="stroke-dashoffset" from="0" to="-48" dur="1.6s" repeatCount="indefinite" />
+              <animate attributeName="stroke-dashoffset" from="0" to="-52" dur="1.5s" repeatCount="indefinite" />
             </path>
-            {/* 穿梭光点（沿路径运动） */}
-            <circle r="2.6" fill="oklch(0.97 0.08 200)" filter="url(#cwWaveGlow)">
-              <animateMotion dur="7s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+
+            {/* 向右推进的流星光点 + 拖尾 */}
+            <g>
+              <rect x="-22" y="-1.3" width="22" height="2.6" rx="1.3" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
+                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+              </rect>
+              <circle r="2.8" fill="oklch(0.98 0.06 198)" filter="url(#cwWaveGlow)">
+                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+              </circle>
+            </g>
+            <g>
+              <rect x="-16" y="-1" width="16" height="2" rx="1" fill="url(#cwCometTail)" filter="url(#cwWaveGlow)">
+                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+              </rect>
+              <circle r="2" fill="oklch(0.92 0.1 205)" filter="url(#cwWaveGlow)">
+                <animateMotion dur="8s" begin="2s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
+              </circle>
+            </g>
+            <circle r="1.4" fill="oklch(0.9 0.11 210)" filter="url(#cwWaveGlow)" opacity="0.8">
+              <animateMotion dur="10s" begin="4s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
             </circle>
-            <circle r="1.8" fill="oklch(0.9 0.1 205)" filter="url(#cwWaveGlow)">
-              <animateMotion dur="9s" begin="2.5s" repeatCount="indefinite" rotate="auto" path={WAVE_PATH} />
-            </circle>
-            {/* 末端能量箭头 */}
-            <path d="M690,41 L700,45 L690,49" stroke="oklch(0.88 0.12 202)" strokeWidth="1.4" strokeLinecap="round" />
+
+            {/* 轨道粒子（沿曲线附近分布，轻微明灭） */}
+            {[
+              [60, 102],
+              [165, 70],
+              [255, 43],
+              [352, 78],
+              [452, 38],
+              [552, 80],
+              [648, 49],
+              [115, 86],
+              [300, 60],
+              [500, 56],
+            ].map(([px, py], idx) => (
+              <circle
+                key={idx}
+                cx={px}
+                cy={py}
+                r={idx % 2 === 0 ? 0.9 : 0.7}
+                fill="oklch(0.9 0.1 205)"
+                filter="url(#cwWaveGlow)"
+              >
+                <animate
+                  attributeName="opacity"
+                  values="0.15;0.85;0.15"
+                  dur={`${2.4 + (idx % 4) * 0.6}s`}
+                  begin={`${(idx % 5) * 0.4}s`}
+                  repeatCount="indefinite"
+                />
+              </circle>
+            ))}
+
+            {/* 末端科技感细线箭头（带青蓝外发光） */}
+            <g filter="url(#cwWaveGlow)">
+              <path
+                d="M684,40 L700,45 L684,50"
+                stroke="oklch(0.92 0.1 200)"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path d="M672,45 L700,45" stroke="oklch(0.9 0.1 202)" strokeOpacity="0.7" strokeWidth="1" strokeLinecap="round" />
+            </g>
           </svg>
 
           {/* 年份 + 节点 + 光柱（HTML 绝对定位，贴合波形） */}
@@ -227,6 +329,8 @@ export function GrowthTimeline() {
                   aria-pressed={isActive}
                   aria-label={`${m.year} ${m.title}`}
                 >
+                  {/* 重点节点：能量落点水波扩散环 */}
+                  {m.key ? <span className="cw-ripple" aria-hidden="true" /> : null}
                   {isActive ? (
                     <span
                       className="absolute size-9 rounded-full border border-accent/50"
@@ -245,7 +349,7 @@ export function GrowthTimeline() {
                   </span>
                 </button>
 
-                {/* 连接竖线：从节点向下延伸到带底（重点更亮 + 能量下行） */}
+                {/* 连接竖线：从节点向下延伸到带底（重点更亮 + 能量下行 + 粒子） */}
                 <span
                   className={[
                     "absolute left-1/2 w-px -translate-x-1/2 transition-opacity duration-300",
@@ -267,6 +371,29 @@ export function GrowthTimeline() {
                   }}
                   aria-hidden="true"
                 />
+                {/* 重点光柱内向下流动的粒子 */}
+                {m.key ? (
+                  <span
+                    className="pointer-events-none absolute left-1/2 w-1 -translate-x-1/2 overflow-hidden"
+                    style={{ top: y, height: BAND_H - y }}
+                    aria-hidden="true"
+                  >
+                    {[0, 1, 2].map((p) => (
+                      <span
+                        key={p}
+                        className="cw-stem-particle absolute left-1/2 size-1 -translate-x-1/2 rounded-full"
+                        style={
+                          {
+                            backgroundColor: "oklch(0.96 0.08 200)",
+                            boxShadow: "0 0 6px 1px oklch(0.85 0.14 205 / 0.9)",
+                            ["--p-dur" as string]: `${1.6 + p * 0.3}s`,
+                            ["--p-delay" as string]: `${p * 0.5}s`,
+                          } as React.CSSProperties
+                        }
+                      />
+                    ))}
+                  </span>
+                ) : null}
               </div>
             )
           })}
