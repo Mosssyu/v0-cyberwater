@@ -252,13 +252,13 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           />
         </div>
 
-        {/* 左侧可读性渐隐遮罩（让文案浮于场景之上，不压实心面板） */}
+        {/* 左侧可读性渐隐遮罩（深蓝黑半透明，左→右逐渐减弱，底图隐约可见，非纯黑硬挡） */}
         <div
           className="pointer-events-none absolute inset-0"
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(90deg, oklch(0.09 0.03 248 / 0.96) 0%, oklch(0.09 0.03 248 / 0.7) 30%, oklch(0.09 0.03 248 / 0.15) 52%, transparent 68%)",
+              "linear-gradient(90deg, oklch(0.11 0.035 250 / 0.8) 0%, oklch(0.11 0.035 250 / 0.52) 26%, oklch(0.11 0.035 250 / 0.16) 46%, transparent 62%)",
           }}
         />
         {/* 顶部 / 底部轻微压暗，提升标签与流程可读性 */}
@@ -267,9 +267,69 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           aria-hidden="true"
           style={{
             background:
-              "linear-gradient(180deg, oklch(0.09 0.03 248 / 0.55) 0%, transparent 22%, transparent 70%, oklch(0.09 0.03 248 / 0.85) 100%)",
+              "linear-gradient(180deg, oklch(0.1 0.035 250 / 0.45) 0%, transparent 22%, transparent 72%, oklch(0.1 0.035 250 / 0.8) 100%)",
           }}
         />
+
+        {/* 左下局部提亮：径向冷光，让标题下方场景从暗部浮现（置于遮罩之上） */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+          style={{
+            background:
+              "radial-gradient(58% 52% at 22% 70%, oklch(0.55 0.16 235 / 0.22) 0%, oklch(0.45 0.14 240 / 0.08) 40%, transparent 70%)",
+          }}
+        />
+
+        {/* 左侧隐约设施轮廓 + 发光连接线（低调辅助，强节点保留在中右侧） */}
+        <svg
+          className="pointer-events-none absolute inset-0 size-full"
+          viewBox="0 0 900 520"
+          preserveAspectRatio="xMidYMid slice"
+          fill="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <filter id="cw-left-glow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="2.2" result="b" />
+              <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <g
+            stroke="oklch(0.78 0.13 220)"
+            strokeOpacity={0.32}
+            strokeWidth={1}
+            filter="url(#cw-left-glow)"
+            fill="none"
+          >
+            {/* 发光连接线网络（左下区域，弱化） */}
+            <polyline points="70,470 150,430 210,452 285,410" strokeOpacity={0.42}>
+              <animate attributeName="stroke-opacity" values="0.18;0.5;0.18" dur="3.4s" repeatCount="indefinite" />
+            </polyline>
+            <polyline points="110,408 150,430 168,372" strokeOpacity={0.3} />
+            <polyline points="210,452 240,498 300,470" strokeOpacity={0.28} />
+
+            {/* 水厂：等距矩形轮廓 */}
+            <polygon points="86,452 150,420 196,444 132,476" strokeOpacity={0.34} />
+            <polyline points="86,452 86,468 132,492 132,476" strokeOpacity={0.26} />
+            <polyline points="196,444 196,460 132,492" strokeOpacity={0.26} />
+
+            {/* 泵站：圆形 + 中心点 */}
+            <circle cx={150} cy={430} r={9} strokeOpacity={0.4} />
+            <circle cx={150} cy={430} r={2.4} fill="oklch(0.85 0.13 215)" stroke="none" fillOpacity={0.55}>
+              <animate attributeName="fill-opacity" values="0.3;0.75;0.3" dur="2.6s" repeatCount="indefinite" />
+            </circle>
+            <circle cx={285} cy={410} r={7} strokeOpacity={0.34} />
+
+            {/* 设施小塔轮廓 */}
+            <polygon points="160,360 184,346 208,360 184,374" strokeOpacity={0.3} />
+            <polyline points="160,360 160,376 184,390 184,374" strokeOpacity={0.22} />
+            <polyline points="208,360 208,376 184,390" strokeOpacity={0.22} />
+          </g>
+        </svg>
 
         {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
         <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
@@ -295,9 +355,12 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             ))}
           </div>
 
-          {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
-          <div className="pointer-events-auto mt-10 max-w-md lg:mt-14 lg:max-w-sm">
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-1 font-mono text-xs text-accent backdrop-blur-sm">
+          {/* 左侧品牌文案（轻玻璃态背景，增强可读性但不厚重） */}
+          <div
+            className="pointer-events-auto mt-10 max-w-md rounded-2xl border border-white/[0.06] p-5 backdrop-blur-md lg:mt-14 lg:max-w-sm lg:p-6"
+            style={{ backgroundColor: "oklch(0.13 0.04 250 / 0.32)" }}
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.1] px-3 py-1 font-mono text-xs text-accent">
               <span className="size-1.5 rounded-full bg-accent" />
               CW-Cloud
             </span>
