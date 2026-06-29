@@ -334,10 +334,21 @@ export function GrowthTimeline() {
               <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="3.8s" repeatCount="indefinite" />
             </path>
 
-            {/* —— 末端箭头（2026 之后，指向右方，引导水流流向终点） —— */}
+            {/* —— 末端箭头（2026 之后，水流上扬向上，寓意持续向上） —— */}
             <g filter="url(#cwWaveGlow)">
+              {/* 终点向上扬起的引导线 */}
               <path
-                d="M689,42 L700,46 L689,50"
+                d="M690,47 Q698,40 696,26"
+                stroke="url(#cwWaveGrad)"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                fill="none"
+              >
+                <animate attributeName="opacity" values="0.5;0.95;0.5" dur="3s" repeatCount="indefinite" />
+              </path>
+              {/* 指向上方的箭头尖角 */}
+              <path
+                d="M691,31 L696,24 L701,31"
                 stroke="#aef6ff"
                 strokeWidth="1.1"
                 strokeLinecap="round"
