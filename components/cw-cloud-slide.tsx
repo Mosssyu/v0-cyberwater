@@ -42,7 +42,7 @@ const P = {
 const productModules: ModuleDef[] = [
   { id: "group", label: "集团运营管理", col: 0, row: 0, palette: P.cyan },
   { id: "integrated", label: "厂网河湖一体化", col: 1, row: 0, palette: P.blue },
-  { id: "sewage", label: "分布式污水厂运营管理", col: 2, row: 0, palette: P.green },
+  { id: "sewage", label: "分布式污水设施", col: 2, row: 0, palette: P.green },
   { id: "plant", label: "水厂运营管理", col: 0, row: 1, palette: P.cyan },
   { id: "pump", label: "泵闸站管理", col: 1, row: 1, palette: P.sky },
   { id: "pipe", label: "管网管理", col: 2, row: 1, palette: P.blue },
