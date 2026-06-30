@@ -18,42 +18,30 @@ const presentations = [
   {
     id: "city",
     mode: "城市级孪生",
-    img: "/products/cw3dp-twin-city.png",
+    img: "/products/cw3dp-city-river.png",
     caption: "城市级水务全域孪生",
-    labels: [
-      { t: "水厂 · 12.8 万m³/日", x: "34%", y: "26%" },
-      { t: "闸坝 · 水位 4.21m", x: "62%", y: "62%" },
-    ],
+    labels: [],
   },
   {
     id: "plant",
     mode: "数字水厂",
-    img: "/products/twin-dashboard.png",
+    img: "/products/cw3dp-water-plant.png",
     caption: "数字水厂三维孪生",
-    labels: [
-      { t: "沉淀池 · 运行正常", x: "30%", y: "58%" },
-      { t: "鼓风机房 · 负荷 78%", x: "78%", y: "30%" },
-    ],
+    labels: [],
   },
   {
     id: "pipe",
     mode: "管网透视",
-    img: "/products/cw3dp-pipes.png",
+    img: "/products/cw3dp-pipeline-new.png",
     caption: "地下管网三维透视",
-    labels: [
-      { t: "DN800 主干管 · 0.42MPa", x: "30%", y: "46%" },
-      { t: "阀门节点 · 开度 100%", x: "68%", y: "30%" },
-    ],
+    labels: [],
   },
   {
     id: "device",
     mode: "设备拆解",
-    img: "/products/cw3dp-pump.png",
+    img: "/products/cw3dp-pump-new.png",
     caption: "泵房设备三维拆解",
-    labels: [
-      { t: "1# 机组 · 1250 m³/h", x: "34%", y: "34%" },
-      { t: "电机温度 · 56℃", x: "62%", y: "64%" },
-    ],
+    labels: [],
   },
 ]
 
