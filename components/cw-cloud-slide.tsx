@@ -41,7 +41,7 @@ const P = {
 const productModules: ModuleDef[] = [
   { id: "group", label: "集团运营管理", col: 0, row: 0, palette: P.cyan },
   { id: "integrated", label: "厂网河湖一体化", col: 1, row: 0, palette: P.blue },
-  { id: "sewage", label: "分布式污水设施", col: 2, row: 0, palette: P.green },
+  { id: "sewage", label: "村镇污水", col: 2, row: 0, palette: P.green },
   { id: "plant", label: "水厂运营管理", col: 0, row: 1, palette: P.cyan },
   { id: "pump", label: "泵闸站管理", col: 1, row: 1, palette: P.sky },
   { id: "pipe", label: "管网管理", col: 2, row: 1, palette: P.blue },
@@ -49,10 +49,10 @@ const productModules: ModuleDef[] = [
   { id: "flood", label: "城市防汛内涝管理", col: 1, row: 2, palette: P.sky },
   { id: "iot", label: "IoT 物联平台", col: 2, row: 2, palette: P.teal },
   { id: "sso", label: "SSO 统一登录", col: 3, row: 1, palette: P.blue },
-  { id: "ai", label: "水务智能体", col: 0, row: 0, palette: P.ai, float: true },
+  { id: "ai", label: "水务智能体", col: 1, row: 3, palette: P.ai },
 ]
 
-// 模块池仅列出 10 类业务模块（AI 作为可持续叠加的智能层，不计入列表）
+// 模块池列出全部业务模块（含水务智能体，共 11 类）
 const listedModules = productModules.filter((m) => !m.float)
 
 // ---------- 每个模块的详细介绍（图标 + 简述 + 关键能力） ----------
@@ -69,8 +69,8 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
   },
   sewage: {
     icon: Recycle,
-    desc: "面向分散式、农村污水厂站点的集中监控、远程运维与达标管理。",
-    features: ["集中监控", "远程运维", "达标排放"],
+    desc: "面向村镇分散式污水处理场景，实现设施接入、运行监测、水质达标、巡检工单与运维协同的一体化管理。",
+    features: ["统一监管", "水质达标", "协同运维"],
   },
   plant: {
     icon: Factory,
@@ -109,8 +109,8 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
   },
   ai: {
     icon: BrainCircuit,
-    desc: "大模型驱动的问数、报表、告警、工单与知识助手，叠加在业务模块之上。",
-    features: ["智能问数", "智能报表", "知识助手"],
+    desc: "融合大模型、RAG 与知识图谱，打通感知、认知、决策、执行与进化闭环，支撑智能问答、告警研判、工艺优化与运营决策。",
+    features: ["智能问答", "告警研判", "工艺优化", "运营决策"],
   },
 }
 
@@ -155,6 +155,7 @@ const productImages: Record<string, string> = {
   flood: "/products/flood.png",
   iot: "/products/iot.png",
   sso: "/products/sso.png",
+  ai: "/products/ai.png",
 }
 
 // 单业态阶段轮播展示的候选模块（表达「任一业务模块都可独立建设」）
@@ -318,10 +319,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           <div className="mb-4 flex justify-center lg:justify-start">
             <span className="pointer-events-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.12_0.04_248/0.7)] px-4 py-1.5 text-[11px] text-muted-foreground backdrop-blur-sm sm:text-[12px]">
               已选{" "}
-              <span className="font-mono font-semibold text-accent">
-                {activeIds.filter((id) => id !== "ai").length}
-              </span>{" "}
-              / {listedModules.length} 个模块 · 点击下方模块加入组合
+              <span className="font-mono font-semibold text-accent">{activeIds.length}</span> / {listedModules.length} 个模块 ·
+              点击下方模块加入组合
             </span>
           </div>
 
