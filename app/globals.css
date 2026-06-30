@@ -715,7 +715,24 @@
   animation: cw-holo-cone 5.2s ease-in-out infinite;
 }
 
+/* 光柱落点：同心椭圆水波向外扩散并淡出 */
+@keyframes cw-disc-ripple {
+  0% {
+    transform: translateX(-50%) scale(0.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(-50%) scale(2.4);
+    opacity: 0;
+  }
+}
+.cw-disc-ripple {
+  animation: cw-disc-ripple 2.6s ease-out infinite;
+  animation-delay: var(--rd-delay, 0s);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .cw-disc-ripple,
   .cw-rail-flow,
   .cw-spark-run,
   .cw-node-breathe,
@@ -733,6 +750,7 @@
   }
   .cw-ripple,
   .cw-ripple::before,
+  .cw-disc-ripple,
   .cw-splash {
     display: none;
   }

@@ -1,12 +1,26 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Activity, ArrowRight, ChevronLeft } from "lucide-react"
+import {
+  Activity,
+  ArrowRight,
+  ChevronLeft,
+  Building2,
+  ShieldCheck,
+  Users,
+  UserRound,
+  Box,
+  Layers,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react"
 
 type Milestone = {
   year: string
   title: string
   desc: string
+  /** 卡片左上角线性图标 */
+  Icon: LucideIcon
   /** 重点高亮节点：2018 / 2022 / 2026 */
   key: boolean
 }
@@ -16,42 +30,49 @@ const milestones: Milestone[] = [
     year: "2015",
     title: "公司成立",
     desc: "中国首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务。",
+    Icon: Building2,
     key: false,
   },
   {
     year: "2016",
     title: "双高认证",
     desc: "获得国家高新技术企业、中关村高新技术企业认证，技术研发能力获得认可。",
+    Icon: ShieldCheck,
     key: false,
   },
   {
     year: "2018",
     title: "北控水务战略入股",
     desc: "北控水务战略入股，深度融入头部水务集团运营体系，从技术能力真正进入实战水务运营场景。",
+    Icon: Users,
     key: true,
   },
   {
     year: "2020",
     title: "加入水协智慧委",
     desc: "成为水协智慧委委员单位，进一步参与智慧水务行业实践与交流，沉淀管理标准与业务流程。",
+    Icon: UserRound,
     key: false,
   },
   {
     year: "2022",
     title: "全面对外服务",
     desc: "逐步建立水务 SaaS 产品能力，从集团内部场景沉淀走向行业市场，开始规模化服务行业客户。",
+    Icon: Box,
     key: true,
   },
   {
     year: "2025",
     title: "智水积木云产品化",
     desc: "构建管理、技术、产品体系重构，沉淀并打造智水云平台，并结合大型项目积累形成高水准产品化能力。",
+    Icon: Layers,
     key: false,
   },
   {
     year: "2026",
     title: "AI 智能运营平台发布",
     desc: "深度融合大模型、智能体与数字孪生，实现感知、认知、决策、执行全链路智能闭环。",
+    Icon: Sparkles,
     key: true,
   },
 ]
@@ -537,6 +558,30 @@ export function GrowthTimeline() {
                   aria-pressed={isActive}
                   aria-label={`${m.year} ${m.title}`}
                 >
+                  {/* 关键节点：水平透视能量光环（同心椭圆，呼吸） */}
+                  {m.key ? (
+                    <>
+                      <span
+                        className="cw-node-breathe pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
+                        style={{
+                          width: 46,
+                          height: 16,
+                          borderColor: "rgb(0 242 254 / 0.55)",
+                          boxShadow: "0 0 12px -2px rgb(0 242 254 / 0.6), inset 0 0 8px -4px rgb(127 233 255 / 0.7)",
+                        }}
+                        aria-hidden="true"
+                      />
+                      <span
+                        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
+                        style={{
+                          width: 30,
+                          height: 10,
+                          borderColor: "rgb(127 233 255 / 0.7)",
+                        }}
+                        aria-hidden="true"
+                      />
+                    </>
+                  ) : null}
                   {m.key || isActive ? <span className="cw-ripple" aria-hidden="true" /> : null}
                   <span
                     className={[
@@ -589,20 +634,38 @@ export function GrowthTimeline() {
                   aria-hidden="true"
                 />
 
-                {/* 全息投影底座（仅重点节点：卡片顶部的发光光带） */}
+                {/* 全息投影底座 + 落点同心水波圆盘（仅重点节点） */}
                 {m.key ? (
-                  <span
-                    className="cw-holo-base pointer-events-none absolute left-1/2"
-                    style={{
-                      bottom: -2,
-                      width: 30,
-                      height: 7,
-                      borderRadius: "50%",
-                      background: "radial-gradient(closest-side, rgb(0 242 254 / 0.7), rgb(79 172 254 / 0.18) 60%, transparent)",
-                      filter: "blur(0.5px)",
-                    }}
-                    aria-hidden="true"
-                  />
+                  <>
+                    <span
+                      className="cw-holo-base pointer-events-none absolute left-1/2"
+                      style={{
+                        bottom: 0,
+                        width: 34,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: "radial-gradient(closest-side, rgb(0 242 254 / 0.75), rgb(79 172 254 / 0.18) 60%, transparent)",
+                        filter: "blur(0.5px)",
+                      }}
+                      aria-hidden="true"
+                    />
+                    {/* 落点水波同心椭圆环（向外扩散） */}
+                    {[0, 1].map((ri) => (
+                      <span
+                        key={ri}
+                        className="cw-disc-ripple pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 rounded-[50%] border"
+                        style={
+                          {
+                            width: 26,
+                            height: 9,
+                            borderColor: "rgb(0 242 254 / 0.55)",
+                            ["--rd-delay" as string]: `${ri * 1.3}s`,
+                          } as React.CSSProperties
+                        }
+                        aria-hidden="true"
+                      />
+                    ))}
+                  </>
                 ) : null}
 
                 {/* 重点光柱内向下流动的粒子 */}
@@ -713,15 +776,30 @@ function NodeCard({
         </>
       ) : null}
 
-      <span
-        className={[
-          "text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
-          isKey ? "text-accent" : "text-foreground/85",
-        ].join(" ")}
-      >
-        {milestone.title}
+      {/* 图标 + 标题（同行） */}
+      <span className="flex items-center gap-2">
+        <span
+          className={[
+            "inline-flex size-7 shrink-0 items-center justify-center rounded-md border transition-colors duration-300",
+            isKey
+              ? "border-accent/55 bg-accent/15 text-accent"
+              : "border-accent/25 bg-accent/[0.06] text-accent/75",
+          ].join(" ")}
+          style={isKey ? { boxShadow: "0 0 10px -3px oklch(0.78 0.14 205 / 0.7)" } : undefined}
+          aria-hidden="true"
+        >
+          <milestone.Icon className="size-4" />
+        </span>
+        <span
+          className={[
+            "text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
+            isKey ? "text-accent" : "text-foreground/85",
+          ].join(" ")}
+        >
+          {milestone.title}
+        </span>
       </span>
-      <span className="mt-1.5 block flex-1 text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
+      <span className="mt-2 block flex-1 text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
         {milestone.desc}
       </span>
 
