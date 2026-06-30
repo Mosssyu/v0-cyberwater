@@ -208,9 +208,9 @@ export function Cw3dpSlide() {
           <span className="text-[11px] text-muted-foreground">（选择左侧产品，右侧实时呈现大屏与核心能力）</span>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
-          {/* 左：两个产品标签卡片 */}
-          <div className="flex h-full flex-col gap-3">
+        <div className="flex flex-col gap-5">
+          {/* 上：两个产品标签卡片，横向铺开 */}
+          <div className="grid gap-4 sm:grid-cols-2">
             {twinModules.map((m) => {
               const hot = showId === m.id
               return (
@@ -220,7 +220,7 @@ export function Cw3dpSlide() {
                   onMouseEnter={() => setShowId(m.id)}
                   onClick={() => setShowId(m.id)}
                   aria-pressed={hot}
-                  className="group relative flex flex-1 flex-col justify-center overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300"
+                  className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border p-4 text-left transition-all duration-300"
                   style={{
                     borderColor: hot ? "oklch(0.7 0.16 250 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
                     backgroundColor: hot ? "oklch(0.7 0.16 250 / 0.12)" : "oklch(0.2 0.03 245 / 0.4)",
@@ -233,22 +233,22 @@ export function Cw3dpSlide() {
                       opacity: hot ? 1 : 0,
                     }}
                   />
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-shadow"
-                      style={{ boxShadow: hot ? "0 0 12px -2px oklch(0.7 0.16 250 / 0.7)" : "none" }}
-                    >
-                      {m.id === "twin" ? <Box className="size-5" /> : <Library className="size-5" />}
-                    </span>
-                    <span className="font-mono text-sm font-semibold text-foreground">CW-3DP · {m.code}</span>
-                  </div>
-                  <span className="mt-3 text-lg font-bold tracking-tight text-foreground">{m.label}</span>
+                  <span
+                    className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition-shadow"
+                    style={{ boxShadow: hot ? "0 0 12px -2px oklch(0.7 0.16 250 / 0.7)" : "none" }}
+                  >
+                    {m.id === "twin" ? <Box className="size-5" /> : <Library className="size-5" />}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-mono text-xs font-semibold text-primary">CW-3DP · {m.code}</span>
+                    <span className="mt-1 block text-lg font-bold tracking-tight text-foreground">{m.label}</span>
+                  </span>
                 </button>
               )
             })}
           </div>
 
-          {/* 右：模块大屏示意图 + 核心能力 */}
+          {/* 下：模块大屏示意图 + 核心能力 */}
           <AnimatePresence mode="wait">
             <motion.div
               key={showModule.id}
