@@ -355,28 +355,28 @@ export function GrowthTimeline() {
               <animate attributeName="stroke-dashoffset" from="0" to="-100" dur="3.8s" repeatCount="indefinite" />
             </path>
 
-            {/* —— 末端箭头（2026 之后，水流上扬向上，寓意持续向上） —— */}
+            {/* —— 末端箭头（2026 之后整体向上扬起，与光束同等粗细，寓意持续向上） —— */}
             <g filter="url(#cwWaveGlow)">
-              {/* 终点向上扬起的引导线 */}
+              {/* 终点向上扬起的引导线（与主水脉 3.5px 同粗） */}
               <path
-                d="M690,47 Q698,40 696,26"
+                d="M688,47 Q694,34 690,16"
                 stroke="url(#cwWaveGrad)"
-                strokeWidth="1.4"
+                strokeWidth="3.5"
                 strokeLinecap="round"
                 fill="none"
               >
-                <animate attributeName="opacity" values="0.5;0.95;0.5" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.55;1;0.55" dur="3s" repeatCount="indefinite" />
               </path>
-              {/* 指向上方的箭头尖角 */}
+              {/* 指向上方的箭头尖角（加粗放大，与光束一致） */}
               <path
-                d="M691,31 L696,24 L701,31"
+                d="M681,24 L690,12 L699,24"
                 stroke="#aef6ff"
-                strokeWidth="1.1"
+                strokeWidth="3.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 fill="none"
               >
-                <animate attributeName="opacity" values="0.55;1;0.55" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
               </path>
             </g>
 
@@ -766,7 +766,7 @@ function NodeCard({
           : undefined
       }
     >
-      {/* HUD 边角装饰（仅重点卡片） */}
+      {/* HUD ��角装饰（仅重点卡片） */}
       {isKey ? (
         <>
           <span className="pointer-events-none absolute left-0 top-0 size-3 border-l border-t border-accent/60" aria-hidden="true" />
