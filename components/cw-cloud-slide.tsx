@@ -56,61 +56,136 @@ const productModules: ModuleDef[] = [
 const listedModules = productModules.filter((m) => !m.float)
 
 // ---------- 每个模块的详细介绍（图标 + 简述 + 关键能力） ----------
-const productInfo: Record<string, { icon: LucideIcon; desc: string; features: string[] }> = {
+const productInfo: Record<string, { icon: LucideIcon; desc: string; features: string[]; points: string[] }> = {
   group: {
     icon: Building2,
     desc: "面向水务集团，多区域、多公司、多厂站统一管理与运营分析，支撑集团级决策。",
     features: ["多组织架构", "运营驾驶舱", "经营分析"],
+    points: [
+      "支持单厂 / 多厂 / 分布式厂站 / 泵闸等多业务场景",
+      "贯穿决策层—管理层—执行层，灵活适配多层级、组团式管理",
+      "支持业财一体化，实现数据资产化、决策科学化",
+      "运营评价标准体系支撑运行、设备、排班、巡检、化验、报表数字化量化考核",
+      "数字化建设标准体系实现人、事、物全在线、闭环留痕",
+    ],
   },
   integrated: {
     icon: Network,
     desc: "打通水厂、管网、泵站与河湖数据，实现厂网河湖联调与一体化运营。",
     features: ["厂网联动", "全要素感知", "协同调度"],
+    points: [
+      "水厂、泵站、管网、防汛事件各要素精细化管理",
+      "机理 + 大数据模型，实现水量科学调配、各厂均衡",
+      "降低城市内涝风险，大幅提升防汛调度效率",
+      "对接智慧城市，工单无缝流转，改善民众体验",
+      "集约化运营、一体化调控，实现管理模式创新",
+    ],
   },
   sewage: {
     icon: Recycle,
     desc: "面向村镇分散式污水处理场景，实现设施接入、运行监测、水质达标、巡检工单与运维协同的一体化管理。",
     features: ["统一监管", "水质达标", "协同运维"],
+    points: [
+      "支持超千个分散式站点统一接入，集中管控、无人值守",
+      "视频巡检 + AI 识别，异常问题及时发现、及时上报",
+      "以工单流转贯通班组、巡检、设备、告警等业务闭环",
+      "工单、异常、电耗、药耗多维分析，支撑运营决策",
+      "内置站点评分工具，量化评价运行效果与绩效表现",
+    ],
   },
   plant: {
     icon: Factory,
     desc: "覆盖供水、污水厂的生产、工艺、能耗与设备全流程精细化运营。",
     features: ["工艺管控", "能耗优化", "设备管理"],
+    points: [
+      "行业应用最多的水厂运营软件，系统流畅、稳定、可靠",
+      "内置标准化体系与行业知识库，快速建立数字化运营能力",
+      "功能全面，支持功能配置化与定制化",
+      "支持定制化数据驾驶舱，为不同层级管理人员定制运营主题",
+      "设备、工艺、安全、药剂、物资全业务贯通",
+      "智能报表灵活配置数据源、公式与样式，一次配置、定期自动生成",
+      "拖拽配置流程与自定义表单，业务调整无需依赖厂家支持",
+    ],
   },
   pump: {
     icon: Gauge,
     desc: "泵站、水闸的远程监控、智能调度与运行优化，保障安全高效运行。",
     features: ["远程监控", "智能调度", "运行优化"],
+    points: [
+      "泵站、闸站统一接入，集中管理运行、设备、巡检、维修、告警等业务",
+      "接入实时数据，展示水位、流量、泵组启停、闸门开度、能耗等关键指标",
+      "支持泵组运行、闸门控制、排涝能力等过程分析，辅助科学调度与应急处置",
+      "巡检、维保、抢修全流程工单化流转，现场执行留痕、精细化运营",
+    ],
   },
   pipe: {
     icon: GitFork,
     desc: "管网 GIS、压力流量监测、漏损分析与分区计量（DMA）一体化管理。",
     features: ["管网 GIS", "漏损分析", "分区计量"],
+    points: [
+      "管网资产全要素、全周期展示查询与分析，高精度 BIM 接入、影视级三维呈现",
+      "支持多公司、多项目集中部署，快速接入供排新业务，减少重复建设",
+      "建立 GIS 数据审核录入规范，自动属性 / 拓扑检查，多层级审核保障数据质量",
+      "巡检、养护、抢维修在线工单化流转，移动外业轨迹留痕、全过程可追踪",
+      "连通性、断面、流向与人员绩效分析联动，辅助施工指导与精细化运营",
+    ],
   },
   reservoir: {
     icon: Waves,
-    desc: "水库标准化管理与大坝安全运行监测，实现规范化、可视化运营。",
-    features: ["标准化管理", "大坝监测", "水位预警"],
+    desc: "面向河道、湖泊、水库等水体对象的数字化建档、实时监测与河湖长制闭环治理。",
+    features: ["统一建档", "实时监测", "闭环治理"],
+    points: [
+      "河道、湖泊、断面、排口、闸站等对象统一建档，水体资源数字化管理",
+      "接入水位、水质、流量、视频、雨情等数据，实时掌握运行状态",
+      "围绕巡河巡湖、问题上报、整改处置、复核销号构建闭环管理",
+      "支持异常告警、问题台账、治理成效分析，辅助河湖长制考核与精细化治理",
+    ],
   },
   flood: {
     icon: CloudRain,
     desc: "城市内涝预警、排水调度与应急指挥一体化，提升城市防汛能力。",
     features: ["内涝预警", "排水调度", "应急指挥"],
+    points: [
+      "以水力模型应用为核心，强化预报、预警、预演、预案“四预”能力",
+      "基于未来降雨与潮位数据开展水位模拟推演，超阈值自动匹配并下发预案",
+      "预案库支持结构化配置，人员、物资、闸站可按等级灵活调整",
+      "复盘历史重大防汛事件，模型推演反向优化预案配置",
+      "贯通预报、预警、上级指令等事件来源，下发、审批、执行、总结全流程闭环",
+    ],
   },
   iot: {
     icon: Cpu,
     desc: "多协议设备接入、数据采集与边缘计算底座，支撑全平台物联感知。",
     features: ["多协议接入", "数据采集", "边缘计算"],
+    points: [
+      "海量物联、工控设备一站接入集成，快速应用集成",
+      "可视化配置，高效实现厂站数据上云",
+      "支持百亿级数据的存储、治理、查询和聚合分析",
+      "支持大容量分布式部署，灵活伸缩，适配不同业务规模",
+    ],
   },
   sso: {
     icon: ShieldCheck,
     desc: "统一身份认证与权限管理，一次登录贯通全平台应用，安全可控。",
     features: ["统一认证", "权限管理", "单点登录"],
+    points: [
+      "支持集团、区域、公司、厂站多级组织统一账号管理，一套身份贯通多系统",
+      "集成单点登录、权限控制、角色管理、菜单配置，降低重复建设成本",
+      "支持按组织、岗位、角色、业务场景灵活授权，满足多业态、千人千面需求",
+      "打通水厂、泵站、管网、防汛、物联等系统入口，统一门户、待办、消息",
+    ],
   },
   ai: {
     icon: BrainCircuit,
     desc: "融合大模型、RAG 与知识图谱，打通感知、认知、决策、执行与进化闭环，支撑智能问答、告警研判、工艺优化与运营决策。",
     features: ["智能问答", "告警研判", "工艺优化", "运营决策"],
+    points: [
+      "工业级智能体底座，支撑水务场景灵活扩展与稳定落地",
+      "水务专业认知引擎，融合行业标准与专家经验",
+      "厂站网一体化推理，贯通排水运营全链路",
+      "跨系统工具编排，实现诊断、调度与工单闭环",
+      "企业专属知识进化，持续沉淀运营知识资产",
+    ],
   },
 }
 
@@ -217,7 +292,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
   const flowIdx = custom ? inferFlow(custom) : demoStages[stageIdx].flow
 
-  // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
+  // 展示区聚焦的产品：优先悬停项，其次点击聚焦��
   const showId = hoveredId ?? focusId
   const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
   const showInfo = productInfo[showModule.id]
@@ -410,13 +485,13 @@ export function CwCloudSlide({ active }: { active: boolean }) {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
-          {/* 左：产品模块池 10+（竖向列表，与组合体实时联动） */}
-          <div className="rounded-2xl border border-border bg-card/40 p-3.5">
+          {/* 左：产品模块池 10+（竖向列表，与组合体实时联动；填满高度与右侧等高） */}
+          <div className="flex h-full flex-col rounded-2xl border border-border bg-card/40 p-3.5">
             <div className="mb-3 flex items-center gap-1.5">
               <Boxes className="size-4 text-accent" />
-              <span className="text-xs font-semibold text-foreground">产品模块池 · 10+</span>
+              <span className="text-xs font-semibold text-foreground">产品模块池 · 11</span>
             </div>
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-1 flex-col justify-between gap-1.5">
               {listedModules.map((m) => {
                 const on = activeIds.includes(m.id)
                 const hot = showId === m.id
@@ -532,7 +607,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
                 <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">{showInfo.desc}</p>
 
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-2">
                   {showInfo.features.map((f) => (
                     <span
                       key={f}
@@ -542,6 +617,26 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                       {f}
                     </span>
                   ))}
+                </div>
+
+                {/* 核心能力详述（双列，避免卡片过高、保持左右协调） */}
+                <div className="mt-4 border-t border-border/60 pt-4">
+                  <div className="mb-2.5 flex items-center gap-1.5">
+                    <span className="h-3 w-0.5 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
+                    <span className="text-xs font-semibold text-foreground/90">核心能力</span>
+                  </div>
+                  <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                    {showInfo.points.map((p) => (
+                      <li key={p} className="flex items-start gap-2 text-[12px] leading-relaxed">
+                        <span
+                          className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
+                          style={{ backgroundColor: showModule.palette.top }}
+                          aria-hidden="true"
+                        />
+                        <span className="text-pretty text-muted-foreground">{p}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </motion.div>
