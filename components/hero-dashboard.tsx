@@ -227,7 +227,7 @@ export function HeroDashboard() {
         {/* 标题栏 */}
         <div className="flex items-center gap-2 border-b border-white/8 bg-white/[0.02] px-3.5 py-2.5">
           <Layers className="size-3.5 text-accent" />
-          <span className="text-xs font-semibold text-foreground">CW-Cloud 智慧水务运营平台</span>
+          <span className="text-xs font-semibold text-foreground">CW-Cloud 水务AI运营平台</span>
           <span className="ml-auto font-mono text-[10px] text-muted-foreground">10:34:36</span>
           <div className="flex gap-1">
             <span className="size-1.5 rounded-full bg-emerald-400" />

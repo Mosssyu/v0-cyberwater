@@ -6,21 +6,21 @@ const values = [
     glow: "oklch(0.79 0.13 200)",
     title: "执着",
     en: "Dedication",
-    headline: "长期深耕，把复杂问题做扎实",
+    headline: "秉承技术基因，打造极致化产品",
   },
   {
     img: "/icons/val-symbiosis.png",
     glow: "oklch(0.74 0.14 205)",
     title: "共生",
     en: "Symbiosis",
-    headline: "与客户、伙伴和行业共同成长",
+    headline: "与客户和伙伴共建、共享、共发展",
   },
   {
     img: "/icons/val-evolution.png",
     glow: "oklch(0.72 0.14 300)",
     title: "求变",
     en: "Evolution",
-    headline: "拥抱变化，持续进化",
+    headline: "秉承技术基因，持续进化",
   },
 ]
 

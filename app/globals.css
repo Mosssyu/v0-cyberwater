@@ -406,3 +406,479 @@
     animation: none !important;
   }
 }
+
+/* ---------- 公司基因能力图谱动效 ---------- */
+@keyframes gene-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes gene-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes gene-core-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 40px -4px oklch(0.78 0.16 215 / 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 64px 2px oklch(0.8 0.16 205 / 0.9);
+  }
+}
+@keyframes gene-dash {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+.gene-float-anim {
+  animation: gene-float 5s ease-in-out infinite;
+}
+.gene-float-anim:nth-of-type(even) {
+  animation-delay: 1.2s;
+}
+.gene-twinkle-anim {
+  animation: gene-twinkle 3s ease-in-out infinite;
+}
+.gene-core-breathe {
+  animation: gene-core-breathe 4s ease-in-out infinite;
+}
+.gene-flow {
+  stroke-dasharray: 3 9;
+  animation: gene-dash 1s linear infinite;
+}
+
+/* 时间轴聚焦卡片入场 */
+@keyframes focus-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.reveal-focus {
+  animation: focus-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* 时间轴节点逐个入场：上方从上滑入，下方从下滑入 */
+@keyframes tl-item-up {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes tl-item-down {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.tl-item-up {
+  animation: tl-item-up 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.tl-item-down {
+  animation: tl-item-down 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+/* 中轴线生长：从左到右铺开 */
+@keyframes tl-line-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.tl-line-grow {
+  transform-origin: left center;
+  animation: tl-line-grow 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* ---------- 能力演进轨迹：HUD 数据能量主线 ---------- */
+/* 主线能量流：渐变沿 X 轴流动 */
+@keyframes cw-rail-flow {
+  to {
+    background-position: 200% 0;
+  }
+}
+.cw-rail-flow {
+  background-size: 200% 100%;
+  animation: cw-rail-flow 6s linear infinite;
+}
+/* 光点沿轨迹穿梭 */
+@keyframes cw-spark-run {
+  0% {
+    left: -2%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: 102%;
+    opacity: 0;
+  }
+}
+.cw-spark-run {
+  animation: cw-spark-run var(--spark-dur, 7s) linear infinite;
+  animation-delay: var(--spark-delay, 0s);
+}
+/* 重点节点能量呼吸 */
+@keyframes cw-node-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 12px 1px oklch(0.82 0.14 205 / 0.55);
+  }
+  50% {
+    box-shadow: 0 0 22px 4px oklch(0.82 0.14 205 / 0.9);
+  }
+}
+.cw-node-breathe {
+  animation: cw-node-breathe 3.8s ease-in-out infinite;
+}
+/* 节点上方扫描光柱 */
+@keyframes cw-beam {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scaleY(0.85);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scaleY(1.1);
+  }
+}
+.cw-beam {
+  transform-origin: bottom center;
+  animation: cw-beam 4.8s ease-in-out infinite;
+}
+/* 连接竖线能量下行 */
+@keyframes cw-stem-flow {
+  to {
+    background-position: 0 16px;
+  }
+}
+.cw-stem-flow {
+  background-size: 100% 16px;
+  animation: cw-stem-flow 1.7s linear infinite;
+}
+
+/* 重点节点水波扩散环（能量落点） */
+@keyframes cw-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0;
+  }
+}
+.cw-ripple,
+.cw-ripple::before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: 1px solid rgb(0 242 254 / 0.55);
+  box-shadow: 0 0 10px -2px rgb(79 172 254 / 0.6);
+  animation: cw-ripple 3.8s ease-out infinite;
+}
+.cw-ripple::before {
+  content: "";
+  inset: 0;
+  animation-delay: 1.9s;
+}
+
+/* 光柱内粒���向下流动 */
+@keyframes cw-stem-particle {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+.cw-stem-particle {
+  animation: cw-stem-particle var(--p-dur, 1.8s) linear infinite;
+  animation-delay: var(--p-delay, 0s);
+}
+
+/* 终点悬浮水滴：上下呼吸漂浮 */
+@keyframes cw-drop-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.05);
+  }
+}
+.cw-drop-float {
+  animation: cw-drop-float 5s ease-in-out infinite;
+}
+
+/* 水滴内高光流动 */
+@keyframes cw-drop-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.cw-drop-glow {
+  animation: cw-drop-glow 3.6s ease-in-out infinite;
+}
+
+/* 水花溅射粒子：从中心向外扩散并淡出 */
+@keyframes cw-splash {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.5);
+    opacity: 0;
+  }
+}
+.cw-splash {
+  animation: cw-splash var(--sp-dur, 2.6s) ease-out infinite;
+  animation-delay: var(--sp-delay, 0s);
+}
+
+/* 全息投影底座：横向光带呼吸缩放 */
+@keyframes cw-holo-base {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translateX(-50%) scaleX(0.9);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) scaleX(1.3);
+  }
+}
+.cw-holo-base {
+  animation: cw-holo-base 4.6s ease-in-out infinite;
+}
+
+/* 全息光锥：轻微亮度起伏 */
+@keyframes cw-holo-cone {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+.cw-holo-cone {
+  animation: cw-holo-cone 5.2s ease-in-out infinite;
+}
+
+/* 光柱落点：同心椭圆水波向外扩散并淡出 */
+@keyframes cw-disc-ripple {
+  0% {
+    transform: translateX(-50%) scale(0.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateX(-50%) scale(2.4);
+    opacity: 0;
+  }
+}
+.cw-disc-ripple {
+  animation: cw-disc-ripple 2.6s ease-out infinite;
+  animation-delay: var(--rd-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cw-disc-ripple,
+  .cw-rail-flow,
+  .cw-spark-run,
+  .cw-node-breathe,
+  .cw-beam,
+  .cw-stem-flow,
+  .cw-ripple,
+  .cw-ripple::before,
+  .cw-stem-particle,
+  .cw-drop-float,
+  .cw-drop-glow,
+  .cw-splash,
+  .cw-holo-base,
+  .cw-holo-cone {
+    animation: none !important;
+  }
+  .cw-ripple,
+  .cw-ripple::before,
+  .cw-disc-ripple,
+  .cw-splash {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gene-float-anim,
+  .gene-twinkle-anim,
+  .gene-core-breathe,
+  .gene-flow,
+  .reveal-focus,
+  .tl-item-up,
+  .tl-item-down,
+  .tl-line-grow {
+    animation: none !important;
+  }
+}
+
+/* ---------- 数据粒子流光带 ---------- */
+/* 曲线沿自身方向的流光：dash 缓慢移动制造能量流动感 */
+@keyframes flow-line-move {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+.flow-line {
+  stroke-dasharray: 4 26;
+  stroke-dashoffset: 0;
+  animation: flow-line-move var(--flow-dur, 10s) linear infinite;
+  animation-delay: var(--flow-delay, 0s);
+}
+/* 整条流光带极轻微上下浮动，营造前后呼吸层次 */
+@keyframes flow-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+.data-flow {
+  animation: flow-drift 14s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-line,
+  .data-flow,
+  .flow-dot {
+    animation: none !important;
+  }
+}
+
+/* ---------- CW-3DP 三维视口扫描线 ---------- */
+@keyframes twin-scan-move {
+  0% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1000%);
+    opacity: 0;
+  }
+}
+.twin-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.8 0.14 210 / 0.9),
+    transparent
+  );
+  box-shadow: 0 0 12px 2px oklch(0.75 0.15 215 / 0.6);
+  animation: twin-scan-move 3.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twin-scan::after {
+    animation: none !important;
+    opacity: 0;
+  }
+}
+
+/* ---------- 等距积木动效 ---------- */
+/* 单个积木「跑动」入场：从下方升起 + 淡入 */
+@keyframes iso-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.iso-pop {
+  animation: iso-pop 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+/* 完成体积木塔轻微浮动 */
+@keyframes iso-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.iso-float {
+  animation: iso-float 5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iso-pop,
+  .iso-float {
+    animation: none !important;
+  }
+}
