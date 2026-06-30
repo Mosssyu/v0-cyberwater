@@ -10,7 +10,6 @@ import {
   Sparkles,
   Building2,
   BrainCircuit,
-  RotateCcw,
   Check,
   Plus,
   ShieldCheck,
@@ -296,7 +295,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   const showId = hoveredId ?? focusId
   const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
   const showInfo = productInfo[showModule.id]
-  const showInPlatform = activeIds.includes(showModule.id)
 
   const handleHover = (id: string | null) => {
     setHoveredId(id)
@@ -567,77 +565,24 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 )}
               </div>
 
-              {/* 下：产品文字描述 */}
+              {/* 下：核心能力详述（双列，避免卡片过高、保持左右协调） */}
               <div className="flex flex-col border-t border-border p-5">
-                <div className="flex items-center gap-3">
-                  <span
-                    className="flex size-11 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: `${showModule.palette.top}20` }}
-                  >
-                    <showInfo.icon className="size-5.5" style={{ color: showModule.palette.top }} />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="text-lg font-bold text-foreground">{showModule.label}</span>
+                <div className="mb-2.5 flex items-center gap-1.5">
+                  <span className="h-3 w-0.5 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
+                  <span className="text-xs font-semibold text-foreground/90">核心能力</span>
+                </div>
+                <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                  {showInfo.points.map((p) => (
+                    <li key={p} className="flex items-start gap-2 text-[12px] leading-relaxed">
                       <span
-                        className="rounded-full px-2 py-0.5 text-[10px] font-medium"
-                        style={{
-                          color: showInPlatform ? "oklch(0.88 0.1 200)" : "oklch(0.62 0.02 240)",
-                          backgroundColor: showInPlatform ? "oklch(0.7 0.14 215 / 0.16)" : "oklch(0.4 0.03 240 / 0.3)",
-                        }}
-                      >
-                        {showInPlatform ? "已在组合中" : "未加入组合"}
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-muted-foreground">产品模块</span>
-                  </div>
-                  <button
-                    onClick={() => toggleModule(showModule.id)}
-                    className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
-                    style={{
-                      borderColor: showInPlatform ? "oklch(0.4 0.03 240 / 0.5)" : "oklch(0.7 0.13 215 / 0.55)",
-                      color: showInPlatform ? "oklch(0.7 0.02 240)" : "oklch(0.88 0.1 200)",
-                      backgroundColor: showInPlatform ? "transparent" : "oklch(0.7 0.14 215 / 0.12)",
-                    }}
-                  >
-                    {showInPlatform ? <RotateCcw className="size-3.5" /> : <Plus className="size-3.5" />}
-                    {showInPlatform ? "移除" : "加入组合"}
-                  </button>
-                </div>
-
-                <p className="mt-4 text-pretty text-sm leading-relaxed text-muted-foreground">{showInfo.desc}</p>
-
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {showInfo.features.map((f) => (
-                    <span
-                      key={f}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-secondary/30 px-2.5 py-1 text-[11px] text-foreground/85"
-                    >
-                      <span className="size-1.5 rounded-[2px]" style={{ backgroundColor: showModule.palette.top }} />
-                      {f}
-                    </span>
+                        className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
+                        style={{ backgroundColor: showModule.palette.top }}
+                        aria-hidden="true"
+                      />
+                      <span className="text-pretty text-muted-foreground">{p}</span>
+                    </li>
                   ))}
-                </div>
-
-                {/* 核心能力详述（双列，避免卡片过高、保持左右协调） */}
-                <div className="mt-4 border-t border-border/60 pt-4">
-                  <div className="mb-2.5 flex items-center gap-1.5">
-                    <span className="h-3 w-0.5 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
-                    <span className="text-xs font-semibold text-foreground/90">核心能力</span>
-                  </div>
-                  <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
-                    {showInfo.points.map((p) => (
-                      <li key={p} className="flex items-start gap-2 text-[12px] leading-relaxed">
-                        <span
-                          className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
-                          style={{ backgroundColor: showModule.palette.top }}
-                          aria-hidden="true"
-                        />
-                        <span className="text-pretty text-muted-foreground">{p}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                </ul>
               </div>
             </motion.div>
           </AnimatePresence>
