@@ -158,8 +158,8 @@ const MAIN_PATH = toPath(BASE_PTS)
 const STRAND_A = strandPath(5.5, 0, 3.4)
 const STRAND_B = strandPath(5.5, Math.PI, 3.4)
 
-/* 流光粒子：大小/速度/相位错落，沿主脉非匀速流动 */
-const PARTICLES = Array.from({ length: 14 }).map((_, i) => {
+/* 流光粒子：大小/速度/相位错落，沿主脉非匀速流动（性能考量控制数量） */
+const PARTICLES = Array.from({ length: 8 }).map((_, i) => {
   const r = [0.8, 1.3, 1.8, 1.0, 1.5, 0.9][i % 6]
   const dur = 6.4 + (i % 5) * 1.9
   const begin = -(i * 1.1)
@@ -181,8 +181,8 @@ const yAtX = (x: number) => {
   }
   return best.y
 }
-const RISE_PARTICLES = Array.from({ length: 24 }).map((_, i) => {
-  const x = 18 + (664 / 24) * i + ((i * 53) % 17) - 8
+const RISE_PARTICLES = Array.from({ length: 12 }).map((_, i) => {
+  const x = 18 + (664 / 12) * i + ((i * 53) % 17) - 8
   const baseY = yAtX(x)
   const rise = 24 + ((i * 37) % 22)
   const r = [0.6, 0.9, 1.2, 0.7][i % 4]
@@ -280,7 +280,6 @@ function EnergyTrackSvg() {
         strokeWidth="1.6"
         strokeLinecap="round"
         strokeDasharray="12 16"
-        filter="url(#etGlow)"
         opacity="0.85"
       >
         <animate attributeName="stroke-dashoffset" from="0" to="-84" dur="4.6s" repeatCount="indefinite" />
@@ -291,7 +290,6 @@ function EnergyTrackSvg() {
         strokeWidth="1.6"
         strokeLinecap="round"
         strokeDasharray="10 20"
-        filter="url(#etGlow)"
         opacity="0.8"
       >
         <animate attributeName="stroke-dashoffset" from="0" to="-96" dur="5.8s" repeatCount="indefinite" />
@@ -309,7 +307,6 @@ function EnergyTrackSvg() {
         stroke="url(#etTrackGrad)"
         strokeWidth="3"
         strokeLinecap="round"
-        filter="url(#etGlow)"
         strokeDasharray="46 12"
       >
         <animate attributeName="stroke-dashoffset" from="0" to="-116" dur="7s" repeatCount="indefinite" />
@@ -333,9 +330,9 @@ function EnergyTrackSvg() {
         </circle>
       </g>
 
-      {/* 流光粒子（非匀速 spline 流动，波光粼粼） */}
+      {/* 流光粒子（非匀速 spline 流动，波光粼粼；不加 blur 滤镜以保证流畅） */}
       {PARTICLES.map((p, i) => (
-        <circle key={i} r={p.r} fill={p.fill} opacity={p.op} filter="url(#etGlow)">
+        <circle key={i} r={p.r} fill={p.fill} opacity={p.op}>
           <animateMotion
             dur={`${p.dur}s`}
             begin={`${p.begin}s`}
@@ -359,7 +356,7 @@ function EnergyTrackSvg() {
 
       {/* 上升粒子（能量蒸腾） */}
       {RISE_PARTICLES.map((p, i) => (
-        <circle key={`rise-${i}`} cx={p.x} cy={p.baseY} r={p.r} fill={p.fill} filter="url(#etGlow)">
+        <circle key={`rise-${i}`} cx={p.x} cy={p.baseY} r={p.r} fill={p.fill}>
           <animate
             attributeName="cy"
             values={`${p.baseY};${p.baseY - p.rise}`}

@@ -882,3 +882,9 @@
     animation: none !important;
   }
 }
+
+/* ===== 性能门控：AnimationGate 在区块滚出视口时暂停子树全部 CSS 动画 ===== */
+.cw-anim-off,
+.cw-anim-off * {
+  animation-play-state: paused !important;
+}
