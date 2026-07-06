@@ -12,7 +12,6 @@ const partners: { name: string; src: string }[] = [
   { name: "北京排水集团", src: "/partners/beijing-drainage.png" },
   { name: "中持股份 CSD Water Service", src: "/partners/csd-water.png" },
   { name: "广州市政工程设计研究总院有限公司", src: "/partners/gz-municipal.png" },
-  { name: "中国中铁市政环境建设有限公司", src: "/partners/crec-municipal.png" },
   { name: "上海城建信息科技有限公司", src: "/partners/shanghai-ucit.svg" },
   { name: "中国电建 POWERCHINA", src: "/partners/powerchina.png" },
   { name: "中国水利水电科学研究院", src: "/partners/iwhr.png" },
