@@ -3,7 +3,14 @@
 import { useState } from "react"
 import Link from "next/link"
 import { ArrowRight, MapPin } from "lucide-react"
-import { cases, caseCategories, categoryColor, type CaseCategory } from "@/lib/cases"
+import {
+  cases,
+  caseCategories,
+  categoryColor,
+  solutionIntro,
+  otherCases,
+  type CaseCategory,
+} from "@/lib/cases"
 import { CasesMap } from "@/components/cases-map"
 
 type Filter = "all" | CaseCategory
@@ -48,6 +55,13 @@ export function CasesBrowser() {
           )
         })}
       </div>
+
+      {/* 选中方案简介 */}
+      {filter !== "all" && (
+        <div className="mx-auto mt-6 max-w-3xl text-center">
+          <p className="text-pretty leading-relaxed text-muted-foreground">{solutionIntro[filter]}</p>
+        </div>
+      )}
 
       {/* 地图 + 案例信息联动模块 */}
       <CasesMap activeCategory={filter} />
@@ -122,6 +136,37 @@ export function CasesBrowser() {
             </div>
           </Link>
         ))}
+      </div>
+
+      {/* 其它案例（文字清单） */}
+      <div className="mt-12 space-y-8">
+        {(filter === "all" ? caseCategories : [filter]).map((cat) => {
+          const others = otherCases[cat]
+          if (!others || others.length === 0) return null
+          return (
+            <div key={cat}>
+              <div className="flex items-center gap-2.5">
+                <span
+                  className="size-2.5 rounded-full"
+                  style={{ backgroundColor: categoryColor[cat], boxShadow: `0 0 8px ${categoryColor[cat]}` }}
+                  aria-hidden="true"
+                />
+                <h3 className="text-sm font-semibold text-foreground">{cat} · 其它案例</h3>
+                <span className="h-px flex-1 bg-border" />
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {others.map((name) => (
+                  <span
+                    key={name}
+                    className="rounded-full border border-border bg-card px-3.5 py-1.5 text-sm text-muted-foreground"
+                  >
+                    {name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )
+        })}
       </div>
     </div>
   )

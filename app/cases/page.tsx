@@ -16,12 +16,12 @@ export default function CasesPage() {
       <main>
         <section className="border-b border-border bg-secondary/40 py-20">
           <div className="mx-auto max-w-7xl px-6">
-            <span className="text-sm font-medium text-primary">客户案例</span>
+            <span className="text-sm font-medium text-primary">解决方案与经典案例</span>
             <h1 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-              用一个个项目，沉淀智慧水务运营经验
+              按行业场景分类，沉淀可复制的智慧水务方案
             </h1>
             <p className="mt-5 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
-              自 2015 年以来，云建标深耕水务/水利数字化建设与运营，服务遍布全国的水务集团、水厂、供水与排水企业。点击任一案例可查看项目背景、建设内容与应用成效。
+              围绕水务集团数字化运营、排水一体化管理、数字水厂、三维数字孪生四大解决方案，展示典型客户案例，证明产品落地能力与业务价值。点击任一案例可查看项目背景、建设内容与应用成效。
             </p>
           </div>
         </section>

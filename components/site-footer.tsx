@@ -11,12 +11,12 @@ const columns = [
     ],
   },
   {
-    title: "项目案例",
+    title: "解决方案与经典案例",
     links: [
+      { label: "水务集团数字化运营", href: "/#cases" },
+      { label: "排水一体化管理", href: "/#cases" },
       { label: "数字水厂", href: "/#cases" },
-      { label: "集团数字运营", href: "/#cases" },
-      { label: "多厂集约化管理", href: "/#cases" },
-      { label: "BIM+数字孪生", href: "/#cases" },
+      { label: "三维数字孪生", href: "/#cases" },
     ],
   },
   {
