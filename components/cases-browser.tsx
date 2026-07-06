@@ -151,7 +151,7 @@ export function CasesBrowser() {
                   style={{ backgroundColor: categoryColor[cat], boxShadow: `0 0 8px ${categoryColor[cat]}` }}
                   aria-hidden="true"
                 />
-                <h3 className="text-sm font-semibold text-foreground">{cat} · 其它案例</h3>
+                <h3 className="text-sm font-semibold text-foreground">{cat} · 其它参考案例</h3>
                 <span className="h-px flex-1 bg-border" />
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
