@@ -1,25 +1,25 @@
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
-// 合作伙伴 LOGO 墙（invert: 老官网白色反白 LOGO，需反色后置于浅色卡片上）
-const partners: { name: string; src: string; invert?: boolean }[] = [
-  { name: "北京排水集团", src: "/partners/beijing-drainage.png" },
-  { name: "北控水务集团", src: "/partners/bewg.png", invert: true },
+// 合作伙伴 LOGO 墙（统一反白为单色，与整体深色主题一致）
+const partners: { name: string; src: string }[] = [
+  { name: "北控水务集团", src: "/partners/bewg.png" },
+  { name: "上海城投", src: "/partners/shanghai-chengtou.png" },
   { name: "西安水务（集团）有限责任公司", src: "/partners/xian-water.png" },
+  { name: "北控石犀", src: "/partners/bewg-shixi.png" },
+  { name: "天津创业环保", src: "/partners/chuangye-env.png" },
+  { name: "上海浦东水务集团", src: "/partners/pudong-water.png" },
+  { name: "北京排水集团", src: "/partners/beijing-drainage.png" },
   { name: "中持股份 CSD Water Service", src: "/partners/csd-water.png" },
-  { name: "上海城建信息科技有限公司", src: "/partners/shanghai-ucit.svg" },
-  { name: "中国中铁市政环境建设有限公司", src: "/partners/crec-municipal.png" },
   { name: "广州市政工程设计研究总院有限公司", src: "/partners/gz-municipal.png" },
-  { name: "北控石犀", src: "/partners/bewg-shixi.jpg" },
-  { name: "天津创业环保", src: "/partners/chuangye-env.png", invert: true },
-  { name: "上海城投", src: "/partners/shanghai-chengtou.png", invert: true },
-  { name: "上海浦东水务集团", src: "/partners/pudong-water.png", invert: true },
-  { name: "中国电建 POWERCHINA", src: "/partners/powerchina.png", invert: true },
-  { name: "中国科学院", src: "/partners/cas.png", invert: true },
-  { name: "中国水利水电科学研究院", src: "/partners/iwhr.png", invert: true },
-  { name: "上海水利院 SWEDRI", src: "/partners/swedri.png", invert: true },
-  { name: "中信国安", src: "/partners/citic-guoan.png", invert: true },
-  { name: "北京环球影城", src: "/partners/universal.png", invert: true },
+  { name: "中国中铁市政环境建设有限公司", src: "/partners/crec-municipal.png" },
+  { name: "上海城建信息科技有限公司", src: "/partners/shanghai-ucit.svg" },
+  { name: "中国电建 POWERCHINA", src: "/partners/powerchina.png" },
+  { name: "中国水利水电科学研究院", src: "/partners/iwhr.png" },
+  { name: "中国科学院", src: "/partners/cas.png" },
+  { name: "上海水利院 SWEDRI", src: "/partners/swedri.png" },
+  { name: "中信国安", src: "/partners/citic-guoan.png" },
+  { name: "北京环球影城", src: "/partners/universal.png" },
 ]
 
 export function ContactCta() {
@@ -41,14 +41,13 @@ export function ContactCta() {
           {partners.map((p) => (
             <li
               key={p.name}
-              className="group flex h-20 items-center justify-center rounded-xl border border-border/60 bg-[oklch(0.97_0.005_240)] px-4 transition-colors duration-300 hover:border-primary/40"
+              className="group flex h-20 items-center justify-center rounded-xl border border-border/60 bg-card/40 px-4 transition-colors duration-300 hover:border-primary/40 hover:bg-card/70"
             >
               <img
                 src={p.src || "/placeholder.svg"}
                 alt={p.name}
                 loading="lazy"
-                className="max-h-12 w-auto max-w-full object-contain opacity-80 grayscale transition-all duration-300 group-hover:opacity-100 group-hover:grayscale-0"
-                style={p.invert ? { filter: "invert(0.85) grayscale(1)" } : undefined}
+                className="max-h-11 w-auto max-w-full object-contain opacity-65 brightness-0 invert transition-all duration-300 group-hover:opacity-100"
               />
             </li>
           ))}
