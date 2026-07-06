@@ -8,13 +8,20 @@ type P3 = { x: number; y: number; z: number }
 const COLOR_CORE = { r: 0, g: 240, b: 255 } // #00f0ff
 const COLOR_EDGE = { r: 0, g: 255, b: 200 } // 青绿 #00ffc8
 
+function mix(c1: typeof COLOR_CORE, c2: typeof COLOR_EDGE, k: number) {
+  return {
+    r: Math.round(c1.r + (c2.r - c1.r) * k),
+    g: Math.round(c1.g + (c2.g - c1.g) * k),
+    b: Math.round(c1.b + (c2.b - c1.b) * k),
+  }
+}
+
 /**
- * 纯 Canvas 2D 实现的三维粒子球体神经网络：
- * - Fibonacci 球面均匀分布的发光粒子
- * - 预计算的邻接动态网格连线（数据流脉动）
- * - 呼吸效应（球半径正弦缩放）+ 自发光（shadowBlur / lighter 混合）
- * - 四象限向外延伸的触须粒子，作为业务文本视觉锚点
- * - 鼠标磁性排斥交互
+ * 纯 Canvas 2D 三维粒子球体神经网络（性能优化版）：
+ * - 预渲染发光贴图（drawImage 替代逐帧 shadowBlur，去除主要卡顿源）
+ * - 预渲染中心辉光贴图 + 缓存渐变，避免逐帧 createGradient
+ * - 帧率上限 30fps，动画以真实时间驱动，降低 CPU 占用
+ * - IntersectionObserver 离屏自动暂停，滚动后不再空转
  */
 export function ParticleSphere({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -32,7 +39,7 @@ export function ParticleSphere({ className }: { className?: string }) {
 
     let width = 0
     let height = 0
-    let dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let dpr = Math.min(window.devicePixelRatio || 1, 1.5)
 
     // ---------- 生成球面粒子（Fibonacci 分布） ----------
     const SPHERE_COUNT = 150
@@ -81,6 +88,52 @@ export function ParticleSphere({ className }: { className?: string }) {
       }
     }
 
+    // ---------- 预渲染发光贴图（按深度分 5 档配色，避免逐帧 shadowBlur） ----------
+    const SPRITE_SIZE = 32
+    function makeGlowSprite(color: { r: number; g: number; b: number }) {
+      const c = document.createElement("canvas")
+      c.width = SPRITE_SIZE
+      c.height = SPRITE_SIZE
+      const g = c.getContext("2d")!
+      const r = SPRITE_SIZE / 2
+      const grad = g.createRadialGradient(r, r, 0, r, r, r)
+      grad.addColorStop(0, `rgba(${color.r},${color.g},${color.b},1)`)
+      grad.addColorStop(0.3, `rgba(${color.r},${color.g},${color.b},0.55)`)
+      grad.addColorStop(1, `rgba(${color.r},${color.g},${color.b},0)`)
+      g.fillStyle = grad
+      g.beginPath()
+      g.arc(r, r, r, 0, Math.PI * 2)
+      g.fill()
+      return c
+    }
+    const BUCKETS = 5
+    const glowSprites: HTMLCanvasElement[] = []
+    for (let b = 0; b < BUCKETS; b++) {
+      const k = b / (BUCKETS - 1)
+      glowSprites.push(makeGlowSprite(mix(COLOR_CORE, COLOR_EDGE, k * 0.5)))
+    }
+    // 触须末端光点贴图
+    const dotSprite = makeGlowSprite({ r: 120, g: 250, b: 255 })
+
+    // ---------- 预渲染中心辉光贴图 ----------
+    const CENTER_SIZE = 256
+    const centerGlow = (() => {
+      const c = document.createElement("canvas")
+      c.width = CENTER_SIZE
+      c.height = CENTER_SIZE
+      const g = c.getContext("2d")!
+      const r = CENTER_SIZE / 2
+      const grad = g.createRadialGradient(r, r, 0, r, r, r)
+      grad.addColorStop(0, "rgba(0,240,255,1)")
+      grad.addColorStop(0.5, "rgba(0,200,220,0.3)")
+      grad.addColorStop(1, "rgba(0,0,0,0)")
+      g.fillStyle = grad
+      g.beginPath()
+      g.arc(r, r, r, 0, Math.PI * 2)
+      g.fill()
+      return c
+    })()
+
     // ---------- 鼠标 ----------
     const mouse = { x: -9999, y: -9999, active: false }
 
@@ -88,7 +141,7 @@ export function ParticleSphere({ className }: { className?: string }) {
       const rect = container.getBoundingClientRect()
       width = rect.width
       height = rect.height
-      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5)
       canvas.width = Math.round(width * dpr)
       canvas.height = Math.round(height * dpr)
       canvas.style.width = `${width}px`
@@ -114,25 +167,9 @@ export function ParticleSphere({ className }: { className?: string }) {
     container.addEventListener("pointerleave", onLeave)
 
     // ---------- 投影缓存 ----------
-    const proj = new Array(SPHERE_COUNT)
-      .fill(null)
-      .map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }))
+    const proj = new Array(SPHERE_COUNT).fill(null).map(() => ({ x: 0, y: 0, scale: 0, depth: 0 }))
 
-    let raf = 0
-    let t = 0
-
-    function mix(c1: typeof COLOR_CORE, c2: typeof COLOR_EDGE, k: number) {
-      return {
-        r: Math.round(c1.r + (c2.r - c1.r) * k),
-        g: Math.round(c1.g + (c2.g - c1.g) * k),
-        b: Math.round(c1.b + (c2.b - c1.b) * k),
-      }
-    }
-
-    function frame() {
-      t += prefersReduced ? 0 : 1
-      const time = t * 0.016
-
+    function render(time: number) {
       ctx.clearRect(0, 0, width, height)
 
       const cx = width / 2
@@ -154,16 +191,16 @@ export function ParticleSphere({ className }: { className?: string }) {
       for (let i = 0; i < SPHERE_COUNT; i++) {
         const p = sphere[i]
         // 绕 Y
-        let x = p.x * cosY - p.z * sinY
-        let z = p.x * sinY + p.z * cosY
+        const x = p.x * cosY - p.z * sinY
+        const z = p.x * sinY + p.z * cosY
         let y = p.y
         // 绕 X
         const y2 = y * cosX - z * sinX
         const z2 = y * sinX + z * cosX
         y = y2
-        z = z2
+        const zz = z2
 
-        const scale = focal / (focal + z * baseR)
+        const scale = focal / (focal + zz * baseR)
         let sx = cx + x * baseR * scale
         let sy = cy + y * baseR * scale
 
@@ -183,7 +220,7 @@ export function ParticleSphere({ className }: { className?: string }) {
         proj[i].x = sx
         proj[i].y = sy
         proj[i].scale = scale
-        proj[i].depth = z // -1(近) .. 1(远)
+        proj[i].depth = zz // -1(近) .. 1(远)
       }
 
       // ---------- 连线层（lighter 叠加自发光） ----------
@@ -209,72 +246,107 @@ export function ParticleSphere({ className }: { className?: string }) {
         ctx.stroke()
       }
 
-      // ---------- 触须层 ----------
+      // ---------- 触须层（固定色描边 + 光点贴图，去除逐帧渐变） ----------
       for (let i = 0; i < tendrils.length; i++) {
         const td = tendrils[i]
         const drift = Math.sin(time * (0.6 + td.speed * 800) + td.phase) * 0.12
         const ex = cx + (td.dirX + drift) * baseR * td.spread
         const ey = cy + (td.dirY - drift) * baseR * td.spread
-        // 从球面边缘连向触须末端
         const sxEdge = cx + td.dirX * baseR * 0.92
         const syEdge = cy + td.dirY * baseR * 0.92
         const flow = 0.5 + 0.5 * Math.sin(time * 1.4 + td.phase)
-        const grad = ctx.createLinearGradient(sxEdge, syEdge, ex, ey)
-        grad.addColorStop(0, `rgba(0,240,255,${0.28 * flow})`)
-        grad.addColorStop(1, `rgba(0,255,200,0)`)
-        ctx.strokeStyle = grad
+        ctx.strokeStyle = `rgba(0,240,255,${0.2 * flow})`
         ctx.lineWidth = 0.8
         ctx.beginPath()
         ctx.moveTo(sxEdge, syEdge)
         ctx.lineTo(ex, ey)
         ctx.stroke()
-        // 末端发光点
-        const dotA = 0.5 * flow
-        ctx.fillStyle = `rgba(120,250,255,${dotA})`
-        ctx.beginPath()
-        ctx.arc(ex, ey, 1.6, 0, Math.PI * 2)
-        ctx.fill()
+        // 末端发光点（贴图）
+        const dr = 5
+        ctx.globalAlpha = 0.6 * flow
+        ctx.drawImage(dotSprite, ex - dr, ey - dr, dr * 2, dr * 2)
+        ctx.globalAlpha = 1
       }
 
-      // ---------- 粒子层 ----------
+      // ---------- 粒子层（发光贴图替代 shadowBlur） ----------
       for (let i = 0; i < SPHERE_COUNT; i++) {
         const pp = proj[i]
         const k = (pp.depth + 1) / 2 // 0近 1远
         const sizeBase = 1.1 + (1 - k) * 2.2
         const alpha = 0.35 + (1 - k) * 0.6
-        const c = mix(COLOR_CORE, COLOR_EDGE, k * 0.5)
-        ctx.shadowBlur = 8 + (1 - k) * 10
-        ctx.shadowColor = `rgba(${c.r},${c.g},${c.b},0.9)`
-        ctx.fillStyle = `rgba(${c.r},${c.g},${c.b},${alpha})`
-        ctx.beginPath()
-        ctx.arc(pp.x, pp.y, sizeBase, 0, Math.PI * 2)
-        ctx.fill()
+        const drawR = sizeBase * 3.2
+        const bucket = Math.min(BUCKETS - 1, Math.max(0, Math.round(k * (BUCKETS - 1))))
+        ctx.globalAlpha = alpha
+        ctx.drawImage(glowSprites[bucket], pp.x - drawR, pp.y - drawR, drawR * 2, drawR * 2)
       }
-      ctx.shadowBlur = 0
+      ctx.globalAlpha = 1
       ctx.globalCompositeOperation = "source-over"
 
-      // ---------- 中心辉光 ----------
-      const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 0.9)
-      glow.addColorStop(0, `rgba(0,240,255,${0.16 + Math.sin(time * 0.9) * 0.04})`)
-      glow.addColorStop(0.5, "rgba(0,200,220,0.05)")
-      glow.addColorStop(1, "rgba(0,0,0,0)")
+      // ---------- 中心辉光（贴图缩放，呼吸调制透明度） ----------
+      const gr = baseR * 0.9
       ctx.globalCompositeOperation = "lighter"
-      ctx.fillStyle = glow
-      ctx.beginPath()
-      ctx.arc(cx, cy, baseR * 0.9, 0, Math.PI * 2)
-      ctx.fill()
+      ctx.globalAlpha = 0.16 + Math.sin(time * 0.9) * 0.04
+      ctx.drawImage(centerGlow, cx - gr, cy - gr, gr * 2, gr * 2)
+      ctx.globalAlpha = 1
       ctx.globalCompositeOperation = "source-over"
-
-      if (!prefersReduced) raf = requestAnimationFrame(frame)
     }
 
-    frame()
-    // 静态模式也渲染一帧
-    if (prefersReduced) frame()
+    // ---------- 帧率上限 + 真实时间驱动 + 离屏暂停 ----------
+    let raf = 0
+    let running = false
+    const startTime = performance.now()
+    let last = startTime
+    const FRAME_MS = 1000 / 30 // 上限 30fps
+
+    function computeTime(now: number) {
+      // 保持与旧版一致的动画速度（原 60fps 下 time ≈ 0.96 * 秒）
+      return ((now - startTime) / 1000) * 0.96
+    }
+
+    function loop(now: number) {
+      raf = requestAnimationFrame(loop)
+      const dt = now - last
+      if (dt < FRAME_MS) return
+      last = now - (dt % FRAME_MS)
+      render(computeTime(now))
+    }
+
+    function start() {
+      if (running || prefersReduced) return
+      running = true
+      last = performance.now()
+      raf = requestAnimationFrame(loop)
+    }
+    function stop() {
+      running = false
+      cancelAnimationFrame(raf)
+    }
+
+    // 首帧渲染（静态也可见）
+    render(computeTime(performance.now()))
+
+    // 离屏暂停
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) start()
+        else stop()
+      },
+      { threshold: 0.01 },
+    )
+    io.observe(container)
+
+    // 标签页隐藏时暂停
+    function onVisibility() {
+      if (document.hidden) stop()
+      else start()
+    }
+    document.addEventListener("visibilitychange", onVisibility)
 
     return () => {
-      cancelAnimationFrame(raf)
+      stop()
+      io.disconnect()
       ro.disconnect()
+      document.removeEventListener("visibilitychange", onVisibility)
       container.removeEventListener("pointermove", onMove)
       container.removeEventListener("pointerleave", onLeave)
     }
