@@ -14,34 +14,63 @@ const tags = [
 ]
 
 // 三维不同呈现方式（手动切换，无自动轮播）
-const presentations = [
+type Presentation = {
+  id: string
+  mode: string
+  img: string
+  caption: string
+  scene: string
+  stats: { k: string; v: string; u?: string }[]
+}
+
+const presentations: Presentation[] = [
   {
     id: "city",
     mode: "城市级孪生",
     img: "/products/cw3dp-city-river.png",
     caption: "城市级水务全域孪生",
-    labels: [],
+    scene: "CITY · DIGITAL TWIN",
+    stats: [
+      { k: "处理水量", v: "12.8", u: "万m³/日" },
+      { k: "水质指数", v: "89.7", u: "优" },
+      { k: "管网健康", v: "92", u: "%" },
+    ],
   },
   {
     id: "plant",
     mode: "数字水厂",
     img: "/products/cw3dp-water-plant.png",
     caption: "数字水厂三维孪生",
-    labels: [],
+    scene: "PLANT · DIGITAL TWIN",
+    stats: [
+      { k: "出水浊度", v: "0.32", u: "NTU" },
+      { k: "实时能耗", v: "256", u: "MWh" },
+      { k: "工艺状态", v: "正常", u: "" },
+    ],
   },
   {
     id: "pipe",
     mode: "管网透视",
     img: "/products/cw3dp-pipeline-new.png",
     caption: "地下管网三维透视",
-    labels: [],
+    scene: "PIPELINE · PERSPECTIVE",
+    stats: [
+      { k: "供水压力", v: "0.35", u: "MPa" },
+      { k: "实时流量", v: "12,845", u: "m³/h" },
+      { k: "漏损风险", v: "中", u: "" },
+    ],
   },
   {
     id: "device",
     mode: "设备拆解",
     img: "/products/cw3dp-pump-new.png",
     caption: "泵房设备三维拆解",
-    labels: [],
+    scene: "DEVICE · EXPLODED",
+    stats: [
+      { k: "机组流量", v: "12.8", u: "万m³/日" },
+      { k: "扬程", v: "42.1", u: "m" },
+      { k: "振动值", v: "0.32", u: "mm/s" },
+    ],
   },
 ]
 
@@ -95,27 +124,74 @@ export function Cw3dpSlide() {
     <div className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.16_0.03_245)] p-6 sm:p-8 lg:p-10">
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
 
-      {/* ===== 顶部：品牌文案 + 三维呈现视口 ===== */}
-      <div className="relative grid gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:items-center">
-        {/* 左侧文案 + 标签 */}
-        <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/[0.08] px-3 py-1 font-mono text-xs text-primary">
-            <span className="size-1.5 rounded-full bg-primary" />
+      {/* ===== 顶部：沉浸式三维数字孪生主视觉（文字/HUD 叠加在三维空间中） ===== */}
+      <div className="relative min-h-[460px] overflow-hidden rounded-2xl border border-primary/25 sm:min-h-[520px] lg:min-h-[560px]">
+        {/* 三维场景背景（全铺） */}
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={view.id}
+            src={view.img || "/placeholder.svg"}
+            alt={view.caption}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="absolute inset-0 size-full object-cover"
+          />
+        </AnimatePresence>
+
+        {/* 深蓝叠色 + 体积光 + 网格 + 扫描线 */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          aria-hidden="true"
+          style={{
+            background:
+              "linear-gradient(90deg, oklch(0.1 0.04 250 / 0.92) 0%, oklch(0.1 0.04 250 / 0.55) 34%, transparent 62%), linear-gradient(0deg, oklch(0.09 0.035 250 / 0.9) 0%, transparent 46%)",
+          }}
+        />
+        <div className="bg-grid pointer-events-none absolute inset-0 opacity-30" aria-hidden="true" />
+        <div className="twin-scan pointer-events-none absolute inset-0" aria-hidden="true" />
+        {/* HUD 边角描边 */}
+        <div className="pointer-events-none absolute inset-3 rounded-xl border border-primary/15" aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute left-3 top-3 size-8 rounded-tl-xl border-l-2 border-t-2 border-primary/70"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute right-3 top-3 size-8 rounded-tr-xl border-r-2 border-t-2 border-primary/70"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute bottom-3 left-3 size-8 rounded-bl-xl border-b-2 border-l-2 border-primary/70"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute bottom-3 right-3 size-8 rounded-br-xl border-b-2 border-r-2 border-primary/70"
+          aria-hidden="true"
+        />
+
+        {/* 场景编码（顶部漂浮 HUD） */}
+        <div className="absolute left-6 top-6 flex items-center gap-2">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-[oklch(0.1_0.04_250/0.55)] px-3 py-1 font-mono text-xs text-primary backdrop-blur-md">
+            <span className="size-1.5 animate-pulse rounded-full bg-primary shadow-[0_0_8px_2px_oklch(0.7_0.16_250/0.8)]" />
             CW-3DP
           </span>
-          <h3 className="mt-4 text-balance text-3xl font-bold leading-[1.15] tracking-tight text-foreground sm:text-4xl">
-            <span className="text-gradient">三维数字孪生</span>
+          <span className="hidden font-mono text-[11px] tracking-widest text-primary/70 sm:inline">{view.scene}</span>
+        </div>
+
+        {/* 左侧：主标题 + 说明 + 能力标签（直接叠加在三维空间上） */}
+        <div className="absolute inset-x-6 bottom-24 max-w-md sm:bottom-20 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2">
+          <h3 className="text-balance text-3xl font-bold leading-[1.12] tracking-tight sm:text-4xl lg:text-[2.75rem]">
+            <span className="text-gradient drop-shadow-[0_2px_20px_oklch(0.6_0.16_250/0.5)]">三维数字孪生</span>
           </h3>
-          <p className="mt-4 max-w-md text-pretty text-[15px] leading-relaxed text-muted-foreground">
+          <p className="mt-3 max-w-md text-pretty text-[14px] leading-relaxed text-foreground/85 drop-shadow-[0_1px_8px_oklch(0.1_0.04_250/0.9)] sm:text-[15px]">
             以三维可视化方式呈现水厂、泵站、闸站、河湖等水务对象，支持状态联动与业务场景还原。
           </p>
-
-          {/* 能力标签 */}
-          <div className="mt-6 flex flex-wrap gap-2.5">
+          <div className="mt-5 flex flex-wrap gap-2">
             {tags.map((t) => (
               <span
                 key={t.label}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/50 px-3 py-1.5 text-[13px] text-foreground/90"
+                className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-[oklch(0.1_0.04_250/0.5)] px-3 py-1.5 text-[12px] text-foreground/90 backdrop-blur-md"
               >
                 <t.icon className="size-3.5 text-primary" />
                 {t.label}
@@ -124,66 +200,62 @@ export function Cw3dpSlide() {
           </div>
         </div>
 
-        {/* 右侧三维视口：多种三维呈现，手动切换 */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-[oklch(0.1_0.03_245)]">
-          <div className="relative aspect-[16/10]">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={view.id}
-                src={view.img || "/placeholder.svg"}
-                alt={view.caption}
-                initial={{ opacity: 0, scale: 1.02 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="absolute inset-0 size-full object-cover"
-              />
-            </AnimatePresence>
-
-            {/* 扫描线 */}
-            <div className="twin-scan pointer-events-none absolute inset-0" aria-hidden="true" />
-
-            {/* 标题条 */}
-            <div className="absolute inset-x-0 top-0 flex items-center gap-2 bg-gradient-to-b from-[oklch(0.1_0.03_245)] to-transparent px-4 py-2.5">
-              <Box className="size-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">{view.caption}</span>
-            </div>
-
-            {/* 浮动数据标签 */}
-            {view.labels.map((l) => (
-              <div
-                key={l.t}
-                className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-md border border-primary/40 bg-[oklch(0.12_0.03_245/0.85)] px-2 py-1 text-[11px] text-foreground backdrop-blur"
-                style={{ left: l.x, top: l.y }}
-              >
-                <span className="mr-1 inline-block size-1.5 rounded-full bg-primary align-middle shadow-[0_0_6px_2px_oklch(0.7_0.16_250/0.7)]" />
-                {l.t}
+        {/* 右侧：漂浮式数据 HUD 浮窗 */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={view.id + "-hud"}
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 8 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute right-6 top-16 hidden w-52 flex-col gap-3 md:flex"
+          >
+            <div className="rounded-xl border border-primary/35 bg-[oklch(0.1_0.045_250/0.55)] p-3.5 shadow-[0_0_24px_-6px_oklch(0.5_0.16_250/0.6)] backdrop-blur-md">
+              <div className="mb-2.5 flex items-center gap-1.5 border-b border-primary/20 pb-2">
+                <Box className="size-3.5 text-primary" />
+                <span className="text-[12px] font-medium text-foreground">{view.caption}</span>
               </div>
-            ))}
-          </div>
+              <ul className="flex flex-col gap-2.5">
+                {view.stats.map((s) => (
+                  <li key={s.k} className="flex items-baseline justify-between gap-2">
+                    <span className="text-[11px] text-foreground/60">{s.k}</span>
+                    <span className="font-mono text-sm font-semibold text-primary">
+                      {s.v}
+                      {s.u ? <span className="ml-0.5 text-[10px] font-normal text-foreground/50">{s.u}</span> : null}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex items-center justify-center gap-1.5 rounded-lg border border-primary/25 bg-[oklch(0.1_0.045_250/0.45)] py-1.5 font-mono text-[10px] tracking-widest text-primary/70 backdrop-blur-md">
+              <span className="size-1.5 animate-pulse rounded-full bg-primary" />
+              REAL-TIME SYNC
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
-          {/* 三维呈现方式切换（手动） */}
-          <div className="flex flex-wrap items-center justify-center gap-2 bg-card/60 px-3 py-2.5">
-            {presentations.map((p) => {
-              const on = viewId === p.id
-              return (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => setViewId(p.id)}
-                  aria-pressed={on}
-                  className="rounded-md border px-3 py-1 text-xs font-medium transition-all duration-300"
-                  style={{
-                    borderColor: on ? "oklch(0.7 0.16 250 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
-                    backgroundColor: on ? "oklch(0.7 0.16 250 / 0.16)" : "transparent",
-                    color: on ? "oklch(0.92 0.04 240)" : "oklch(0.62 0.03 240)",
-                  }}
-                >
-                  {p.mode}
-                </button>
-              )
-            })}
-          </div>
+        {/* 底部：三维场景切换（漂浮 HUD 芯片） */}
+        <div className="absolute inset-x-0 bottom-5 flex flex-wrap items-center justify-center gap-2 px-4">
+          {presentations.map((p) => {
+            const on = viewId === p.id
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => setViewId(p.id)}
+                aria-pressed={on}
+                className="rounded-full border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition-all duration-300"
+                style={{
+                  borderColor: on ? "oklch(0.7 0.16 250 / 0.75)" : "oklch(0.6 0.08 245 / 0.3)",
+                  backgroundColor: on ? "oklch(0.55 0.16 250 / 0.35)" : "oklch(0.12 0.04 250 / 0.45)",
+                  color: on ? "oklch(0.96 0.03 240)" : "oklch(0.72 0.04 240)",
+                  boxShadow: on ? "0 0 16px -3px oklch(0.6 0.16 250 / 0.8)" : "none",
+                }}
+              >
+                {p.mode}
+              </button>
+            )
+          })}
         </div>
       </div>
 
