@@ -9,6 +9,7 @@ import { ContactCta } from "@/components/contact-cta"
 import { SiteFooter } from "@/components/site-footer"
 import { ClickRipple } from "@/components/click-ripple"
 import { ScrollReveal } from "@/components/scroll-reveal"
+import { AnimationGate } from "@/components/animation-gate"
 
 export default function Page() {
   return (
@@ -17,13 +18,27 @@ export default function Page() {
       <ScrollReveal />
       <SiteHeader />
       <main>
-        <Hero />
-        <Products />
-        <CasesPreview />
-        <About />
-        <Values />
-        <News />
-        <ContactCta />
+        <AnimationGate>
+          <Hero />
+        </AnimationGate>
+        <AnimationGate>
+          <Products />
+        </AnimationGate>
+        <AnimationGate>
+          <CasesPreview />
+        </AnimationGate>
+        <AnimationGate>
+          <About />
+        </AnimationGate>
+        <AnimationGate>
+          <Values />
+        </AnimationGate>
+        <AnimationGate>
+          <News />
+        </AnimationGate>
+        <AnimationGate>
+          <ContactCta />
+        </AnimationGate>
       </main>
       <SiteFooter />
     </div>
