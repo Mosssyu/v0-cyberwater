@@ -1,9 +1,34 @@
 import Link from "next/link"
-import { ArrowUpRight, Newspaper } from "lucide-react"
+import { ArrowUpRight, ArrowRight, Newspaper } from "lucide-react"
 import { news } from "@/lib/news"
 
 const featured = news[0]
-const list = news.slice(1, 7)
+// 头条之外的全部动态进入自动上滚列表
+const scrolling = news.slice(1)
+
+function NewsRow({ slug, tag, date, title }: { slug: string; tag: string; date: string; title: string }) {
+  return (
+    <Link
+      href={`/news/${slug}`}
+      className="group flex items-start gap-4 border-b border-border px-5 py-4 transition-colors hover:bg-muted/50"
+    >
+      <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+        <Newspaper className="size-4" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span className="font-medium text-accent">{tag}</span>
+          <span>·</span>
+          <span>{date}</span>
+        </div>
+        <h4 className="mt-1 truncate text-sm font-medium text-foreground transition-colors group-hover:text-primary">
+          {title}
+        </h4>
+      </div>
+      <ArrowUpRight className="mt-1 size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+    </Link>
+  )
+}
 
 export function News() {
   return (
@@ -18,6 +43,13 @@ export function News() {
               洞察行业趋势，见证项目落地
             </h2>
           </div>
+          <Link
+            href="/news"
+            className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card/60 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+          >
+            更多动态
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
@@ -41,30 +73,25 @@ export function News() {
             </span>
           </Link>
 
-          {/* 列表 */}
-          <div className="flex flex-col divide-y divide-border rounded-2xl border border-border bg-card">
-            {list.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/news/${item.slug}`}
-                className="group flex items-start gap-4 p-5 transition-colors hover:bg-muted/50"
-              >
-                <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <Newspaper className="size-4" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="font-medium text-accent">{item.tag}</span>
-                    <span>·</span>
-                    <span>{item.date}</span>
-                  </div>
-                  <h4 className="mt-1 truncate text-sm font-medium text-foreground transition-colors group-hover:text-primary">
-                    {item.title}
-                  </h4>
-                </div>
-                <ArrowUpRight className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-              </Link>
-            ))}
+          {/* 自动上滚列表：默认可见约 6 条，其余缓慢向上滚动，悬停暂停 */}
+          <div className="news-marquee relative h-[452px] overflow-hidden rounded-2xl border border-border bg-card">
+            <div
+              className="news-marquee-track flex flex-col"
+              style={{ ["--news-duration" as string]: `${scrolling.length * 4.5}s` }}
+            >
+              {[...scrolling, ...scrolling].map((item, i) => (
+                <NewsRow
+                  key={`${item.slug}-${i}`}
+                  slug={item.slug}
+                  tag={item.tag}
+                  date={item.date}
+                  title={item.title}
+                />
+              ))}
+            </div>
+            {/* 顶部/底部渐隐遮罩 */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-card to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-card to-transparent" />
           </div>
         </div>
       </div>
