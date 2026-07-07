@@ -57,9 +57,6 @@ export function SiteFooter() {
                 执数智之器 · 精水务之业
               </span>
             </div>
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-blue-100/60">
-              北京云建标科技有限公司，国家高新技术企业、中国水协智慧水务专业委员会委员单位，致力于成为最懂运营管理的智慧水务科技公司。
-            </p>
             <ul className="mt-6 space-y-3 text-sm text-blue-100/70">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-cyan-300" />
