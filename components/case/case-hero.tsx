@@ -1,31 +1,6 @@
 import Link from "next/link"
-import { ArrowLeft, Building2, MapPin, Factory, Waves, Network, Activity } from "lucide-react"
+import { ArrowLeft, Building2, MapPin, Network } from "lucide-react"
 import type { CaseItem } from "@/lib/cases"
-
-/* 右侧数字孪生场景上的 HUD 浮标 */
-function HudTag({
-  icon: Icon,
-  title,
-  sub,
-  className,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  sub: string
-  className?: string
-}) {
-  return (
-    <div className={`absolute ${className}`}>
-      <div className="flex items-center gap-1.5 rounded-md border border-accent/30 bg-[oklch(0.12_0.02_240/0.82)] px-2 py-1 backdrop-blur-sm">
-        <Icon className="size-3 text-accent" />
-        <div className="leading-tight">
-          <div className="text-[10px] font-semibold text-foreground">{title}</div>
-          <div className="text-[8px] text-accent">{sub}</div>
-        </div>
-      </div>
-    </div>
-  )
-}
 
 export function CaseHero({ item }: { item: CaseItem }) {
   return (
@@ -94,37 +69,27 @@ export function CaseHero({ item }: { item: CaseItem }) {
               aria-hidden
               className="pointer-events-none absolute -inset-6 rounded-[2rem] bg-accent/10 blur-3xl"
             />
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[oklch(0.12_0.02_240)] shadow-2xl shadow-black/60 ring-hairline">
-              {/* 标题栏 */}
-              <div className="flex items-center gap-2 border-b border-white/8 bg-white/[0.02] px-3.5 py-2.5">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-[oklch(0.12_0.02_240)] shadow-2xl shadow-black/60 ring-hairline">
+              {/* 案例场景图铺满 */}
+              <img
+                src={item.image || "/cases/detail/hero-twin.png"}
+                alt={`${item.title}数字孪生运营场景`}
+                className="absolute inset-0 size-full object-cover"
+              />
+              {/* 顶部渐变遮罩，保证标题栏文字清晰 */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,oklch(0.08_0.02_240/0.75)_0%,transparent_100%)]"
+              />
+              {/* 悬浮标题栏 */}
+              <div className="absolute inset-x-0 top-0 flex items-center gap-2 px-3.5 py-2.5">
                 <Network className="size-3.5 text-accent" />
-                <span className="text-xs font-semibold text-foreground">集团级水务数字运营中心</span>
+                <span className="text-xs font-semibold text-white drop-shadow">集团级水务数字运营中心</span>
                 <span className="ml-auto flex gap-1">
                   <span className="size-1.5 rounded-full bg-emerald-400" />
                   <span className="size-1.5 rounded-full bg-amber-400/70" />
-                  <span className="size-1.5 rounded-full bg-white/20" />
+                  <span className="size-1.5 rounded-full bg-white/30" />
                 </span>
-              </div>
-              {/* 场景图 */}
-              <div className="relative aspect-[4/3]">
-                <img
-                  src={item.image || "/cases/detail/hero-twin.png"}
-                  alt={`${item.title}数字孪生运营场景`}
-                  className="absolute inset-0 size-full object-cover opacity-40"
-                />
-                <img
-                  src="/cases/detail/hero-twin.png"
-                  alt="集团水务节点分布与数据流"
-                  className="absolute inset-0 size-full object-cover mix-blend-screen"
-                />
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.1_0.02_240/0.55)_0%,transparent_35%,transparent_70%,oklch(0.1_0.02_240/0.6)_100%)]"
-                />
-                <HudTag icon={Factory} title="水厂节点" sub="356 座在线" className="left-3 top-3" />
-                <HudTag icon={Activity} title="泵站" sub="运行正常" className="right-3 top-10" />
-                <HudTag icon={Waves} title="管网/河湖" sub="监测中" className="bottom-4 left-3" />
-                <HudTag icon={Network} title="数据协同" sub="268 节点" className="bottom-3 right-3" />
               </div>
             </div>
           </div>
