@@ -122,12 +122,18 @@ export function SiteFooter() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-blue-100/50 sm:flex-row">
           <p>© 2026 北京云建标科技有限公司. 京ICP备20010617号</p>
-          <div className="flex gap-6">
-            <a href="#" className="transition-colors hover:text-cyan-300">
+          <div className="flex flex-wrap justify-center gap-6">
+            <a href="/privacy" className="transition-colors hover:text-cyan-300">
               隐私政策
             </a>
-            <a href="#" className="transition-colors hover:text-cyan-300">
+            <a href="/terms" className="transition-colors hover:text-cyan-300">
               服务条款
+            </a>
+            <a href="/sitemap" className="transition-colors hover:text-cyan-300">
+              网站地图
+            </a>
+            <a href="/contact" className="transition-colors hover:text-cyan-300">
+              联系我们
             </a>
           </div>
         </div>
