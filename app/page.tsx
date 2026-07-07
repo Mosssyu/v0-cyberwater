@@ -28,13 +28,13 @@ export default function Page() {
           <CasesPreview />
         </AnimationGate>
         <AnimationGate>
+          <News />
+        </AnimationGate>
+        <AnimationGate>
           <About />
         </AnimationGate>
         <AnimationGate>
           <Values />
-        </AnimationGate>
-        <AnimationGate>
-          <News />
         </AnimationGate>
         <AnimationGate>
           <ContactCta />
