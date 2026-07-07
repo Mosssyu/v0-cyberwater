@@ -218,7 +218,7 @@ export const cases: CaseItem[] = [
     products: ["CW-Cloud POM", "Visual"],
     location: "陕西·西安",
     client: "西安净水公司",
-    image: "/case-pom.png",
+    image: "/cases/xian-third-reclaimed.png",
     summary:
       "作为西安净水公司从点状智能探索迈向全局智慧运营的重要样板，建设数字管理平台与三维数字孪生系统，提升水厂管理的线上化、标准化与可视化水平。",
     background:
@@ -303,7 +303,7 @@ export const cases: CaseItem[] = [
     scope: [
       "利用 BIM 模型建设地下空间三维场景",
       "全面展现运行状态、设备状态及工艺原理",
-      "UWB 人员定位、视频识别与数字孪生结合",
+      "UWB 人员定位、视频识别与数字孪生��合",
       "一键求助呼叫与人员快速定位",
     ],
     results: [
@@ -345,7 +345,7 @@ export const cases: CaseItem[] = [
     products: ["Visual"],
     location: "广东·江门鹤山",
     client: "鹤山市水务管理单位",
-    image: "/case-visual.png",
+    image: "/cases/heshan-water-env.png",
     summary:
       "首个大尺度、全要素流域数字孪生项目，将 45 条河流、74 宗水库、32 宗重点山塘纳入河长制管理，按“六个一”架构进行水环境信息化建设。",
     background:
