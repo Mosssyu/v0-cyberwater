@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { MapPin, Mail, Building2, ArrowUpRight, Award, FileCheck, ShieldCheck } from "lucide-react"
+import { Values } from "@/components/values"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { PageHero } from "@/components/page-hero"
@@ -133,6 +134,9 @@ export default function ContactPage() {
                 </div>
               </div>
             </div>
+
+            {/* 企业价值观 */}
+            <Values />
 
             {/* 商务合作 */}
             <div className="mt-6 rounded-2xl border border-border bg-card/60 p-7 backdrop-blur-sm">
