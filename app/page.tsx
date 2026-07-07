@@ -2,6 +2,8 @@ import { SiteHeader } from "@/components/site-header"
 import { Hero } from "@/components/hero"
 import { Products } from "@/components/products"
 import { CasesPreview } from "@/components/cases-preview"
+import { About } from "@/components/about"
+import { Values } from "@/components/values"
 import { News } from "@/components/news"
 import { ContactCta } from "@/components/contact-cta"
 import { SiteFooter } from "@/components/site-footer"
@@ -24,6 +26,12 @@ export default function Page() {
         </AnimationGate>
         <AnimationGate>
           <CasesPreview />
+        </AnimationGate>
+        <AnimationGate>
+          <About />
+        </AnimationGate>
+        <AnimationGate>
+          <Values />
         </AnimationGate>
         <AnimationGate>
           <News />
