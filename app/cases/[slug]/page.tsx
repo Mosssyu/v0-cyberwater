@@ -190,11 +190,13 @@ export default async function CaseDetailPage({
                     href={`/cases/${r.slug}`}
                     className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
                   >
-                    <img
-                      src={r.image || "/placeholder.svg"}
-                      alt={r.title}
-                      className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+                    <div className="overflow-hidden rounded-t-2xl bg-black/20 p-3">
+                      <img
+                        src={r.image || "/placeholder.svg"}
+                        alt={r.title}
+                        className="aspect-[16/9] w-full rounded-xl object-contain"
+                      />
+                    </div>
                     <div className="p-5">
                       <h3 className="font-semibold text-foreground">
                         {r.title}

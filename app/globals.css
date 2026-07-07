@@ -888,3 +888,25 @@
 .cw-anim-off * {
   animation-play-state: paused !important;
 }
+
+/* ===== 新闻动态：垂直自动上滚（marquee） ===== */
+@keyframes news-marquee {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+.news-marquee-track {
+  animation: news-marquee var(--news-duration, 40s) linear infinite;
+  will-change: transform;
+}
+.news-marquee:hover .news-marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .news-marquee-track {
+    animation: none !important;
+  }
+}
