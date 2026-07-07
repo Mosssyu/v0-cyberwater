@@ -134,7 +134,7 @@ export const news: NewsItem[] = [
         caption: "三维 BIM 数字孪生与实时监测点位联动",
         paragraphs: [
           "系统对整个河道建筑、景观进行等比例建模，为用户提供沉浸感极强的自动/手动漫游功能。平台结合数字孪生技术，将 BIM 模型与运营数据绑定，打破视频监控、SCADA、设备管理等多平台间的数据孤岛。",
-          "结合 GIS、BIM 模型展示河道周围水质监测点位分布及实时监测报警点位，支撑一站式管理服务，极大增强运营人员的工作体验与效率。",
+          "结合 GIS、BIM 模型展示���道周围水质监测点位分布及实时监测报警点位，支撑一站式管理服务，极大增强运营人员的工作体验与效率。",
         ],
       },
     ],
@@ -152,8 +152,8 @@ export const news: NewsItem[] = [
     subtitle: "上海临港水厂数字孪生体，指导水厂按需生产、精准调控、低碳运营",
     summary:
       "运用机器学习、三维仿真、数据融合等技术，为临港水厂打造与物理水厂同步运行的数字孪生虚拟水厂，建立 BIM 三维水厂、AI 智能控制、设备预测性诊断等系统。",
-    image: "/scene-twin.png",
-    heroImage: "/scene-twin.png",
+    image: "/news/future-plant-twin.png",
+    heroImage: "/news/future-plant-twin.png",
     location: "上海",
     projectType: "数字孪生水厂",
     intro: [
@@ -247,7 +247,7 @@ export const news: NewsItem[] = [
     date: "2024-05-12",
     category: "公司新闻",
     tag: "公司新闻",
-    solutionTags: ["股权合作", "物联网", "软硬一体"],
+    solutionTags: ["股权合作", "物联网", "软硬��体"],
     title: "云建标与芒果传感签署股权合作协议",
     subtitle: "软硬一体化解决方案，赋能水务行业精细化管理",
     summary:
