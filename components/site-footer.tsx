@@ -29,6 +29,11 @@ const columns = [
   },
 ]
 
+const qrCodes = [
+  { label: "企业微信", src: "/qr/qr-work-wechat.png" },
+  { label: "销售微信", src: "/qr/qr-sales-wechat.png" },
+]
+
 const branches = [
   "深圳 · 南山区沙河西路南山智谷产业园",
   "成都 · 天府新区同森元气港",
@@ -94,6 +99,28 @@ export function SiteFooter() {
               </ul>
             </div>
           ))}
+
+          <div>
+            <h3 className="text-sm font-semibold text-white">关注与咨询</h3>
+            <ul className="mt-5 flex gap-4">
+              {qrCodes.map((qr) => (
+                <li key={qr.label} className="flex flex-col items-center gap-2">
+                  <div className="rounded-lg bg-white p-1.5 shadow-sm">
+                    <img
+                      src={qr.src || "/placeholder.svg"}
+                      alt={qr.label}
+                      loading="lazy"
+                      className="size-20 object-contain"
+                    />
+                  </div>
+                  <span className="text-xs text-blue-100/60">{qr.label}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs leading-relaxed text-blue-100/40">
+              扫码添加，获取产品资料与解决方案咨询
+            </p>
+          </div>
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-blue-100/50 sm:flex-row">
