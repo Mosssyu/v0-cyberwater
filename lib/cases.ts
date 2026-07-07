@@ -22,6 +22,15 @@ export interface CaseItem {
   results: string[]
   /** 项目亮点短标签 */
   tags: string[]
+  /** Hero 核心指标（大屏数字，4 项） */
+  metrics: { value: string; label: string }[]
+  /** 项目概览四要素 */
+  overview: {
+    target: string
+    coverage: string
+    value: string
+    period: string
+  }
 }
 
 // 一级筛选：解决方案类型
@@ -105,6 +114,18 @@ export const cases: CaseItem[] = [
       "基于 300+ 数字化项目实践沉淀可复制的运营经验",
     ],
     tags: ["数字化标准体系", "轻资产战略", "1+N 集约化"],
+    metrics: [
+      { value: "300+", label: "数字化项目" },
+      { value: "96.5%", label: "在线运行率" },
+      { value: "268 个", label: "管理协同节点" },
+      { value: "18.7 万/年", label: "运营优化收益" },
+    ],
+    overview: {
+      target: "构建集团统一数据标准与运营评价体系，实现 1+N 区域集约化运营。",
+      coverage: "覆盖水厂、泵站、管网、村镇污水、水环境等多业务场景。",
+      value: "形成行业首个企业数字化建设标准体系，支撑集团轻资产战略。",
+      period: "基于 300+ 项目多期持续迭代沉淀。",
+    },
   },
   {
     slug: "tianjin-chuangye",
@@ -130,6 +151,18 @@ export const cases: CaseItem[] = [
       "以云平台 + 数据服务方式赋能南部大区 16 座污水处理厂",
     ],
     tags: ["数据中台", "业财一体化", "区域集约化"],
+    metrics: [
+      { value: "16 座", label: "污水处理厂" },
+      { value: "10 个", label: "下属子公司" },
+      { value: "1 个", label: "区域数据中台" },
+      { value: "100%", label: "数据链路贯通" },
+    ],
+    overview: {
+      target: "以数据中台为底座，建设区域级运营管理平台。",
+      coverage: "覆盖南部大区 10 家子公司、16 座污水处理厂。",
+      value: "沉淀可复用的数据资产体系与业财融合经营体系。",
+      period: "一期 POM 落地 + 迭代升级 GOM。",
+    },
   },
 
   // ===== 二、排水一体化管理 =====
@@ -157,6 +190,18 @@ export const cases: CaseItem[] = [
       "为城市排水业务一体化管理提供可复制的示范样板",
     ],
     tags: ["厂网一体化", "排水防汛调度", "厂网协同"],
+    metrics: [
+      { value: "4 座", label: "污水处理厂" },
+      { value: "51 座", label: "泵站接入" },
+      { value: "400+ km", label: "管网覆盖" },
+      { value: "2 座", label: "污泥处理厂" },
+    ],
+    overview: {
+      target: "构建厂、站、网一体化运营管理平台。",
+      coverage: "覆盖厂、站、网及非水管理处全要素设施。",
+      value: "提升排水系统运行效率与管理协同能力。",
+      period: "厂网一体化平台整体交付。",
+    },
   },
   {
     slug: "dalian-drainage",
@@ -182,6 +227,18 @@ export const cases: CaseItem[] = [
       "为城市水务综合管理提供平台底座",
     ],
     tags: ["内涝应急", "配置化平台", "厂网延伸"],
+    metrics: [
+      { value: "6 类", label: "排水设施接入" },
+      { value: "全要素", label: "设施统一纳管" },
+      { value: "100%", label: "易涝点覆盖" },
+      { value: "模块化", label: "灵活扩展架构" },
+    ],
+    overview: {
+      target: "支撑城市排水日常运维与内涝应急管理。",
+      coverage: "接入排水户、泵站、管网、排口、易涝点等设施。",
+      value: "提升感知、协同、风险研判与应急处置水平。",
+      period: "平台底座建设 + 厂网一体化持续延伸。",
+    },
   },
 
   // ===== 三、数字水厂 =====
@@ -210,6 +267,18 @@ export const cases: CaseItem[] = [
       "助力构建新一代 AI 驱动的无人值守水厂运营模式",
     ],
     tags: ["AI 全流程", "人机协同", "无人值守"],
+    metrics: [
+      { value: "全流程", label: "AI 智慧运营" },
+      { value: "1 套", label: "CW-Agent 智能体" },
+      { value: "全要素", label: "三维数字映射" },
+      { value: "无人值守", label: "运营模式目标" },
+    ],
+    overview: {
+      target: "按“平台底座 + 智能控制 + 智慧运营”一体化建设。",
+      coverage: "覆盖设施、设备、工艺、人员、事件全要素。",
+      value: "实现主动监盘、异常预测与智能决策。",
+      period: "新一代 AI 驱动示范工程。",
+    },
   },
   {
     slug: "xian-third-reclaimed",
@@ -235,6 +304,18 @@ export const cases: CaseItem[] = [
       "为多厂复制推广和厂网一体化运营奠定数字化基础",
     ],
     tags: ["生产运行闭环", "三维可视化", "可追溯"],
+    metrics: [
+      { value: "1:1", label: "三维空间还原" },
+      { value: "6 类", label: "日常管理业务" },
+      { value: "全流程", label: "数据联动闭环" },
+      { value: "可复制", label: "多厂推广样板" },
+    ],
+    overview: {
+      target: "建设数字管理平台与三维数字孪生系统。",
+      coverage: "覆盖巡检、维修、化验、交接班、培训、绩效。",
+      value: "提升管理线上化、标准化与可视化水平。",
+      period: "从点状智能迈向全局智慧运营样板。",
+    },
   },
   {
     slug: "mianyang-taziba",
@@ -260,6 +341,18 @@ export const cases: CaseItem[] = [
       "获“双百跨越标杆型智慧污水厂”“全国先进城市污水处理厂”等荣誉",
     ],
     tags: ["黑灯水厂", "1+N 组团管理", "智慧运营标杆"],
+    metrics: [
+      { value: "黑灯", label: "无人值守水厂" },
+      { value: "5 座", label: "远程分支水厂" },
+      { value: "1+N", label: "组团式管理" },
+      { value: "多项", label: "国家级荣誉" },
+    ],
+    overview: {
+      target: "高标准建设智慧水务，实现黑灯水厂目标。",
+      coverage: "覆盖运行、设备维修、水质检测全流程。",
+      value: "提升管理效能并向分支水厂标准化赋能。",
+      period: "北控水务集团标杆型智慧污水厂。",
+    },
   },
 
   // ===== 四、三维数字孪生 =====
@@ -287,6 +380,18 @@ export const cases: CaseItem[] = [
       "实现再生水厂生产运营的���面三维运营管理",
     ],
     tags: ["全息透明", "工艺仿真", "数据驱动"],
+    metrics: [
+      { value: "全息", label: "透明水厂模型" },
+      { value: "全工艺链", label: "智能协同调控" },
+      { value: "实时", label: "数据驱动运营" },
+      { value: "100%", label: "三维运营管理" },
+    ],
+    overview: {
+      target: "打造全息透明的水厂数字孪生模型。",
+      coverage: "覆盖巡检、设备、控制回路与工艺原理。",
+      value: "推动水厂运营从经验驱动转向数据驱动。",
+      period: "构建“数字基座 + AI 模型”技术体系。",
+    },
   },
   {
     slug: "guangzhou-zengcheng",
@@ -303,7 +408,7 @@ export const cases: CaseItem[] = [
     scope: [
       "利用 BIM 模型建设地下空间三维场景",
       "全面展现运行状态、设备状态及工艺原理",
-      "UWB 人员定位、视频识别与数字孪生��合",
+      "UWB 人员定位、视频识��与数字孪生��合",
       "一键求助呼叫与人员快速定位",
     ],
     results: [
@@ -312,6 +417,18 @@ export const cases: CaseItem[] = [
       "形成“全息感知、统一预警、智能联动”的立体安全保障体系",
     ],
     tags: ["下沉式水厂", "UWB 人员定位", "立体安全"],
+    metrics: [
+      { value: "全地下", label: "下沉式布置" },
+      { value: "BIM", label: "地下空间建模" },
+      { value: "UWB", label: "人员精准定位" },
+      { value: "立体", label: "安全保障体系" },
+    ],
+    overview: {
+      target: "以 BIM 模型建设地下空间三维数字孪生。",
+      coverage: "全面展现运行状态、设备状态与工艺原理。",
+      value: "形成全息感知、统一预警、智能联动的安全体系。",
+      period: "全地下 + 地面景观公园新模式水厂。",
+    },
   },
   {
     slug: "shanghai-fangzha",
@@ -337,6 +454,18 @@ export const cases: CaseItem[] = [
       "打造极致交互体验，推动实际业务应用创新",
     ],
     tags: ["一图一屏", "泵闸防汛", "业务一体化"],
+    metrics: [
+      { value: "一图一屏", label: "防汛全景还原" },
+      { value: "高仿真", label: "三维孪生场景" },
+      { value: "多源", label: "数据融合接入" },
+      { value: "一体化", label: "业务流转闭环" },
+    ],
+    overview: {
+      target: "以 FPM® + Visual 构建城市智慧防汛体系。",
+      coverage: "整合 CIM、水文、水位流量与视频数据。",
+      value: "为科学决策提供全面支撑与业务一体化流转。",
+      period: "服务浦东新区城市内河运营管理。",
+    },
   },
   {
     slug: "heshan-water-env",
@@ -362,6 +491,18 @@ export const cases: CaseItem[] = [
       "吸引群众参与水环境保护与水生态修复，服务智慧城市运营",
     ],
     tags: ["流域数字孪生", "河长制", "六个一架构"],
+    metrics: [
+      { value: "45 条", label: "河流纳管" },
+      { value: "74 宗", label: "水库纳管" },
+      { value: "32 宗", label: "重点山塘" },
+      { value: "六个一", label: "信息化架构" },
+    ],
+    overview: {
+      target: "打造首个大尺度、全要素流域数字孪生。",
+      coverage: "将河流、水库、山塘全域纳入河长制管理。",
+      value: "构建“六个一”水环境信息化架构与上报闭环。",
+      period: "广东省全面推行河长制示范县。",
+    },
   },
 ]
 
