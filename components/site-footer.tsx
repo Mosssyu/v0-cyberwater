@@ -67,7 +67,7 @@ export function SiteFooter() {
                 service@cyberwater.cn
               </li>
             </ul>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-col items-start gap-2">
               {branches.map((b) => (
                 <span
                   key={b}
