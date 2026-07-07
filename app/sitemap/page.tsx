@@ -50,19 +50,13 @@ const groups: Group[] = [
     ],
   },
   {
-    title: "关于我们",
+    title: "关于与联系",
     links: [
-      { label: "公司介绍", href: "/#about" },
-      { label: "成长历程", href: "/#about" },
-      { label: "新闻动态", href: "/news" },
-    ],
-  },
-  {
-    title: "联系我们",
-    links: [
+      { label: "公司介绍", href: "/contact#about" },
       { label: "企业地址", href: "/contact" },
       { label: "联系方式", href: "/contact" },
       { label: "商务咨询", href: "/contact" },
+      { label: "新闻动态", href: "/news" },
     ],
   },
   {

@@ -22,8 +22,8 @@ const columns = [
   {
     title: "关于我们",
     links: [
-      { label: "公司介绍", href: "/#about" },
-      { label: "成长历程", href: "/#about" },
+      { label: "公司介绍", href: "/contact#about" },
+      { label: "联系我们", href: "/contact" },
       { label: "新闻动态", href: "/#news" },
     ],
   },
