@@ -87,7 +87,7 @@ export function CasesBrowser() {
               />
               {/* 解决方案类型徽标 */}
               <span
-                className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-background/85 px-3 py-1 text-xs font-medium text-foreground backdrop-blur"
+                className="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-background/85 px-3 py-1 text-xs font-medium text-foreground backdrop-blur"
               >
                 <span
                   className="size-2 rounded-full"
