@@ -46,8 +46,8 @@ export const news: NewsItem[] = [
   // ============ 案例分享 ============
   {
     slug: "qinhuangdao-cwpilot-flood",
-    year: "2024",
-    date: "2024-05-20",
+    year: "2020",
+    date: "2020-07-21",
     category: "案例分享",
     tag: "案例分享",
     solutionTags: ["防汛调度", "厂网一体化", "AI 预警"],
@@ -97,8 +97,8 @@ export const news: NewsItem[] = [
   },
   {
     slug: "cwvisual-universal-studios",
-    year: "2024",
-    date: "2024-05-18",
+    year: "2021",
+    date: "2021-07-10",
     category: "案例分享",
     tag: "案例分享",
     solutionTags: ["数字孪生", "BIM", "智慧运维"],
@@ -133,7 +133,7 @@ export const news: NewsItem[] = [
         image: "/scene-twin.png",
         caption: "三维 BIM 数字孪生与实时监测点位联动",
         paragraphs: [
-          "系统对整个河道建筑、景观进行等比例建模，为用户提供沉浸感极强的自动/手动漫游功能。平台结合数字孪生技术，将 BIM 模型与运营数据绑定，打破视频监控、SCADA、设备管理等多平台间的数据孤岛。",
+          "系统对整个河道建筑、景观进行等比例建模，为用户提供沉浸感极强的自动/手动漫游功能。平台结合数字孪生技术，将 BIM 模型与运营数据绑定，打破视频监控、SCADA、设备管理等多平台��的数据孤岛。",
           "结合 GIS、BIM 模型展示���道周围水质监测点位分布及实时监测报警点位，支撑一站式管理服务，极大增强运营人员的工作体验与效率。",
         ],
       },
@@ -143,8 +143,8 @@ export const news: NewsItem[] = [
   },
   {
     slug: "linkang-future-plant-twin",
-    year: "2024",
-    date: "2024-05-15",
+    year: "2022",
+    date: "2022-09-15",
     category: "案例分享",
     tag: "案例分享",
     solutionTags: ["AI 控制", "BIM", "数字孪生"],
@@ -197,8 +197,8 @@ export const news: NewsItem[] = [
   },
   {
     slug: "tianjin-chuangye-platform",
-    year: "2024",
-    date: "2024-04-28",
+    year: "2022",
+    date: "2022-06-28",
     category: "案例分享",
     tag: "案例分享",
     solutionTags: ["数据中台", "业财一体化", "集团管理"],
@@ -206,8 +206,8 @@ export const news: NewsItem[] = [
     subtitle: "共计 143.3 万吨/日处理规模的区域级数字化运营平台",
     summary:
       "依据统一数据标准采集融合生产、财务、行政、运行等多维度业务数据，为区域级、子公司级、项目级管理人员提供全面的经营决策辅助与数字化生产运营工具。",
-    image: "/case-pom.png",
-    heroImage: "/water-dashboard.png",
+    image: "/news/tianjin-chuangye-platform.png",
+    heroImage: "/news/tianjin-chuangye-platform.png",
     location: "天津",
     projectType: "区域集约化运营",
     intro: [
@@ -243,16 +243,16 @@ export const news: NewsItem[] = [
   // ============ 公司新闻 ============
   {
     slug: "mango-sensor-equity",
-    year: "2024",
-    date: "2024-05-12",
+    year: "2023",
+    date: "2023-02-20",
     category: "公司新闻",
     tag: "公司新闻",
-    solutionTags: ["股权合作", "物联网", "软硬��体"],
+    solutionTags: ["股权合��", "物联网", "软硬��体"],
     title: "云建标与芒果传感签署股权合作协议",
     subtitle: "软硬一体化解决方案，赋能水务行业精细化管理",
     summary:
       "双方将围绕智慧水务感知层与平台层展开深度合作，共同推动行业数字化升级，创新性地将 AI 技术引入水质在线分析仪。",
-    image: "/news/signing-ceremony.png",
+    image: "/news/mango-sensor-equity.png",
     intro: [
       "2024 年 2 月，我司与芒果传感技术（深圳）有限公司签署股权合作协议。芒果科技成立于 2023 年，主要业务为分析仪器仪表及传感器技术的研发与生产，产品均为国产独立自主研发，模块化部件设计、参数配置灵活、维护运行成本低。",
     ],
@@ -270,7 +270,7 @@ export const news: NewsItem[] = [
   {
     slug: "product-partner-chengtou",
     year: "2024",
-    date: "2024-05-10",
+    date: "2024-06-10",
     category: "公司新闻",
     tag: "公司新闻",
     solutionTags: ["产品化战略", "战略合作"],
@@ -278,7 +278,7 @@ export const news: NewsItem[] = [
     subtitle: "携手上海城建数字，打造全链条水务数字化服务能力",
     summary:
       "云建标“开放、共享”的业务理念和合作模式持续获得认可，与上海城建数字产业集团签订战略合作协议，联合打造涉水智慧化综合服务能力。",
-    image: "/news/product-partner.png",
+    image: "/news/product-partner-chengtou.png",
     intro: [
       "自 2024 年开启产品化战略以来，云建标“开放、共享”的业务理念和合作模式得到合作伙伴不断认可。近日，我司与上海城建数字产业集团有限公司（简称上海城建数字）签订战略合作协议。",
     ],
@@ -302,7 +302,7 @@ export const news: NewsItem[] = [
     subtitle: "与广州市政总院数字研究院达成首个 CW-Cloud 产品战略合作",
     summary:
       "基于 CW-Cube 业务整合架构与 CWFrame®、CWPilot®、CWVisual®、CWInsight® 系列产品及低代码平台，双方成立联合小组，量身打造智慧水厂与数字孪生水厂平台。",
-    image: "/news/signing-ceremony.png",
+    image: "/news/guangzhou-institute-partner.png",
     intro: [
       "近日，我司与广州市市政工程设计研究总院有限公司数字研究院（简称广州市政院）签订战略合作协议。广州市政总院始建于 1949 年，从事规划、设计和咨询、工程总承包及项目管理全过程服务，专业覆盖公路、城市基础设施建设各领域。",
     ],
@@ -326,7 +326,7 @@ export const news: NewsItem[] = [
     subtitle: "首次精彩亮相，三天累计接待数百人次",
     summary:
       "2023 年 4 月，中国城镇供水排水协会年会暨城镇水务技术与产品展在武汉举办，云建标作为中国水协团体会员首次精彩亮相。",
-    image: "/news/water-expo.png",
+    image: "/news/water-association-annual.png",
     intro: [
       "2023 年 4 月 13-15 日，中国城镇供水排水协会 2022/2023 年会暨城镇水务技术与产品展在武汉国际博览中心隆重举办。大会聚焦城镇水务行业现状及发展趋势，是集行业分析、政策解析、专家研讨、技术交流、产品展示于一体的行业盛会。",
     ],
@@ -346,7 +346,7 @@ export const news: NewsItem[] = [
   {
     slug: "cwcloud-wuhan-forum",
     year: "2024",
-    date: "2024-05-06",
+    date: "2024-03-30",
     category: "技术创新",
     tag: "技术创新",
     solutionTags: ["低代码", "微服务", "平台架构"],
@@ -354,7 +354,7 @@ export const news: NewsItem[] = [
     subtitle: "九年沉淀磨一剑，开箱即用的多业态数字化运营平台",
     summary:
       "云建标在《中国给水排水》第三届智慧水务融合创新技术论坛发表主题报告，分享如何将产品“积木块”快速拼搭，构建服务水务各业态运营的智慧化解决方案。",
-    image: "/news/forum-stage.png",
+    image: "/news/cwcloud-wuhan-forum.png",
     intro: [
       "2024 年《中国给水排水》第三届智慧水务融合创新技术论坛于 3 月 29-31 日在武汉召开。云建标作为大会支持单位发表了“智水积木云 —— 开箱即用的多业态数字化运营平台”主题报告。",
       "公司副总经理在报告中分享了云建标在智慧水务领域的产品化探索之路，介绍了团队如何通过服务多个水务集团、研发交付上百个系统和项目，成功打造出服务行业的模块化产品。",
@@ -366,7 +366,7 @@ export const news: NewsItem[] = [
         caption: "基于微服务架构的水务运营管理数字化平台",
         paragraphs: [
           "CW-Cloud 智水积木云是基于微服务架构打造的水务行业领先运营管理数字化平台，覆盖生产运营数字化、经营管理数字化、数据驱动智能化三个层面，主要包含 CW-Pilot、CW-Cube、CW-Visual、CW-Frame、CW-Insight 五大产品系列。",
-          "CW-Pilot 面向水务集团数字化运营、城乡供水一体化、水利数字孪生等多业务场景；CW-Cube 为多层级组织的执行层、管理层打造运营管理软件；CW-Visual 基于自研图形引擎打造数字孪生平台；CW-Frame 提供底层与中台共享服务组件；CW-Insight 基于历史数据实现在线仿真、全流程控制与科学调度。",
+          "CW-Pilot 面向水务集团数字化运营、城乡供水一体化、水利数字孪生等多业务场景；CW-Cube 为多层级组织的执行层、管理层打造��营管理软件；CW-Visual 基于自研图形引擎打造数字孪生平台；CW-Frame 提供底层与中台共享服务组件；CW-Insight 基于历史数据实现在线仿真、全流程控制与科学调度。",
         ],
       },
       {
@@ -382,8 +382,8 @@ export const news: NewsItem[] = [
   },
   {
     slug: "ai-bim-gis-scene",
-    year: "2024",
-    date: "2024-05-03",
+    year: "2023",
+    date: "2023-08-08",
     category: "技术创新",
     tag: "技术创新",
     solutionTags: ["AI", "BIM", "GIS", "融合应用"],
@@ -425,8 +425,8 @@ export const news: NewsItem[] = [
   // ============ 行业动态 ============
   {
     slug: "data-coding-standard",
-    year: "2024",
-    date: "2024-05-05",
+    year: "2023",
+    date: "2023-06-01",
     category: "行业动态",
     tag: "行业动态",
     solutionTags: ["数据标准", "数据治理"],
@@ -434,8 +434,8 @@ export const news: NewsItem[] = [
     subtitle: "参与团体标准编制，推动城镇水务数据规范化",
     summary:
       "由中国城镇供水排水协会组织出版发行的团体标准正式实施，北京云建标科技有限公司作为中国水协团体会员参与编制，为水务行业数据治理提供基础规范支撑。",
-    image: "/news/data-standard.png",
-    heroImage: "/news/data-standard.png",
+    image: "/news/data-coding-standard.png",
+    heroImage: "/news/data-coding-standard.png",
     intro: [
       "由中国城镇供水排水协会组织、中国标准出版社出版发行，自 2023 年 6 月 1 日起实施的《城镇水务数据分类编码及主数据识别规则》现已被批准为团体标准。北京云建标科技有限公司作为中国水协团体会员，参与该标准的编制。",
     ],
@@ -463,6 +463,9 @@ export const news: NewsItem[] = [
       "北京云建标科技作为专业从事智慧水务的信息化企业，参与该标准的编制工作，为城镇水务管理的数字化转型做出了贡献。未来，云建标还会在水务/水利数字化、信息化建设方面不断发挥优势。",
   },
 ]
+
+// 按发布时间倒序排列（最新在前）
+news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
 export function getNewsBySlug(slug: string) {
   return news.find((n) => n.slug === slug)
