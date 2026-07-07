@@ -8,7 +8,6 @@ import { CaseOverview } from "@/components/case/case-overview"
 import { CaseBuild } from "@/components/case/case-build"
 import { CaseOutcomes } from "@/components/case/case-outcomes"
 import { CaseCapabilities } from "@/components/case/case-capabilities"
-import { CaseGallery } from "@/components/case/case-gallery"
 import { CaseSidebar } from "@/components/case/case-sidebar"
 import { CaseRelated } from "@/components/case/case-related"
 import { cases, getCaseBySlug } from "@/lib/cases"
@@ -65,7 +64,6 @@ export default async function CaseDetailPage({
         </section>
 
         <CaseCapabilities />
-        <CaseGallery />
         <CaseRelated items={related} />
       </main>
       <SiteFooter />
