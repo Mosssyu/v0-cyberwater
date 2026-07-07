@@ -74,15 +74,20 @@ export function CasesBrowser() {
             href={`/cases/${item.slug}`}
             className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
           >
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden rounded-t-2xl bg-black/20 p-3">
               <img
                 src={item.image || "/placeholder.svg"}
                 alt={`${item.title}示意图`}
-                className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="aspect-[16/9] w-full rounded-xl object-contain"
+              />
+              {/* 底部渐变遮罩，与文字区自然过渡 */}
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-card to-transparent"
+                aria-hidden="true"
               />
               {/* 解决方案类型徽标 */}
               <span
-                className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/85 px-3 py-1 text-xs font-medium text-foreground backdrop-blur"
+                className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-background/85 px-3 py-1 text-xs font-medium text-foreground backdrop-blur"
               >
                 <span
                   className="size-2 rounded-full"
