@@ -88,7 +88,7 @@ export const cases: CaseItem[] = [
     products: ["CW-POM", "Visual", "CW-PPI"],
     location: "全国",
     client: "北控水务集团",
-    image: "/case-pom.png",
+    image: "/cases/beikong-shuiwu.png",
     summary:
       "依托北控水务数据标准、运营评价标准与企业知识库建设，形成行业首个全面的企业数字化建设标准体系，支撑集团轻资产战略下的运营管理数字化转型。",
     background:
@@ -113,7 +113,7 @@ export const cases: CaseItem[] = [
     products: ["CW-POM", "CW-GOM"],
     location: "天津",
     client: "天津创业环保南部区域公司",
-    image: "/case-pom.png",
+    image: "/cases/tianjin-chuangye.png",
     summary:
       "面向南部区域公司及下属 10 个子公司、16 座污水处理厂，以数据中台为底座建设区域级运营管理平台，沉淀可复用的数据资产体系与业财融合经营体系。",
     background:
@@ -140,7 +140,7 @@ export const cases: CaseItem[] = [
     products: ["CW-Cloud PPI", "防汛管理模块"],
     location: "河北·秦皇岛",
     client: "秦皇岛排水管理单位",
-    image: "/case-ppi.png",
+    image: "/cases/qinhuangdao.png",
     summary:
       "覆盖 4 座污水处理厂、2 座污泥处理厂、5 个非水管理处、51 座泵站及 400 余公里管网，构建厂、站、网一体化运营管理平台。",
     background:
@@ -165,7 +165,7 @@ export const cases: CaseItem[] = [
     products: ["CW-PPI", "防汛管理模块"],
     location: "辽宁·大连",
     client: "大连排水管理单位",
-    image: "/case-ppi.png",
+    image: "/cases/dalian-drainage.png",
     summary:
       "统一接入排水户、泵站、管网、排口、易涝点等设施数据，形成运行监测、资产管理、风险预警、事件处置、调度指挥与综合分析能力。",
     background:
@@ -192,7 +192,7 @@ export const cases: CaseItem[] = [
     products: ["CW-Agent", "CW-Cloud POM", "CW-IOT", "Visual", "智能巡检机器人"],
     location: "上海·临港",
     client: "上海城投",
-    image: "/case-agent.png",
+    image: "/cases/shanghai-linkang.png",
     summary:
       "围绕“平台底座 + 智能控制 + 智慧运营”建设，以 CW-IOT 汇聚全厂数据、CW-3DP 构建全要素三维数字映射，依托 CW-Agent 智能体实现主动监盘与智能决策。",
     background:
@@ -243,7 +243,7 @@ export const cases: CaseItem[] = [
     products: ["CW-Cloud POM", "Visual"],
     location: "四川·绵阳",
     client: "绵阳塔子坝污水处理厂",
-    image: "/case-agent.png",
+    image: "/cases/mianyang-taziba.png",
     summary:
       "作为北控水务集团标杆水厂及四川大区中心水厂，高标准建设智慧水务实现黑灯水厂目标，并以 1+N 组团式管理赋能其他分支水厂。",
     background:
@@ -270,7 +270,7 @@ export const cases: CaseItem[] = [
     products: ["Visual"],
     location: "陕西·西安",
     client: "西安净水公司",
-    image: "/case-visual.png",
+    image: "/cases/xian-third-twin.png",
     summary:
       "引入数字孪生技术打造全息透明的水厂模型，融合运营管理实时数据与工单数据，实现再生水厂生产运营的全面三维运营管理。",
     background:
@@ -295,7 +295,7 @@ export const cases: CaseItem[] = [
     products: ["Visual"],
     location: "广东·广州增城",
     client: "广州增城开发区",
-    image: "/case-visual.png",
+    image: "/cases/guangzhou-zengcheng.png",
     summary:
       "针对全地下布置、地面景观公园的新模式水厂，以 BIM 模型建设地下空间，结合 UWB 人员定位与视频识别构建立体安全保障体系。",
     background:
@@ -307,7 +307,7 @@ export const cases: CaseItem[] = [
       "一键求助呼叫与人员快速定位",
     ],
     results: [
-      "多维度监测人员与生产异常情况",
+      "��维度监测人员与生产异常情况",
       "保障应急撤离及时、无遗漏",
       "形成“全息感知、统一预警、智能联动”的立体安全保障体系",
     ],
@@ -320,7 +320,7 @@ export const cases: CaseItem[] = [
     products: ["FPM®系统", "Visual"],
     location: "上海·浦东",
     client: "上海泵闸管理署",
-    image: "/case-visual.png",
+    image: "/cases/shanghai-fangzha.png",
     summary:
       "服务浦东新区城市内河运营管理，以 FPM® 系统与 Visual 数字孪生结合，“一图一屏”全景还原防汛业务关键要素，打造三维场景下一体化业务流转。",
     background:
