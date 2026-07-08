@@ -308,10 +308,13 @@ export const news: NewsItem[] = [
     ],
     sections: [
       {
+        heading: "成立联合小组，量身打造智慧水务平台",
         paragraphs: [
           "基于云建标 CW-Cube 业务整合架构和 CWFrame®、CWPilot®、CWVisual®、CWInsight® 系列产品和低代码平台，结合广州市政院的业务沉淀，双方成立联合小组，为其量身打造服务于广州水投和行业市场的智慧水厂综合管理平台、智慧管网综合管理系统和数字孪生水厂。",
           "这是自云建标 2024 年开启产品化战略以来，以 CW-Cloud 智水积木云作为核心产品与行业合作伙伴达成的首个产品战略合作。双方还将在技术服务与业务拓展上开展紧密合作。",
         ],
+        image: "/news/guangzhou-signing-team.png",
+        caption: "云建标与广州市政总院数字研究院代表就 CW-Cloud 产品战略合作深入交流",
       },
     ],
   },
@@ -497,7 +500,7 @@ export const newsCategories: ("全部" | NewsCategory)[] = [
   "全部",
   "公司新闻",
   "案例分享",
-  "行业动态",
+  "行业���态",
   "技术创新",
 ]
 
