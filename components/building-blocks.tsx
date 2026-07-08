@@ -24,54 +24,64 @@ const VB_H = 520
 const ORIGIN_X = 450
 const ORIGIN_Y = 240
 
-// 玻璃晶体积木尺寸（适配 3×3 占位）
-const W = 54
-const QH = W / 4 // 13.5
-const H = 34
-const HALF_W = W / 2 // 27
-const HALF_TH = W / 4 // 13.5
+// 玻璃晶体积木尺寸（适配 3×3 金字塔占位；放大以容纳侧面系统简称）
+const W = 62
+const QH = W / 4 // 15.5
+const H = 38
+const HALF_W = W / 2 // 31
+const HALF_TH = W / 4 // 15.5
 
-// 金字塔式堆叠：底层 3×3 → 中层 2×2（居中偏移 0.5）→ 顶层 1×1
-// 每层自后向前逐格填充，形成宣传图中的彩色积木塔堆积感
-const PYRAMID_LAYERS: [number, number][][] = [
-  // 底层 3×3
-  [
-    [0, 0],
-    [1, 0],
-    [0, 1],
-    [2, 0],
-    [1, 1],
-    [0, 2],
-    [2, 1],
-    [1, 2],
-    [2, 2],
-  ],
-  // 中层 2×2（+0.5 居中对齐底层）
-  [
-    [0.5, 0.5],
-    [1.5, 0.5],
-    [0.5, 1.5],
-    [1.5, 1.5],
-  ],
-  // 顶层 1×1
-  [[1, 1]],
+// ---------- 立体金字塔堆叠（参考宣传图：3×3 底层 → 2×2 中层 → 1×1 塔尖） ----------
+// 关键设计：模块优先占据每层「前缘可见位」，这样 10 个模块即可撑起完整三层阶梯塔，
+// 后排被遮挡的支撑位由暗色玻璃支撑块自动补位，呈现坚实的堆积感而非平铺。
+type SlotDef = { layer: number; fcol: number; frow: number; hidden?: boolean }
+
+// 可见位优先的槽位序列（前缘中心向两侧展开，再逐层向上，最后才是隐藏支撑位）
+const SLOT_PRIORITY: SlotDef[] = [
+  // 底层前缘 5 个可见位（从最前角开始，左右交替展开）
+  { layer: 0, fcol: 2, frow: 2 },
+  { layer: 0, fcol: 2, frow: 1 },
+  { layer: 0, fcol: 1, frow: 2 },
+  { layer: 0, fcol: 2, frow: 0 },
+  { layer: 0, fcol: 0, frow: 2 },
+  // 中层（2×2 居中偏移 0.5）前缘 3 个可见位
+  { layer: 1, fcol: 1.5, frow: 1.5 },
+  { layer: 1, fcol: 1.5, frow: 0.5 },
+  { layer: 1, fcol: 0.5, frow: 1.5 },
+  // 塔尖
+  { layer: 2, fcol: 1, frow: 1 },
+  // 隐藏支撑位（后排，被前缘积木遮挡，不展示标签）
+  { layer: 0, fcol: 0, frow: 0, hidden: true },
+  { layer: 0, fcol: 1, frow: 0, hidden: true },
+  { layer: 0, fcol: 0, frow: 1, hidden: true },
+  { layer: 0, fcol: 1, frow: 1, hidden: true },
+  { layer: 1, fcol: 0.5, frow: 0.5, hidden: true },
 ]
 
-function towerSlot(index: number) {
-  let layer = 0
-  let rem = index
-  while (layer < PYRAMID_LAYERS.length - 1 && rem >= PYRAMID_LAYERS[layer].length) {
-    rem -= PYRAMID_LAYERS[layer].length
-    layer++
-  }
-  const cell = PYRAMID_LAYERS[layer][Math.min(rem, PYRAMID_LAYERS[layer].length - 1)]
-  const [fcol, frow] = cell
+// 后排支撑块位置（当上层有积木时渲染，撑住整座塔的视觉重量）
+const SUPPORT_BASE: SlotDef[] = [
+  { layer: 0, fcol: 0, frow: 0 },
+  { layer: 0, fcol: 1, frow: 0 },
+  { layer: 0, fcol: 0, frow: 1 },
+  { layer: 0, fcol: 1, frow: 1 },
+]
+const SUPPORT_MID: SlotDef[] = [{ layer: 1, fcol: 0.5, frow: 0.5 }]
+
+function slotPos(s: SlotDef) {
+  const cx = ORIGIN_X + (s.fcol - s.frow) * HALF_W
   return {
-    layer,
-    depth: fcol + frow,
-    cx: ORIGIN_X + (fcol - frow) * HALF_W,
-    cy: ORIGIN_Y + (fcol + frow) * HALF_TH - layer * H,
+    layer: s.layer,
+    depth: s.fcol + s.frow,
+    cx,
+    cy: ORIGIN_Y + (s.fcol + s.frow) * HALF_TH - s.layer * H,
+    hidden: !!s.hidden,
+    // 标签放在可见面：塔的右半侧积木右面朝外可见，左半侧（及中线）左面可见
+    labelFace: cx > ORIGIN_X ? ("right" as const) : ("left" as const),
   }
+}
+
+function towerSlot(index: number) {
+  return slotPos(SLOT_PRIORITY[Math.min(index, SLOT_PRIORITY.length - 1)])
 }
 
 function faces(cx: number, cy: number, w: number, qh: number, h: number) {
@@ -100,15 +110,32 @@ export function BuildingBlocks({
   const isActive = (id: string) => activeIds.includes(id)
 
   const activeBusiness = business.filter((b) => isActive(b.id))
-  const slotted = activeBusiness.map((m, i) => ({ m, slot: towerSlot(i) }))
+  // 取前 n 个优先槽位，再按「层级高→低、前缘优先」排序分配：
+  // 列表靠前的模块（集团运营等）落在塔尖/上层，基础平台类落在底层，与宣传图层级语义一致
+  const taken = SLOT_PRIORITY.slice(0, Math.min(activeBusiness.length, SLOT_PRIORITY.length)).map(slotPos)
+  const ordered = [...taken].sort((a, b) => b.layer - a.layer || b.depth - a.depth)
+  const slotted = activeBusiness.map((m, i) => ({ m, slot: ordered[Math.min(i, ordered.length - 1)] }))
   const drawn = [...slotted].sort((a, b) => a.slot.layer - b.slot.layer || a.slot.depth - b.slot.depth)
 
   const ghostModule = hoveredId && !isActive(hoveredId) ? business.find((b) => b.id === hoveredId) : undefined
   const ghostSlot = ghostModule ? towerSlot(activeBusiness.length) : null
 
-  // 已填充层数（金字塔各层容量 9 / 4 / 1）
+  // 已填充层数（可见位优先：>8 个模块即出现塔尖，>5 个出现中层）
   const n = activeBusiness.length
-  const filledLayers = n > 13 ? 3 : n > 9 ? 2 : 1
+  const filledLayers = n > 8 ? 3 : n > 5 ? 2 : 1
+
+  // 后排支撑块：上层有积木时补齐后排隐藏位（已被模块占用的隐藏位除外）
+  const occupied = new Set(
+    slotted.map(({ slot }) => `${slot.layer}:${slot.cx}:${slot.cy}`),
+  )
+  const supports = [
+    ...(n > 5 ? SUPPORT_BASE : []),
+    ...(n > 8 ? SUPPORT_MID : []),
+  ]
+    .map(slotPos)
+    .filter((s) => !occupied.has(`${s.layer}:${s.cx}:${s.cy}`))
+    .sort((a, b) => a.layer - b.layer || a.depth - b.depth)
+
   // 塔顶高度（后排顶面中心约 ORIGIN_Y - (filledLayers-1)*H）
   const towerTopY = ORIGIN_Y - (filledLayers - 1) * H
   // 「更多+」块：悬浮在整座塔顶中心上方（带旋转 + 上下浮动）
@@ -196,6 +223,18 @@ export function BuildingBlocks({
         {/* 承载面中心向上发光核心 */}
         <ellipse cx={PLATE.cx} cy={PLATE.cy} rx={26} ry={13} fill="oklch(0.82 0.15 250 / 0.9)" filter="url(#bb-glow)" />
 
+        {/* ===== 后排暗色玻璃支撑块（撑起金字塔堆积体量，被前缘彩色积木遮挡） ===== */}
+        {supports.map((s, i) => {
+          const f = faces(s.cx, s.cy, W, QH, H)
+          return (
+            <g key={`support-${i}`} style={{ pointerEvents: "none" }}>
+              <polygon points={f.left} fill="oklch(0.3 0.07 250 / 0.85)" stroke="oklch(0.6 0.1 245 / 0.5)" strokeWidth={0.8} />
+              <polygon points={f.right} fill="oklch(0.36 0.08 248 / 0.85)" stroke="oklch(0.6 0.1 245 / 0.5)" strokeWidth={0.8} />
+              <polygon points={f.top} fill="oklch(0.46 0.1 248 / 0.8)" stroke="oklch(0.72 0.12 245 / 0.75)" strokeWidth={1} />
+            </g>
+          )
+        })}
+
         {/* ===== 全息玻璃晶体积木（painter 排序，自底向上堆叠，完整落座于承载平台） ===== */}
         {drawn.map(({ m, slot }) => {
           const isHot = hoveredId === m.id
@@ -223,22 +262,29 @@ export function BuildingBlocks({
                 <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
                   <animate attributeName="stroke-opacity" values="0.12;0.7;0.12" dur="2.2s" repeatCount="indefinite" />
                 </line>
-                {/* 左侧面系统简称（沿等距左面角度排布，如宣传图积木标签） */}
-                {m.short && (
-                  <text
-                    x={slot.cx - HALF_W / 2}
-                    y={slot.cy + QH / 2 + H / 2 + 1}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    transform={`rotate(26.57 ${slot.cx - HALF_W / 2} ${slot.cy + QH / 2 + H / 2 + 1})`}
-                    style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: 0.6, pointerEvents: "none", paintOrder: "stroke" }}
-                    fill="#ffffff"
-                    stroke="oklch(0.2 0.05 250 / 0.65)"
-                    strokeWidth={2}
-                  >
-                    {m.short}
-                  </text>
-                )}
+                {/* 系统简称：绘制在朝外的可见侧面上（左缘积木用左面、右缘积木用右面），被遮挡积木不显示 */}
+                {m.short &&
+                  !slot.hidden &&
+                  (() => {
+                    const isLeft = slot.labelFace === "left"
+                    const tx = slot.cx + (isLeft ? -HALF_W / 2 : HALF_W / 2)
+                    const ty = slot.cy + QH / 2 + H / 2 + 1
+                    return (
+                      <text
+                        x={tx}
+                        y={ty}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        transform={`rotate(${isLeft ? 26.57 : -26.57} ${tx} ${ty})`}
+                        style={{ fontSize: 8, fontWeight: 700, letterSpacing: 0.2, pointerEvents: "none", paintOrder: "stroke" }}
+                        fill="#ffffff"
+                        stroke="oklch(0.2 0.05 250 / 0.65)"
+                        strokeWidth={2}
+                      >
+                        {m.short}
+                      </text>
+                    )
+                  })()}
                 {/* 底层积木与承载平台接触处的高亮底边（强化“已安装/卡接”关系） */}
                 {slot.layer === 0 && (
                   <polyline
