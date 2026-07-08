@@ -9,7 +9,7 @@ const navItems = [
   { label: "核心产品", href: "/#products" },
   { label: "解决方案与经典案例", href: "/#cases" },
   { label: "新闻动态", href: "/#news" },
-  { label: "联系我们", href: "/#contact" },
+  { label: "联系我们", href: "/#about" },
 ]
 
 export function SiteHeader() {
