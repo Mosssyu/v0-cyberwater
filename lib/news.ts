@@ -247,12 +247,13 @@ export const news: NewsItem[] = [
     date: "2023-02-20",
     category: "公司新闻",
     tag: "公司新闻",
-    solutionTags: ["股权合��", "物联网", "软硬��体"],
+    solutionTags: ["股权合作", "物联网", "软硬一体"],
     title: "云建标与芒果传感签署股权合作协议",
     subtitle: "软硬一体化解决方案，赋能水务行业精细化管理",
     summary:
       "双方将围绕智慧水务感知层与平台层展开深度合作，共同推动行业数字化升级，创新性地将 AI 技术引入水质在线分析仪。",
-    image: "/news/mango-sensor-equity.png",
+    image: "/news/mango-equity-banner.png",
+    heroImage: "/news/mango-equity-banner.png",
     intro: [
       "2024 年 2 月，我司与芒果传感技术（深圳）有限公司签署股权合作协议。芒果科技成立于 2023 年，主要业务为分析仪器仪表及传感器技术的研发与生产，产品均为国产独立自主研发，模块化部件设计、参数配置灵活、维护运行成本低。",
     ],
@@ -484,7 +485,7 @@ export const news: NewsItem[] = [
       {
         heading: "03 实施目标",
         image: "/news/standard-foreword.png",
-        caption: "标准前言，北京云建标科技有限公司位列参编单位",
+        caption: "标准前言，北���云建标科技有限公司位列参编单位",
         paragraphs: [
           "该规则的实施将形成���套统一的城镇水务数据分类编码及主数据识别规则，使城镇水务数据管理规范、有序、高效，数据之间可实现无障碍关联和交换，有效支撑城镇水务企业大数据��设。",
           "根据标准前言，北京云建标科技有限公司作为参编单位之一，与全国众多水务集团、设计研究院共同参与了标准的编制工作。",
