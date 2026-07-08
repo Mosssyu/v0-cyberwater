@@ -303,7 +303,8 @@ export const news: NewsItem[] = [
     subtitle: "与广州市政总院数字研究院达成首个 CW-Cloud 产品战略合作",
     summary:
       "基于 CW-Cube 业务整合架构与 CWFrame®、CWPilot®、CWVisual®、CWInsight® 系列产品及低代码平台，双方成立联合小组，量身打造智慧水厂与数字孪生水厂平台。",
-    image: "/news/guangzhou-institute-partner.png",
+    image: "/news/guangzhou-strategic-banner.png",
+    heroImage: "/news/guangzhou-strategic-banner.png",
     intro: [
       "近日，我司与广州市市政工程设计研究总院有限公司数字研究院（简称广州市政院）签订战略合作协议。广州市政总院始建于 1949 年，从事规划、设计和咨询、工程总承包及项目管理全过程服务，专业覆盖公路、城市基础设施建设各领域。",
     ],
