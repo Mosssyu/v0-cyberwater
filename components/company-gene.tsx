@@ -157,11 +157,29 @@ export function CompanyGene() {
         ))}
       </div>
 
-      {/* ---------- 移动端：简化堆叠 ---------- */}
+      {/* ---------- 移动端：轻量粒子球体舞台 + 卡片堆叠 ---------- */}
       <div className="lg:hidden">
-        <div className="mb-6 flex justify-center">
-          <Core />
+        {/* 轻量版三维粒子球体（移动端 24fps / 精简粒子，离屏与后台自动暂停） */}
+        <div className="relative mx-auto mb-6 aspect-square w-full max-w-[340px]">
+          <ParticleSphere className="absolute inset-0 size-full" />
+
+          {/* 轨道点缀标签 */}
+          {orbitTags.map((t) => (
+            <span
+              key={t.label}
+              className="gene-twinkle-anim pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/20 bg-card/60 px-2 py-0.5 text-[10px] text-muted-foreground backdrop-blur"
+              style={{ left: t.x, top: t.y, animationDelay: t.d }}
+            >
+              {t.label}
+            </span>
+          ))}
+
+          {/* 中心核心 */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <Core />
+          </div>
         </div>
+
         <div className="grid gap-3 sm:grid-cols-2">
           {cards.map((c) => (
             <GeneCardBox key={c.id} card={c} />
