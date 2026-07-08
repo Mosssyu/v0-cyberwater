@@ -27,28 +27,34 @@ import { BuildingBlocks, type ModuleDef } from "@/components/building-blocks"
 import { ProductScene } from "@/components/product-scene"
 
 // ---------- 产品模块池（数据驱动，按指定顺序） ----------
+// 每个模块独立配色（参考宣传底图的彩色积木塔：青/绿/紫/洋红/蓝/红/橙/金 等）
 const P = {
-  cyan: { top: "#46dced", left: "#0d6f9e", right: "#1597c0", glow: "oklch(0.78 0.13 205)" },
-  blue: { top: "#3a86e6", left: "#143a72", right: "#1d5fae", glow: "oklch(0.66 0.15 250)" },
-  sky: { top: "#47b8ff", left: "#104a8c", right: "#1c74c6", glow: "oklch(0.7 0.14 230)" },
-  teal: { top: "#2fd1c4", left: "#0c6f6a", right: "#149a91", glow: "oklch(0.78 0.14 185)" },
-  green: { top: "#3ce6b4", left: "#0e6f5c", right: "#16a585", glow: "oklch(0.78 0.14 175)" },
+  cyan: { top: "#35d6e8", left: "#0b6f86", right: "#129cb8", glow: "oklch(0.78 0.13 205)" },
+  green: { top: "#4ade80", left: "#14652f", right: "#1e9048", glow: "oklch(0.78 0.16 155)" },
+  violet: { top: "#a78bfa", left: "#45298a", right: "#6d4fc4", glow: "oklch(0.7 0.16 295)" },
+  magenta: { top: "#f472b6", left: "#7c2257", right: "#bb3f85", glow: "oklch(0.72 0.19 350)" },
+  blue: { top: "#3b82f6", left: "#153a75", right: "#1d5cba", glow: "oklch(0.64 0.17 255)" },
+  sky: { top: "#38bdf8", left: "#0c4a73", right: "#1580b8", glow: "oklch(0.74 0.14 230)" },
+  teal: { top: "#2dd4bf", left: "#0c5f57", right: "#149c8d", glow: "oklch(0.78 0.14 180)" },
+  red: { top: "#f87171", left: "#7c1f1f", right: "#c23b3b", glow: "oklch(0.66 0.2 25)" },
+  orange: { top: "#fb923c", left: "#84400f", right: "#c9661d", glow: "oklch(0.74 0.17 55)" },
+  gold: { top: "#facc15", left: "#6f5405", right: "#bd950e", glow: "oklch(0.85 0.16 95)" },
   ai: { top: "#bfe9ff", left: "#2f6fd0", right: "#3f9fe6", glow: "oklch(0.8 0.12 220)" },
 }
 
-// 列表顺序即为用户指定顺序；col/row 仅决定等距组合体中的位置
+// 列表顺序即为用户指定顺序；short 为积木上展示的系统简称
 const productModules: ModuleDef[] = [
-  { id: "group", label: "集团运营管理", col: 0, row: 0, palette: P.cyan },
-  { id: "integrated", label: "厂网河湖一体化", col: 1, row: 0, palette: P.blue },
-  { id: "sewage", label: "村镇污水", col: 2, row: 0, palette: P.green },
-  { id: "plant", label: "水厂运营管理", col: 0, row: 1, palette: P.cyan },
-  { id: "pump", label: "泵闸站管理", col: 1, row: 1, palette: P.sky },
-  { id: "pipe", label: "管网管理", col: 2, row: 1, palette: P.blue },
-  { id: "reservoir", label: "水库标准化管理", col: 0, row: 2, palette: P.teal },
-  { id: "flood", label: "城市防汛内涝管理", col: 1, row: 2, palette: P.sky },
-  { id: "iot", label: "IoT 物联平台", col: 2, row: 2, palette: P.teal },
-  { id: "sso", label: "SSO 统一登录", col: 3, row: 1, palette: P.blue },
-  { id: "ai", label: "水务智能体", col: 1, row: 3, palette: P.ai },
+  { id: "group", label: "集团运营管理", short: "集团运营", col: 0, row: 0, palette: P.cyan },
+  { id: "integrated", label: "厂网河湖一体化", short: "厂网河湖", col: 1, row: 0, palette: P.green },
+  { id: "sewage", label: "村镇污水", short: "村镇污水", col: 2, row: 0, palette: P.violet },
+  { id: "plant", label: "水厂运营管理", short: "水厂运营", col: 0, row: 1, palette: P.magenta },
+  { id: "pump", label: "泵闸站管理", short: "泵闸站", col: 1, row: 1, palette: P.sky },
+  { id: "pipe", label: "管网管理", short: "管网管理", col: 2, row: 1, palette: P.blue },
+  { id: "reservoir", label: "水库标准化管理", short: "水库标化", col: 0, row: 2, palette: P.teal },
+  { id: "flood", label: "城市防汛内涝管理", short: "城市防汛", col: 1, row: 2, palette: P.red },
+  { id: "iot", label: "IoT 物联平台", short: "IoT平台", col: 2, row: 2, palette: P.orange },
+  { id: "sso", label: "SSO 统一登录", short: "统一登录", col: 3, row: 1, palette: P.gold },
+  { id: "ai", label: "水务智能体", short: "AI智能体", col: 1, row: 3, palette: P.ai },
 ]
 
 // 模块池列出全部业务模块（含水务智能体，共 11 类）
@@ -142,13 +148,13 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
   },
   flood: {
     icon: CloudRain,
-    desc: "城市内涝预警、排水调度与应急指挥一体化，提升城市防汛能力。",
+    desc: "城市内涝预警、排���调度与应急指挥一体化，提升城市防汛能力。",
     features: ["内涝预警", "排水调度", "应急指挥"],
     points: [
       "以水力模型应用为核心，强化预报、预警、预演、预案“四预”能力",
       "基于未来降雨与潮位数据开展水位模拟推演，超阈值自动匹配并下发预案",
       "预案库支持结构化配置，人员、物资、闸站可按等级灵活调整",
-      "复盘历史重大防汛事件，模型推演反向优化预案配置",
+      "复盘历史重大防���事件，模型推演反向优化预案配置",
       "贯通预报、预警、上级指令等事件来源，下发、审批、执行、总结全流程闭环",
     ],
   },
@@ -501,8 +507,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                     onClick={() => toggleModule(m.id)}
                     className="flex items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-[12px] transition-all duration-300"
                     style={{
-                      borderColor: on ? "oklch(0.7 0.13 210 / 0.55)" : hot ? "oklch(0.6 0.1 215 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
-                      backgroundColor: on ? "oklch(0.7 0.14 215 / 0.16)" : hot ? "oklch(0.5 0.06 235 / 0.2)" : "oklch(0.2 0.03 245 / 0.35)",
+                      borderColor: on ? `${m.palette.top}8c` : hot ? `${m.palette.top}66` : "oklch(0.32 0.03 240 / 0.55)",
+                      backgroundColor: on ? `${m.palette.top}24` : hot ? `${m.palette.top}1a` : "oklch(0.2 0.03 245 / 0.35)",
                       opacity: on || hot ? 1 : 0.78,
                     }}
                   >

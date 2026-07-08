@@ -7,6 +7,8 @@ export type ModulePalette = { top: string; left: string; right: string; glow: st
 export type ModuleDef = {
   id: string
   label: string
+  /** 积木上展示的系统简称 */
+  short?: string
   col: number
   row: number
   palette: ModulePalette
@@ -29,23 +31,41 @@ const H = 34
 const HALF_W = W / 2 // 27
 const HALF_TH = W / 4 // 13.5
 
-// 3×3 占位填充顺序（自后向前、自底层向上层逐格填充）
-const FOOT: [number, number][] = [
-  [0, 0],
-  [1, 0],
-  [0, 1],
-  [2, 0],
-  [1, 1],
-  [0, 2],
-  [2, 1],
-  [1, 2],
-  [2, 2],
+// 金字塔式堆叠：底层 3×3 → 中层 2×2（居中偏移 0.5）→ 顶层 1×1
+// 每层自后向前逐格填充，形成宣传图中的彩色积木塔堆积感
+const PYRAMID_LAYERS: [number, number][][] = [
+  // 底层 3×3
+  [
+    [0, 0],
+    [1, 0],
+    [0, 1],
+    [2, 0],
+    [1, 1],
+    [0, 2],
+    [2, 1],
+    [1, 2],
+    [2, 2],
+  ],
+  // 中层 2×2（+0.5 居中对齐底层）
+  [
+    [0.5, 0.5],
+    [1.5, 0.5],
+    [0.5, 1.5],
+    [1.5, 1.5],
+  ],
+  // 顶层 1×1
+  [[1, 1]],
 ]
-const PER_LAYER = FOOT.length
 
 function towerSlot(index: number) {
-  const layer = Math.floor(index / PER_LAYER)
-  const [fcol, frow] = FOOT[index % PER_LAYER]
+  let layer = 0
+  let rem = index
+  while (layer < PYRAMID_LAYERS.length - 1 && rem >= PYRAMID_LAYERS[layer].length) {
+    rem -= PYRAMID_LAYERS[layer].length
+    layer++
+  }
+  const cell = PYRAMID_LAYERS[layer][Math.min(rem, PYRAMID_LAYERS[layer].length - 1)]
+  const [fcol, frow] = cell
   return {
     layer,
     depth: fcol + frow,
@@ -86,8 +106,9 @@ export function BuildingBlocks({
   const ghostModule = hoveredId && !isActive(hoveredId) ? business.find((b) => b.id === hoveredId) : undefined
   const ghostSlot = ghostModule ? towerSlot(activeBusiness.length) : null
 
-  // 已填充层数（每层 3×3 = 9 格）
-  const filledLayers = Math.max(1, Math.ceil(activeBusiness.length / PER_LAYER))
+  // 已填充层数（金字塔各层容量 9 / 4 / 1）
+  const n = activeBusiness.length
+  const filledLayers = n > 13 ? 3 : n > 9 ? 2 : 1
   // 塔顶高度（后排顶面中心约 ORIGIN_Y - (filledLayers-1)*H）
   const towerTopY = ORIGIN_Y - (filledLayers - 1) * H
   // 「更多+」块：悬浮在整座塔顶中心上方（带旋转 + 上下浮动）
@@ -202,6 +223,22 @@ export function BuildingBlocks({
                 <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
                   <animate attributeName="stroke-opacity" values="0.12;0.7;0.12" dur="2.2s" repeatCount="indefinite" />
                 </line>
+                {/* 左侧面系统简称（沿等距左面角度排布，如宣传图积木标签） */}
+                {m.short && (
+                  <text
+                    x={slot.cx - HALF_W / 2}
+                    y={slot.cy + QH / 2 + H / 2 + 1}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    transform={`rotate(26.57 ${slot.cx - HALF_W / 2} ${slot.cy + QH / 2 + H / 2 + 1})`}
+                    style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: 0.6, pointerEvents: "none", paintOrder: "stroke" }}
+                    fill="#ffffff"
+                    stroke="oklch(0.2 0.05 250 / 0.65)"
+                    strokeWidth={2}
+                  >
+                    {m.short}
+                  </text>
+                )}
                 {/* 底层积木与承载平台接触处的高亮底边（强化“已安装/卡接”关系） */}
                 {slot.layer === 0 && (
                   <polyline
