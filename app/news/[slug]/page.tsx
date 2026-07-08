@@ -125,11 +125,11 @@ export default async function NewsDetailPage({
               </div>
 
               {/* 右：主视觉 */}
-              <div className="ring-hairline overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl shadow-black/30">
+              <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] shadow-2xl shadow-black/20 ring-1 ring-white/[0.04]">
                 <img
                   src={hero || "/placeholder.svg"}
                   alt={item.title}
-                  className="aspect-[16/10] w-full object-cover"
+                  className="w-full object-contain"
                 />
               </div>
             </div>
