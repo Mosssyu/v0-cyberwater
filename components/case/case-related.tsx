@@ -23,6 +23,8 @@ export function CaseRelated({ items }: { items: CaseItem[] }) {
                   src={r.image || "/placeholder.svg"}
                   alt={r.title}
                   className="aspect-[16/9] w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="flex flex-1 flex-col p-5">

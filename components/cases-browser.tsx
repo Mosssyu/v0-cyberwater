@@ -79,6 +79,8 @@ export function CasesBrowser() {
                 src={item.image || "/placeholder.svg"}
                 alt={`${item.title}示意图`}
                 className="aspect-[16/9] w-full rounded-xl object-contain"
+                loading="lazy"
+                decoding="async"
               />
               {/* 底部渐变遮罩，与文字区自然过渡 */}
               <div

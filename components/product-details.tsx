@@ -185,6 +185,8 @@ function ProductDetail({ data }: { data: ProductData }) {
                   alt={`${data.title} 系统示意图`}
                   className="size-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
                   crossOrigin="anonymous"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <span
                   className="pointer-events-none absolute inset-0 opacity-50"

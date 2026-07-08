@@ -130,6 +130,8 @@ export default async function NewsDetailPage({
                   src={hero || "/placeholder.svg"}
                   alt={item.title}
                   className="w-full object-contain"
+                  fetchPriority="high"
+                  decoding="async"
                 />
               </div>
             </div>
