@@ -12,7 +12,7 @@ const aboutStats = [
 
 export function About() {
   return (
-    <section id="about" className="border-b border-border/60 py-16">
+    <section id="about" className="scroll-mt-16 border-b border-border/60 py-16">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
