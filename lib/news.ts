@@ -265,7 +265,7 @@ export const news: NewsItem[] = [
       },
     ],
     conclusion:
-      "未来，双方将继续发挥各自优势、加强合作，为水务行业带来更多创新性、集成性的一体化产品与方案。",
+      "未来，双方将继续发挥各自优势、加强合作，��水务行业带来更多创新性、集成性的一体化产品与方案。",
   },
   {
     slug: "product-partner-chengtou",
@@ -354,7 +354,7 @@ export const news: NewsItem[] = [
     subtitle: "九年沉淀磨一剑，开箱即用的多业态数字化运营平台",
     summary:
       "云建标在《中国给水排水》第三届智慧水务融合创新技术论坛发表主题报告，分享如何将产品“积木块”快速拼搭，构建服务水务各业态运营的智慧化解决方案。",
-    image: "/news/cwcloud-wuhan-forum.png",
+    image: "/news/cwcloud-wuhan-forum-photo.jpg",
     intro: [
       "2024 年《中国给水排水》第三届智慧水务融合创新技术论坛于 3 月 29-31 日在武汉召开。云建标作为大会支持单位发表了“智水积木云 —— 开箱即用的多业态数字化运营平台”主题报告。",
       "公司副总经理在报告中分享了云建标在智慧水务领域的产品化探索之路，介绍了团队如何通过服务多个水务集团、研发交付上百个系统和项目，成功打造出服务行业的模块化产品。",
@@ -362,10 +362,10 @@ export const news: NewsItem[] = [
     sections: [
       {
         heading: "CW-Cloud 智水积木云五大产品系列",
-        image: "/platform-architecture-wide.png",
-        caption: "基于微服务架构的水务运营管理数字化平台",
+        image: "/news/cw-product-tower.png",
+        caption: "CW-Pilot、CW-Cube、CW-Visual、CW-Frame、CW-Insight 五大产品系列架构",
         paragraphs: [
-          "CW-Cloud 智水积木云是基于微服务架构打造的水务行业领先运营管理数字化平台，覆盖生产运营数字化、经营管理数字化、数据驱动智能化三个层面，主要包含 CW-Pilot、CW-Cube、CW-Visual、CW-Frame、CW-Insight 五大产品系列。",
+          "CW-Cloud 智水积木云是基于微服务架构打造的水务行业领先运营管理数字化平��，覆盖生产运营数字化、经营管理数字化、数据驱动智能化三个层面，主要包含 CW-Pilot、CW-Cube、CW-Visual、CW-Frame、CW-Insight 五大产品系列。",
           "CW-Pilot 面向水务集团数字化运营、城乡供水一体化、水利数字孪生等多业务场景；CW-Cube 为多层级组织的执行层、管理层打造��营管理软件；CW-Visual 基于自研图形引擎打造数字孪生平台；CW-Frame 提供底层与中台共享服务组件；CW-Insight 基于历史数据实现在线仿真、全流程控制与科学调度。",
         ],
       },

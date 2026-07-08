@@ -183,7 +183,7 @@ export default async function NewsDetailPage({
                           src={section.image || "/placeholder.svg"}
                           alt={section.caption || section.heading || item.title}
                           loading="lazy"
-                          className="aspect-[16/9] w-full object-cover"
+                          className="mx-auto max-h-[760px] w-full object-contain"
                         />
                         {section.caption && (
                           <figcaption className="border-t border-border px-4 py-3 text-center text-xs text-muted-foreground">
