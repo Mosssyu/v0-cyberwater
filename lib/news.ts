@@ -152,8 +152,8 @@ export const news: NewsItem[] = [
     subtitle: "上海临港水厂数字孪生体，指导水厂按需生产、精准调控、低碳运营",
     summary:
       "运用机器学习、三维仿真、数据融合等技术，为临港水厂打造与物理水厂同步运行的数字孪生虚拟水厂，建立 BIM 三维水厂、AI 智能控制、设备预测性诊断等系统。",
-    image: "/news/future-plant-twin.png",
-    heroImage: "/news/future-plant-twin.png",
+    image: "/news/linkang-project-promo.png",
+    heroImage: "/news/linkang-project-promo.png",
     location: "上海",
     projectType: "数字孪生水厂",
     intro: [
@@ -163,6 +163,8 @@ export const news: NewsItem[] = [
     sections: [
       {
         heading: "01 盘活数据资源赋能智慧决策",
+        image: "/news/linkang-twin-dashboard.png",
+        caption: "临港水厂智慧中枢——数字孪生运营大屏",
         paragraphs: [
           "项目为临港水厂打造了 BIM 三维可视化的全新运营决策模式。数字孪生虚拟水厂融合物理水厂海量运营数据，打通设计、施工、运营阶段的数据壁垒，内嵌水厂运行、设备、安全、经营等全面管理指标库。",
           "管理人员能够随时随地通过线上孪生水厂查看物理水厂的运行态势、指标数据、人员位置、设备状态、视频画面及各类报警情况，及时发现异常并科学决策。",
