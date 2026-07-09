@@ -19,7 +19,7 @@ export function Hero() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-card/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur">
               <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
-              企业级 AI 水务操作系统 · CW-Cloud
+              源于水务集团运营实践
             </div>
 
             {/* 主标题 */}

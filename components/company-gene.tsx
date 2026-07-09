@@ -133,7 +133,7 @@ export function CompanyGene() {
         <span className="hidden h-px w-12 bg-gradient-to-r from-transparent to-accent/40 lg:block" aria-hidden="true" />
         <span className="size-1.5 shrink-0 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
         <h2 className="text-sm font-semibold tracking-wide text-foreground/90">
-          公司基因 / 水务运营数字化能力沉淀
+          十余年水务数字化能力沉淀
         </h2>
       </div>
 
