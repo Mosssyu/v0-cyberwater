@@ -616,7 +616,7 @@
   animation-delay: 1.9s;
 }
 
-/* 光柱内粒���向下流动 */
+/* 光柱内粒子向下流动 */
 @keyframes cw-stem-particle {
   0% {
     top: 0%;
@@ -666,7 +666,7 @@
   animation: cw-drop-glow 3.6s ease-in-out infinite;
 }
 
-/* 水花溅射粒子：从中心向外扩散并淡出 */
+/* 水花溅落粒子：从中心向外扩散并淡出 */
 @keyframes cw-splash {
   0% {
     transform: translate(-50%, -50%) scale(0.3);

@@ -148,13 +148,13 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
   },
   flood: {
     icon: CloudRain,
-    desc: "城市内涝预警、排���调度与应急指挥一体化，提升城市防汛能力。",
+    desc: "城市内涝预警、排水调度与应急指挥一体化，提升城市防汛能力。",
     features: ["内涝预警", "排水调度", "应急指挥"],
     points: [
-      "以水��模型应用为核心，强化预报、预警、预演、预案“四预”能力",
+      "以水文模型应用为核心，强化预报、预警、预演、预案“四预”能力",
       "基于未来降雨与潮位数据开展水位模拟推演，超阈值自动匹配并下发预案",
       "预案库支持结构化配置，人员、物资、闸站可按等级灵活调整",
-      "复盘历史重大防���事件，模型推演反向优化预案配置",
+      "复盘历史重大防汛事件，模型推演反向优化预案配置",
       "贯通预报、预警、上级指令等事件来源，下发、审批、执行、总结全流程闭环",
     ],
   },
@@ -297,7 +297,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
   const flowIdx = custom ? inferFlow(custom) : demoStages[stageIdx].flow
 
-  // 展示区聚焦的产品：优先悬停项，其次点击聚焦��
+  // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
   const showId = hoveredId ?? focusId
   const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
   const showInfo = productInfo[showModule.id]
@@ -319,7 +319,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.1_0.03_248)]">
-      {/* ===== 主视觉舞台：右侧数字孪生场景为绝对主角，左/上/下为轻量叠��� ===== */}
+      {/* ===== 主视觉舞台：右侧数字孪生场景为绝对主角，左/上/下为轻量叠加 ===== */}
       <div className="relative min-h-[600px] w-full lg:min-h-[680px]">
         {/* 底图：全幅数字孪生沙盘（发光平台 + 中心积木组合体） */}
         <div className="absolute inset-0">

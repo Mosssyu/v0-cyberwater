@@ -199,7 +199,7 @@ export function BuildingBlocks({
           opacity={0.4}
         />
 
-        {/* ===== 发光承载平台 / ��槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
+        {/* ===== 发光承载平台 / 卡槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
         {/* 平台底部投影辉光 */}
         <ellipse cx={PLATE.cx} cy={PLATE.cy + PLATE.h + 8} rx={PLATE.w / 2 + 16} ry={PLATE.qh * 0.7} fill="oklch(0.55 0.2 255 / 0.32)" filter="url(#bb-soft)" />
         {/* 平台厚度侧面 */}
@@ -302,7 +302,7 @@ export function BuildingBlocks({
           )
         })}
 
-        {/* 幽灵预览块（悬停未选模块���，预览下一个槽位） */}
+        {/* 幽灵预览块（悬停未选模块时，预览下一个槽位） */}
         {ghostModule && ghostSlot && (
           <g style={{ pointerEvents: "none" }}>
             {(() => {
