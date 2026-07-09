@@ -69,9 +69,10 @@ export default async function NewsDetailPage({
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main>
-        {/* 顶部 Hero：沉浸式融合头图（图片背景 + 文字浮层，与正文同宽） */}
-        <section className="bg-background">
-          <div className="mx-auto max-w-7xl px-6 pt-8">
+        {/* 顶部 Hero：左侧文字 42% + 右侧大图 58%，无边框、图片清晰完整 */}
+        <section className="relative overflow-hidden bg-background">
+          <div className="absolute inset-0 bg-grid bg-grid-fade opacity-40" aria-hidden />
+          <div className="relative mx-auto max-w-7xl px-6 pt-8">
             {/* 面包屑 */}
             <nav className="flex flex-wrap items-center gap-1.5 text-sm text-blue-100/70" aria-label="面包屑">
               <Link href="/" className="transition-colors hover:text-white">
@@ -87,42 +88,10 @@ export default async function NewsDetailPage({
               <span className="text-white/90">正文</span>
             </nav>
 
-            {/* 沉浸式头图：右侧主视觉图片 + 左侧文字浮层，中间渐变自然融合 */}
-            <div className="relative mt-4 h-[360px] overflow-hidden sm:h-[400px] lg:h-[430px]">
-              {/* 右侧轻微蓝色辉光，增强主视觉展示感 */}
-              <div
-                className="absolute inset-y-0 right-0 hidden w-[68%] lg:block"
-                aria-hidden
-                style={{
-                  background: "radial-gradient(70% 60% at 78% 45%, rgba(56,189,248,0.12) 0%, rgba(56,189,248,0) 60%)",
-                }}
-              />
-              {/* 主视觉图片：仅置于右侧约 68% 区域，完整清晰展示、不裁切 */}
-              <img
-                src={hero || "/placeholder.svg"}
-                alt={item.title}
-                className="absolute right-0 top-0 h-full w-full object-contain object-center opacity-100 lg:w-[68%] lg:object-right"
-                fetchPriority="high"
-                decoding="async"
-              />
-              {/* 横向渐变：左侧深、快速向右透明，仅覆盖文字区域，不压暗右侧图片 */}
-              <div
-                className="absolute inset-0"
-                aria-hidden
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(5,11,18,0.96) 0%, rgba(5,11,18,0.88) 28%, rgba(5,11,18,0.55) 48%, rgba(5,11,18,0.18) 68%, rgba(5,11,18,0.04) 100%)",
-                }}
-              />
-              {/* 底部轻微渐变：自然过渡到页面背景 */}
-              <div
-                className="absolute inset-x-0 bottom-0 h-24"
-                aria-hidden
-                style={{ background: "linear-gradient(180deg, rgba(5,11,18,0) 0%, #050B12 100%)" }}
-              />
-
-              {/* 文字内容层 */}
-              <div className="relative z-10 flex h-full w-full flex-col justify-center px-8 py-10 sm:px-10 lg:w-[48%]">
+            {/* 左右布局：文字区 42% / 图片区 58% */}
+            <div className="grid items-center gap-8 py-8 lg:min-h-[440px] lg:grid-cols-[0.42fr_0.58fr] lg:gap-6">
+              {/* 左侧文字 */}
+              <div className="flex flex-col justify-center">
                 <div className="flex flex-wrap items-center gap-3 text-xs">
                   <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
                     {item.tag}
@@ -138,25 +107,51 @@ export default async function NewsDetailPage({
                     </span>
                   )}
                 </div>
-                <h1 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
+                <h1 className="mt-5 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-[1.15]">
                   {item.title}
                 </h1>
-                <p className="mt-3 max-w-xl text-pretty text-base leading-relaxed text-blue-100/85">
+                <p className="mt-4 text-pretty text-base leading-relaxed text-blue-100/85 lg:text-lg">
                   {item.subtitle}
                 </p>
-                <div className="mt-5 flex flex-wrap gap-2">
+                <div className="mt-6 flex flex-wrap gap-2">
                   {item.solutionTags.map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
+                      className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-xs font-medium text-cyan-100"
                     >
                       #{t}
                     </span>
                   ))}
                 </div>
               </div>
+
+              {/* 右侧主视觉大图 */}
+              <div className="relative h-[280px] sm:h-[360px] lg:h-[420px]">
+                {/* 轻微蓝色外发光 */}
+                <div
+                  className="absolute inset-0"
+                  aria-hidden
+                  style={{
+                    background: "radial-gradient(60% 55% at 62% 48%, rgba(56,189,248,0.16) 0%, rgba(56,189,248,0) 62%)",
+                  }}
+                />
+                <img
+                  src={hero || "/placeholder.svg"}
+                  alt={item.title}
+                  className="relative h-full w-full object-contain object-center lg:object-right"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </div>
             </div>
           </div>
+
+          {/* 底部暗色渐变，自然过渡到正文 */}
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-20"
+            aria-hidden
+            style={{ background: "linear-gradient(180deg, rgba(5,11,18,0) 0%, #050B12 100%)" }}
+          />
         </section>
 
         {/* 正文 + 侧栏 */}
