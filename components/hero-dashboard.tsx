@@ -116,11 +116,13 @@ function MapView() {
   return (
     <div className="relative h-full min-h-44 overflow-hidden rounded-lg border border-white/8 bg-[oklch(0.12_0.02_240)]">
       {/* 写实城市夜景底图 */}
-      <img
-        src="/dashboard-city-map.png"
-        alt="厂网河湖一体化城市总览地图"
-        className="absolute inset-0 size-full object-cover opacity-90"
-      />
+          <img
+            src="/dashboard-city-map.png"
+            alt="厂网河湖一体化城市总览地图"
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover opacity-90"
+          />
       {/* 顶部压暗渐变，保证标题可读 */}
       <div
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,oklch(0.1_0.02_240/0.7)_0%,transparent_30%,transparent_70%,oklch(0.1_0.02_240/0.55)_100%)]"
@@ -344,6 +346,8 @@ export function HeroDashboard() {
           <img
             src="/plant-aerial-gold.png"
             alt="水厂俯视 3D 实景，金色厂房与蓝色处理池"
+            loading="lazy"
+            decoding="async"
             className="aspect-[16/7] w-full object-cover"
           />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_50%,oklch(0.1_0.02_240/0.6)_100%)]" />
@@ -378,6 +382,8 @@ export function HeroDashboard() {
           <img
             src="/scene-twin-aerial.png"
             alt="水厂园区数字孪生 3D 航拍场景，叠加多个传感器监测点"
+            loading="lazy"
+            decoding="async"
             className="size-full object-cover"
           />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,oklch(0.1_0.02_240/0.55)_100%)]" />

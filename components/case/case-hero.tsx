@@ -9,6 +9,8 @@ export function CaseHero({ item }: { item: CaseItem }) {
       <img
         src={item.image || "/cases/detail/hero-twin.png"}
         alt={`${item.title}数字孪生运营场景`}
+        fetchPriority="high"
+        decoding="async"
         className="absolute inset-0 -z-10 size-full object-cover"
       />
       {/* 遮罩：左侧压暗保证文字清晰，底部渐隐衔接下方内容 */}

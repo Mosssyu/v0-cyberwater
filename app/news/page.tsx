@@ -25,6 +25,8 @@ export default function NewsListPage() {
             src="/news/news-hero-droplet.png"
             alt=""
             aria-hidden
+            fetchPriority="high"
+            decoding="async"
             className="pointer-events-none absolute inset-0 size-full object-cover object-[right_center]"
           />
           {/* 左侧渐暗遮罩，保证文字清晰 */}
