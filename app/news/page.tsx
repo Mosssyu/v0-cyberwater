@@ -20,9 +20,9 @@ export default function NewsListPage() {
       <main>
         {/* Hero Banner */}
         <section className="relative overflow-hidden border-b border-border bg-[oklch(0.16_0.05_256)]">
-          {/* 水滴涟漪背景图 */}
+          {/* 科技感全息水滴涟漪背景图 */}
           <img
-            src="/news/news-hero-ripple.png"
+            src="/news/news-hero-tech.png"
             alt=""
             aria-hidden
             className="pointer-events-none absolute inset-0 size-full object-cover object-right"
