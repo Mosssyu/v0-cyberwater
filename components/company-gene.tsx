@@ -29,7 +29,7 @@ const cards: GeneCard[] = [
   {
     id: "scene",
     title: "多项目多场景沉淀",
-    desc: "380+ 水厂、2000+ 河道 / 管网、1000+ 泵闸 / 厂站",
+    desc: "380+ 座水厂、2000+ 公里河道 / 管网、1000+ 座泵闸 / 厂站",
     icon: Boxes,
     corner: "tr",
     path: "M300,232 Q400,150 468,120",
@@ -47,20 +47,11 @@ const cards: GeneCard[] = [
   {
     id: "fusion",
     title: "技术和业务融合",
-    desc: "数据驱动、AI 赋能、工艺运营联动",
+    desc: "跨专业团队、产学研生态、行业专家指导、AI coding",
     icon: BrainCircuit,
     corner: "br",
     path: "M300,232 Q400,318 468,356",
     begin: "1.8s",
-  },
-  {
-    id: "team",
-    title: "开发团队能力",
-    desc: "跨专业团队、产学研生态、行业专家指导、AI coding",
-    icon: BrainCircuit,
-    corner: "tl",
-    path: "M300,232 Q200,150 132,120",
-    begin: "2.4s",
   },
 ]
 
