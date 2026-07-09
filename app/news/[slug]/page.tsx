@@ -87,34 +87,42 @@ export default async function NewsDetailPage({
               <span className="text-white/90">正文</span>
             </nav>
 
-            {/* 沉浸式头图：图片背景层 + 渐变融合层 + 文字内容层 */}
-            <div className="relative mt-4 h-[360px] overflow-hidden sm:h-[400px] lg:h-[440px]">
-              {/* 背景图层：完整展示、靠右对齐、不裁切关键区域 */}
+            {/* 沉浸式头图：右侧主视觉图片 + 左侧文字浮层，中间渐变自然融合 */}
+            <div className="relative mt-4 h-[360px] overflow-hidden sm:h-[400px] lg:h-[430px]">
+              {/* 右侧轻微蓝色辉光，增强主视觉展示感 */}
+              <div
+                className="absolute inset-y-0 right-0 hidden w-[68%] lg:block"
+                aria-hidden
+                style={{
+                  background: "radial-gradient(70% 60% at 78% 45%, rgba(56,189,248,0.12) 0%, rgba(56,189,248,0) 60%)",
+                }}
+              />
+              {/* 主视觉图片：仅置于右侧约 68% 区域，完整清晰展示、不裁切 */}
               <img
                 src={hero || "/placeholder.svg"}
                 alt={item.title}
-                className="absolute inset-0 h-full w-full object-contain object-right opacity-95"
+                className="absolute right-0 top-0 h-full w-full object-contain object-center opacity-100 lg:w-[68%] lg:object-right"
                 fetchPriority="high"
                 decoding="async"
               />
-              {/* 横向渐变：左深右浅，保证左侧文字清晰 */}
+              {/* 横向渐变：左侧深、快速向右透明，仅覆盖文字区域，不压暗右侧图片 */}
               <div
                 className="absolute inset-0"
                 aria-hidden
                 style={{
                   background:
-                    "linear-gradient(90deg, rgba(3,10,20,0.96) 0%, rgba(3,10,20,0.82) 35%, rgba(3,10,20,0.42) 65%, rgba(3,10,20,0.16) 100%)",
+                    "linear-gradient(90deg, rgba(5,11,18,0.96) 0%, rgba(5,11,18,0.88) 28%, rgba(5,11,18,0.55) 48%, rgba(5,11,18,0.18) 68%, rgba(5,11,18,0.04) 100%)",
                 }}
               />
-              {/* 底部渐变：自然过渡到页面背景，消除硬断层 */}
+              {/* 底部轻微渐变：自然过渡到页面背景 */}
               <div
-                className="absolute inset-x-0 bottom-0 h-32"
+                className="absolute inset-x-0 bottom-0 h-24"
                 aria-hidden
-                style={{ background: "linear-gradient(180deg, rgba(3,10,20,0) 0%, #050B12 100%)" }}
+                style={{ background: "linear-gradient(180deg, rgba(5,11,18,0) 0%, #050B12 100%)" }}
               />
 
               {/* 文字内容层 */}
-              <div className="relative z-10 flex h-full w-full flex-col justify-center px-8 py-10 sm:px-10 lg:w-[52%]">
+              <div className="relative z-10 flex h-full w-full flex-col justify-center px-8 py-10 sm:px-10 lg:w-[48%]">
                 <div className="flex flex-wrap items-center gap-3 text-xs">
                   <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
                     {item.tag}
