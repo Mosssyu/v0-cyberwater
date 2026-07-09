@@ -95,22 +95,20 @@ const keyIndices = milestones.reduce<number[]>((acc, m, i) => {
 /* 轨迹带尺寸（viewBox 0 0 700 BAND_H）。节点纵向落点贴合波峰/波谷 */
 const BAND_W = 700
 const BAND_H = 140
-/* 2015 低 → 2018 峰 → 2020 降 → 2022 峰 → 2025 降 → 2026 上扬 */
-const NODE_Y = [100, 78, 44, 82, 40, 84, 38]
-const colX = (i: number) => ((i + 0.5) / milestones.length) * 100
+/* 节点水平位置（百分比）：三个重点节点 2018 / 2022 / 2026 分别对齐到下方
+   grid-cols-3 三张重点大卡的中心（1/6、3/6、5/6），使节点光柱垂直下贯、精准对准卡片；
+   其余年份按时间先后分布其间。 */
+const NODE_X = [4, 10, 100 / 6, 33.33, 50, 68, 500 / 6]
+/* 2015/2016 低起 → 2018 峰 → 2020 降 → 2022 峰 → 2025 降 → 2026 上扬 */
+const NODE_Y = [102, 90, 44, 82, 40, 84, 36]
+const colX = (i: number) => NODE_X[i]
 
 /* ===== Catmull-Rom 样条：穿过 7 个节点 + 两端，生成平滑波形 ===== */
 type Pt = { x: number; y: number }
 
 const ANCHORS: [number, number][] = [
-  [0, 114],
-  [BAND_W * (0.5 / 7), 100],
-  [BAND_W * (1.5 / 7), 78],
-  [BAND_W * (2.5 / 7), 44],
-  [BAND_W * (3.5 / 7), 82],
-  [BAND_W * (4.5 / 7), 40],
-  [BAND_W * (5.5 / 7), 84],
-  [BAND_W * (6.5 / 7), 38],
+  [0, 110],
+  ...NODE_X.map((px, i) => [(px / 100) * BAND_W, NODE_Y[i]] as [number, number]),
   [BAND_W, 30],
 ]
 
@@ -950,11 +948,11 @@ function EvolutionSection() {
           ))}
         </div>
 
-        {/* 第一排：常规里程碑卡片（仅非重点年份，重点年份列留空，让节点光柱直接下贯到第二排大卡） */}
-        <ol className="mt-9 grid grid-cols-7 gap-x-5">
+        {/* 第一排：常规里程碑卡片（4 张非重点年份卡片均匀分布） */}
+        <ol className="mt-9 grid grid-cols-4 gap-x-5">
           {milestones.map((m, i) =>
             m.key ? null : (
-              <li key={m.year} style={{ gridColumnStart: i + 1 }}>
+              <li key={m.year}>
                 <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
               </li>
             ),
