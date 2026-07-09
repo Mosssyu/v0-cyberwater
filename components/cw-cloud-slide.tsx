@@ -46,15 +46,15 @@ const P = {
 const productModules: ModuleDef[] = [
   { id: "group", label: "集团运营管理", short: "集团运营", col: 0, row: 0, palette: P.cyan },
   { id: "integrated", label: "厂网河湖一体化", short: "厂网河湖", col: 1, row: 0, palette: P.green },
-  { id: "sewage", label: "村镇污水", short: "村镇污水", col: 2, row: 0, palette: P.violet },
-  { id: "plant", label: "水厂运营管理", short: "水厂运营", col: 0, row: 1, palette: P.magenta },
+  { id: "plant", label: "水厂运营管理", short: "水厂运营", col: 2, row: 0, palette: P.magenta },
+  { id: "sewage", label: "村镇污水管理", short: "村镇污水", col: 0, row: 1, palette: P.violet },
   { id: "pump", label: "泵闸站管理", short: "泵闸站", col: 1, row: 1, palette: P.sky },
   { id: "pipe", label: "管网管理", short: "管网管理", col: 2, row: 1, palette: P.blue },
-  { id: "reservoir", label: "水库标准化管理", short: "水库标化", col: 0, row: 2, palette: P.teal },
-  { id: "flood", label: "城市防汛内涝管理", short: "城市防汛", col: 1, row: 2, palette: P.red },
+  { id: "reservoir", label: "河湖管理", short: "河湖管理", col: 0, row: 2, palette: P.teal },
+  { id: "flood", label: "防汛内涝管理", short: "防汛内涝", col: 1, row: 2, palette: P.red },
+  { id: "ai", label: "水务智能体", short: "AI智能体", col: 1, row: 3, palette: P.ai },
   { id: "iot", label: "IoT 物联平台", short: "IoT平台", col: 2, row: 2, palette: P.orange },
   { id: "sso", label: "SSO 统一登录", short: "统一登录", col: 3, row: 1, palette: P.gold },
-  { id: "ai", label: "水务智能体", short: "AI智能体", col: 1, row: 3, palette: P.ai },
 ]
 
 // 模块池列出全部业务模块（含水务智能体，共 11 类）
@@ -231,7 +231,7 @@ const productImages: Record<string, string> = {
   plant: "/products/plant.png",
   pump: "/products/pump.png",
   pipe: "/products/pipe.png",
-  reservoir: "/products/reservoir.png",
+  reservoir: "/products/river-lake.png",
   flood: "/products/flood.png",
   iot: "/products/iot.png",
   sso: "/products/sso.png",
