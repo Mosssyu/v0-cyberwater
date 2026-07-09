@@ -663,14 +663,14 @@ function MilestoneCard({
         </span>
         <span
           className={[
-            "text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
+            "text-pretty text-sm font-semibold leading-snug transition-colors duration-300",
             isKey ? "text-accent" : "text-foreground/85",
           ].join(" ")}
         >
           {milestone.title}
         </span>
       </span>
-      <span className="mt-2 block flex-1 text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
+      <span className="mt-2 block flex-1 text-pretty text-[13px] leading-relaxed text-foreground/70">
         {milestone.desc}
       </span>
 
