@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import {
   Activity,
-  ArrowRight,
+  Star,
   ChevronLeft,
   Building2,
   ShieldCheck,
@@ -680,7 +680,7 @@ function MilestoneCard({
           className="mt-2.5 inline-flex size-6 items-center justify-center self-end rounded-full border border-accent/50 bg-accent/10 text-accent transition-colors group-hover:bg-accent/25"
           aria-hidden="true"
         >
-          <ArrowRight className="size-3.5" />
+                    <Star className="size-3.5 fill-current" />
         </span>
       ) : null}
     </button>
