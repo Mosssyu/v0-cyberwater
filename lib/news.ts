@@ -445,7 +445,7 @@ export const news: NewsItem[] = [
         caption: "CW-Pilot、CW-Cube、CW-Visual、CW-Frame、CW-Insight 五大产品系列架构",
         paragraphs: [
           "CW-Cloud 智水积木云是基于微服务架构打造的水务行业领先运营管理数字化平台，覆盖生产运营数字化、经营管理数字化、数据驱动智能化三个层面，主要包含 CW-Pilot、CW-Cube、CW-Visual、CW-Frame、CW-Insight 五大产品系列。",
-          "CW-Pilot 面向水务集团数字化运营、城乡供水一体化、水利数字孪生等多业务��景；CW-Cube 为多层级组织的执行层、管理层打造��营管理软件；CW-Visual 基于自研图形引擎打造数字孪生平台；CW-Frame 提供底层与中台共享服务组件；CW-Insight 基于历史数据实现在线仿真、全流程控制与科学调度。",
+          "CW-Pilot 面向水务集团数字化运营、城乡供水一体化、水利数字孪生等多业务场景；CW-Cube 为多层级组织的执行层、管理层打造经营管理软件；CW-Visual 基于自研图形引擎打造数字孪生平台；CW-Frame 提供底层与中台共享服务组件；CW-Insight 基于历史数据实现在线仿真、全流程控制与科学调度。",
         ],
       },
       {
