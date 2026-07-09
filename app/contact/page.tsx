@@ -95,6 +95,8 @@ export default function ContactPage() {
                         <img
                           src={qr.src || "/placeholder.svg"}
                           alt={qr.label}
+                          loading="lazy"
+                          decoding="async"
                           className="size-28 object-contain"
                         />
                       </div>

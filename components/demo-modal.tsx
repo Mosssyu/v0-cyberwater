@@ -133,6 +133,7 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
                 <img
                   src="/wechat-sales-qr.png"
                   alt="销售顾问微信二维码"
+                  decoding="async"
                   className="size-40 rounded-lg object-contain"
                 />
               </div>
