@@ -39,7 +39,7 @@ const milestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: "首批聚焦"中国智慧水务建设"计算研究院联盟团队，开启布局高级数字化服务。",
+    desc: "首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务。",
     Icon: Building2,
     key: false,
   },
