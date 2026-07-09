@@ -76,11 +76,11 @@ function GeneCardBox({ card }: { card: GeneCard }) {
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
           <card.icon className="size-[18px]" />
         </span>
-        <h4 className="text-base font-semibold leading-snug text-foreground/90 transition-colors group-hover/card:text-foreground">
+        <h4 className="text-sm font-semibold leading-snug text-foreground transition-colors group-hover/card:text-foreground">
           {card.title}
         </h4>
       </div>
-      <p className="mt-2.5 text-pretty text-sm leading-relaxed text-foreground/70 transition-colors group-hover/card:text-foreground/90">
+      <p className="mt-2.5 text-pretty text-xs leading-relaxed text-foreground/85 transition-colors group-hover/card:text-foreground">
         {card.desc}
       </p>
     </div>
