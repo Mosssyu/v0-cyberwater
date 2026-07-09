@@ -319,7 +319,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.1_0.03_248)]">
-      {/* ===== 主视觉舞台：右侧数字孪生场景为绝对主角，左/上/下为轻量叠加 ===== */}
+      {/* ===== 主视觉舞台：右侧数字孪生场景为绝对主角，左/上/下为轻量叠��� ===== */}
       <div className="relative min-h-[600px] w-full lg:min-h-[680px]">
         {/* 底图：全幅数字孪生沙盘（发光平台 + 中心积木组合体） */}
         <div className="absolute inset-0">
@@ -353,8 +353,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
         {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
         <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
-          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光） */}
-          <div className="flex flex-wrap justify-center gap-2.5 lg:justify-end lg:gap-3">
+          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光；负上边距上提，避免压住积木塔顶部） */}
+          <div className="-mt-2 flex flex-wrap justify-center gap-2.5 sm:-mt-3 lg:-mt-5 lg:justify-end lg:gap-3">
             {highlights.map((h) => (
               <div
                 key={h.title}
