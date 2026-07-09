@@ -151,7 +151,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
     desc: "城市内涝预警、排���调度与应急指挥一体化，提升城市防汛能力。",
     features: ["内涝预警", "排水调度", "应急指挥"],
     points: [
-      "以水力模型应用为核心，强化预报、预警、预演、预案“四预”能力",
+      "以水��模型应用为核心，强化预报、预警、预演、预案“四预”能力",
       "基于未来降雨与潮位数据开展水位模拟推演，超阈值自动匹配并下发预案",
       "预案库支持结构化配置，人员、物资、闸站可按等级灵活调整",
       "复盘历史重大防���事件，模型推演反向优化预案配置",
@@ -354,22 +354,22 @@ export function CwCloudSlide({ active }: { active: boolean }) {
         {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
         <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
           {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光） */}
-          <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-2.5">
+          <div className="flex flex-wrap justify-center gap-2.5 lg:justify-end lg:gap-3">
             {highlights.map((h) => (
               <div
                 key={h.title}
-                className="pointer-events-auto flex items-center gap-2 rounded-xl border border-accent/20 bg-[oklch(0.12_0.04_248/0.6)] px-3 py-2 backdrop-blur-sm transition-colors hover:border-accent/40"
-                style={{ boxShadow: "0 0 18px -8px oklch(0.7 0.14 215 / 0.5)" }}
+                className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-4 py-3 backdrop-blur-sm transition-colors hover:border-accent/45"
+                style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
               >
                 <span
-                  className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.1]"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
                   aria-hidden="true"
                 >
-                  <h.icon className="size-4 text-accent" />
+                  <h.icon className="size-5 text-accent" />
                 </span>
-                <span className="flex flex-col leading-tight">
-                  <span className="text-[13px] font-bold text-foreground">{h.title}</span>
-                  <span className="text-[10px] text-muted-foreground">{h.desc}</span>
+                <span className="flex flex-col gap-0.5 leading-tight">
+                  <span className="text-base font-bold text-foreground">{h.title}</span>
+                  <span className="text-xs text-muted-foreground/95">{h.desc}</span>
                 </span>
               </div>
             ))}
