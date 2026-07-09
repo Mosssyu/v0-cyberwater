@@ -20,14 +20,14 @@ interface GeoFeatureCollection {
   type: "FeatureCollection"
   features: Array<{
     type: "Feature"
-    properties: { name?: string }
+    properties: { name?: string; adchar?: string }
     geometry: Geometry
   }>
 }
 
 // 手动把多边形环投影成 SVG 路径（绕过 d3 geoPath 的球面裁剪，
 // 该数据集环绕方向不规范会导致 geoPath 填满整个画布）
-function featureToPath(geometry: Geometry, projection: GeoProjection): string {
+function featureToPath(geometry: Geometry, projection: GeoProjection, minLat?: number): string {
   const polygons =
     geometry.type === "Polygon"
       ? [geometry.coordinates as Position[][]]
@@ -36,6 +36,8 @@ function featureToPath(geometry: Geometry, projection: GeoProjection): string {
   let d = ""
   for (const polygon of polygons) {
     for (const ring of polygon) {
+      // 跳过整体位于 minLat 以南的环（南海小岛归入小图窗展示）
+      if (minLat !== undefined && ring.every((c) => c[1] < minLat)) continue
       ring.forEach((coord, i) => {
         const p = projection(coord)
         if (!p) return
@@ -65,22 +67,91 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
     }
   }, [])
 
-  // 过滤掉南海诸岛（九段线会撑大边界，影响拟合）
+  // 主图过滤九段线附图（adchar: "JD"，会撑大边界影响拟合），单独在小图窗中展示
   const mainland = useMemo<GeoFeatureCollection | null>(() => {
     if (!geo) return null
     return {
       type: "FeatureCollection",
-      features: geo.features.filter((f) => f.properties?.name !== "南海诸岛"),
+      features: geo.features.filter((f) => f.properties?.adchar !== "JD"),
     }
   }, [geo])
 
-  // 投影：固定中心与比例（该数据多边形环绕方向不规范，fitExtent 不可用）
+  const southSea = useMemo(() => {
+    return geo?.features.find((f) => f.properties?.adchar === "JD") ?? null
+  }, [geo])
+
+  // 投影：手动拟合画布（该数据多边形环绕方向不规范，d3 的 fitExtent 不可用，
+  // 因此用单位投影遍历全部坐标求边界，再推导 scale/translate，保证全境完整显示）
   const projection = useMemo<GeoProjection>(() => {
-    return geoMercator()
-      .center([104, 36])
-      .scale(760)
-      .translate([WIDTH / 2, HEIGHT / 2])
-  }, [])
+    const fallback = geoMercator().center([104.5, 37.5]).scale(700).translate([WIDTH / 2, HEIGHT / 2])
+    if (!mainland || mainland.features.length === 0) return fallback
+
+    const unit = geoMercator().scale(1).translate([0, 0])
+    let minX = Number.POSITIVE_INFINITY
+    let minY = Number.POSITIVE_INFINITY
+    let maxX = Number.NEGATIVE_INFINITY
+    let maxY = Number.NEGATIVE_INFINITY
+    for (const f of mainland.features) {
+      const polygons =
+        f.geometry.type === "Polygon"
+          ? [f.geometry.coordinates as Position[][]]
+          : (f.geometry.coordinates as Position[][][])
+      for (const polygon of polygons) {
+        for (const ring of polygon) {
+          for (const coord of ring) {
+            // 跳过纬度 < 18° 的南海小岛（归入小图窗），避免撑大主图边界
+            if (coord[1] < 18) continue
+            const p = unit(coord)
+            if (!p) continue
+            if (p[0] < minX) minX = p[0]
+            if (p[1] < minY) minY = p[1]
+            if (p[0] > maxX) maxX = p[0]
+            if (p[1] > maxY) maxY = p[1]
+          }
+        }
+      }
+    }
+    if (!Number.isFinite(minX)) return fallback
+
+    const PAD = 20
+    const scale = Math.min((WIDTH - PAD * 2) / (maxX - minX), (HEIGHT - PAD * 2) / (maxY - minY))
+    const tx = (WIDTH - scale * (minX + maxX)) / 2
+    const ty = (HEIGHT - scale * (minY + maxY)) / 2
+    return geoMercator().scale(scale).translate([tx, ty])
+  }, [mainland])
+
+  // 南海诸岛小图窗投影（右下角，规范制图样式）
+  const INSET = { w: 110, h: 150, x: WIDTH - 122, y: HEIGHT - 162 }
+  const insetProjection = useMemo<GeoProjection | null>(() => {
+    if (!southSea) return null
+    const unit = geoMercator().scale(1).translate([0, 0])
+    let minX = Number.POSITIVE_INFINITY
+    let minY = Number.POSITIVE_INFINITY
+    let maxX = Number.NEGATIVE_INFINITY
+    let maxY = Number.NEGATIVE_INFINITY
+    const polygons =
+      southSea.geometry.type === "Polygon"
+        ? [southSea.geometry.coordinates as Position[][]]
+        : (southSea.geometry.coordinates as Position[][][])
+    for (const polygon of polygons) {
+      for (const ring of polygon) {
+        for (const coord of ring) {
+          const p = unit(coord)
+          if (!p) continue
+          if (p[0] < minX) minX = p[0]
+          if (p[1] < minY) minY = p[1]
+          if (p[0] > maxX) maxX = p[0]
+          if (p[1] > maxY) maxY = p[1]
+        }
+      }
+    }
+    if (!Number.isFinite(minX)) return null
+    const PAD = 8
+    const scale = Math.min((INSET.w - PAD * 2) / (maxX - minX), (INSET.h - PAD * 2) / (maxY - minY))
+    const tx = INSET.x + (INSET.w - scale * (minX + maxX)) / 2
+    const ty = INSET.y + (INSET.h - scale * (minY + maxY)) / 2
+    return geoMercator().scale(scale).translate([tx, ty])
+  }, [southSea, INSET.w, INSET.h, INSET.x, INSET.y])
 
   // 把案例按坐标聚合到标记点
   const markers = useMemo(() => {
@@ -123,16 +194,62 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
             </defs>
             <rect width={WIDTH} height={HEIGHT} fill="url(#map-glow)" />
 
-            {/* 省界 */}
+            {/* 省界（悬停微亮，增强可交互感） */}
             {mainland?.features.map((f, i) => (
               <path
                 key={i}
-                d={featureToPath(f.geometry, projection)}
+                d={featureToPath(f.geometry, projection, 18)}
                 fill="oklch(0.28 0.04 235 / 0.55)"
                 stroke="oklch(0.6 0.12 220 / 0.55)"
                 strokeWidth={0.7}
-              />
+                className="transition-[fill] duration-200 hover:fill-[oklch(0.34_0.06_230/0.65)]"
+              >
+                {f.properties?.name && <title>{f.properties.name}</title>}
+              </path>
             ))}
+
+            {/* 南海诸岛小图窗（规范制图样式） */}
+            {insetProjection && southSea && (
+              <g aria-label="南海诸岛">
+                <rect
+                  x={INSET.x}
+                  y={INSET.y}
+                  width={INSET.w}
+                  height={INSET.h}
+                  rx={6}
+                  fill="oklch(0.2 0.03 245 / 0.5)"
+                  stroke="oklch(0.6 0.12 220 / 0.45)"
+                  strokeWidth={0.8}
+                />
+                <path
+                  d={featureToPath(southSea.geometry, insetProjection)}
+                  fill="none"
+                  stroke="oklch(0.62 0.11 220 / 0.7)"
+                  strokeWidth={0.7}
+                />
+                {/* 海南岛及南海诸岛 */}
+                {(() => {
+                  const hainan = geo?.features.find((f) => f.properties?.name === "海南省")
+                  return hainan ? (
+                    <path
+                      d={featureToPath(hainan.geometry, insetProjection)}
+                      fill="oklch(0.32 0.05 235 / 0.7)"
+                      stroke="oklch(0.62 0.11 220 / 0.6)"
+                      strokeWidth={0.5}
+                    />
+                  ) : null
+                })()}
+                <text
+                  x={INSET.x + INSET.w / 2}
+                  y={INSET.y + INSET.h - 8}
+                  textAnchor="middle"
+                  fill="oklch(0.62 0.05 235)"
+                  style={{ fontSize: 10 }}
+                >
+                  南海诸岛
+                </text>
+              </g>
+            )}
 
             {/* 项目标记点（按解决方案类型着色） */}
             {markers.map((m) => {
@@ -153,7 +270,13 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                   role="button"
                   aria-label={`${m.title}，位于${m.location}，${m.category}`}
                 >
-                  {/* 脉冲圈 */}
+                  {/* 呼吸脉冲圈（雷达扩散效果） */}
+                  {matched && (
+                    <circle r={6} fill="none" stroke={color} strokeWidth={1.2} opacity={0.5}>
+                      <animate attributeName="r" values="6;15" dur="2.4s" repeatCount="indefinite" />
+                      <animate attributeName="opacity" values="0.5;0" dur="2.4s" repeatCount="indefinite" />
+                    </circle>
+                  )}
                   <circle
                     r={isActive ? 14 : 10}
                     fill={color}
