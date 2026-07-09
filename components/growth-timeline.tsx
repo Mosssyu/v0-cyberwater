@@ -472,8 +472,8 @@ function TimelineNode({
       <span
         className={[
           "absolute left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap font-mono font-bold tabular-nums transition-colors duration-300",
-          isKey ? "text-accent" : active ? "text-foreground/90" : "text-muted-foreground/70",
-          isKey ? "text-lg" : "text-[13px]",
+          isKey ? "text-accent" : active ? "text-foreground/90" : "text-muted-foreground/80",
+          isKey ? "text-xl" : "text-base",
         ].join(" ")}
         style={{ top: y - 16 }}
       >
@@ -663,14 +663,14 @@ function MilestoneCard({
         </span>
         <span
           className={[
-            "text-pretty text-sm font-semibold leading-snug transition-colors duration-300",
-            isKey ? "text-accent" : "text-foreground/85",
+            "text-pretty text-base font-semibold leading-snug transition-colors duration-300",
+            isKey ? "text-accent" : "text-foreground/90",
           ].join(" ")}
         >
           {milestone.title}
         </span>
       </span>
-      <span className="mt-2 block flex-1 text-pretty text-[13px] leading-relaxed text-foreground/70">
+      <span className="mt-2.5 block flex-1 text-pretty text-sm leading-relaxed text-foreground/75">
         {milestone.desc}
       </span>
     </button>
@@ -950,19 +950,21 @@ function EvolutionSection() {
           ))}
         </div>
 
-        {/* 第一排：常规里程碑卡片（7 张，视觉克制） */}
+        {/* 第一排：常规里程碑卡片（仅非重点年份，重点年份列留空，让节点光柱直接下贯到第二排大卡） */}
         <ol className="mt-9 grid grid-cols-7 gap-x-5">
-          {milestones.map((m, i) => (
-            <li key={m.year}>
-              <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
-            </li>
-          ))}
+          {milestones.map((m, i) =>
+            m.key ? null : (
+              <li key={m.year} style={{ gridColumnStart: i + 1 }}>
+                <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
+              </li>
+            ),
+          )}
         </ol>
 
         {/* 节点 -> 重点卡 垂直发光虚线连接区 */}
         <div className="grid grid-cols-3 gap-6 px-2" aria-hidden="true">
           {featureMilestones.map((m) => (
-            <div key={m.year} className="flex h-10 items-stretch justify-center">
+            <div key={m.year} className="flex h-14 items-stretch justify-center">
               <span
                 className="cw-stem-flow w-px"
                 style={{
