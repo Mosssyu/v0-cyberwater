@@ -4,7 +4,7 @@ import type { CaseItem } from "@/lib/cases"
 
 export function CaseSidebar({ item }: { item: CaseItem }) {
   return (
-    <aside className="lg:sticky lg:top-24">
+    <aside className="lg:sticky lg:top-24 lg:mt-24">
       <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-[oklch(0.16_0.02_248)] p-6 ring-hairline">
         <div
           aria-hidden
