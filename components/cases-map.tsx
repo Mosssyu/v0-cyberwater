@@ -9,6 +9,12 @@ import { cases, caseCoords, categoryColor, mapMarkers, type CaseCategory } from 
 // 仅地图定位点位的颜色（区别于可进入详情的重点案例）
 const SIMPLE_MARKER_COLOR = "oklch(0.72 0.06 220)"
 
+// 从「省·城市」格式的地址中提取常驻地图标识（优先取城市名，去掉省级前缀）
+function shortLabel(location: string) {
+  const parts = location.split("·")
+  return parts[parts.length - 1] || location
+}
+
 const WIDTH = 800
 const HEIGHT = 640
 
@@ -284,15 +290,37 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                     aria-label={`${m.name}，位于${m.location}`}
                   >
                     <circle
-                      r={isHover ? 6 : 4}
+                      r={isHover ? 8 : 5}
                       fill={SIMPLE_MARKER_COLOR}
-                      opacity={0.28}
+                      opacity={isHover ? 0.35 : 0.25}
                       style={{ transition: "r 200ms ease" }}
                     />
-                    <circle r={2.6} fill={SIMPLE_MARKER_COLOR} />
+                    <circle r={3.2} fill={SIMPLE_MARKER_COLOR} />
+                    <circle r={1.2} className="fill-background" />
+
+                    {/* 常驻地图标识：显示所在城市，悬停时高亮放大 */}
+                    <text
+                      x={7}
+                      y={4}
+                      className="pointer-events-none select-none"
+                      fill={isHover ? "oklch(0.95 0.02 220)" : "oklch(0.78 0.04 220)"}
+                      style={{
+                        fontSize: isHover ? 13 : 11,
+                        fontWeight: isHover ? 700 : 500,
+                        paintOrder: "stroke",
+                        stroke: "oklch(0.16 0.03 235)",
+                        strokeWidth: 3,
+                        strokeLinejoin: "round",
+                        transition: "font-size 150ms ease",
+                      }}
+                    >
+                      {shortLabel(m.location)}
+                    </text>
+
+                    {/* 悬停显示完整项目名称 */}
                     {isHover && (
-                      <foreignObject x={-100} y={-46} width={200} height={40} style={{ overflow: "visible" }}>
-                        <div className="pointer-events-none mx-auto w-fit max-w-[200px] rounded-md border border-primary/40 bg-background/95 px-2.5 py-1 text-center text-[11px] font-medium text-foreground shadow-lg backdrop-blur">
+                      <foreignObject x={-110} y={-50} width={220} height={42} style={{ overflow: "visible" }}>
+                        <div className="pointer-events-none mx-auto w-fit max-w-[220px] rounded-md border border-primary/50 bg-background/95 px-3 py-1.5 text-center text-xs font-semibold text-foreground shadow-lg backdrop-blur">
                           {m.name}
                         </div>
                       </foreignObject>
