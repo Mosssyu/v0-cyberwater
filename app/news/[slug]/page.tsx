@@ -69,70 +69,88 @@ export default async function NewsDetailPage({
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main>
-        {/* 顶部：面包屑 + 标题 + 主视觉 */}
-        <section className="relative overflow-hidden border-b border-border bg-[oklch(0.19_0.05_256)]">
-          <div className="absolute inset-0 bg-grid bg-grid-fade opacity-50" aria-hidden />
-          <div className="glow-cyan absolute inset-x-0 top-0 h-56" aria-hidden />
+        {/* 顶部：沉浸式 Hero（背景图 + 文字叠加，与正文同宽） */}
+        <section className="border-b border-border bg-[oklch(0.19_0.05_256)]">
+          <div className="mx-auto max-w-7xl px-6 pb-10 pt-8">
+            <div className="relative min-h-[400px] overflow-hidden rounded-2xl border border-cyan-300/15 shadow-2xl shadow-black/30 ring-1 ring-white/[0.04] sm:min-h-[440px]">
+              {/* 底层背景图（重点偏右展示） */}
+              <img
+                src={hero || "/placeholder.svg"}
+                alt={item.title}
+                className="absolute inset-0 h-full w-full object-cover object-right"
+                fetchPriority="high"
+                decoding="async"
+              />
+              {/* 左深右浅的横向渐变遮罩，保证左侧文字可读、右侧图片清晰 */}
+              <div
+                className="absolute inset-0"
+                aria-hidden
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgba(3,10,20,0.92) 0%, rgba(3,10,20,0.72) 38%, rgba(3,10,20,0.28) 68%, rgba(3,10,20,0.12) 100%)",
+                }}
+              />
+              {/* 底部暗色渐变 + 轻微暗角，与页面背景自然衔接 */}
+              <div
+                className="absolute inset-0"
+                aria-hidden
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(3,10,20,0.35) 0%, rgba(3,10,20,0) 22%, rgba(3,10,20,0) 62%, rgba(3,10,20,0.55) 100%)",
+                  boxShadow: "inset 0 0 90px 24px rgba(3,10,20,0.4)",
+                }}
+              />
 
-          <div className="relative mx-auto max-w-7xl px-6 pb-14 pt-8">
-            {/* 面包屑 */}
-            <nav className="flex flex-wrap items-center gap-1.5 text-sm text-blue-100/70" aria-label="面包屑">
-              <Link href="/" className="transition-colors hover:text-white">
-                首页
-              </Link>
-              <ChevronRight className="size-3.5 opacity-60" />
-              <Link href="/news" className="transition-colors hover:text-white">
-                新闻动态
-              </Link>
-              <ChevronRight className="size-3.5 opacity-60" />
-              <span className="text-cyan-200/90">{item.tag}</span>
-              <ChevronRight className="size-3.5 opacity-60" />
-              <span className="text-white/90">正文</span>
-            </nav>
+              {/* 内容层 */}
+              <div className="relative z-10 flex min-h-[400px] max-w-2xl flex-col px-7 py-8 sm:min-h-[440px] sm:px-10 sm:py-10">
+                {/* 面包屑 */}
+                <nav className="flex flex-wrap items-center gap-1.5 text-sm text-blue-100/70" aria-label="面包屑">
+                  <Link href="/" className="transition-colors hover:text-white">
+                    首页
+                  </Link>
+                  <ChevronRight className="size-3.5 opacity-60" />
+                  <Link href="/news" className="transition-colors hover:text-white">
+                    新闻动态
+                  </Link>
+                  <ChevronRight className="size-3.5 opacity-60" />
+                  <span className="text-cyan-200/90">{item.tag}</span>
+                  <ChevronRight className="size-3.5 opacity-60" />
+                  <span className="text-white/90">正文</span>
+                </nav>
 
-            <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,46%)]">
-              {/* 左：标题信息 */}
-              <div>
-                <div className="flex flex-wrap items-center gap-3 text-xs">
-                  <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
-                    {item.tag}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 text-blue-100/85">
-                    <CalendarDays className="size-3.5" />
-                    {item.date}
-                  </span>
-                  {item.location && (
+                <div className="mt-auto pt-8">
+                  <div className="flex flex-wrap items-center gap-3 text-xs">
+                    <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
+                      {item.tag}
+                    </span>
                     <span className="inline-flex items-center gap-1.5 text-blue-100/85">
-                      <MapPin className="size-3.5" />
-                      {item.location}
+                      <CalendarDays className="size-3.5" />
+                      {item.date}
                     </span>
-                  )}
+                    {item.location && (
+                      <span className="inline-flex items-center gap-1.5 text-blue-100/85">
+                        <MapPin className="size-3.5" />
+                        {item.location}
+                      </span>
+                    )}
+                  </div>
+                  <h1 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
+                    {item.title}
+                  </h1>
+                  <p className="mt-3 line-clamp-3 text-pretty text-base leading-relaxed text-blue-100/85 sm:text-lg">
+                    {item.subtitle}
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {item.solutionTags.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
+                      >
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <h1 className="mt-5 text-balance text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
-                  {item.title}
-                </h1>
-                <p className="mt-4 text-pretty text-lg leading-relaxed text-blue-100/85">{item.subtitle}</p>
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {item.solutionTags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-xs font-medium text-cyan-100"
-                    >
-                      #{t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* 右：主视觉 */}
-              <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] shadow-2xl shadow-black/20 ring-1 ring-white/[0.04]">
-                <img
-                  src={hero || "/placeholder.svg"}
-                  alt={item.title}
-                  className="w-full object-contain"
-                  fetchPriority="high"
-                  decoding="async"
-                />
               </div>
             </div>
           </div>
