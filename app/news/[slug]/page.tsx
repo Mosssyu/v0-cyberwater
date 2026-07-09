@@ -87,19 +87,10 @@ export default async function NewsDetailPage({
               <span className="text-white/90">正文</span>
             </nav>
 
-            {/* Hero 卡片：上图下文，图片按原始比例完整展示 */}
-            <div className="mt-5 overflow-hidden rounded-2xl border border-cyan-300/15 shadow-2xl shadow-black/30 ring-1 ring-white/[0.04]">
-              {/* 图片区：铺满卡片宽度，保持比例、不裁剪、无蒙层 */}
-              <img
-                src={hero || "/placeholder.svg"}
-                alt={item.title}
-                className="block w-full"
-                fetchPriority="high"
-                decoding="async"
-              />
-
-              {/* 信息条：深色实底，文字与图片互不干扰 */}
-              <div className="border-t border-cyan-300/15 bg-[oklch(0.15_0.045_252)] px-7 py-7 sm:px-10 sm:py-8">
+            {/* Hero 卡片：左文右图分栏，图片完整展示、无蒙层，互不干扰 */}
+            <div className="mt-5 grid items-stretch overflow-hidden rounded-2xl border border-cyan-300/15 shadow-2xl shadow-black/30 ring-1 ring-white/[0.04] lg:grid-cols-[minmax(0,42%)_minmax(0,1fr)]">
+              {/* 左：文字信息（深色实底） */}
+              <div className="flex flex-col justify-center bg-[oklch(0.15_0.045_252)] px-7 py-8 sm:px-9 sm:py-10">
                 <div className="flex flex-wrap items-center gap-3 text-xs">
                   <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
                     {item.tag}
@@ -115,12 +106,10 @@ export default async function NewsDetailPage({
                     </span>
                   )}
                 </div>
-                <h1 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
+                <h1 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl">
                   {item.title}
                 </h1>
-                <p className="mt-3 text-pretty text-base leading-relaxed text-blue-100/85 sm:text-lg">
-                  {item.subtitle}
-                </p>
+                <p className="mt-3 text-pretty text-base leading-relaxed text-blue-100/85">{item.subtitle}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {item.solutionTags.map((t) => (
                     <span
@@ -131,6 +120,17 @@ export default async function NewsDetailPage({
                     </span>
                   ))}
                 </div>
+              </div>
+
+              {/* 右：图片完整展示（保持比例、不裁剪、无蒙层） */}
+              <div className="flex items-center justify-center border-t border-cyan-300/15 bg-[oklch(0.11_0.035_252)] lg:border-l lg:border-t-0">
+                <img
+                  src={hero || "/placeholder.svg"}
+                  alt={item.title}
+                  className="block h-auto w-full object-contain lg:max-h-[440px]"
+                  fetchPriority="high"
+                  decoding="async"
+                />
               </div>
             </div>
           </div>
