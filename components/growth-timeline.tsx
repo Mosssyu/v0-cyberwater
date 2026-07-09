@@ -89,7 +89,9 @@ const BAND_H = 140
 /* 节点水平位置（百分比）：三个重点节点 2018 / 2022 / 2026 分别对齐到下方
    grid-cols-3 三张重点大卡的中心（1/6、3/6、5/6），使节点光柱垂直下贯、精准对准卡片；
    其余年份按时间先后分布其间。 */
-const NODE_X = [8, 100 / 6, 33.33, 50, 68, 500 / 6]
+/* 重点年份（2018/2022/2026）位于三列卡片中心；普通年份（2015/2020/2025）
+   落在对应卡片的左侧区域，使其竖直光柱能向下对准同年份的下排卡片。 */
+const NODE_X = [11, 100 / 6, 44, 50, 77, 500 / 6]
 /* 2015 低起 → 2018 峰 → 2020 降 → 2022 峰 → 2025 降 → 2026 上扬 */
 const NODE_Y = [98, 44, 82, 40, 84, 36]
 const colX = (i: number) => NODE_X[i]
@@ -671,7 +673,7 @@ function MilestoneCard({
 }
 
 /* =========================================================================
-   重点卡主题插画 —— 2018 水滴涟漪 / 2022 发光方块 / 2026 AI 智能球体
+   重点���主题插画 —— 2018 水滴涟漪 / 2022 发光方块 / 2026 AI 智能球体
    ========================================================================= */
 function DropArt() {
   return (
@@ -928,7 +930,27 @@ function EvolutionSection() {
 
       {/* ===== 桌面端：SVG 能量轨迹 + 节点光效 + 卡片 ===== */}
       <div className="relative mt-10 hidden lg:block">
-        <div className="relative w-full" style={{ height: BAND_H }}>
+        {/* 普通年份节点(2015/2020/2025) -> 同年份下排卡片 的竖直虚线：
+            从波谷节点向下贯穿到第二排里程碑卡片，线在半透明卡片后方若隐若现。 */}
+        <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+          {[11, 44, 77].map((leftPct, i) => (
+            <span
+              key={i}
+              className="cw-stem-flow absolute w-px"
+              style={{
+                left: `${leftPct}%`,
+                top: 96,
+                bottom: 96,
+                backgroundImage:
+                  "linear-gradient(to bottom, rgb(127 233 255 / 0.7) 0%, rgb(127 233 255 / 0.7) 45%, transparent 45%, transparent 100%)",
+                backgroundSize: "1px 9px",
+                filter: "drop-shadow(0 0 3px rgb(0 229 255 / 0.55))",
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="relative z-10 w-full" style={{ height: BAND_H }}>
           <EnergyTrackSvg />
           {milestones.map((m, i) => (
             <TimelineNode key={m.year} m={m} index={i} active={i === active} onSelect={() => setActive(i)} />
@@ -936,7 +958,7 @@ function EvolutionSection() {
         </div>
 
         {/* 第一排：重点放大卡片（2018 / 2022 / 2026）直接位于节点下方 */}
-        <ol className="mt-9 grid grid-cols-3 gap-6">
+        <ol className="relative z-10 mt-9 grid grid-cols-3 gap-6">
           {featureMilestones.map((m) => {
             const idx = milestones.indexOf(m)
             return (
