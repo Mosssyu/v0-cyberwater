@@ -122,12 +122,12 @@ export default async function NewsDetailPage({
                 </div>
               </div>
 
-              {/* 右：图片完整展示（保持比例、不裁剪、无蒙层） */}
-              <div className="flex items-center justify-center border-t border-cyan-300/15 bg-[oklch(0.11_0.035_252)] lg:border-l lg:border-t-0">
+              {/* 右：图片铺满整栏（与卡片融为一体，无空隙、无蒙层） */}
+              <div className="relative min-h-[220px] border-t border-cyan-300/15 lg:border-l lg:border-t-0">
                 <img
                   src={hero || "/placeholder.svg"}
                   alt={item.title}
-                  className="block h-auto w-full object-contain lg:max-h-[440px]"
+                  className="absolute inset-0 h-full w-full object-cover"
                   fetchPriority="high"
                   decoding="async"
                 />
