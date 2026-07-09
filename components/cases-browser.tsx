@@ -37,10 +37,10 @@ export function CasesBrowser() {
               key={chip.key}
               type="button"
               onClick={() => setFilter(chip.key)}
-              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all ${
+              className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
                 isActive
-                  ? "border-primary/60 bg-primary/10 text-foreground shadow-[0_0_18px_-4px_oklch(0.7_0.14_215/0.7)]"
-                  : "border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                  ? "border-primary/60 bg-primary/15 text-foreground shadow-[0_0_18px_-4px_oklch(0.63_0.17_250/0.7)]"
+                  : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
               }`}
             >
               {dotColor && (

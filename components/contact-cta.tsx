@@ -66,7 +66,7 @@ export function ContactCta() {
             通过 CW-Agent、CW-PPI、CW-3DP 与 CW-POM 的组合建设，帮助水务企业构建覆盖感知、运营、空间、决策与经营分析的一体化智能平台。
           </p>
           <div className="mt-2 flex flex-wrap justify-center gap-4">
-            <DemoTrigger className="inline-flex h-11 items-center gap-2 rounded-full bg-primary px-8 text-sm font-medium text-primary-foreground shadow-[0_0_24px_-6px_oklch(0.79_0.13_200/0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_0_30px_-4px_oklch(0.79_0.13_200/0.95)]">
+            <DemoTrigger className="inline-flex h-11 items-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground shadow-[0_0_24px_-6px_oklch(0.63_0.17_250/0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_0_32px_-4px_oklch(0.63_0.17_250/0.95)]">
               预约演示
               <ArrowRight className="size-4" />
             </DemoTrigger>

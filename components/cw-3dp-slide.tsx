@@ -274,7 +274,7 @@ export function Cw3dpSlide() {
                 type="button"
                 onClick={() => setViewId(p.id)}
                 aria-pressed={on}
-                className="rounded-full border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition-all duration-300"
+                className="rounded-lg border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition-all duration-300"
                 style={{
                   borderColor: on ? "oklch(0.7 0.16 250 / 0.75)" : "oklch(0.6 0.08 245 / 0.3)",
                   backgroundColor: on ? "oklch(0.55 0.16 250 / 0.35)" : "oklch(0.12 0.04 250 / 0.45)",
