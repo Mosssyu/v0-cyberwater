@@ -19,7 +19,7 @@ export function CasesBrowser() {
   const [filter, setFilter] = useState<Filter>("all")
 
   const chips: { key: Filter; label: string }[] = [
-    { key: "all", label: "全部案例" },
+    { key: "all", label: "经典案例集" },
     ...caseCategories.map((c) => ({ key: c, label: c })),
   ]
 
