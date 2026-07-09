@@ -1,6 +1,6 @@
 "use client"
 
-import { Layers, Building2, Boxes, BrainCircuit, Droplets, Star } from "lucide-react"
+import { Layers, Building2, Boxes, BrainCircuit, Droplets } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { ParticleSphere } from "@/components/particle-sphere"
 
@@ -120,16 +120,6 @@ function Core() {
 export function CompanyGene() {
   return (
     <div className="w-full">
-      <div className="mb-5 flex items-center gap-3 lg:justify-end">
-        <span className="hidden h-px w-12 bg-gradient-to-r from-transparent to-accent/40 lg:block" aria-hidden="true" />
-        <span
-          className="flex size-7 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/[0.08] text-accent shadow-[0_0_10px_2px_oklch(0.79_0.13_200/0.4)]"
-          aria-hidden="true"
-        >
-          <Star className="size-4 fill-current" />
-        </span>
-      </div>
-
       {/* ---------- 大屏：能力基因图谱舞台 ---------- */}
       <div className="relative mx-auto hidden aspect-[600/480] w-full max-w-[600px] lg:block">
         {/* 三维粒子球体神经网络（纯 Canvas 渲染） */}
