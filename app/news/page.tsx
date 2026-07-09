@@ -20,16 +20,16 @@ export default function NewsListPage() {
       <main>
         {/* Hero Banner */}
         <section className="relative overflow-hidden border-b border-border bg-[oklch(0.16_0.05_256)]">
-          {/* 水滴涟漪背景图 */}
+          {/* 科技感全息水滴背景图（高分辨率超宽幅，右侧主视觉） */}
           <img
-            src="/news/news-hero-ripple.png"
+            src="/news/news-hero-droplet.png"
             alt=""
             aria-hidden
-            className="pointer-events-none absolute inset-0 size-full object-cover object-right"
+            className="pointer-events-none absolute inset-0 size-full object-cover object-[right_center]"
           />
           {/* 左侧渐暗遮罩，保证文字清晰 */}
           <div
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,oklch(0.16_0.05_256/0.96)_0%,oklch(0.16_0.05_256/0.82)_38%,oklch(0.16_0.05_256/0.35)_66%,transparent_100%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,oklch(0.16_0.05_256/0.85)_0%,oklch(0.16_0.05_256/0.5)_38%,transparent_65%)]"
             aria-hidden
           />
 

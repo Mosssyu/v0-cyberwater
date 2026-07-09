@@ -14,6 +14,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react"
+import { usePauseOffscreen } from "@/hooks/use-pause-offscreen"
 
 /* =========================================================================
    水务数字化能力演进轨迹 —— 科技能量轨迹视觉组件
@@ -158,8 +159,8 @@ const MAIN_PATH = toPath(BASE_PTS)
 const STRAND_A = strandPath(5.5, 0, 3.4)
 const STRAND_B = strandPath(5.5, Math.PI, 3.4)
 
-/* 流光粒子：大小/速度/相位错落，沿主脉非匀速流动（性能考量控制数量） */
-const PARTICLES = Array.from({ length: 8 }).map((_, i) => {
+/* 流光粒子：大小/速度/相位错落，沿主脉非匀速流动（性能考量适度精简数量） */
+const PARTICLES = Array.from({ length: 6 }).map((_, i) => {
   const r = [0.8, 1.3, 1.8, 1.0, 1.5, 0.9][i % 6]
   const dur = 6.4 + (i % 5) * 1.9
   const begin = -(i * 1.1)
@@ -181,8 +182,8 @@ const yAtX = (x: number) => {
   }
   return best.y
 }
-const RISE_PARTICLES = Array.from({ length: 12 }).map((_, i) => {
-  const x = 18 + (664 / 12) * i + ((i * 53) % 17) - 8
+const RISE_PARTICLES = Array.from({ length: 8 }).map((_, i) => {
+  const x = 18 + (664 / 8) * i + ((i * 53) % 17) - 8
   const baseY = yAtX(x)
   const rise = 24 + ((i * 37) % 22)
   const r = [0.6, 0.9, 1.2, 0.7][i % 4]
@@ -227,8 +228,10 @@ function BackgroundGrid() {
          + 交织辅流线 + 流光粒子 + 上升粒子
    ========================================================================= */
 function EnergyTrackSvg() {
+  const svgRef = usePauseOffscreen<SVGSVGElement>()
   return (
     <svg
+      ref={svgRef}
       className="absolute inset-0 size-full overflow-visible"
       viewBox={`0 0 ${BAND_W} ${BAND_H}`}
       preserveAspectRatio="none"
@@ -266,7 +269,7 @@ function EnergyTrackSvg() {
         </filter>
         {/* 宽幅水汽光晕 */}
         <filter id="etHalo" x="-12%" y="-220%" width="124%" height="540%">
-          <feGaussianBlur stdDeviation="11" />
+          <feGaussianBlur stdDeviation="8" />
         </filter>
       </defs>
 
@@ -690,19 +693,38 @@ function MilestoneCard({
 function EvolutionSection() {
   const [active, setActive] = useState(keyIndices[0])
   const [paused, setPaused] = useState(false)
+  const [onscreen, setOnscreen] = useState(true)
   const cursorRef = useRef(0)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // 离屏暂停自动轮播，避免滚动离开后仍持续重渲染
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      (entries) => setOnscreen(entries[0]?.isIntersecting ?? true),
+      { threshold: 0.05 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   useEffect(() => {
-    if (paused) return
+    if (paused || !onscreen) return
     const id = setInterval(() => {
       cursorRef.current = (cursorRef.current + 1) % keyIndices.length
       setActive(keyIndices[cursorRef.current])
     }, 3600)
     return () => clearInterval(id)
-  }, [paused])
+  }, [paused, onscreen])
 
   return (
-    <section className="relative overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <BackgroundGrid />
 
       {/* 标题区：六边形发光徽章 + 标题 + EVOLUTION + 箭头装饰 */}

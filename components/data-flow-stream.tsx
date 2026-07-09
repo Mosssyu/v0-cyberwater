@@ -1,5 +1,7 @@
 "use client"
 
+import { usePauseOffscreen } from "@/hooks/use-pause-offscreen"
+
 // 数据粒子流光带 —— Hero 左下角背景氛围层
 // 由多条蓝/青蓝发光曲线组成，曲线上的粒子沿路径缓慢流动，
 // 形成“数字水流 + 科技数据流”的克制高级氛围。
@@ -14,24 +16,24 @@ const streams = [
   { d: "M-40 300 C 160 274, 300 248, 500 206 S 800 116, 1020 92", w: 0.8, o: 0.18, dur: 12, delay: 1.8, color: "#21E6F3" },
 ]
 
-// 沿曲线流动的粒子（引用上面的 path）
+// 沿曲线流动的粒子（引用上面的 path）——适度精简至 5 个，降低模糊滤镜逐帧栅格化开销
 const particles = [
   { path: 0, r: 2.2, dur: 7, delay: 0, color: "#21E6F3" },
-  { path: 0, r: 1.5, dur: 7, delay: 3.5, color: "#7af3ff" },
   { path: 1, r: 1.8, dur: 9, delay: 1, color: "#2EA8FF" },
   { path: 1, r: 1.3, dur: 9, delay: 5, color: "#9cd2ff" },
   { path: 2, r: 1.6, dur: 11, delay: 2, color: "#0B7CFF" },
   { path: 3, r: 1.4, dur: 13, delay: 0.5, color: "#2EA8FF" },
-  { path: 4, r: 1.5, dur: 10, delay: 2.5, color: "#21E6F3" },
 ]
 
 export function DataFlowStream() {
+  const svgRef = usePauseOffscreen<SVGSVGElement>()
   return (
     <div
       className="data-flow pointer-events-none absolute inset-y-0 left-0 w-full overflow-hidden lg:w-[58%]"
       aria-hidden="true"
     >
       <svg
+        ref={svgRef}
         className="absolute bottom-0 left-0 h-[78%] w-full"
         viewBox="0 0 1040 460"
         preserveAspectRatio="xMinYMax slice"
@@ -49,7 +51,7 @@ export function DataFlowStream() {
           ))}
           {/* 粒子柔光 */}
           <filter id="flow-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="2" result="b" />
+            <feGaussianBlur stdDeviation="1.5" result="b" />
             <feMerge>
               <feMergeNode in="b" />
               <feMergeNode in="SourceGraphic" />
