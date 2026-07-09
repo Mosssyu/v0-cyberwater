@@ -28,7 +28,7 @@ const cards: GeneCard[] = [
   },
   {
     id: "scene",
-    title: "多项目多场景沉淀",
+    title: "多项目场景沉淀",
     desc: "380+ 座水厂、2000+ 公里河道 / 管网、1000+ 座泵闸 / 厂站",
     icon: Boxes,
     corner: "tr",
