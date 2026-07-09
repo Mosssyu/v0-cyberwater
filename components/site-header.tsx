@@ -47,9 +47,8 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setDemoOpen(true)}
-            className="hidden items-center gap-2 rounded-full border border-accent/40 bg-accent/[0.1] px-5 py-2 text-sm font-medium text-accent shadow-[0_0_18px_-6px_oklch(0.79_0.13_200/0.8)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent/[0.16] hover:shadow-[0_0_24px_-4px_oklch(0.79_0.13_200/0.9)] lg:inline-flex"
+            className="hidden items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-[0_0_18px_-6px_oklch(0.63_0.17_250/0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_0_26px_-4px_oklch(0.63_0.17_250/0.95)] lg:inline-flex"
           >
-            <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_1px_oklch(0.79_0.13_200/0.8)]" />
             预约演示
           </button>
 
@@ -81,9 +80,8 @@ export function SiteHeader() {
                 setOpen(false)
                 setDemoOpen(true)
               }}
-              className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-accent/40 bg-accent/[0.1] px-5 py-2.5 text-sm font-medium text-accent"
+              className="mt-3 inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
             >
-              <span className="size-1.5 rounded-full bg-accent" />
               预约演示
             </button>
           </nav>

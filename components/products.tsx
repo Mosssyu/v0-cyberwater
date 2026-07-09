@@ -14,8 +14,9 @@ export function Products() {
           <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             核心产品
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
-            两大核心产品协同联动，<span className="text-foreground/90">从智能运营到空间仿真</span>，构建端到端的智慧水务能力。
+          <p className="mx-auto mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
+            <span className="text-foreground/90">CW-Cloud</span> 与 <span className="text-foreground/90">CW-3DP</span>{" "}
+            分别面向水务运营管理和三维空间表达，既可独立建设，也可组合应用，支撑水厂、泵站、管网、河湖等场景的数字化升级。
           </p>
         </div>
 
@@ -35,19 +36,18 @@ export function Products() {
             </div>
             <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">水务 AI 运营平台</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              以 AI 智能体驱动，贯通厂网河湖业务，
-              <br className="hidden sm:block" />
-              实现一体化智能运营与科学决策。
+              以运营管理为核心，覆盖生产运行、设备运维、工单闭环、数据分析与 AI 辅助决策，支撑多业态统一运营。
             </p>
           </div>
 
-          {/* 端到端连接符 */}
-          <div className="flex shrink-0 items-center justify-center md:flex-col">
-            <span className="h-px w-8 bg-gradient-to-r from-transparent via-accent/50 to-accent/50 md:h-8 md:w-px md:bg-gradient-to-b" />
-            <span className="mx-2 whitespace-nowrap rounded-full border border-accent/30 bg-background px-3 py-1 font-mono text-[11px] text-accent md:my-2 md:mx-0">
-              端到端
-            </span>
-            <span className="h-px w-8 bg-gradient-to-r from-accent/50 via-accent/50 to-transparent md:h-8 md:w-px md:bg-gradient-to-b" />
+          {/* 弱化连接符：数据贯通 / 场景联动，不喧宾夺主 */}
+          <div className="flex shrink-0 items-center justify-center gap-2 md:flex-col md:gap-1.5">
+            <span className="h-px w-6 bg-gradient-to-r from-transparent to-border md:h-6 md:w-px md:bg-gradient-to-b" />
+            <div className="flex flex-col items-center whitespace-nowrap text-center text-[11px] leading-tight text-muted-foreground/70">
+              <span>数据贯通</span>
+              <span>场景联动</span>
+            </div>
+            <span className="h-px w-6 bg-gradient-to-r from-border to-transparent md:h-6 md:w-px md:bg-gradient-to-b" />
           </div>
 
           {/* CW-3DP */}
@@ -62,11 +62,9 @@ export function Products() {
                 Digital Twin
               </span>
             </div>
-            <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">三维数字孪生</h3>
+            <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">三维数字孪生平台</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              融合 BIM/GIS 与实时数据，
-              <br className="hidden sm:block" />
-              还原水务对象，实现全景空间仿真。
+              以三维空间为载体，融合 BIM/GIS、实时数据和业务信息，实现对象可视、状态联动、过程还原与仿真推演。
             </p>
           </div>
         </div>

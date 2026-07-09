@@ -10,7 +10,6 @@ import {
   Sparkles,
   Building2,
   BrainCircuit,
-  Check,
   Plus,
   ShieldCheck,
   Recycle,
@@ -46,15 +45,15 @@ const P = {
 const productModules: ModuleDef[] = [
   { id: "group", label: "集团运营管理", short: "集团运营", col: 0, row: 0, palette: P.cyan },
   { id: "integrated", label: "厂网河湖一体化", short: "厂网河湖", col: 1, row: 0, palette: P.green },
-  { id: "sewage", label: "村镇污水", short: "村镇污水", col: 2, row: 0, palette: P.violet },
-  { id: "plant", label: "水厂运营管理", short: "水厂运营", col: 0, row: 1, palette: P.magenta },
+  { id: "plant", label: "水厂运营管理", short: "水厂运营", col: 2, row: 0, palette: P.magenta },
+  { id: "sewage", label: "村镇污水管理", short: "村镇污水", col: 0, row: 1, palette: P.violet },
   { id: "pump", label: "泵闸站管理", short: "泵闸站", col: 1, row: 1, palette: P.sky },
   { id: "pipe", label: "管网管理", short: "管网管理", col: 2, row: 1, palette: P.blue },
-  { id: "reservoir", label: "水库标准化管理", short: "水库标化", col: 0, row: 2, palette: P.teal },
-  { id: "flood", label: "城市防汛内涝管理", short: "城市防汛", col: 1, row: 2, palette: P.red },
+  { id: "reservoir", label: "河湖管理", short: "河湖管理", col: 0, row: 2, palette: P.teal },
+  { id: "flood", label: "防汛内涝管理", short: "防汛内涝", col: 1, row: 2, palette: P.red },
+  { id: "ai", label: "水务智能体", short: "AI智能体", col: 1, row: 3, palette: P.ai },
   { id: "iot", label: "IoT 物联平台", short: "IoT平台", col: 2, row: 2, palette: P.orange },
   { id: "sso", label: "SSO 统一登录", short: "统一登录", col: 3, row: 1, palette: P.gold },
-  { id: "ai", label: "水务智能体", short: "AI智能体", col: 1, row: 3, palette: P.ai },
 ]
 
 // 模块池列出全部业务模块（含水务智能体，共 11 类）
@@ -148,13 +147,13 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
   },
   flood: {
     icon: CloudRain,
-    desc: "城市内涝预警、排���调度与应急指挥一体化，提升城市防汛能力。",
+    desc: "城市内涝预警、排水调度与应急指挥一体化，提升城市防汛能力。",
     features: ["内涝预警", "排水调度", "应急指挥"],
     points: [
-      "以水力模型应用为核心，强化预报、预警、预演、预案“四预”能力",
+      "以水文模型应用为核心，强化预报、预警、预演、预案“四预”能力",
       "基于未来降雨与潮位数据开展水位模拟推演，超阈值自动匹配并下发预案",
       "预案库支持结构化配置，人员、物资、闸站可按等级灵活调整",
-      "复盘历史重大防���事件，模型推演反向优化预案配置",
+      "复盘历史重大防汛事件，模型推演反向优化预案配置",
       "贯通预报、预警、上级指令等事件来源，下发、审批、执行、总结全流程闭环",
     ],
   },
@@ -231,7 +230,7 @@ const productImages: Record<string, string> = {
   plant: "/products/plant.png",
   pump: "/products/pump.png",
   pipe: "/products/pipe.png",
-  reservoir: "/products/reservoir.png",
+  reservoir: "/products/river-lake.png",
   flood: "/products/flood.png",
   iot: "/products/iot.png",
   sso: "/products/sso.png",
@@ -284,7 +283,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
         if (next === 1) setSoloPick((p) => (p + 1) % soloRotation.length)
         return next
       })
-    }, 3600)
+    }, 2400)
     return () => clearInterval(t)
   }, [active, paused, custom])
 
@@ -297,7 +296,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
   const flowIdx = custom ? inferFlow(custom) : demoStages[stageIdx].flow
 
-  // 展示区聚焦的产品：优先悬停项，其次点击聚焦��
+  // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
   const showId = hoveredId ?? focusId
   const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
   const showInfo = productInfo[showModule.id]
@@ -353,23 +352,23 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
         {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
         <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
-          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光） */}
-          <div className="flex flex-wrap justify-center gap-2 lg:justify-end lg:gap-2.5">
+          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光；负上边距上提，避免压住积木塔顶部） */}
+          <div className="-mt-2 flex flex-wrap justify-center gap-2.5 sm:-mt-3 lg:-mt-5 lg:justify-end lg:gap-3">
             {highlights.map((h) => (
               <div
                 key={h.title}
-                className="pointer-events-auto flex items-center gap-2 rounded-xl border border-accent/20 bg-[oklch(0.12_0.04_248/0.6)] px-3 py-2 backdrop-blur-sm transition-colors hover:border-accent/40"
-                style={{ boxShadow: "0 0 18px -8px oklch(0.7 0.14 215 / 0.5)" }}
+                className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-4 py-3 backdrop-blur-sm transition-colors hover:border-accent/45"
+                style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
               >
                 <span
-                  className="flex size-7 shrink-0 items-center justify-center rounded-lg border border-accent/25 bg-accent/[0.1]"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
                   aria-hidden="true"
                 >
-                  <h.icon className="size-4 text-accent" />
+                  <h.icon className="size-5 text-accent" />
                 </span>
-                <span className="flex flex-col leading-tight">
-                  <span className="text-[13px] font-bold text-foreground">{h.title}</span>
-                  <span className="text-[10px] text-muted-foreground">{h.desc}</span>
+                <span className="flex flex-col gap-0.5 leading-tight">
+                  <span className="text-base font-bold text-foreground">{h.title}</span>
+                  <span className="text-xs text-muted-foreground/95">{h.desc}</span>
                 </span>
               </div>
             ))}
@@ -377,11 +376,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
           {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
           <div className="pointer-events-auto mt-10 max-w-md lg:mt-14 lg:max-w-sm">
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-1 font-mono text-xs text-accent backdrop-blur-sm">
-              <span className="size-1.5 rounded-full bg-accent" />
-              CW-Cloud
-            </span>
-            <h3 className="mt-5 text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
+            <h3 className="text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
               CW-Cloud
               <br />
               <span className="text-gradient">水务 AI 运营平台</span>
@@ -517,7 +512,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                       style={{ backgroundColor: m.palette.top, boxShadow: on ? `0 0 7px 1px ${m.palette.glow}` : "none" }}
                     />
                     <span className="min-w-0 flex-1 truncate text-foreground/90">{m.label}</span>
-                    {on && <Check className="size-3.5 shrink-0 text-accent" />}
                   </button>
                 )
               })}

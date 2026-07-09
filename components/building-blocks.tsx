@@ -199,7 +199,7 @@ export function BuildingBlocks({
           opacity={0.4}
         />
 
-        {/* ===== 发光承载平台 / 卡槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
+        {/* ===== 发光承载平台 / ��槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
         {/* 平台底部投影辉光 */}
         <ellipse cx={PLATE.cx} cy={PLATE.cy + PLATE.h + 8} rx={PLATE.w / 2 + 16} ry={PLATE.qh * 0.7} fill="oklch(0.55 0.2 255 / 0.32)" filter="url(#bb-soft)" />
         {/* 平台厚度侧面 */}
@@ -246,23 +246,35 @@ export function BuildingBlocks({
                 initial={{ opacity: 0, y: -40, scale: 0.7 }}
                 animate={{ opacity: dim, y: isHot ? -9 : 0, scale: 1 }}
                 exit={{ opacity: 0, y: 34, scale: 0.7 }}
-                transition={{ type: "spring", stiffness: 190, damping: 18, mass: 0.7 }}
+                transition={{ type: "spring", stiffness: 320, damping: 20, mass: 0.5 }}
                 style={{ transformBox: "fill-box", transformOrigin: "center", cursor: "pointer" }}
-                filter="url(#bb-glow)"
                 onMouseEnter={() => onHover(m.id)}
                 onMouseLeave={() => onHover(null)}
                 onClick={() => onToggle(m.id)}
               >
-                <polygon points={f.left} fill={m.palette.left} fillOpacity={0.62} stroke={m.palette.glow} strokeOpacity={0.6} strokeWidth={0.9} />
-                <polygon points={f.right} fill={m.palette.right} fillOpacity={0.72} stroke={m.palette.glow} strokeOpacity={0.6} strokeWidth={0.9} />
-                <polygon points={f.top} fill={m.palette.top} fillOpacity={isHot ? 0.9 : 0.78} stroke={isHot ? "oklch(0.98 0.04 200)" : "oklch(0.94 0.08 200 / 0.95)"} strokeWidth={isHot ? 1.9 : 1.2} />
-                {/* 顶面霜光高光 */}
-                <polygon points={f.top} fill="oklch(0.99 0.01 200)" fillOpacity={0.18} />
-                {/* 内部竖向流光 */}
-                <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
-                  <animate attributeName="stroke-opacity" values="0.12;0.7;0.12" dur="2.2s" repeatCount="indefinite" />
-                </line>
-                {/* 系统简称：绘制在朝外的可见侧面上（左缘积木用左面、右缘积木用右面），被遮挡积木不显示 */}
+                {/* 积木体（发光滤镜仅作用于晶体本身，不影响文字） */}
+                <g filter="url(#bb-glow)">
+                  <polygon points={f.left} fill={m.palette.left} fillOpacity={0.62} stroke={m.palette.glow} strokeOpacity={0.6} strokeWidth={0.9} />
+                  <polygon points={f.right} fill={m.palette.right} fillOpacity={0.72} stroke={m.palette.glow} strokeOpacity={0.6} strokeWidth={0.9} />
+                  <polygon points={f.top} fill={m.palette.top} fillOpacity={isHot ? 0.9 : 0.78} stroke={isHot ? "oklch(0.98 0.04 200)" : "oklch(0.94 0.08 200 / 0.95)"} strokeWidth={isHot ? 1.9 : 1.2} />
+                  {/* 顶面霜光高光 */}
+                  <polygon points={f.top} fill="oklch(0.99 0.01 200)" fillOpacity={0.18} />
+                  {/* 内部竖向流光 */}
+                  <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
+                    <animate attributeName="stroke-opacity" values="0.12;0.7;0.12" dur="2.2s" repeatCount="indefinite" />
+                  </line>
+                  {/* 底层积木与承载平台接触处的高亮底边（强化"已安装/卡接"关系） */}
+                  {slot.layer === 0 && (
+                    <polyline
+                      points={`${slot.cx - HALF_W},${slot.cy + QH + H} ${slot.cx},${slot.cy + 2 * QH + H} ${slot.cx + HALF_W},${slot.cy + QH + H}`}
+                      fill="none"
+                      stroke="oklch(0.98 0.07 205)"
+                      strokeOpacity={0.85}
+                      strokeWidth={1.6}
+                    />
+                  )}
+                </g>
+                {/* 系统简称：普通文字（无泛光），绘制在朝外的可见侧面上，被遮挡积木不显示 */}
                 {m.short &&
                   !slot.hidden &&
                   (() => {
@@ -276,31 +288,21 @@ export function BuildingBlocks({
                         textAnchor="middle"
                         dominantBaseline="middle"
                         transform={`rotate(${isLeft ? 26.57 : -26.57} ${tx} ${ty})`}
-                        style={{ fontSize: 8, fontWeight: 700, letterSpacing: 0.2, pointerEvents: "none", paintOrder: "stroke" }}
+                        style={{ fontSize: 7, fontWeight: 600, letterSpacing: 0.2, pointerEvents: "none", paintOrder: "stroke" }}
                         fill="#ffffff"
-                        stroke="oklch(0.2 0.05 250 / 0.65)"
-                        strokeWidth={2}
+                        stroke="oklch(0.2 0.05 250 / 0.6)"
+                        strokeWidth={1.6}
                       >
                         {m.short}
                       </text>
                     )
                   })()}
-                {/* 底层积木与承载平台接触处的高亮底边（强化“已安装/卡接”关系） */}
-                {slot.layer === 0 && (
-                  <polyline
-                    points={`${slot.cx - HALF_W},${slot.cy + QH + H} ${slot.cx},${slot.cy + 2 * QH + H} ${slot.cx + HALF_W},${slot.cy + QH + H}`}
-                    fill="none"
-                    stroke="oklch(0.98 0.07 205)"
-                    strokeOpacity={0.85}
-                    strokeWidth={1.6}
-                  />
-                )}
               </motion.g>
             </AnimatePresence>
           )
         })}
 
-        {/* 幽灵预览块（悬停未选模块���，预览下一个槽位） */}
+        {/* 幽灵预览块（悬停未选模块时，预览下一个槽位） */}
         {ghostModule && ghostSlot && (
           <g style={{ pointerEvents: "none" }}>
             {(() => {

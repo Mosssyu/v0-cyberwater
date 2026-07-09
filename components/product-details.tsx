@@ -435,7 +435,7 @@ const pom: ProductData = {
     {
       icon: LineChart,
       title: "成本能耗精细分析",
-      value: "电耗、药耗、污泥、成本统一分析，识别异��、支撑降本增效。",
+      value: "电耗、药耗、污泥、成本统一分析，识别异常、支撑降本增效。",
       diagram: "成本能耗分析",
     },
     {

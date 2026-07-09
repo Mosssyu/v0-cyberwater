@@ -45,7 +45,7 @@ export function News() {
           </div>
           <Link
             href="/news"
-            className="group inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border bg-card/60 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+            className="group inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-primary/45 bg-primary/[0.08] px-5 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/70 hover:bg-primary/15"
           >
             更多动态
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />

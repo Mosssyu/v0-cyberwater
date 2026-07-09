@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import {
   Activity,
-  ArrowRight,
+  Star,
   ChevronLeft,
   Building2,
   ShieldCheck,
@@ -39,7 +39,7 @@ const milestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: "中国首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务。",
+    desc: "首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务。",
     Icon: Building2,
     key: false,
   },
@@ -74,7 +74,7 @@ const milestones: Milestone[] = [
   {
     year: "2025",
     title: "智水积木云产品化",
-    desc: "构建管理、技术、产品体系重构，沉淀并打造智水云平台，并结合大型项目积累形成高水准产品化能力。",
+    desc: "管理、技术、产品体系重构，沉淀并打造智水云平台，并结合大型项目积累形成高水准产品化能力。",
     Icon: Layers,
     key: false,
   },
@@ -472,8 +472,8 @@ function TimelineNode({
       <span
         className={[
           "absolute left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap font-mono font-bold tabular-nums transition-colors duration-300",
-          isKey ? "text-accent" : active ? "text-foreground/90" : "text-muted-foreground/70",
-          isKey ? "text-lg" : "text-[13px]",
+          isKey ? "text-accent" : active ? "text-foreground/90" : "text-muted-foreground/80",
+          isKey ? "text-xl" : "text-base",
         ].join(" ")}
         style={{ top: y - 16 }}
       >
@@ -663,29 +663,217 @@ function MilestoneCard({
         </span>
         <span
           className={[
-            "text-pretty text-[13px] font-semibold leading-snug transition-colors duration-300",
-            isKey ? "text-accent" : "text-foreground/85",
+            "text-pretty text-base font-semibold leading-snug transition-colors duration-300",
+            isKey ? "text-accent" : "text-foreground/90",
           ].join(" ")}
         >
           {milestone.title}
         </span>
       </span>
-      <span className="mt-2 block flex-1 text-pretty text-[11px] leading-relaxed text-muted-foreground/85">
+      <span className="mt-2.5 block flex-1 text-pretty text-sm leading-relaxed text-foreground/75">
         {milestone.desc}
       </span>
-
-      {/* 大节点卡片右下角圆形箭头按钮 */}
-      {isKey ? (
-        <span
-          className="mt-2.5 inline-flex size-6 items-center justify-center self-end rounded-full border border-accent/50 bg-accent/10 text-accent transition-colors group-hover:bg-accent/25"
-          aria-hidden="true"
-        >
-          <ArrowRight className="size-3.5" />
-        </span>
-      ) : null}
     </button>
   )
 }
+
+/* =========================================================================
+   重点卡主题插画 —— 2018 水滴涟漪 / 2022 发光方块 / 2026 AI 智能球体
+   ========================================================================= */
+function DropArt() {
+  return (
+    <span className="pointer-events-none relative block size-[104px]" aria-hidden="true">
+      {/* 水面同心涟漪 */}
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="cw-disc-ripple absolute left-1/2 top-[64%] -translate-x-1/2 rounded-[50%] border"
+          style={
+            {
+              width: 78,
+              height: 26,
+              borderColor: "rgb(0 229 255 / 0.5)",
+              ["--rd-delay" as string]: `${i * 0.9}s`,
+            } as React.CSSProperties
+          }
+        />
+      ))}
+      {/* 水面光盘 */}
+      <span
+        className="absolute left-1/2 top-[64%] -translate-x-1/2 rounded-[50%]"
+        style={{
+          width: 46,
+          height: 14,
+          background: "radial-gradient(closest-side, rgb(0 229 255 / 0.7), rgb(47 140 255 / 0.15) 60%, transparent)",
+        }}
+      />
+      {/* 下落水滴 */}
+      <span className="cw-drop-float absolute left-1/2 top-1.5 -translate-x-1/2 block">
+        <svg width="30" height="40" viewBox="0 0 26 34" fill="none" aria-hidden="true">
+          <defs>
+            <radialGradient id="fcDrop" cx="40%" cy="32%" r="70%">
+              <stop offset="0" stopColor="#eafdff" />
+              <stop offset="0.4" stopColor="#7fe9ff" />
+              <stop offset="1" stopColor="#0091ea" />
+            </radialGradient>
+          </defs>
+          <path d="M13 1 C13 1 23 16 23 23 A10 10 0 1 1 3 23 C3 16 13 1 13 1 Z" fill="url(#fcDrop)" />
+          <ellipse cx="9.5" cy="20" rx="2.4" ry="3.6" fill="#ffffff" opacity="0.7" />
+        </svg>
+      </span>
+    </span>
+  )
+}
+
+function CubeArt() {
+  return (
+    <span className="pointer-events-none relative flex size-[104px] items-center justify-center" aria-hidden="true">
+      <span className="cw-drop-float block">
+        <svg width="92" height="96" viewBox="0 0 92 96" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="fcCubeFace" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#00e5ff" stopOpacity="0.28" />
+              <stop offset="1" stopColor="#2f8cff" stopOpacity="0.06" />
+            </linearGradient>
+            <filter id="fcCubeGlow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="1.6" result="b" />
+              <feMerge>
+                <feMergeNode in="b" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+          <g filter="url(#fcCubeGlow)" stroke="#7fe9ff" strokeWidth="1.4" strokeLinejoin="round">
+            {/* 顶面 */}
+            <path d="M46 8 L82 28 L46 48 L10 28 Z" fill="url(#fcCubeFace)" />
+            {/* 左面 */}
+            <path d="M10 28 L46 48 L46 88 L10 68 Z" fill="url(#fcCubeFace)" stroke="#4facfe" />
+            {/* 右面 */}
+            <path d="M82 28 L46 48 L46 88 L82 68 Z" fill="url(#fcCubeFace)" stroke="#4facfe" />
+            {/* 内部竖脊 */}
+            <path d="M46 48 L46 88" stroke="#aef6ff" strokeOpacity="0.7" strokeWidth="1" />
+          </g>
+          {/* 顶点光点 */}
+          {[
+            [46, 8],
+            [82, 28],
+            [10, 28],
+            [46, 88],
+          ].map(([cx, cy], i) => (
+            <circle key={i} cx={cx} cy={cy} r="2.2" fill="#eafdff" filter="url(#fcCubeGlow)" />
+          ))}
+        </svg>
+      </span>
+    </span>
+  )
+}
+
+function AiArt() {
+  return (
+    <span className="pointer-events-none relative flex size-[104px] items-center justify-center" aria-hidden="true">
+      {/* 轨道环 */}
+      <span
+        className="absolute inset-1 rounded-[50%] border border-accent/40"
+        style={{ animation: "orbit-spin 9s linear infinite", transform: "rotateX(70deg)" }}
+      >
+        <span className="absolute -top-1 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-[#aef6ff] shadow-[0_0_8px_1px_rgb(0_229_255/0.9)]" />
+      </span>
+      <span
+        className="absolute inset-2 rounded-[50%] border border-accent/30"
+        style={{ animation: "orbit-spin-rev 12s linear infinite", transform: "rotateX(70deg) rotate(60deg)" }}
+      >
+        <span className="absolute -top-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-[#7fe9ff] shadow-[0_0_6px_1px_rgb(0_229_255/0.8)]" />
+      </span>
+      {/* 智能核心球 */}
+      <span
+        className="relative flex size-12 items-center justify-center rounded-full"
+        style={{
+          background: "radial-gradient(circle at 38% 32%, #eafdff 0%, #33d6fe 42%, #0091ea 100%)",
+          boxShadow: "0 0 24px 2px rgb(0 229 255 / 0.75), inset 0 2px 6px -2px rgb(255 255 255 / 0.8)",
+          animation: "core-pulse 3.6s ease-in-out infinite",
+        }}
+      >
+        <span className="font-mono text-sm font-bold tracking-tight text-[oklch(0.18_0.05_245)]">AI</span>
+      </span>
+    </span>
+  )
+}
+
+const FEATURE_ART: Record<string, () => React.ReactElement> = {
+  "2018": DropArt,
+  "2022": CubeArt,
+  "2026": AiArt,
+}
+
+/* =========================================================================
+   FeatureCard —— 第二排重点放大卡片（横向大卡 + 主题插画 + 发光描边）
+   ========================================================================= */
+function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; active: boolean; onSelect: () => void }) {
+  const Art = FEATURE_ART[milestone.year] ?? DropArt
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={active}
+      className={[
+        "group relative flex w-full items-stretch gap-4 overflow-hidden rounded-2xl border px-6 py-6 text-left outline-none backdrop-blur-sm transition-all duration-300",
+        "hover:-translate-y-1",
+        active ? "border-accent/70 bg-[oklch(0.16_0.04_246)]/80" : "border-accent/40 bg-[oklch(0.14_0.032_247)]/65 hover:border-accent/60",
+      ].join(" ")}
+      style={{
+        boxShadow: active
+          ? "0 0 40px -6px rgb(0 229 255 / 0.55), inset 0 0 26px -14px rgb(0 229 255 / 0.7)"
+          : "0 0 22px -8px rgb(0 229 255 / 0.42)",
+      }}
+    >
+      {/* HUD 边角 */}
+      <span className="pointer-events-none absolute left-0 top-0 size-4 border-l border-t border-accent/60" aria-hidden="true" />
+      <span className="pointer-events-none absolute right-0 top-0 size-4 border-r border-t border-accent/60" aria-hidden="true" />
+      <span className="pointer-events-none absolute bottom-0 left-0 size-4 border-b border-l border-accent/60" aria-hidden="true" />
+      <span className="pointer-events-none absolute bottom-0 right-0 size-4 border-b border-r border-accent/60" aria-hidden="true" />
+      {/* 底部氛围光 */}
+      <span
+        className="pointer-events-none absolute inset-x-6 bottom-0 h-16"
+        style={{ background: "radial-gradient(60% 100% at 50% 100%, rgb(0 229 255 / 0.18), transparent 70%)" }}
+        aria-hidden="true"
+      />
+
+      {/* 左侧内容 */}
+      <div className="relative flex min-w-0 flex-1 flex-col">
+        <span className="flex items-center gap-2.5">
+          <span
+            className="inline-flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/55 bg-accent/15 text-accent"
+            style={{ boxShadow: "0 0 12px -3px rgb(0 229 255 / 0.7)" }}
+            aria-hidden="true"
+          >
+            <milestone.Icon className="size-5" />
+          </span>
+          <span className="inline-flex items-center rounded-md border border-accent/45 bg-accent/[0.08] px-2 py-0.5 font-mono text-xs font-bold tabular-nums text-accent">
+            {milestone.year}
+          </span>
+        </span>
+        <h4 className="mt-3.5 text-pretty text-lg font-bold leading-snug text-foreground">{milestone.title}</h4>
+        <span className="mt-2 block flex-1 text-pretty text-[13px] leading-relaxed text-foreground/70">{milestone.desc}</span>
+
+        {/* 星标按钮 */}
+        <span
+          className="mt-3 inline-flex size-7 items-center justify-center self-start rounded-full border border-accent/50 bg-accent/10 text-accent transition-colors group-hover:bg-accent/25"
+          aria-hidden="true"
+        >
+          <Star className="size-3.5 fill-current" />
+        </span>
+      </div>
+
+      {/* 右侧主题插画 */}
+      <div className="relative flex shrink-0 items-center justify-center self-center">
+        <Art />
+      </div>
+    </button>
+  )
+}
+
+/* 第二排重点卡：与上方 2018/2022/2026 节点一一对应 */
+const featureMilestones = milestones.filter((m) => m.key)
 
 /* =========================================================================
    EvolutionSection —— 顶层容器
@@ -762,13 +950,44 @@ function EvolutionSection() {
           ))}
         </div>
 
-        {/* 卡片层：留出与轨迹的空间感 */}
+        {/* 第一排：常规里程碑卡片（仅非重点年份，重点年份列留空，让节点光柱直接下贯到第二排大卡） */}
         <ol className="mt-9 grid grid-cols-7 gap-x-5">
-          {milestones.map((m, i) => (
-            <li key={m.year}>
-              <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
-            </li>
+          {milestones.map((m, i) =>
+            m.key ? null : (
+              <li key={m.year} style={{ gridColumnStart: i + 1 }}>
+                <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
+              </li>
+            ),
+          )}
+        </ol>
+
+        {/* 节点 -> 重点卡 垂直发光虚线连接区 */}
+        <div className="grid grid-cols-3 gap-6 px-2" aria-hidden="true">
+          {featureMilestones.map((m) => (
+            <div key={m.year} className="flex h-14 items-stretch justify-center">
+              <span
+                className="cw-stem-flow w-px"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to bottom, rgb(127 233 255 / 0.85) 0%, rgb(127 233 255 / 0.85) 45%, transparent 45%, transparent 100%)",
+                  backgroundSize: "1px 9px",
+                  filter: "drop-shadow(0 0 4px rgb(0 229 255 / 0.7))",
+                }}
+              />
+            </div>
           ))}
+        </div>
+
+        {/* 第二排：重点放大卡片（2018 / 2022 / 2026） */}
+        <ol className="grid grid-cols-3 gap-6">
+          {featureMilestones.map((m) => {
+            const idx = milestones.indexOf(m)
+            return (
+              <li key={m.year}>
+                <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
+              </li>
+            )
+          })}
         </ol>
       </div>
 
@@ -792,6 +1011,18 @@ function EvolutionSection() {
             <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
           </li>
         ))}
+      </ol>
+
+      {/* 移动端第二排：重点放大卡片 */}
+      <ol className="mt-6 space-y-4 lg:hidden">
+        {featureMilestones.map((m) => {
+          const idx = milestones.indexOf(m)
+          return (
+            <li key={m.year}>
+              <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
+            </li>
+          )
+        })}
       </ol>
     </section>
   )

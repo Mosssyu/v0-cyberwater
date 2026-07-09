@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Box, MapPin, Layers, Activity, Wrench, Cuboid, Library } from "lucide-react"
 
@@ -116,6 +116,32 @@ const twinModules: TwinModule[] = [
 export function Cw3dpSlide() {
   const [viewId, setViewId] = useState<string>("city")
   const [showId, setShowId] = useState<string>("twin")
+  const [viewPaused, setViewPaused] = useState(false)
+  const [showPaused, setShowPaused] = useState(false)
+
+  // 顶部三维场景自动轮播（悬停暂停）
+  useEffect(() => {
+    if (viewPaused) return
+    const t = setInterval(() => {
+      setViewId((cur) => {
+        const idx = presentations.findIndex((p) => p.id === cur)
+        return presentations[(idx + 1) % presentations.length].id
+      })
+    }, 3800)
+    return () => clearInterval(t)
+  }, [viewPaused])
+
+  // 底部产品模块自动轮播（悬停暂停）
+  useEffect(() => {
+    if (showPaused) return
+    const t = setInterval(() => {
+      setShowId((cur) => {
+        const idx = twinModules.findIndex((m) => m.id === cur)
+        return twinModules[(idx + 1) % twinModules.length].id
+      })
+    }, 5000)
+    return () => clearInterval(t)
+  }, [showPaused])
 
   const view = presentations.find((p) => p.id === viewId) ?? presentations[0]
   const showModule = twinModules.find((m) => m.id === showId) ?? twinModules[0]
@@ -125,7 +151,11 @@ export function Cw3dpSlide() {
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
 
       {/* ===== 顶部：沉浸式三维数字孪生主视觉（文字/HUD 叠加在三维空间中） ===== */}
-      <div className="relative min-h-[460px] overflow-hidden rounded-2xl border border-primary/25 sm:min-h-[520px] lg:min-h-[560px]">
+      <div
+        className="relative min-h-[460px] overflow-hidden rounded-2xl border border-primary/25 sm:min-h-[520px] lg:min-h-[560px]"
+        onMouseEnter={() => setViewPaused(true)}
+        onMouseLeave={() => setViewPaused(false)}
+      >
         {/* 三维场景背景（全铺） */}
         <AnimatePresence mode="wait">
           <motion.img
@@ -244,12 +274,12 @@ export function Cw3dpSlide() {
                 type="button"
                 onClick={() => setViewId(p.id)}
                 aria-pressed={on}
-                className="rounded-full border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition-all duration-300"
+                className="rounded-lg border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition-all duration-300"
                 style={{
-                  borderColor: on ? "oklch(0.7 0.16 250 / 0.75)" : "oklch(0.6 0.08 245 / 0.3)",
-                  backgroundColor: on ? "oklch(0.55 0.16 250 / 0.35)" : "oklch(0.12 0.04 250 / 0.45)",
-                  color: on ? "oklch(0.96 0.03 240)" : "oklch(0.72 0.04 240)",
-                  boxShadow: on ? "0 0 16px -3px oklch(0.6 0.16 250 / 0.8)" : "none",
+                  borderColor: on ? "oklch(0.63 0.17 250)" : "oklch(0.6 0.08 245 / 0.3)",
+                  backgroundColor: on ? "oklch(0.63 0.17 250)" : "oklch(0.12 0.04 250 / 0.45)",
+                  color: on ? "oklch(0.98 0.01 240)" : "oklch(0.72 0.04 240)",
+                  boxShadow: on ? "0 0 18px -3px oklch(0.63 0.17 250 / 0.85)" : "none",
                 }}
               >
                 {p.mode}
@@ -260,10 +290,14 @@ export function Cw3dpSlide() {
       </div>
 
       {/* ===== 产品模块区：左 两个产品标签 ｜ 右 示意图 + 核心能力 ===== */}
-      <div className="relative mt-8">
+      <div
+        className="relative mt-8"
+        onMouseEnter={() => setShowPaused(true)}
+        onMouseLeave={() => setShowPaused(false)}
+      >
         <div className="mb-3 flex items-center gap-2">
           <span className="text-sm font-semibold text-foreground">产品模块</span>
-          <span className="text-[11px] text-muted-foreground">（选择左侧产品，右侧实时呈现大屏与核心能力）</span>
+          <span className="text-[11px] text-muted-foreground">（选择上侧产品，下侧实时呈现大屏与核心能力）</span>
         </div>
 
         <div className="flex flex-col gap-5">
@@ -280,8 +314,9 @@ export function Cw3dpSlide() {
                   aria-pressed={hot}
                   className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border p-4 text-left transition-all duration-300"
                   style={{
-                    borderColor: hot ? "oklch(0.7 0.16 250 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
-                    backgroundColor: hot ? "oklch(0.7 0.16 250 / 0.12)" : "oklch(0.2 0.03 245 / 0.4)",
+                    borderColor: hot ? "oklch(0.63 0.17 250)" : "oklch(0.32 0.03 240 / 0.55)",
+                    backgroundColor: hot ? "oklch(0.63 0.17 250 / 0.16)" : "oklch(0.2 0.03 245 / 0.4)",
+                    boxShadow: hot ? "0 0 22px -6px oklch(0.63 0.17 250 / 0.75)" : "none",
                   }}
                 >
                   <span

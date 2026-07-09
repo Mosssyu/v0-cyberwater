@@ -27,7 +27,7 @@ export function CasesPreview() {
         <div className="mt-12 flex justify-center">
           <Link
             href="/cases"
-            className="group inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/[0.08] px-7 py-3 text-sm font-medium text-accent shadow-[0_0_18px_-6px_oklch(0.79_0.13_200/0.8)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent/[0.14] hover:shadow-[0_0_24px_-4px_oklch(0.79_0.13_200/0.9)]"
+            className="group inline-flex items-center gap-2 rounded-lg bg-primary px-7 py-3 text-sm font-medium text-primary-foreground shadow-[0_0_24px_-6px_oklch(0.63_0.17_250/0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_0_32px_-4px_oklch(0.63_0.17_250/0.95)]"
           >
             查看更多解决方案与案例
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />

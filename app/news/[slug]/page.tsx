@@ -69,12 +69,10 @@ export default async function NewsDetailPage({
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main>
-        {/* 顶部：面包屑 + 标题 + 主视觉 */}
-        <section className="relative overflow-hidden border-b border-border bg-[oklch(0.19_0.05_256)]">
-          <div className="absolute inset-0 bg-grid bg-grid-fade opacity-50" aria-hidden />
-          <div className="glow-cyan absolute inset-x-0 top-0 h-56" aria-hidden />
-
-          <div className="relative mx-auto max-w-7xl px-6 pb-14 pt-8">
+        {/* 顶部 Hero：左侧文字 42% + 右侧大图 58%，无边框、图片清晰完整 */}
+        <section className="relative overflow-hidden bg-background">
+          <div className="absolute inset-0 bg-grid bg-grid-fade opacity-40" aria-hidden />
+          <div className="relative mx-auto max-w-7xl px-6 pt-8">
             {/* 面包屑 */}
             <nav className="flex flex-wrap items-center gap-1.5 text-sm text-blue-100/70" aria-label="面包屑">
               <Link href="/" className="transition-colors hover:text-white">
@@ -90,9 +88,10 @@ export default async function NewsDetailPage({
               <span className="text-white/90">正文</span>
             </nav>
 
-            <div className="mt-8 grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,46%)]">
-              {/* 左：标题信息 */}
-              <div>
+            {/* 左右布局：文字区 42% / 图片区 58% */}
+            <div className="grid items-center gap-8 py-8 lg:min-h-[440px] lg:grid-cols-[0.42fr_0.58fr] lg:gap-6">
+              {/* 左侧文字 */}
+              <div className="flex flex-col justify-center">
                 <div className="flex flex-wrap items-center gap-3 text-xs">
                   <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
                     {item.tag}
@@ -108,10 +107,12 @@ export default async function NewsDetailPage({
                     </span>
                   )}
                 </div>
-                <h1 className="mt-5 text-balance text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl">
+                <h1 className="mt-5 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-[1.15]">
                   {item.title}
                 </h1>
-                <p className="mt-4 text-pretty text-lg leading-relaxed text-blue-100/85">{item.subtitle}</p>
+                <p className="mt-4 text-pretty text-base leading-relaxed text-blue-100/85 lg:text-lg">
+                  {item.subtitle}
+                </p>
                 <div className="mt-6 flex flex-wrap gap-2">
                   {item.solutionTags.map((t) => (
                     <span
@@ -124,18 +125,33 @@ export default async function NewsDetailPage({
                 </div>
               </div>
 
-              {/* 右：主视觉 */}
-              <div className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] shadow-2xl shadow-black/20 ring-1 ring-white/[0.04]">
+              {/* 右侧主视觉大图 */}
+              <div className="relative h-[280px] sm:h-[360px] lg:h-[420px]">
+                {/* 轻微蓝色外发光 */}
+                <div
+                  className="absolute inset-0"
+                  aria-hidden
+                  style={{
+                    background: "radial-gradient(60% 55% at 62% 48%, rgba(56,189,248,0.16) 0%, rgba(56,189,248,0) 62%)",
+                  }}
+                />
                 <img
                   src={hero || "/placeholder.svg"}
                   alt={item.title}
-                  className="w-full object-contain"
+                  className="relative h-full w-full object-contain object-center lg:object-right"
                   fetchPriority="high"
                   decoding="async"
                 />
               </div>
             </div>
           </div>
+
+          {/* 底部暗色渐变，自然过渡到正文 */}
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-20"
+            aria-hidden
+            style={{ background: "linear-gradient(180deg, rgba(5,11,18,0) 0%, #050B12 100%)" }}
+          />
         </section>
 
         {/* 正文 + 侧栏 */}

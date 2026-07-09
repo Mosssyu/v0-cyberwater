@@ -31,7 +31,7 @@ const columns = [
 
 const qrCodes = [
   { label: "企业微信", src: "/qr/qr-work-wechat.png" },
-  { label: "销售微信", src: "/qr/qr-sales-wechat.png" },
+  { label: "售前顾问", src: "/qr/qr-sales-wechat.png" },
 ]
 
 const branches = [

@@ -28,8 +28,8 @@ const cards: GeneCard[] = [
   },
   {
     id: "scene",
-    title: "多项目多场景沉淀",
-    desc: "380+ 水厂、2000+ 河道 / 管网、1000+ 泵闸 / 厂站",
+    title: "多项目场景沉淀",
+    desc: "380+ 座水厂、2000+ 公里河道 / 管网、1000+ 座泵闸 / 厂站",
     icon: Boxes,
     corner: "tr",
     path: "M300,232 Q400,150 468,120",
@@ -47,7 +47,7 @@ const cards: GeneCard[] = [
   {
     id: "fusion",
     title: "技术和业务融合",
-    desc: "数据驱动、AI 赋能、工艺运营联动",
+    desc: "跨专业团队、产学研生态、行业专家指导、AI coding",
     icon: BrainCircuit,
     corner: "br",
     path: "M300,232 Q400,318 468,356",
@@ -76,11 +76,11 @@ function GeneCardBox({ card }: { card: GeneCard }) {
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
           <card.icon className="size-[18px]" />
         </span>
-        <h4 className="text-sm font-semibold leading-snug text-foreground/85 transition-colors group-hover/card:text-foreground">
+        <h4 className="text-sm font-semibold leading-snug text-foreground transition-colors group-hover/card:text-foreground">
           {card.title}
         </h4>
       </div>
-      <p className="mt-2.5 text-pretty text-xs leading-relaxed text-muted-foreground/65 transition-colors group-hover/card:text-muted-foreground">
+      <p className="mt-2.5 text-pretty text-xs leading-relaxed text-foreground/85 transition-colors group-hover/card:text-foreground">
         {card.desc}
       </p>
     </div>
@@ -120,14 +120,6 @@ function Core() {
 export function CompanyGene() {
   return (
     <div className="w-full">
-      <div className="mb-5 flex items-center gap-3 lg:justify-end">
-        <span className="hidden h-px w-12 bg-gradient-to-r from-transparent to-accent/40 lg:block" aria-hidden="true" />
-        <span className="size-1.5 shrink-0 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
-        <h2 className="text-sm font-semibold tracking-wide text-foreground/90">
-          公司基因 / 水务运营数字化能力沉淀
-        </h2>
-      </div>
-
       {/* ---------- 大屏：能力基因图谱舞台 ---------- */}
       <div className="relative mx-auto hidden aspect-[600/480] w-full max-w-[600px] lg:block">
         {/* 三维粒子球体神经网络（纯 Canvas 渲染） */}

@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { notFound } from "next/navigation"
+import { ArrowLeft } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ScrollReveal } from "@/components/scroll-reveal"
@@ -65,6 +67,17 @@ export default async function CaseDetailPage({
 
         <CaseCapabilities />
         <CaseRelated items={related} />
+
+        {/* 底部返回客户案例 */}
+        <div className="mx-auto max-w-7xl px-6 pb-16 lg:pb-20">
+          <Link
+            href="/cases"
+            className="group mx-auto flex w-fit items-center gap-2 rounded-lg border border-primary/45 bg-primary/[0.08] px-6 py-3 text-sm font-medium text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/70 hover:bg-primary/15"
+          >
+            <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-0.5" />
+            返回客户案例
+          </Link>
+        </div>
       </main>
       <SiteFooter />
     </div>
