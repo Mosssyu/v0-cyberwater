@@ -39,7 +39,7 @@ export function CasesBrowser() {
               onClick={() => setFilter(chip.key)}
               className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
                 isActive
-                  ? "border-primary/60 bg-primary/15 text-foreground shadow-[0_0_18px_-4px_oklch(0.63_0.17_250/0.7)]"
+                  ? "border-primary bg-primary text-primary-foreground shadow-[0_0_20px_-4px_oklch(0.63_0.17_250/0.85)]"
                   : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
               }`}
             >

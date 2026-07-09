@@ -276,10 +276,10 @@ export function Cw3dpSlide() {
                 aria-pressed={on}
                 className="rounded-lg border px-3.5 py-1.5 text-xs font-medium backdrop-blur-md transition-all duration-300"
                 style={{
-                  borderColor: on ? "oklch(0.7 0.16 250 / 0.75)" : "oklch(0.6 0.08 245 / 0.3)",
-                  backgroundColor: on ? "oklch(0.55 0.16 250 / 0.35)" : "oklch(0.12 0.04 250 / 0.45)",
-                  color: on ? "oklch(0.96 0.03 240)" : "oklch(0.72 0.04 240)",
-                  boxShadow: on ? "0 0 16px -3px oklch(0.6 0.16 250 / 0.8)" : "none",
+                  borderColor: on ? "oklch(0.63 0.17 250)" : "oklch(0.6 0.08 245 / 0.3)",
+                  backgroundColor: on ? "oklch(0.63 0.17 250)" : "oklch(0.12 0.04 250 / 0.45)",
+                  color: on ? "oklch(0.98 0.01 240)" : "oklch(0.72 0.04 240)",
+                  boxShadow: on ? "0 0 18px -3px oklch(0.63 0.17 250 / 0.85)" : "none",
                 }}
               >
                 {p.mode}
@@ -314,8 +314,9 @@ export function Cw3dpSlide() {
                   aria-pressed={hot}
                   className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border p-4 text-left transition-all duration-300"
                   style={{
-                    borderColor: hot ? "oklch(0.7 0.16 250 / 0.6)" : "oklch(0.32 0.03 240 / 0.55)",
-                    backgroundColor: hot ? "oklch(0.7 0.16 250 / 0.12)" : "oklch(0.2 0.03 245 / 0.4)",
+                    borderColor: hot ? "oklch(0.63 0.17 250)" : "oklch(0.32 0.03 240 / 0.55)",
+                    backgroundColor: hot ? "oklch(0.63 0.17 250 / 0.16)" : "oklch(0.2 0.03 245 / 0.4)",
+                    boxShadow: hot ? "0 0 22px -6px oklch(0.63 0.17 250 / 0.75)" : "none",
                   }}
                 >
                   <span
