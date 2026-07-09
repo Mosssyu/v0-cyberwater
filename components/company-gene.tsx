@@ -53,6 +53,15 @@ const cards: GeneCard[] = [
     path: "M300,232 Q400,318 468,356",
     begin: "1.8s",
   },
+  {
+    id: "team",
+    title: "开发团队能力",
+    desc: "跨专业团队、产学研生态、行业专家指导、AI coding",
+    icon: BrainCircuit,
+    corner: "tl",
+    path: "M300,232 Q200,150 132,120",
+    begin: "2.4s",
+  },
 ]
 
 const orbitTags = [
