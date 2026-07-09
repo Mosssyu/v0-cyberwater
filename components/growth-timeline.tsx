@@ -6,7 +6,6 @@ import {
   Star,
   ChevronLeft,
   Building2,
-  ShieldCheck,
   Users,
   UserRound,
   Box,
@@ -39,15 +38,8 @@ const milestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: "首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务。",
+    desc: "首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务；并于 2016 年获得国家高新技术企业、中关村高新技术企业双高认证，技术研发能力获得认可。",
     Icon: Building2,
-    key: false,
-  },
-  {
-    year: "2016",
-    title: "双高认证",
-    desc: "获得国家高新技术企业、中关村高新技术企业认证，技术研发能力获得认可。",
-    Icon: ShieldCheck,
     key: false,
   },
   {
@@ -98,9 +90,9 @@ const BAND_H = 140
 /* 节点水平位置（百分比）：三个重点节点 2018 / 2022 / 2026 分别对齐到下方
    grid-cols-3 三张重点大卡的中心（1/6、3/6、5/6），使节点光柱垂直下贯、精准对准卡片；
    其余年份按时间先后分布其间。 */
-const NODE_X = [4, 10, 100 / 6, 33.33, 50, 68, 500 / 6]
-/* 2015/2016 低起 → 2018 峰 → 2020 降 → 2022 峰 → 2025 降 → 2026 上扬 */
-const NODE_Y = [102, 90, 44, 82, 40, 84, 36]
+const NODE_X = [8, 100 / 6, 33.33, 50, 68, 500 / 6]
+/* 2015 低起 → 2018 峰 → 2020 降 → 2022 峰 → 2025 降 → 2026 上扬 */
+const NODE_Y = [98, 44, 82, 40, 84, 36]
 const colX = (i: number) => NODE_X[i]
 
 /* ===== Catmull-Rom 样条：穿过 7 个节点 + 两端，生成平滑波形 ===== */
@@ -948,8 +940,8 @@ function EvolutionSection() {
           ))}
         </div>
 
-        {/* 第一排：常规里程碑卡片（4 张非重点年份卡片均匀分布） */}
-        <ol className="mt-9 grid grid-cols-4 gap-x-5">
+        {/* 第一排：常规里程碑卡片（3 张非重点年份卡片均匀分布） */}
+        <ol className="mt-9 grid grid-cols-3 gap-x-5">
           {milestones.map((m, i) =>
             m.key ? null : (
               <li key={m.year}>
