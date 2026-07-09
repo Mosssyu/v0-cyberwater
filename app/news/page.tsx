@@ -4,6 +4,7 @@ import { ArrowLeft, Building2, Users, MapPin, ShieldCheck } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { NewsExplorer } from "@/components/news/news-explorer"
+import { NewsHeroBg } from "@/components/news/news-hero-bg"
 import { newsStats } from "@/lib/news"
 
 export const metadata: Metadata = {
@@ -20,16 +21,11 @@ export default function NewsListPage() {
       <main>
         {/* Hero Banner */}
         <section className="relative overflow-hidden border-b border-border bg-[oklch(0.16_0.05_256)]">
-          {/* 科技感全息水滴涟漪背景图 */}
-          <img
-            src="/news/news-hero-tech.png"
-            alt=""
-            aria-hidden
-            className="pointer-events-none absolute inset-0 size-full object-cover object-right"
-          />
+          {/* 矢量科技水纹背景（SVG 绘制，任意宽度都清晰锐利） */}
+          <NewsHeroBg />
           {/* 左侧渐暗遮罩，保证文字清晰 */}
           <div
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,oklch(0.16_0.05_256/0.96)_0%,oklch(0.16_0.05_256/0.82)_38%,oklch(0.16_0.05_256/0.35)_66%,transparent_100%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,oklch(0.16_0.05_256/0.9)_0%,oklch(0.16_0.05_256/0.6)_38%,oklch(0.16_0.05_256/0.15)_66%,transparent_100%)]"
             aria-hidden
           />
 
