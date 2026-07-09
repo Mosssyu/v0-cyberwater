@@ -935,18 +935,19 @@ function EvolutionSection() {
           ))}
         </div>
 
-        {/* 第一排：常规里程碑卡片（3 张非重点年份卡片均匀分布） */}
-        <ol className="mt-9 grid grid-cols-3 gap-x-5">
-          {milestones.map((m, i) =>
-            m.key ? null : (
+        {/* 第一排：重点放大卡片（2018 / 2022 / 2026）直接位于节点下方 */}
+        <ol className="mt-9 grid grid-cols-3 gap-6">
+          {featureMilestones.map((m) => {
+            const idx = milestones.indexOf(m)
+            return (
               <li key={m.year}>
-                <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
+                <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
               </li>
-            ),
-          )}
+            )
+          })}
         </ol>
 
-        {/* 节点 -> 重点卡 垂直发光虚线连接区 */}
+        {/* 重点卡 -> 常规卡 垂直发光虚线连接区 */}
         <div className="grid grid-cols-3 gap-6 px-2" aria-hidden="true">
           {featureMilestones.map((m) => (
             <div key={m.year} className="flex h-14 items-stretch justify-center">
@@ -963,21 +964,32 @@ function EvolutionSection() {
           ))}
         </div>
 
-        {/* 第二排：重点放大卡片（2018 / 2022 / 2026） */}
-        <ol className="grid grid-cols-3 gap-6">
-          {featureMilestones.map((m) => {
-            const idx = milestones.indexOf(m)
-            return (
+        {/* 第二排：常规里程碑卡片（3 张非重点年份卡片均匀分布） */}
+        <ol className="grid grid-cols-3 gap-x-5">
+          {milestones.map((m, i) =>
+            m.key ? null : (
               <li key={m.year}>
-                <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
+                <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
               </li>
-            )
-          })}
+            ),
+          )}
         </ol>
       </div>
 
-      {/* ===== 移动端：纵向能量轨迹 ===== */}
-      <ol className="relative mt-8 space-y-4 lg:hidden">
+      {/* ===== 移动端第一排：重点放大卡片 ===== */}
+      <ol className="mt-8 space-y-4 lg:hidden">
+        {featureMilestones.map((m) => {
+          const idx = milestones.indexOf(m)
+          return (
+            <li key={m.year}>
+              <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
+            </li>
+          )
+        })}
+      </ol>
+
+      {/* 移动端第二排：纵向能量轨迹（常规里程碑卡片） */}
+      <ol className="relative mt-6 space-y-4 lg:hidden">
         <span
           className="pointer-events-none absolute bottom-2 left-[7px] top-2 w-px bg-gradient-to-b from-accent/50 via-accent/30 to-transparent"
           aria-hidden="true"
@@ -996,18 +1008,6 @@ function EvolutionSection() {
             <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
           </li>
         ))}
-      </ol>
-
-      {/* 移动端第二排：重点放大卡片 */}
-      <ol className="mt-6 space-y-4 lg:hidden">
-        {featureMilestones.map((m) => {
-          const idx = milestones.indexOf(m)
-          return (
-            <li key={m.year}>
-              <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
-            </li>
-          )
-        })}
       </ol>
     </section>
   )
