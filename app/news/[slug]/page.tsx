@@ -69,9 +69,9 @@ export default async function NewsDetailPage({
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main>
-        {/* 顶部 Hero：图片完整铺满展示（无遮罩），文字信息置于下方信息条，与正文同宽 */}
-        <section className="border-b border-border bg-[oklch(0.19_0.05_256)]">
-          <div className="mx-auto max-w-7xl px-6 pb-10 pt-8">
+        {/* 顶部 Hero：沉浸式融合头图（图片背景 + 文字浮层，与正文同宽） */}
+        <section className="bg-background">
+          <div className="mx-auto max-w-7xl px-6 pt-8">
             {/* 面包屑 */}
             <nav className="flex flex-wrap items-center gap-1.5 text-sm text-blue-100/70" aria-label="面包屑">
               <Link href="/" className="transition-colors hover:text-white">
@@ -87,10 +87,34 @@ export default async function NewsDetailPage({
               <span className="text-white/90">正文</span>
             </nav>
 
-            {/* Hero 卡片：左文右图分栏，图片完整展示、无蒙层，互不干扰 */}
-            <div className="mt-5 grid items-stretch overflow-hidden rounded-2xl border border-cyan-300/15 shadow-2xl shadow-black/30 ring-1 ring-white/[0.04] lg:grid-cols-[minmax(0,42%)_minmax(0,1fr)]">
-              {/* 左：文字信息（深色实底） */}
-              <div className="flex flex-col justify-center bg-[oklch(0.15_0.045_252)] px-7 py-8 sm:px-9 sm:py-10">
+            {/* 沉浸式头图：图片背景层 + 渐变融合层 + 文字内容层 */}
+            <div className="relative mt-4 h-[360px] overflow-hidden sm:h-[400px] lg:h-[440px]">
+              {/* 背景图层：完整展示、靠右对齐、不裁切关键区域 */}
+              <img
+                src={hero || "/placeholder.svg"}
+                alt={item.title}
+                className="absolute inset-0 h-full w-full object-contain object-right opacity-95"
+                fetchPriority="high"
+                decoding="async"
+              />
+              {/* 横向渐变：左深右浅，保证左侧文字清晰 */}
+              <div
+                className="absolute inset-0"
+                aria-hidden
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgba(3,10,20,0.96) 0%, rgba(3,10,20,0.82) 35%, rgba(3,10,20,0.42) 65%, rgba(3,10,20,0.16) 100%)",
+                }}
+              />
+              {/* 底部渐变：自然过渡到页面背景，消除硬断层 */}
+              <div
+                className="absolute inset-x-0 bottom-0 h-32"
+                aria-hidden
+                style={{ background: "linear-gradient(180deg, rgba(3,10,20,0) 0%, #050B12 100%)" }}
+              />
+
+              {/* 文字内容层 */}
+              <div className="relative z-10 flex h-full w-full flex-col justify-center px-8 py-10 sm:px-10 lg:w-[52%]">
                 <div className="flex flex-wrap items-center gap-3 text-xs">
                   <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
                     {item.tag}
@@ -106,31 +130,22 @@ export default async function NewsDetailPage({
                     </span>
                   )}
                 </div>
-                <h1 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl">
+                <h1 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-4xl">
                   {item.title}
                 </h1>
-                <p className="mt-3 text-pretty text-base leading-relaxed text-blue-100/85">{item.subtitle}</p>
+                <p className="mt-3 max-w-xl text-pretty text-base leading-relaxed text-blue-100/85">
+                  {item.subtitle}
+                </p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {item.solutionTags.map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-xs font-medium text-cyan-100"
+                      className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-xs font-medium text-cyan-100 backdrop-blur-sm"
                     >
                       #{t}
                     </span>
                   ))}
                 </div>
-              </div>
-
-              {/* 右：图片铺满整栏（与卡片融为一体，无空隙、无蒙层） */}
-              <div className="relative min-h-[220px] border-t border-cyan-300/15 lg:border-l lg:border-t-0">
-                <img
-                  src={hero || "/placeholder.svg"}
-                  alt={item.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  fetchPriority="high"
-                  decoding="async"
-                />
               </div>
             </div>
           </div>
