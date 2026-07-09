@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react"
 import {
   Activity,
-  Star,
   ChevronLeft,
   Building2,
   Users,
@@ -458,14 +457,15 @@ function TimelineNode({
       {/* 2026 上方水滴 */}
       {hasDrop ? <WaterDrop top={y - 86} /> : null}
 
-      {/* 年份标签 */}
+      {/* 年份标签：重点年份（波峰）在节点上方，普通年份（波谷）在节点下方，形成上下交错 */}
       <span
         className={[
-          "absolute left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap font-mono font-bold tabular-nums transition-colors duration-300",
+          "absolute left-1/2 -translate-x-1/2 whitespace-nowrap font-mono font-bold tabular-nums transition-colors duration-300",
+          isKey ? "-translate-y-full" : "translate-y-0",
           isKey ? "text-accent" : active ? "text-foreground/90" : "text-muted-foreground/80",
           isKey ? "text-xl" : "text-base",
         ].join(" ")}
-        style={{ top: y - 16 }}
+        style={{ top: isKey ? y - 16 : y + 14 }}
       >
         {m.year}
       </span>
@@ -639,7 +639,7 @@ function MilestoneCard({
         </>
       ) : null}
 
-      {/* 图标 + 标题 */}
+      {/* 图标 + 年份 + 标题 */}
       <span className="flex items-center gap-2">
         <span
           className={[
@@ -650,6 +650,9 @@ function MilestoneCard({
           aria-hidden="true"
         >
           <milestone.Icon className="size-4" />
+        </span>
+        <span className="inline-flex shrink-0 items-center rounded-md border border-accent/45 bg-accent/[0.08] px-2 py-0.5 font-mono text-xs font-bold tabular-nums text-accent">
+          {milestone.year}
         </span>
         <span
           className={[
@@ -844,14 +847,6 @@ function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; ac
         </span>
         <h4 className="mt-3.5 text-pretty text-lg font-bold leading-snug text-foreground">{milestone.title}</h4>
         <span className="mt-2 block flex-1 text-pretty text-[13px] leading-relaxed text-foreground/70">{milestone.desc}</span>
-
-        {/* 星标按钮 */}
-        <span
-          className="mt-3 inline-flex size-7 items-center justify-center self-start rounded-full border border-accent/50 bg-accent/10 text-accent transition-colors group-hover:bg-accent/25"
-          aria-hidden="true"
-        >
-          <Star className="size-3.5 fill-current" />
-        </span>
       </div>
 
       {/* 右侧主题插画 */}
