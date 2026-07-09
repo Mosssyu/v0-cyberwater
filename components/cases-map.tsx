@@ -4,7 +4,10 @@ import { useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { geoMercator, type GeoProjection } from "d3-geo"
 import { MapPin } from "lucide-react"
-import { cases, caseCoords, categoryColor, type CaseCategory } from "@/lib/cases"
+import { cases, caseCoords, categoryColor, mapMarkers, type CaseCategory } from "@/lib/cases"
+
+// 仅地图定位点位的颜色（区别于可进入详情的重点案例）
+const SIMPLE_MARKER_COLOR = "oklch(0.72 0.06 220)"
 
 const WIDTH = 800
 const HEIGHT = 640
@@ -53,6 +56,8 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
   const router = useRouter()
   const [geo, setGeo] = useState<GeoFeatureCollection | null>(null)
   const [active, setActive] = useState<string | null>(null)
+  // 仅地图定位点位的悬停索引（这些点位无详情页，仅显示名称）
+  const [hoverSimple, setHoverSimple] = useState<number | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -167,6 +172,17 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
       .filter((m): m is NonNullable<typeof m> => m !== null)
   }, [projection])
 
+  // 仅地图定位点位（无详情页），同样投影到地图坐标
+  const simpleMarkers = useMemo(() => {
+    return mapMarkers
+      .map((m, i) => {
+        const point = projection(m.coord)
+        if (!point) return null
+        return { ...m, index: i, x: Math.round(point[0] * 10) / 10, y: Math.round(point[1] * 10) / 10 }
+      })
+      .filter((m): m is NonNullable<typeof m> => m !== null)
+  }, [projection])
+
   function isMatch(category: CaseCategory) {
     return activeCategory === "all" || activeCategory === category
   }
@@ -250,6 +266,40 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                 </text>
               </g>
             )}
+
+            {/* 仅地图定位点位（无详情页，悬停仅显示项目名称，不可点击进入） */}
+            {activeCategory === "all" &&
+              simpleMarkers.map((m) => {
+                const isHover = m.index === hoverSimple
+                return (
+                  <g
+                    key={`simple-${m.index}`}
+                    transform={`translate(${m.x}, ${m.y})`}
+                    className="cursor-default"
+                    onMouseEnter={() => setHoverSimple(m.index)}
+                    onMouseLeave={() => setHoverSimple((v) => (v === m.index ? null : v))}
+                    onFocus={() => setHoverSimple(m.index)}
+                    onBlur={() => setHoverSimple((v) => (v === m.index ? null : v))}
+                    tabIndex={0}
+                    aria-label={`${m.name}，位于${m.location}`}
+                  >
+                    <circle
+                      r={isHover ? 6 : 4}
+                      fill={SIMPLE_MARKER_COLOR}
+                      opacity={0.28}
+                      style={{ transition: "r 200ms ease" }}
+                    />
+                    <circle r={2.6} fill={SIMPLE_MARKER_COLOR} />
+                    {isHover && (
+                      <foreignObject x={-100} y={-46} width={200} height={40} style={{ overflow: "visible" }}>
+                        <div className="pointer-events-none mx-auto w-fit max-w-[200px] rounded-md border border-primary/40 bg-background/95 px-2.5 py-1 text-center text-[11px] font-medium text-foreground shadow-lg backdrop-blur">
+                          {m.name}
+                        </div>
+                      </foreignObject>
+                    )}
+                  </g>
+                )
+              })}
 
             {/* 项目标记点（按解决方案类型着色） */}
             {markers.map((m) => {

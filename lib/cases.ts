@@ -524,3 +524,41 @@ export const caseCoords: Record<string, [number, number]> = {
 export function getCaseBySlug(slug: string) {
   return cases.find((c) => c.slug === slug)
 }
+
+// 仅地图定位展示的项目（无详情页）：鼠标悬停显示项目名称，不可点击进入详情
+export interface MapMarker {
+  name: string
+  location: string
+  coord: [number, number]
+}
+
+export const mapMarkers: MapMarker[] = [
+  { name: "大岭山数字双胞胎", location: "广东·东莞大岭山", coord: [113.9, 22.92] },
+  { name: "凯里多厂集约化管理", location: "贵州·凯里", coord: [107.98, 26.57] },
+  { name: "安宁多厂集约化管理", location: "云南·安宁", coord: [102.48, 24.92] },
+  { name: "中科院江门项目", location: "广东·江门", coord: [113.08, 22.58] },
+  { name: "湘雅医院 BIM 咨询", location: "湖南·长沙", coord: [113.15, 28.35] },
+  { name: "智慧方正项目", location: "黑龙江·方正县", coord: [128.83, 45.85] },
+  { name: "威宁地理信息共享服务平台及可视化资源管理系统", location: "贵州·威宁", coord: [104.28, 26.86] },
+  { name: "四川眉山村镇污水智慧运营", location: "四川·眉山", coord: [103.83, 30.05] },
+  { name: "台州多厂集约化管理", location: "浙江·台州", coord: [121.42, 28.66] },
+  { name: "锦州多厂集约化管理", location: "辽宁·锦州", coord: [121.13, 41.1] },
+  { name: "绵阳多厂集约化管理", location: "四川·绵阳", coord: [105.1, 31.7] },
+  { name: "湘潭多厂集约化管理", location: "湖南·湘潭", coord: [112.94, 27.83] },
+  { name: "新疆多厂集约化管理", location: "新疆·乌鲁木齐", coord: [87.62, 43.83] },
+  { name: "胶州多厂集约化管理", location: "山东·胶州", coord: [120.03, 36.28] },
+  { name: "科源多厂集约化管理", location: "山东·潍坊", coord: [119.16, 36.71] },
+  { name: "昆山多厂集约化管理", location: "江苏·昆山", coord: [120.98, 31.39] },
+  { name: "永州多厂集约化管理", location: "湖南·永州", coord: [111.61, 26.42] },
+  { name: "银川永宁二污、九污集控", location: "宁夏·银川", coord: [106.05, 38.28] },
+  { name: "苏托垸智慧水厂建设", location: "湖南·长沙", coord: [112.85, 28.05] },
+  { name: "彭州智慧水务", location: "四川·彭州", coord: [103.96, 30.99] },
+  { name: "银川多厂集约化管理", location: "宁夏·银川", coord: [106.4, 38.6] },
+  { name: "香港佳发海上环卫管理系统", location: "香港", coord: [114.17, 22.32] },
+  { name: "陡沟河智慧水务建设", location: "四川·成都", coord: [104.07, 30.57] },
+  { name: "济南多厂集约化管理", location: "山东·济南", coord: [117.0, 36.65] },
+  { name: "临汾多厂集约化管理", location: "山西·临汾", coord: [111.52, 36.08] },
+  { name: "鹤山大规模村污智慧化提升", location: "广东·江门鹤山", coord: [112.7, 22.6] },
+  { name: "三河多厂集约化管理", location: "河北·廊坊三河", coord: [117.0, 39.98] },
+  { name: "董大水库数字孪生管控平台", location: "安徽·合肥", coord: [117.28, 31.86] },
+]
