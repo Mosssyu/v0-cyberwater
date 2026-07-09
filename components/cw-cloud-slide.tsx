@@ -10,7 +10,6 @@ import {
   Sparkles,
   Building2,
   BrainCircuit,
-  Check,
   Plus,
   ShieldCheck,
   Recycle,
@@ -284,7 +283,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
         if (next === 1) setSoloPick((p) => (p + 1) % soloRotation.length)
         return next
       })
-    }, 3600)
+    }, 2400)
     return () => clearInterval(t)
   }, [active, paused, custom])
 
@@ -377,11 +376,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
           {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
           <div className="pointer-events-auto mt-10 max-w-md lg:mt-14 lg:max-w-sm">
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-1 font-mono text-xs text-accent backdrop-blur-sm">
-              <span className="size-1.5 rounded-full bg-accent" />
-              CW-Cloud
-            </span>
-            <h3 className="mt-5 text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
+            <h3 className="text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
               CW-Cloud
               <br />
               <span className="text-gradient">水务 AI 运营平台</span>
@@ -517,7 +512,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                       style={{ backgroundColor: m.palette.top, boxShadow: on ? `0 0 7px 1px ${m.palette.glow}` : "none" }}
                     />
                     <span className="min-w-0 flex-1 truncate text-foreground/90">{m.label}</span>
-                    {on && <Check className="size-3.5 shrink-0 text-accent" />}
                   </button>
                 )
               })}

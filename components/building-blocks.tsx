@@ -199,7 +199,7 @@ export function BuildingBlocks({
           opacity={0.4}
         />
 
-        {/* ===== 发光承载平台 / 卡槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
+        {/* ===== 发光承载平台 / ��槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
         {/* 平台底部投影辉光 */}
         <ellipse cx={PLATE.cx} cy={PLATE.cy + PLATE.h + 8} rx={PLATE.w / 2 + 16} ry={PLATE.qh * 0.7} fill="oklch(0.55 0.2 255 / 0.32)" filter="url(#bb-soft)" />
         {/* 平台厚度侧面 */}
@@ -246,7 +246,7 @@ export function BuildingBlocks({
                 initial={{ opacity: 0, y: -40, scale: 0.7 }}
                 animate={{ opacity: dim, y: isHot ? -9 : 0, scale: 1 }}
                 exit={{ opacity: 0, y: 34, scale: 0.7 }}
-                transition={{ type: "spring", stiffness: 190, damping: 18, mass: 0.7 }}
+                transition={{ type: "spring", stiffness: 320, damping: 20, mass: 0.5 }}
                 style={{ transformBox: "fill-box", transformOrigin: "center", cursor: "pointer" }}
                 onMouseEnter={() => onHover(m.id)}
                 onMouseLeave={() => onHover(null)}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Box, MapPin, Layers, Activity, Wrench, Cuboid, Library } from "lucide-react"
 
@@ -116,6 +116,32 @@ const twinModules: TwinModule[] = [
 export function Cw3dpSlide() {
   const [viewId, setViewId] = useState<string>("city")
   const [showId, setShowId] = useState<string>("twin")
+  const [viewPaused, setViewPaused] = useState(false)
+  const [showPaused, setShowPaused] = useState(false)
+
+  // 顶部三维场景自动轮播（悬停暂停）
+  useEffect(() => {
+    if (viewPaused) return
+    const t = setInterval(() => {
+      setViewId((cur) => {
+        const idx = presentations.findIndex((p) => p.id === cur)
+        return presentations[(idx + 1) % presentations.length].id
+      })
+    }, 3800)
+    return () => clearInterval(t)
+  }, [viewPaused])
+
+  // 底部产品模块自动轮播（悬停暂停）
+  useEffect(() => {
+    if (showPaused) return
+    const t = setInterval(() => {
+      setShowId((cur) => {
+        const idx = twinModules.findIndex((m) => m.id === cur)
+        return twinModules[(idx + 1) % twinModules.length].id
+      })
+    }, 5000)
+    return () => clearInterval(t)
+  }, [showPaused])
 
   const view = presentations.find((p) => p.id === viewId) ?? presentations[0]
   const showModule = twinModules.find((m) => m.id === showId) ?? twinModules[0]
@@ -125,7 +151,11 @@ export function Cw3dpSlide() {
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
 
       {/* ===== 顶部：沉浸式三维数字孪生主视觉（文字/HUD 叠加在三维空间中） ===== */}
-      <div className="relative min-h-[460px] overflow-hidden rounded-2xl border border-primary/25 sm:min-h-[520px] lg:min-h-[560px]">
+      <div
+        className="relative min-h-[460px] overflow-hidden rounded-2xl border border-primary/25 sm:min-h-[520px] lg:min-h-[560px]"
+        onMouseEnter={() => setViewPaused(true)}
+        onMouseLeave={() => setViewPaused(false)}
+      >
         {/* 三维场景背景（全铺） */}
         <AnimatePresence mode="wait">
           <motion.img
@@ -260,7 +290,11 @@ export function Cw3dpSlide() {
       </div>
 
       {/* ===== 产品模块区：左 两个产品标签 ｜ 右 示意图 + 核心能力 ===== */}
-      <div className="relative mt-8">
+      <div
+        className="relative mt-8"
+        onMouseEnter={() => setShowPaused(true)}
+        onMouseLeave={() => setShowPaused(false)}
+      >
         <div className="mb-3 flex items-center gap-2">
           <span className="text-sm font-semibold text-foreground">产品模块</span>
           <span className="text-[11px] text-muted-foreground">（选择上侧产品，下侧实时呈现大屏与核心能力）</span>
