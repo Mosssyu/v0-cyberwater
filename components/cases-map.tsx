@@ -6,11 +6,6 @@ import { geoMercator, type GeoProjection } from "d3-geo"
 import { ArrowRight, MapPin } from "lucide-react"
 import { cases, caseCoords, categoryColor, mapMarkers, type CaseCategory } from "@/lib/cases"
 
-// 地图常驻标签：显示项目名称，过长时截断（完整名称在悬停浮层中展示）
-function mapLabel(name: string) {
-  return name.length > 11 ? `${name.slice(0, 11)}…` : name
-}
-
 const WIDTH = 800
 const HEIGHT = 640
 
@@ -58,8 +53,18 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
   const router = useRouter()
   const [geo, setGeo] = useState<GeoFeatureCollection | null>(null)
   const [active, setActive] = useState<string | null>(null)
-  // 仅地图定位点位的悬停索引（这些点位无详情页，仅显示名称）
+  // 仅地图定位点位的悬停索引（放大高亮用）
   const [hoverSimple, setHoverSimple] = useState<number | null>(null)
+  // 统一悬浮浮层信息（HTML 覆盖层渲染，不随 SVG 缩放，保证清晰大号卡片）
+  const [hover, setHover] = useState<{
+    x: number
+    y: number
+    title: string
+    location: string
+    category: CaseCategory
+    products?: string[]
+    slug?: string
+  } | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -203,18 +208,6 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
       <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
         {/* 地图 */}
         <div className="relative">
-          {/* 项目案例数量标记 */}
-          <div className="absolute left-3 top-3 z-10 flex items-center gap-3 rounded-xl border border-primary/30 bg-background/80 px-4 py-2.5 backdrop-blur">
-            <MapPin className="size-5 text-primary" aria-hidden="true" />
-            <div className="flex items-baseline gap-1.5">
-              <span className="font-mono text-2xl font-bold leading-none text-foreground tabular-nums">
-                {plottedCount}
-              </span>
-              <span className="text-xs font-medium text-muted-foreground">
-                个{activeCategory === "all" ? "落地案例" : "相关案例"}
-              </span>
-            </div>
-          </div>
           <svg
             viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
             className="h-auto w-full"
@@ -286,7 +279,7 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
               </g>
             )}
 
-            {/* 仅地图定位点位（无详情页，常驻显示项目名称，不可点击进入详情） */}
+            {/* 仅地图定位点位（无详情页）：默认仅显示发光点位，悬停显示浮层卡片 */}
             {matchedSimple.map((m) => {
               const isHover = m.index === hoverSimple
               const color = categoryColor[m.category]
@@ -294,42 +287,37 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                 <g
                   key={`simple-${m.index}`}
                   transform={`translate(${m.x}, ${m.y})`}
-                  className="cursor-default"
-                  style={{ zIndex: isHover ? 30 : 1 }}
-                  onMouseEnter={() => setHoverSimple(m.index)}
-                  onMouseLeave={() => setHoverSimple((v) => (v === m.index ? null : v))}
-                  onFocus={() => setHoverSimple(m.index)}
-                  onBlur={() => setHoverSimple((v) => (v === m.index ? null : v))}
+                  className="cursor-pointer"
+                  onMouseEnter={() => {
+                    setHoverSimple(m.index)
+                    setHover({ x: m.x, y: m.y, title: m.name, location: m.location, category: m.category })
+                  }}
+                  onMouseLeave={() => {
+                    setHoverSimple((v) => (v === m.index ? null : v))
+                    setHover(null)
+                  }}
+                  onFocus={() => {
+                    setHoverSimple(m.index)
+                    setHover({ x: m.x, y: m.y, title: m.name, location: m.location, category: m.category })
+                  }}
+                  onBlur={() => {
+                    setHoverSimple((v) => (v === m.index ? null : v))
+                    setHover(null)
+                  }}
                   tabIndex={0}
                   aria-label={`${m.name}，位于${m.location}，${m.category}`}
                 >
+                  {/* 轻微呼吸光效 */}
+                  <circle r={5} fill={color} opacity={0.18}>
+                    <animate attributeName="r" values="4.5;7;4.5" dur="3s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.22;0.08;0.22" dur="3s" repeatCount="indefinite" />
+                  </circle>
                   <circle
-                    r={isHover ? 7 : 4.5}
+                    r={isHover ? 4 : 2.8}
                     fill={color}
-                    opacity={isHover ? 0.3 : 0.18}
                     style={{ transition: "r 200ms ease" }}
                   />
-                  <circle r={2.8} fill={color} />
                   <circle r={1} className="fill-background" />
-
-                  {/* 常驻地图标识：显示项目名称（过长截断），悬停时高亮放大 */}
-                  <text
-                    x={6}
-                    y={3.5}
-                    className="pointer-events-none select-none"
-                    fill={isHover ? "oklch(0.96 0.02 220)" : "oklch(0.8 0.03 220)"}
-                    style={{
-                      fontSize: isHover ? 12 : 9.5,
-                      fontWeight: isHover ? 700 : 500,
-                      paintOrder: "stroke",
-                      stroke: "oklch(0.16 0.03 235)",
-                      strokeWidth: 3,
-                      strokeLinejoin: "round",
-                      transition: "font-size 150ms ease",
-                    }}
-                  >
-                    {isHover ? m.name : mapLabel(m.name)}
-                  </text>
                 </g>
               )
             })}
@@ -345,15 +333,29 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                   transform={`translate(${m.x}, ${m.y})`}
                   className="cursor-pointer"
                   style={{ opacity: matched ? 1 : 0.22, transition: "opacity 300ms ease" }}
-                  onMouseEnter={() => setActive(m.slug)}
-                  onMouseLeave={() => setActive(null)}
+                  onMouseEnter={() => {
+                    setActive(m.slug)
+                    setHover({
+                      x: m.x,
+                      y: m.y,
+                      title: m.title,
+                      location: m.location,
+                      category: m.category,
+                      products: m.products,
+                      slug: m.slug,
+                    })
+                  }}
+                  onMouseLeave={() => {
+                    setActive(null)
+                    setHover(null)
+                  }}
                   onFocus={() => setActive(m.slug)}
                   onClick={() => router.push(`/cases/${m.slug}`)}
                   tabIndex={0}
                   role="button"
                   aria-label={`${m.title}，位于${m.location}，${m.category}`}
                 >
-                  {/* 呼吸脉冲圈（雷达扩散效果） */}
+                  {/* 呼吸脉冲圈（雷达扩散效果，标记可进入详情的重点案例） */}
                   {matched && (
                     <circle r={6} fill="none" stroke={color} strokeWidth={1.2} opacity={0.5}>
                       <animate attributeName="r" values="6;15" dur="2.4s" repeatCount="indefinite" />
@@ -368,52 +370,86 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                   />
                   <circle r={5} fill={color} />
                   <circle r={2} className="fill-background" />
-
-                  {/* 常驻项目名称标签（可进入详情的重点案例，非激活时展示） */}
-                  {matched && !isActive && (
-                    <text
-                      x={8}
-                      y={4}
-                      className="pointer-events-none select-none"
-                      fill="oklch(0.95 0.03 220)"
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 700,
-                        paintOrder: "stroke",
-                        stroke: "oklch(0.16 0.03 235)",
-                        strokeWidth: 3.4,
-                        strokeLinejoin: "round",
-                      }}
-                    >
-                      {mapLabel(m.title)}
-                    </text>
-                  )}
-
-                  {/* tooltip */}
-                  {isActive && (
-                    <foreignObject x={-110} y={-104} width={220} height={96} style={{ overflow: "visible" }}>
-                      <div className="pointer-events-none rounded-lg border border-primary/40 bg-background/95 px-3 py-2 text-center shadow-lg backdrop-blur">
-                        <div className="truncate text-xs font-semibold text-foreground">{m.title}</div>
-                        <div className="mt-0.5 text-[11px] text-muted-foreground">
-                          {m.location} · {m.category}
-                        </div>
-                        <div className="mt-1 flex flex-wrap justify-center gap-1">
-                          {m.products.map((p) => (
-                            <span
-                              key={p}
-                              className="rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[10px] text-primary"
-                            >
-                              {p}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </foreignObject>
-                  )}
                 </g>
               )
             })}
           </svg>
+
+          {/* 悬浮玻璃拟态项目卡片（HTML 覆盖层，清晰大号、自动避开边缘） */}
+          {hover && (() => {
+            const leftPct = (hover.x / WIDTH) * 100
+            const topPct = (hover.y / HEIGHT) * 100
+            const tx = leftPct < 22 ? "-6%" : leftPct > 78 ? "-94%" : "-50%"
+            const below = topPct < 32
+            const ty = below ? "16px" : "calc(-100% - 16px)"
+            const color = categoryColor[hover.category]
+            return (
+              <div
+                className="pointer-events-none absolute z-30 w-[288px]"
+                style={{ left: `${leftPct}%`, top: `${topPct}%`, transform: `translate(${tx}, ${ty})` }}
+              >
+                <div
+                  className="cw-hovercard rounded-2xl border p-4 shadow-2xl backdrop-blur-xl"
+                  style={{
+                    borderColor: `color-mix(in oklch, ${color} 60%, transparent)`,
+                    backgroundColor: "color-mix(in oklch, var(--color-background) 85%, transparent)",
+                    boxShadow: `0 12px 40px -8px color-mix(in oklch, ${color} 45%, transparent), 0 0 0 1px color-mix(in oklch, ${color} 20%, transparent)`,
+                  }}
+                >
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <MapPin className="size-3.5 shrink-0" style={{ color }} />
+                    {hover.location}
+                  </div>
+                  <h4 className="mt-1.5 text-balance text-base font-bold leading-snug text-foreground">
+                    {hover.title}
+                  </h4>
+                  <span
+                    className="mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
+                    style={{
+                      color,
+                      backgroundColor: `color-mix(in oklch, ${color} 16%, transparent)`,
+                    }}
+                  >
+                    {hover.category}
+                  </span>
+                  {hover.products && hover.products.length > 0 && (
+                    <div className="mt-3">
+                      <div className="text-[11px] font-medium text-muted-foreground">应用产品</div>
+                      <div className="mt-1.5 flex flex-wrap gap-1.5">
+                        {hover.products.map((p) => (
+                          <span
+                            key={p}
+                            className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[11px] font-medium text-primary"
+                          >
+                            {p}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {hover.slug ? (
+                    <div className="mt-3 flex items-center gap-1 text-xs font-semibold" style={{ color }}>
+                      查看项目详情
+                      <ArrowRight className="size-3.5" />
+                    </div>
+                  ) : (
+                    <div className="mt-3 text-[11px] text-muted-foreground">落地项目定位点</div>
+                  )}
+                </div>
+              </div>
+            )
+          })()}
+
+          {/* 地图下方统计（不遮挡地图） */}
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
+              <MapPin className="size-3.5 text-primary" />
+              <span className="font-mono text-sm font-bold tabular-nums text-primary">{plottedCount}</span>
+              个{activeCategory === "all" ? "落地案例" : "相关案例"}
+            </span>
+            <span>其中 {listMarkers.length} 个可查看详情</span>
+            <span className="text-muted-foreground/70">悬停查看项目摘要，点击进入详情</span>
+          </div>
         </div>
 
         {/* 右侧项目信息 / 列表 */}
