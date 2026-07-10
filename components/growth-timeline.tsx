@@ -89,9 +89,10 @@ const BAND_H = 140
 /* 节点水平位置（百分比）：三个重点节点 2018 / 2022 / 2026 分别对齐到下方
    grid-cols-3 三张重点大卡的中心（1/6、3/6、5/6），使节点光柱垂直下贯、精准对准卡片；
    其余年份按时间先后分布其间。 */
-/* 重点年份（2018/2022/2026）位于三列卡片中心；普通年份（2015/2020/2025）
-   落在对应卡片的左侧区域，使其竖直光柱能向下对准同年份的下排卡片。 */
-const NODE_X = [11, 100 / 6, 44, 50, 77, 500 / 6]
+/* 六个年份沿时间轴均匀分布：重点年份（2018/2022/2026）位于三列卡片中心
+   （1/6、3/6、5/6），普通年份（2015/2020/2025）落在相邻重点年份的中点
+   （1/12、3/12=1/3、7/12），整体间距一致。 */
+const NODE_X = [100 / 12, 100 / 6, 100 / 3, 50, 200 / 3, 500 / 6]
 /* 2015 低起 → 2018 峰 → 2020 降 → 2022 峰 → 2025 降 → 2026 上扬 */
 const NODE_Y = [98, 44, 82, 40, 84, 36]
 const colX = (i: number) => NODE_X[i]
@@ -801,7 +802,7 @@ const FEATURE_ART: Record<string, () => React.ReactElement> = {
 }
 
 /* =========================================================================
-   FeatureCard —— 第二排重点放大卡片（横向大卡 + 主题插画 + 发光描边）
+   FeatureCard ���— 第二排重点放大卡片（横向大卡 + 主题插画 + 发光描边）
    ========================================================================= */
 function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; active: boolean; onSelect: () => void }) {
   const Art = FEATURE_ART[milestone.year] ?? DropArt
@@ -933,7 +934,7 @@ function EvolutionSection() {
         {/* 普通年份节点(2015/2020/2025) -> 同年份下排卡片 的竖直虚线：
             从波谷节点向下贯穿到第二排里程碑卡片，线在半透明卡片后方若隐若现。 */}
         <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
-          {[11, 44, 77].map((leftPct, i) => (
+          {[100 / 12, 100 / 3, 200 / 3].map((leftPct, i) => (
             <span
               key={i}
               className="cw-stem-flow absolute w-px"
