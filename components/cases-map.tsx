@@ -3,16 +3,12 @@
 import { useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { geoMercator, type GeoProjection } from "d3-geo"
-import { MapPin } from "lucide-react"
+import { ArrowRight, MapPin } from "lucide-react"
 import { cases, caseCoords, categoryColor, mapMarkers, type CaseCategory } from "@/lib/cases"
 
-// 仅地图定位点位的颜色（区别于可进入详情的重点案例）
-const SIMPLE_MARKER_COLOR = "oklch(0.72 0.06 220)"
-
-// 从「省·城市」格式的地址中提取常驻地图标识（优先取城市名，去掉省级前缀）
-function shortLabel(location: string) {
-  const parts = location.split("·")
-  return parts[parts.length - 1] || location
+// 地图常驻标签：显示项目名称，过长时截断（完整名称在悬停浮层中展示）
+function mapLabel(name: string) {
+  return name.length > 11 ? `${name.slice(0, 11)}…` : name
 }
 
 const WIDTH = 800
@@ -194,11 +190,13 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
   }
 
   const activeCase = markers.find((m) => m.slug === active) ?? null
-  // 右侧列表与筛选联动
+  // 右侧列表与筛选联动（可进入详情的重点案例）
   const listMarkers = markers.filter((m) => isMatch(m.category))
+  // 仅地图定位点位（与筛选联动）
+  const matchedSimple = simpleMarkers.filter((m) => isMatch(m.category))
 
-  // 地图上实际呈现的项目点位总数（全部方案时含仅定位点位）
-  const plottedCount = listMarkers.length + (activeCategory === "all" ? simpleMarkers.length : 0)
+  // 地图上实际呈现的项目点位总数（重点案例 + 定位点位）
+  const plottedCount = listMarkers.length + matchedSimple.length
 
   return (
     <div className="relative mt-8 overflow-hidden rounded-2xl border border-border bg-card/60 p-4 sm:p-6">
@@ -288,61 +286,53 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
               </g>
             )}
 
-            {/* 仅地图定位点位（无详情页，悬停仅显示项目名称，不可点击进入） */}
-            {activeCategory === "all" &&
-              simpleMarkers.map((m) => {
-                const isHover = m.index === hoverSimple
-                return (
-                  <g
-                    key={`simple-${m.index}`}
-                    transform={`translate(${m.x}, ${m.y})`}
-                    className="cursor-default"
-                    onMouseEnter={() => setHoverSimple(m.index)}
-                    onMouseLeave={() => setHoverSimple((v) => (v === m.index ? null : v))}
-                    onFocus={() => setHoverSimple(m.index)}
-                    onBlur={() => setHoverSimple((v) => (v === m.index ? null : v))}
-                    tabIndex={0}
-                    aria-label={`${m.name}，位于${m.location}`}
+            {/* 仅地图定位点位（无详情页，常驻显示项目名称，不可点击进入详情） */}
+            {matchedSimple.map((m) => {
+              const isHover = m.index === hoverSimple
+              const color = categoryColor[m.category]
+              return (
+                <g
+                  key={`simple-${m.index}`}
+                  transform={`translate(${m.x}, ${m.y})`}
+                  className="cursor-default"
+                  style={{ zIndex: isHover ? 30 : 1 }}
+                  onMouseEnter={() => setHoverSimple(m.index)}
+                  onMouseLeave={() => setHoverSimple((v) => (v === m.index ? null : v))}
+                  onFocus={() => setHoverSimple(m.index)}
+                  onBlur={() => setHoverSimple((v) => (v === m.index ? null : v))}
+                  tabIndex={0}
+                  aria-label={`${m.name}，位于${m.location}，${m.category}`}
+                >
+                  <circle
+                    r={isHover ? 7 : 4.5}
+                    fill={color}
+                    opacity={isHover ? 0.3 : 0.18}
+                    style={{ transition: "r 200ms ease" }}
+                  />
+                  <circle r={2.8} fill={color} />
+                  <circle r={1} className="fill-background" />
+
+                  {/* 常驻地图标识：显示项目名称（过长截断），悬停时高亮放大 */}
+                  <text
+                    x={6}
+                    y={3.5}
+                    className="pointer-events-none select-none"
+                    fill={isHover ? "oklch(0.96 0.02 220)" : "oklch(0.8 0.03 220)"}
+                    style={{
+                      fontSize: isHover ? 12 : 9.5,
+                      fontWeight: isHover ? 700 : 500,
+                      paintOrder: "stroke",
+                      stroke: "oklch(0.16 0.03 235)",
+                      strokeWidth: 3,
+                      strokeLinejoin: "round",
+                      transition: "font-size 150ms ease",
+                    }}
                   >
-                    <circle
-                      r={isHover ? 8 : 5}
-                      fill={SIMPLE_MARKER_COLOR}
-                      opacity={isHover ? 0.35 : 0.25}
-                      style={{ transition: "r 200ms ease" }}
-                    />
-                    <circle r={3.2} fill={SIMPLE_MARKER_COLOR} />
-                    <circle r={1.2} className="fill-background" />
-
-                    {/* 常驻地图标识：显示所在城市，悬停时高亮放大 */}
-                    <text
-                      x={7}
-                      y={4}
-                      className="pointer-events-none select-none"
-                      fill={isHover ? "oklch(0.95 0.02 220)" : "oklch(0.78 0.04 220)"}
-                      style={{
-                        fontSize: isHover ? 13 : 11,
-                        fontWeight: isHover ? 700 : 500,
-                        paintOrder: "stroke",
-                        stroke: "oklch(0.16 0.03 235)",
-                        strokeWidth: 3,
-                        strokeLinejoin: "round",
-                        transition: "font-size 150ms ease",
-                      }}
-                    >
-                      {shortLabel(m.location)}
-                    </text>
-
-                    {/* 悬停显示完整项目名称 */}
-                    {isHover && (
-                      <foreignObject x={-110} y={-50} width={220} height={42} style={{ overflow: "visible" }}>
-                        <div className="pointer-events-none mx-auto w-fit max-w-[220px] rounded-md border border-primary/50 bg-background/95 px-3 py-1.5 text-center text-xs font-semibold text-foreground shadow-lg backdrop-blur">
-                          {m.name}
-                        </div>
-                      </foreignObject>
-                    )}
-                  </g>
-                )
-              })}
+                    {isHover ? m.name : mapLabel(m.name)}
+                  </text>
+                </g>
+              )
+            })}
 
             {/* 项目标记点（按解决方案类型着色） */}
             {markers.map((m) => {
@@ -378,6 +368,26 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                   />
                   <circle r={5} fill={color} />
                   <circle r={2} className="fill-background" />
+
+                  {/* 常驻项目名称标签（可进入详情的重点案例，非激活时展示） */}
+                  {matched && !isActive && (
+                    <text
+                      x={8}
+                      y={4}
+                      className="pointer-events-none select-none"
+                      fill="oklch(0.95 0.03 220)"
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 700,
+                        paintOrder: "stroke",
+                        stroke: "oklch(0.16 0.03 235)",
+                        strokeWidth: 3.4,
+                        strokeLinejoin: "round",
+                      }}
+                    >
+                      {mapLabel(m.title)}
+                    </text>
+                  )}
 
                   {/* tooltip */}
                   {isActive && (
@@ -448,7 +458,7 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
             </div>
           ) : (
             <div className="rounded-xl border border-border bg-background/40 p-5 text-sm text-muted-foreground">
-              将鼠标悬停或点击地图上的标记点，查看对应项目详情。点位颜色代表解决方案类型。
+              点位颜色代表解决方案类型。带雷达脉冲的重点案例可点击进入详情，其余为落地项目定位点。
             </div>
           )}
 
@@ -463,29 +473,46 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
 
           {/* 项目快捷列表（与筛选联动） */}
           <div className="mt-2.5 grid max-h-[320px] gap-1.5 overflow-y-auto pr-1">
-            {listMarkers.map((m) => (
-              <button
-                key={m.slug}
-                type="button"
-                onMouseEnter={() => setActive(m.slug)}
-                onClick={() => router.push(`/cases/${m.slug}`)}
-                className={`flex items-center justify-between gap-2 rounded-lg border px-3 py-2 text-left text-xs transition-colors ${
-                  m.slug === active
-                    ? "border-primary/50 bg-primary/10 text-foreground"
-                    : "border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
-                }`}
-              >
-                <span className="flex min-w-0 items-center gap-2">
+            {listMarkers.map((m) => {
+              const isOn = m.slug === active
+              return (
+                <button
+                  key={m.slug}
+                  type="button"
+                  onMouseEnter={() => setActive(m.slug)}
+                  onClick={() => router.push(`/cases/${m.slug}`)}
+                  className={`group/item flex items-center justify-between gap-2 rounded-lg border border-l-[3px] px-3 py-2 text-left text-xs transition-colors ${
+                    isOn
+                      ? "border-primary/50 bg-primary/10 text-foreground"
+                      : "border-border bg-card text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                  }`}
+                  style={{ borderLeftColor: categoryColor[m.category] }}
+                >
+                  <span className="flex min-w-0 flex-col gap-0.5">
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span
+                        className="size-2 shrink-0 rounded-full"
+                        style={{ backgroundColor: categoryColor[m.category] }}
+                        aria-hidden="true"
+                      />
+                      <span className="truncate font-medium">{m.title}</span>
+                    </span>
+                    <span className="pl-4 text-[11px] text-muted-foreground">{m.location}</span>
+                  </span>
+                  {/* 可进入详情标识 */}
                   <span
-                    className="size-2 shrink-0 rounded-full"
-                    style={{ backgroundColor: categoryColor[m.category] }}
-                    aria-hidden="true"
-                  />
-                  <span className="truncate font-medium">{m.title}</span>
-                </span>
-                <span className="shrink-0 text-[11px] text-muted-foreground">{m.location}</span>
-              </button>
-            ))}
+                    className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors ${
+                      isOn
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-primary/10 text-primary group-hover/item:bg-primary/20"
+                    }`}
+                  >
+                    详情
+                    <ArrowRight className="size-3 transition-transform group-hover/item:translate-x-0.5" />
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
