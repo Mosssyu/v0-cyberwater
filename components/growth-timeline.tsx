@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react"
 import {
   Activity,
-  Star,
   ChevronLeft,
   Building2,
   ShieldCheck,
@@ -12,6 +11,7 @@ import {
   Box,
   Layers,
   Sparkles,
+  Gem,
   type LucideIcon,
 } from "lucide-react"
 import { usePauseOffscreen } from "@/hooks/use-pause-offscreen"
@@ -28,90 +28,90 @@ import { usePauseOffscreen } from "@/hooks/use-pause-offscreen"
 
 type Milestone = {
   year: string
+  /** 节点上方短标签（仅核心里程碑使用） */
+  short?: string
   title: string
   desc: string
   Icon: LucideIcon
-  /** 重点高亮节点：2018 / 2022 / 2026 */
-  key: boolean
 }
 
-const milestones: Milestone[] = [
+/* 顶部核心里程碑：位于能量轨迹上并对应上排大卡（含新增「未来」） */
+const coreMilestones: Milestone[] = [
+  {
+    year: "2018",
+    short: "战略入股",
+    title: "北控水务战略入股",
+    desc: "北控水务战略入股，深度融入头部水务集团运营体系，从技术能力真正进入实战水务运营场景。",
+    Icon: Users,
+  },
+  {
+    year: "2022",
+    short: "全面对外服务",
+    title: "全面对外服务",
+    desc: "逐步建立水务 SaaS 产品能力，从集团内部场景沉淀走向行业市场，开始规模化服务行业客户。",
+    Icon: Box,
+  },
+  {
+    year: "2026",
+    short: "AI 智能运营发布",
+    title: "AI 智能运营平台发布",
+    desc: "深度融合大模型、智能体与数字孪生，实现感知、认知、决策、执行全链路智能闭环。",
+    Icon: Sparkles,
+  },
+  {
+    year: "未来",
+    short: "持续创新",
+    title: "持续创新 引领未来",
+    desc: "以执着、共生、求变持续推动技术与业务创新，构建更智能、更高效、更绿色的水务数字化未来。",
+    Icon: Gem,
+  },
+]
+
+/* 底部次要里程碑：不在轨迹上，横向虚线分隔下方展示 */
+const subMilestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: "首批聚焦“中国智慧水务建设”计算研究院联盟团队，开启布局高级数字化服务。",
+    desc: '聚焦"中国智慧水务建设"计算研究院联盟团队，开启布局高级数字化服务。',
     Icon: Building2,
-    key: false,
   },
   {
     year: "2016",
     title: "双高认证",
-    desc: "获得国家高新技术企业、中关村高新技术企业认证，技术研发能力获得认可。",
+    desc: "获得国家高新技术企业、中关村高新技术企业双高认证，技术研发能力获得认可。",
     Icon: ShieldCheck,
-    key: false,
-  },
-  {
-    year: "2018",
-    title: "北控水务战略入股",
-    desc: "北控水务战略入股，深度融入头部水务集团运营体系，从技术能力真正进入实战水务运营场景。",
-    Icon: Users,
-    key: true,
   },
   {
     year: "2020",
     title: "加入水协智慧委",
     desc: "成为水协智慧委委员单位，进一步参与智慧水务行业实践与交流，沉淀管理标准与业务流程。",
     Icon: UserRound,
-    key: false,
-  },
-  {
-    year: "2022",
-    title: "全面对外服务",
-    desc: "逐步建立水务 SaaS 产品能力，从集团内部场景沉淀走向行业市场，开始规模化服务行业客户。",
-    Icon: Box,
-    key: true,
   },
   {
     year: "2025",
     title: "智水积木云产品化",
     desc: "管理、技术、产品体系重构，沉淀并打造智水云平台，并结合大型项目积累形成高水准产品化能力。",
     Icon: Layers,
-    key: false,
-  },
-  {
-    year: "2026",
-    title: "AI 智能运营平台发布",
-    desc: "深度融合大模型、智能体与数字孪生，实现感知、认知、决策、执行全链路智能闭环。",
-    Icon: Sparkles,
-    key: true,
   },
 ]
 
-const keyIndices = milestones.reduce<number[]>((acc, m, i) => {
-  if (m.key) acc.push(i)
-  return acc
-}, [])
-
-/* 轨迹带尺寸（viewBox 0 0 700 BAND_H）。节点纵向落点贴合波峰/波谷 */
+/* 轨迹带尺寸（viewBox 0 0 700 BAND_H）。节点纵向落点贴合波形 */
 const BAND_W = 700
 const BAND_H = 140
-/* 2015 低 → 2018 峰 → 2020 降 → 2022 峰 → 2025 降 → 2026 上扬 */
-const NODE_Y = [100, 78, 44, 82, 40, 84, 38]
-const colX = (i: number) => ((i + 0.5) / milestones.length) * 100
+/* 四个核心节点水平位置（百分比）：对齐到下方 grid-cols-4 四张大卡的中心
+   （1/8、3/8、5/8、7/8），使节点光柱垂直下贯、精准对准卡片。 */
+const NODE_X = [12.5, 37.5, 62.5, 87.5]
+/* 轻柔波形：2018 → 2022 微降 → 2026 回升 → 未来 上扬（末端箭头向上） */
+const NODE_Y = [58, 66, 50, 42]
+const colX = (i: number) => NODE_X[i]
 
-/* ===== Catmull-Rom 样条：穿过 7 个节点 + 两端，生成平滑波形 ===== */
+/* ===== Catmull-Rom 样条：穿过 4 个节点 + 两端，生成平滑波形 ===== */
 type Pt = { x: number; y: number }
 
 const ANCHORS: [number, number][] = [
-  [0, 114],
-  [BAND_W * (0.5 / 7), 100],
-  [BAND_W * (1.5 / 7), 78],
-  [BAND_W * (2.5 / 7), 44],
-  [BAND_W * (3.5 / 7), 82],
-  [BAND_W * (4.5 / 7), 40],
-  [BAND_W * (5.5 / 7), 84],
-  [BAND_W * (6.5 / 7), 38],
-  [BAND_W, 30],
+  [0, 74],
+  ...NODE_X.map((px, i) => [(px / 100) * BAND_W, NODE_Y[i]] as [number, number]),
+  [BAND_W, 24],
 ]
 
 function sampleSpline(anchors: [number, number][], perSeg = 20): Pt[] {
@@ -460,7 +460,6 @@ function TimelineNode({
   onSelect: () => void
 }) {
   const y = NODE_Y[index]
-  const isKey = m.key
   const hasDrop = m.year === "2026"
 
   return (
@@ -468,52 +467,49 @@ function TimelineNode({
       {/* 2026 上方水滴 */}
       {hasDrop ? <WaterDrop top={y - 86} /> : null}
 
-      {/* 年份标签 */}
+      {/* 节点上方标签：年份（大）+ 短描述（小） */}
       <span
-        className={[
-          "absolute left-1/2 -translate-x-1/2 -translate-y-full whitespace-nowrap font-mono font-bold tabular-nums transition-colors duration-300",
-          isKey ? "text-accent" : active ? "text-foreground/90" : "text-muted-foreground/80",
-          isKey ? "text-xl" : "text-base",
-        ].join(" ")}
-        style={{ top: y - 16 }}
+        className="absolute left-1/2 flex -translate-x-1/2 -translate-y-full flex-col items-center text-center"
+        style={{ top: y - 18 }}
       >
-        {m.year}
+        <span
+          className={[
+            "whitespace-nowrap font-mono text-xl font-bold tabular-nums leading-none transition-colors duration-300",
+            active ? "text-accent" : "text-accent/85",
+          ].join(" ")}
+        >
+          {m.year}
+        </span>
+        {m.short ? (
+          <span className="mt-1 whitespace-nowrap text-xs font-medium text-foreground/70">{m.short}</span>
+        ) : null}
       </span>
 
-      {/* 垂直光柱（仅大节点：从节点向下直射到卡片，上窄下宽光锥） */}
-      {isKey ? (
-        <span
-          className="cw-holo-cone pointer-events-none absolute left-1/2 -translate-x-1/2"
-          style={{
-            top: y,
-            height: BAND_H - y,
-            width: 30,
-            clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
-            background: "linear-gradient(to top, rgb(0 229 255 / 0.28), rgb(47 140 255 / 0.06) 70%, transparent)",
-          }}
-          aria-hidden="true"
-        />
-      ) : null}
+      {/* 垂直光柱（从节点向下直射到卡片，上窄下宽光锥） */}
+      <span
+        className="cw-holo-cone pointer-events-none absolute left-1/2 -translate-x-1/2"
+        style={{
+          top: y,
+          height: BAND_H - y,
+          width: 30,
+          clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
+          background: "linear-gradient(to top, rgb(0 229 255 / 0.28), rgb(47 140 255 / 0.06) 70%, transparent)",
+        }}
+        aria-hidden="true"
+      />
 
-      {/* 连接竖线（细脉冲；大节点更亮带流动） */}
+      {/* 连接竖线（脉冲流动） */}
       <span
         className={[
-          "absolute left-1/2 w-px -translate-x-1/2 transition-opacity duration-300",
-          isKey ? "cw-stem-flow" : "",
+          "cw-stem-flow absolute left-1/2 w-px -translate-x-1/2 transition-opacity duration-300",
           active ? "opacity-100" : "opacity-70",
         ].join(" ")}
         style={{
           top: y,
           height: BAND_H - y,
-          ...(isKey
-            ? {
-                backgroundImage:
-                  "linear-gradient(to bottom, rgb(127 233 255 / 0.9) 0%, rgb(127 233 255 / 0.9) 45%, transparent 45%, transparent 100%)",
-                filter: "drop-shadow(0 0 4px rgb(0 229 255 / 0.7))",
-              }
-            : {
-                background: "linear-gradient(to bottom, oklch(0.7 0.1 215 / 0.45), oklch(0.7 0.1 215 / 0.06))",
-              }),
+          backgroundImage:
+            "linear-gradient(to bottom, rgb(127 233 255 / 0.9) 0%, rgb(127 233 255 / 0.9) 45%, transparent 45%, transparent 100%)",
+          filter: "drop-shadow(0 0 4px rgb(0 229 255 / 0.7))",
         }}
         aria-hidden="true"
       />
@@ -527,75 +523,66 @@ function TimelineNode({
         aria-pressed={active}
         aria-label={`${m.year} ${m.title}`}
       >
-        {/* 大节点：水平透视能量环（多层同心椭圆 + 呼吸） */}
-        {isKey ? (
-          <>
-            <span
-              className="cw-node-breathe pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
-              style={{
-                width: 52,
-                height: 18,
-                borderColor: "rgb(0 229 255 / 0.55)",
-                boxShadow: "0 0 14px -2px rgb(0 229 255 / 0.65), inset 0 0 9px -4px rgb(127 233 255 / 0.7)",
-              }}
-              aria-hidden="true"
-            />
-            <span
-              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
-              style={{ width: 34, height: 12, borderColor: "rgb(127 233 255 / 0.7)" }}
-              aria-hidden="true"
-            />
-          </>
-        ) : null}
+        {/* 水平透视能量环（多层同心椭圆 + 呼吸） */}
+        <span
+          className="cw-node-breathe pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
+          style={{
+            width: 52,
+            height: 18,
+            borderColor: "rgb(0 229 255 / 0.55)",
+            boxShadow: "0 0 14px -2px rgb(0 229 255 / 0.65), inset 0 0 9px -4px rgb(127 233 255 / 0.7)",
+          }}
+          aria-hidden="true"
+        />
+        <span
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
+          style={{ width: 34, height: 12, borderColor: "rgb(127 233 255 / 0.7)" }}
+          aria-hidden="true"
+        />
 
-        {/* 圆形水波涟漪：大节点常驻，小节点选中时触发 */}
-        {isKey || active ? <span className="cw-ripple" aria-hidden="true" /> : null}
+        {/* 圆形水波涟漪 */}
+        <span className="cw-ripple" aria-hidden="true" />
 
-        {/* 中心圆点（大/小） */}
+        {/* 中心圆点 */}
         <span
           className={[
-            "relative inline-flex shrink-0 items-center justify-center rounded-full border transition-all duration-300",
-            isKey ? "cw-node-breathe size-4 border-accent bg-accent/30" : "size-2.5 border-accent/45 bg-[oklch(0.16_0.03_245)]",
-            active && isKey ? "scale-125" : "",
+            "cw-node-breathe relative inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-accent bg-accent/30 transition-all duration-300",
+            active ? "scale-125" : "",
           ].join(" ")}
-          style={isKey ? { boxShadow: "0 0 14px 1px rgb(0 229 255 / 0.75)" } : undefined}
+          style={{ boxShadow: "0 0 14px 1px rgb(0 229 255 / 0.75)" }}
         >
-          {isKey ? <span className="size-1.5 rounded-full bg-[oklch(0.96_0.09_200)]" aria-hidden="true" /> : null}
+          <span className="size-1.5 rounded-full bg-[oklch(0.96_0.09_200)]" aria-hidden="true" />
         </span>
       </button>
 
-      {/* 底部光盘 + 落点同心水波（仅大节点，光柱落点） */}
-      {isKey ? (
-        <>
-          <span
-            className="cw-holo-base pointer-events-none absolute left-1/2"
-            style={{
-              bottom: 0,
-              width: 36,
-              height: 9,
-              borderRadius: "50%",
-              background: "radial-gradient(closest-side, rgb(0 229 255 / 0.78), rgb(47 140 255 / 0.18) 60%, transparent)",
-              filter: "blur(0.5px)",
-            }}
-            aria-hidden="true"
-          />
-          {[0, 1].map((ri) => (
-            <span
-              key={ri}
-              className="cw-disc-ripple pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 rounded-[50%] border"
-              style={
-                {
-                  width: 28,
-                  height: 10,
-                  borderColor: "rgb(0 229 255 / 0.55)",
-                  ["--rd-delay" as string]: `${ri * 1.3}s`,
-                } as React.CSSProperties
-              }
-              aria-hidden="true"
-            />
-          ))}
-        </>
-      ) : null}
+      {/* 底部光盘 + 落点同心水波（光柱落点） */}
+      <span
+        className="cw-holo-base pointer-events-none absolute left-1/2"
+        style={{
+          bottom: 0,
+          width: 36,
+          height: 9,
+          borderRadius: "50%",
+          background: "radial-gradient(closest-side, rgb(0 229 255 / 0.78), rgb(47 140 255 / 0.18) 60%, transparent)",
+          filter: "blur(0.5px)",
+        }}
+        aria-hidden="true"
+      />
+      {[0, 1].map((ri) => (
+        <span
+          key={ri}
+          className="cw-disc-ripple pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 rounded-[50%] border"
+          style={
+            {
+              width: 28,
+              height: 10,
+              borderColor: "rgb(0 229 255 / 0.55)",
+              ["--rd-delay" as string]: `${ri * 1.3}s`,
+            } as React.CSSProperties
+          }
+          aria-hidden="true"
+        />
+      ))}
     </div>
   )
 }
@@ -612,7 +599,6 @@ function MilestoneCard({
   active: boolean
   onSelect: () => void
 }) {
-  const isKey = milestone.key
   return (
     <button
       type="button"
@@ -621,52 +607,23 @@ function MilestoneCard({
       className={[
         "group relative flex h-full w-full flex-col overflow-hidden rounded-xl border px-4 py-3.5 text-left outline-none backdrop-blur-sm transition-all duration-300",
         "hover:-translate-y-1",
-        isKey
-          ? active
-            ? "border-accent/70 bg-[oklch(0.17_0.04_245)]/80"
-            : "border-accent/45 bg-[oklch(0.15_0.035_246)]/70 hover:border-accent/65"
-          : active
-            ? "border-accent/40 bg-[oklch(0.15_0.03_246)]/65"
-            : "border-border/55 bg-[oklch(0.13_0.025_247)]/45 hover:border-accent/30",
+        active
+          ? "border-accent/40 bg-[oklch(0.15_0.03_246)]/65"
+          : "border-border/55 bg-[oklch(0.13_0.025_247)]/45 hover:border-accent/30",
       ].join(" ")}
-      style={
-        isKey
-          ? {
-              boxShadow: active
-                ? "0 0 28px -4px rgb(0 229 255 / 0.55), inset 0 0 18px -10px rgb(0 229 255 / 0.6)"
-                : "0 0 18px -6px rgb(0 229 255 / 0.4)",
-            }
-          : undefined
-      }
     >
-      {/* HUD 边角（仅大节点卡片） */}
-      {isKey ? (
-        <>
-          <span className="pointer-events-none absolute left-0 top-0 size-3 border-l border-t border-accent/60" aria-hidden="true" />
-          <span className="pointer-events-none absolute right-0 top-0 size-3 border-r border-t border-accent/60" aria-hidden="true" />
-          <span className="pointer-events-none absolute bottom-0 left-0 size-3 border-b border-l border-accent/60" aria-hidden="true" />
-          <span className="pointer-events-none absolute bottom-0 right-0 size-3 border-b border-r border-accent/60" aria-hidden="true" />
-        </>
-      ) : null}
-
-      {/* 图标 + 标题 */}
+      {/* 图标 + 年份 + 标题 */}
       <span className="flex items-center gap-2">
         <span
-          className={[
-            "inline-flex size-7 shrink-0 items-center justify-center rounded-md border transition-colors duration-300",
-            isKey ? "border-accent/55 bg-accent/15 text-accent" : "border-accent/25 bg-accent/[0.06] text-accent/75",
-          ].join(" ")}
-          style={isKey ? { boxShadow: "0 0 10px -3px rgb(0 229 255 / 0.7)" } : undefined}
+          className="inline-flex size-7 shrink-0 items-center justify-center rounded-md border border-accent/25 bg-accent/[0.06] text-accent/75 transition-colors duration-300"
           aria-hidden="true"
         >
           <milestone.Icon className="size-4" />
         </span>
-        <span
-          className={[
-            "text-pretty text-base font-semibold leading-snug transition-colors duration-300",
-            isKey ? "text-accent" : "text-foreground/90",
-          ].join(" ")}
-        >
+        <span className="inline-flex shrink-0 items-center rounded-md border border-accent/45 bg-accent/[0.08] px-2 py-0.5 font-mono text-xs font-bold tabular-nums text-accent">
+          {milestone.year}
+        </span>
+        <span className="text-pretty text-base font-semibold leading-snug text-foreground/90 transition-colors duration-300">
           {milestone.title}
         </span>
       </span>
@@ -678,138 +635,9 @@ function MilestoneCard({
 }
 
 /* =========================================================================
-   重点卡主题插画 —— 2018 水滴涟漪 / 2022 发光方块 / 2026 AI 智能球体
-   ========================================================================= */
-function DropArt() {
-  return (
-    <span className="pointer-events-none relative block size-[104px]" aria-hidden="true">
-      {/* 水面同心涟漪 */}
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="cw-disc-ripple absolute left-1/2 top-[64%] -translate-x-1/2 rounded-[50%] border"
-          style={
-            {
-              width: 78,
-              height: 26,
-              borderColor: "rgb(0 229 255 / 0.5)",
-              ["--rd-delay" as string]: `${i * 0.9}s`,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-      {/* 水面光盘 */}
-      <span
-        className="absolute left-1/2 top-[64%] -translate-x-1/2 rounded-[50%]"
-        style={{
-          width: 46,
-          height: 14,
-          background: "radial-gradient(closest-side, rgb(0 229 255 / 0.7), rgb(47 140 255 / 0.15) 60%, transparent)",
-        }}
-      />
-      {/* 下落水滴 */}
-      <span className="cw-drop-float absolute left-1/2 top-1.5 -translate-x-1/2 block">
-        <svg width="30" height="40" viewBox="0 0 26 34" fill="none" aria-hidden="true">
-          <defs>
-            <radialGradient id="fcDrop" cx="40%" cy="32%" r="70%">
-              <stop offset="0" stopColor="#eafdff" />
-              <stop offset="0.4" stopColor="#7fe9ff" />
-              <stop offset="1" stopColor="#0091ea" />
-            </radialGradient>
-          </defs>
-          <path d="M13 1 C13 1 23 16 23 23 A10 10 0 1 1 3 23 C3 16 13 1 13 1 Z" fill="url(#fcDrop)" />
-          <ellipse cx="9.5" cy="20" rx="2.4" ry="3.6" fill="#ffffff" opacity="0.7" />
-        </svg>
-      </span>
-    </span>
-  )
-}
-
-function CubeArt() {
-  return (
-    <span className="pointer-events-none relative flex size-[104px] items-center justify-center" aria-hidden="true">
-      <span className="cw-drop-float block">
-        <svg width="92" height="96" viewBox="0 0 92 96" fill="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="fcCubeFace" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#00e5ff" stopOpacity="0.28" />
-              <stop offset="1" stopColor="#2f8cff" stopOpacity="0.06" />
-            </linearGradient>
-            <filter id="fcCubeGlow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="1.6" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <g filter="url(#fcCubeGlow)" stroke="#7fe9ff" strokeWidth="1.4" strokeLinejoin="round">
-            {/* 顶面 */}
-            <path d="M46 8 L82 28 L46 48 L10 28 Z" fill="url(#fcCubeFace)" />
-            {/* 左面 */}
-            <path d="M10 28 L46 48 L46 88 L10 68 Z" fill="url(#fcCubeFace)" stroke="#4facfe" />
-            {/* 右面 */}
-            <path d="M82 28 L46 48 L46 88 L82 68 Z" fill="url(#fcCubeFace)" stroke="#4facfe" />
-            {/* 内部竖脊 */}
-            <path d="M46 48 L46 88" stroke="#aef6ff" strokeOpacity="0.7" strokeWidth="1" />
-          </g>
-          {/* 顶点光点 */}
-          {[
-            [46, 8],
-            [82, 28],
-            [10, 28],
-            [46, 88],
-          ].map(([cx, cy], i) => (
-            <circle key={i} cx={cx} cy={cy} r="2.2" fill="#eafdff" filter="url(#fcCubeGlow)" />
-          ))}
-        </svg>
-      </span>
-    </span>
-  )
-}
-
-function AiArt() {
-  return (
-    <span className="pointer-events-none relative flex size-[104px] items-center justify-center" aria-hidden="true">
-      {/* 轨道环 */}
-      <span
-        className="absolute inset-1 rounded-[50%] border border-accent/40"
-        style={{ animation: "orbit-spin 9s linear infinite", transform: "rotateX(70deg)" }}
-      >
-        <span className="absolute -top-1 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-[#aef6ff] shadow-[0_0_8px_1px_rgb(0_229_255/0.9)]" />
-      </span>
-      <span
-        className="absolute inset-2 rounded-[50%] border border-accent/30"
-        style={{ animation: "orbit-spin-rev 12s linear infinite", transform: "rotateX(70deg) rotate(60deg)" }}
-      >
-        <span className="absolute -top-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-[#7fe9ff] shadow-[0_0_6px_1px_rgb(0_229_255/0.8)]" />
-      </span>
-      {/* 智能核心球 */}
-      <span
-        className="relative flex size-12 items-center justify-center rounded-full"
-        style={{
-          background: "radial-gradient(circle at 38% 32%, #eafdff 0%, #33d6fe 42%, #0091ea 100%)",
-          boxShadow: "0 0 24px 2px rgb(0 229 255 / 0.75), inset 0 2px 6px -2px rgb(255 255 255 / 0.8)",
-          animation: "core-pulse 3.6s ease-in-out infinite",
-        }}
-      >
-        <span className="font-mono text-sm font-bold tracking-tight text-[oklch(0.18_0.05_245)]">AI</span>
-      </span>
-    </span>
-  )
-}
-
-const FEATURE_ART: Record<string, () => React.ReactElement> = {
-  "2018": DropArt,
-  "2022": CubeArt,
-  "2026": AiArt,
-}
-
-/* =========================================================================
-   FeatureCard —— 第二排重点放大卡片（横向大卡 + 主题插画 + 发光描边）
+   FeatureCard —— 顶部核心大卡（图标 + 年份 + 标题 + 描述）
    ========================================================================= */
 function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; active: boolean; onSelect: () => void }) {
-  const Art = FEATURE_ART[milestone.year] ?? DropArt
   return (
     <button
       type="button"
@@ -838,7 +666,7 @@ function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; ac
         aria-hidden="true"
       />
 
-      {/* 左侧内容 */}
+      {/* 卡片内容 */}
       <div className="relative flex min-w-0 flex-1 flex-col">
         <span className="flex items-center gap-2.5">
           <span
@@ -854,32 +682,47 @@ function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; ac
         </span>
         <h4 className="mt-3.5 text-pretty text-lg font-bold leading-snug text-foreground">{milestone.title}</h4>
         <span className="mt-2 block flex-1 text-pretty text-[13px] leading-relaxed text-foreground/70">{milestone.desc}</span>
-
-        {/* 星标按钮 */}
-        <span
-          className="mt-3 inline-flex size-7 items-center justify-center self-start rounded-full border border-accent/50 bg-accent/10 text-accent transition-colors group-hover:bg-accent/25"
-          aria-hidden="true"
-        >
-          <Star className="size-3.5 fill-current" />
-        </span>
-      </div>
-
-      {/* 右侧主题插画 */}
-      <div className="relative flex shrink-0 items-center justify-center self-center">
-        <Art />
       </div>
     </button>
   )
 }
 
-/* 第二排重点卡：与上方 2018/2022/2026 节点一一对应 */
-const featureMilestones = milestones.filter((m) => m.key)
+/* =========================================================================
+   RowDivider —— 上下两排之间的横向虚线分隔（带节点，不与上方竖直连接）
+   ========================================================================= */
+function RowDivider() {
+  return (
+    <div className="relative my-9 h-px" aria-hidden="true">
+      {/* 横向虚线 */}
+      <span
+        className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, transparent 0%, rgb(127 233 255 / 0.4) 8%, rgb(127 233 255 / 0.4) 92%, transparent 100%)",
+          backgroundSize: "10px 1px",
+          backgroundRepeat: "repeat-x",
+          maskImage: "repeating-linear-gradient(to right, #000 0 6px, transparent 6px 12px)",
+          WebkitMaskImage: "repeating-linear-gradient(to right, #000 0 6px, transparent 6px 12px)",
+          filter: "drop-shadow(0 0 3px rgb(0 229 255 / 0.45))",
+        }}
+      />
+      {/* 四个分隔节点，落在下排四列卡片中心 */}
+      {NODE_X.map((leftPct, i) => (
+        <span
+          key={i}
+          className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/70 bg-[oklch(0.16_0.03_245)]"
+          style={{ left: `${leftPct}%`, boxShadow: "0 0 8px 1px rgb(0 229 255 / 0.55)" }}
+        />
+      ))}
+    </div>
+  )
+}
 
 /* =========================================================================
    EvolutionSection —— 顶层容器
    ========================================================================= */
 function EvolutionSection() {
-  const [active, setActive] = useState(keyIndices[0])
+  const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
   const [onscreen, setOnscreen] = useState(true)
   const cursorRef = useRef(0)
@@ -900,8 +743,8 @@ function EvolutionSection() {
   useEffect(() => {
     if (paused || !onscreen) return
     const id = setInterval(() => {
-      cursorRef.current = (cursorRef.current + 1) % keyIndices.length
-      setActive(keyIndices[cursorRef.current])
+      cursorRef.current = (cursorRef.current + 1) % coreMilestones.length
+      setActive(cursorRef.current)
     }, 3600)
     return () => clearInterval(id)
   }, [paused, onscreen])
@@ -941,88 +784,57 @@ function EvolutionSection() {
         </div>
       </div>
 
-      {/* ===== 桌面端：SVG 能量轨迹 + 节点光效 + 卡片 ===== */}
-      <div className="relative mt-10 hidden lg:block">
-        <div className="relative w-full" style={{ height: BAND_H }}>
+      {/* ===== 桌面端：能量轨迹 + 4 核心节点 → 4 核心大卡 → 横向虚线 → 4 次要卡片 ===== */}
+      <div className="hidden lg:block">
+        {/* 能量轨迹 + 四个核心节点 */}
+        <div className="relative mt-12 w-full" style={{ height: BAND_H }}>
           <EnergyTrackSvg />
-          {milestones.map((m, i) => (
+          {coreMilestones.map((m, i) => (
             <TimelineNode key={m.year} m={m} index={i} active={i === active} onSelect={() => setActive(i)} />
           ))}
         </div>
 
-        {/* 第一排：常规里程碑卡片（仅非重点年份，重点年份列留空，让节点光柱直接下贯到第二排大卡） */}
-        <ol className="mt-9 grid grid-cols-7 gap-x-5">
-          {milestones.map((m, i) =>
-            m.key ? null : (
-              <li key={m.year} style={{ gridColumnStart: i + 1 }}>
-                <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
-              </li>
-            ),
-          )}
+        {/* 顶部核心大卡（2018 / 2022 / 2026 / 未来） */}
+        <ol className="mt-8 grid grid-cols-4 gap-5">
+          {coreMilestones.map((m, i) => (
+            <li key={m.year}>
+              <FeatureCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
+            </li>
+          ))}
         </ol>
 
-        {/* 节点 -> 重点卡 垂直发光虚线连接区 */}
-        <div className="grid grid-cols-3 gap-6 px-2" aria-hidden="true">
-          {featureMilestones.map((m) => (
-            <div key={m.year} className="flex h-14 items-stretch justify-center">
-              <span
-                className="cw-stem-flow w-px"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(to bottom, rgb(127 233 255 / 0.85) 0%, rgb(127 233 255 / 0.85) 45%, transparent 45%, transparent 100%)",
-                  backgroundSize: "1px 9px",
-                  filter: "drop-shadow(0 0 4px rgb(0 229 255 / 0.7))",
-                }}
-              />
-            </div>
-          ))}
-        </div>
+        {/* 横向虚线分隔（下排不与上排竖直连接） */}
+        <RowDivider />
 
-        {/* 第二排：重点放大卡片（2018 / 2022 / 2026） */}
-        <ol className="grid grid-cols-3 gap-6">
-          {featureMilestones.map((m) => {
-            const idx = milestones.indexOf(m)
-            return (
-              <li key={m.year}>
-                <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
-              </li>
-            )
-          })}
+        {/* 底部次要里程碑卡片（2015 / 2016 / 2020 / 2025） */}
+        <ol className="grid grid-cols-4 gap-5">
+          {subMilestones.map((m) => (
+            <li key={m.year}>
+              <MilestoneCard milestone={m} active={false} onSelect={() => {}} />
+            </li>
+          ))}
         </ol>
       </div>
 
-      {/* ===== 移动端：纵向能量轨迹 ===== */}
-      <ol className="relative mt-8 space-y-4 lg:hidden">
-        <span
-          className="pointer-events-none absolute bottom-2 left-[7px] top-2 w-px bg-gradient-to-b from-accent/50 via-accent/30 to-transparent"
-          aria-hidden="true"
-        />
-        {milestones.map((m, i) => (
-          <li key={m.year} className="relative pl-7">
-            <span
-              className={[
-                "absolute left-0 top-2 inline-flex items-center justify-center rounded-full border",
-                m.key ? "cw-node-breathe size-4 border-accent bg-accent/30" : "size-3 border-accent/45 bg-[oklch(0.16_0.03_245)]",
-              ].join(" ")}
-              aria-hidden="true"
-            >
-              {m.key ? <span className="size-1.5 rounded-full bg-[oklch(0.96_0.09_200)]" /> : null}
-            </span>
-            <MilestoneCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
+      {/* ===== 移动端：核心大卡 → 横向虚线 → 次要卡片 ===== */}
+      <ol className="mt-8 space-y-4 lg:hidden">
+        {coreMilestones.map((m, i) => (
+          <li key={m.year}>
+            <FeatureCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
           </li>
         ))}
       </ol>
 
-      {/* 移动端第二排：重点放大卡片 */}
-      <ol className="mt-6 space-y-4 lg:hidden">
-        {featureMilestones.map((m) => {
-          const idx = milestones.indexOf(m)
-          return (
-            <li key={m.year}>
-              <FeatureCard milestone={m} active={idx === active} onSelect={() => setActive(idx)} />
-            </li>
-          )
-        })}
+      <div className="lg:hidden">
+        <RowDivider />
+      </div>
+
+      <ol className="space-y-4 lg:hidden">
+        {subMilestones.map((m) => (
+          <li key={m.year}>
+            <MilestoneCard milestone={m} active={false} onSelect={() => {}} />
+          </li>
+        ))}
       </ol>
     </section>
   )

@@ -588,6 +588,21 @@
 }
 
 /* 重点节点水波扩散环（能量落点） */
+@keyframes cw-hovercard-in {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.cw-hovercard {
+  animation: cw-hovercard-in 160ms ease-out;
+  transform-origin: center bottom;
+}
+
 @keyframes cw-ripple {
   0% {
     transform: translate(-50%, -50%) scale(0.3);
@@ -666,7 +681,7 @@
   animation: cw-drop-glow 3.6s ease-in-out infinite;
 }
 
-/* 水花溅落粒子：从中心向外扩散并淡出 */
+/* 水花溅落粒��：从中心向外扩散并淡出 */
 @keyframes cw-splash {
   0% {
     transform: translate(-50%, -50%) scale(0.3);

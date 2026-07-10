@@ -472,7 +472,7 @@ export const cases: CaseItem[] = [
     title: "鹤山水环境二三维智慧管控",
     category: "三维数字孪生",
     products: ["Visual"],
-    location: "广东·江门鹤山",
+    location: "���东·江门鹤山",
     client: "鹤山市水务管理单位",
     image: "/cases/heshan-water-env.png",
     summary:
@@ -523,4 +523,105 @@ export const caseCoords: Record<string, [number, number]> = {
 
 export function getCaseBySlug(slug: string) {
   return cases.find((c) => c.slug === slug)
+}
+
+// 仅地图定位展示的项目（无详情页）：地图上显示项目名称，不可点击进入详情
+export interface MapMarker {
+  name: string
+  location: string
+  /** 解决方案分类，用于地图点位着色与筛选 */
+  category: CaseCategory
+  coord: [number, number]
+}
+
+export const mapMarkers: MapMarker[] = [
+  { name: "大岭山数字双胞胎", location: "广东·东莞大岭山", category: "三维数字孪生", coord: [113.9, 22.92] },
+  { name: "凯里多厂集约化管理", location: "贵州·凯里", category: "水务集团数字化运营", coord: [107.98, 26.57] },
+  { name: "安宁多厂集约化管理", location: "云南·安宁", category: "水务集团数字化运营", coord: [102.48, 24.92] },
+  { name: "中科院江门项目", location: "广东·江门", category: "三维数字孪生", coord: [113.08, 22.58] },
+  { name: "湘雅医院 BIM 咨询", location: "湖南·长沙", category: "三维数字孪生", coord: [113.15, 28.35] },
+  { name: "智慧方正项目", location: "黑龙江·方正县", category: "三维数字孪生", coord: [128.83, 45.85] },
+  {
+    name: "威宁地理信息共享服务平台及可视化资源管理系统",
+    location: "贵州·威宁",
+    category: "三维数字孪生",
+    coord: [104.28, 26.86],
+  },
+  { name: "四川眉山村镇污水智慧运营", location: "四川·眉山", category: "排水一体化管理", coord: [103.83, 30.05] },
+  { name: "台州多厂集约化管理", location: "浙江·台州", category: "水务集团数字化运营", coord: [121.42, 28.66] },
+  { name: "锦州多厂集约化管理", location: "辽宁·锦州", category: "水务集团数字化运营", coord: [121.13, 41.1] },
+  { name: "绵阳多厂集约化管理", location: "四川·绵阳", category: "水务集团数字化运营", coord: [105.1, 31.7] },
+  { name: "湘潭多厂集约化管理", location: "湖南·湘潭", category: "水务集团数字化运营", coord: [112.94, 27.83] },
+  { name: "新疆多厂集约化管理", location: "新疆·乌鲁木齐", category: "水务集团数字化运营", coord: [87.62, 43.83] },
+  { name: "胶州多厂集约化管理", location: "山东·胶州", category: "水务集团数字化运营", coord: [120.03, 36.28] },
+  { name: "科源多厂集约化管理", location: "山东·潍坊", category: "水务集团数字化运营", coord: [119.16, 36.71] },
+  { name: "昆山多厂集约化管理", location: "江苏·昆山", category: "水务集团数字化运营", coord: [120.98, 31.39] },
+  { name: "永州多厂集约化管理", location: "湖南·永州", category: "水务集团数字化运营", coord: [111.61, 26.42] },
+  { name: "银川永宁二污、九污集控", location: "宁夏·银川", category: "数字水厂", coord: [106.05, 38.28] },
+  { name: "苏托垸智慧水厂建设", location: "湖南·长沙", category: "数字水厂", coord: [112.85, 28.05] },
+  { name: "彭州智慧水务", location: "四川·彭州", category: "排水一体化管理", coord: [103.96, 30.99] },
+  { name: "银川多厂集约化管理", location: "宁夏·银川", category: "水务集团数字化运营", coord: [106.4, 38.6] },
+  { name: "香港佳发海上环卫管理系统", location: "香港", category: "水务集团数字化运营", coord: [114.17, 22.32] },
+  { name: "陡沟河智慧水务建设", location: "四川·成都", category: "排水一体化管理", coord: [104.07, 30.57] },
+  { name: "济南多厂集约化管理", location: "山东·济南", category: "水务集团数字化运营", coord: [117.0, 36.65] },
+  { name: "临汾多厂集约化管理", location: "山西·临汾", category: "水务集团数字化运营", coord: [111.52, 36.08] },
+  { name: "鹤山大规模村污智慧化提升", location: "广东·江门鹤山", category: "排水一体化管理", coord: [112.7, 22.6] },
+  { name: "三河多厂集约化管理", location: "河北·廊坊三河", category: "水务集团数字化运营", coord: [117.0, 39.98] },
+  { name: "董大水库数字孪生管控平台", location: "安徽·合肥", category: "排水一体化管理", coord: [117.28, 31.86] },
+  { name: "红旗水厂智慧化", location: "湖北·随州", category: "数字水厂", coord: [113.38, 31.69] },
+  {
+    name: "云冈经济技术开发区工业污水处理厂智慧水务",
+    location: "山西·大同云冈",
+    category: "数字水厂",
+    coord: [113.2, 40.05],
+  },
+  { name: "揭阳空港智慧水务", location: "广东·揭阳", category: "数字水厂", coord: [116.37, 23.55] },
+  { name: "惠州江北智慧水务管理平台", location: "广东·惠州江北", category: "数字水厂", coord: [114.42, 23.13] },
+  {
+    name: "营口市老边区污水处理厂智慧水务系统",
+    location: "辽宁·营口老边",
+    category: "数字水厂",
+    coord: [122.35, 40.68],
+  },
+  {
+    name: "增城区开发区下沉式污水处理厂智慧水务系统",
+    location: "广东·广州增城",
+    category: "数字水厂",
+    coord: [113.9, 23.4],
+  },
+  { name: "舟山市定海水厂智慧水务项目", location: "浙江·舟山定海", category: "数字水厂", coord: [122.1, 30.02] },
+  { name: "杭州水务城北水厂三维系统", location: "浙江·杭州", category: "三维数字孪生", coord: [120.1, 30.35] },
+  {
+    name: "石家庄市桥西污水处理厂提标改造工程",
+    location: "河北·石家庄",
+    category: "数字水厂",
+    coord: [114.48, 38.05],
+  },
+  { name: "清远村污智慧化", location: "广东·清远", category: "排水一体化管理", coord: [113.05, 23.7] },
+  { name: "合肥陶冲水厂", location: "安徽·合肥", category: "数字水厂", coord: [117.35, 31.95] },
+  { name: "合肥于湾水厂", location: "安徽·合肥", category: "数字水厂", coord: [117.18, 31.78] },
+  { name: "杭州七格水厂", location: "浙江·杭州", category: "数字水厂", coord: [120.35, 30.28] },
+  { name: "霍邱工业厂", location: "安徽·六安霍邱", category: "数字水厂", coord: [116.28, 32.35] },
+  { name: "霍邱生活厂", location: "安徽·六安霍邱", category: "数字水厂", coord: [116.36, 32.43] },
+  { name: "霍邱城北水厂", location: "安徽·六安霍邱", category: "数字水厂", coord: [116.2, 32.28] },
+  { name: "宝应仙荷水厂", location: "江苏·扬州宝应", category: "数字水厂", coord: [119.31, 33.24] },
+  { name: "德清乾元水厂", location: "浙江·湖州德清", category: "数字水厂", coord: [119.97, 30.56] },
+  { name: "阜阳颍南水厂", location: "安徽·阜阳", category: "数字水厂", coord: [115.82, 32.85] },
+  { name: "阜阳颍东水厂", location: "安徽·阜阳", category: "数字水厂", coord: [115.92, 32.92] },
+  { name: "颍上城南水厂", location: "安徽·阜阳颍上", category: "数字水厂", coord: [116.26, 32.63] },
+  { name: "创业环保含山水厂", location: "安徽·马鞍山含山", category: "数字水厂", coord: [118.1, 31.73] },
+  { name: "贵州小河水厂", location: "贵州·贵阳小河", category: "数字水厂", coord: [106.66, 26.55] },
+  { name: "曲靖两江口水厂", location: "云南·曲靖", category: "数字水厂", coord: [103.8, 25.5] },
+  { name: "曲靖西城水厂", location: "云南·曲靖", category: "数字水厂", coord: [103.7, 25.56] },
+  { name: "创业环保会泽水厂", location: "云南·曲靖会泽", category: "数字水厂", coord: [103.3, 26.41] },
+  { name: "长沙环保水厂", location: "湖南·长沙", category: "数字水厂", coord: [112.9, 28.1] },
+  { name: "武汉赤壁水厂", location: "湖北·赤壁", category: "数字水厂", coord: [113.9, 29.72] },
+  { name: "武汉洪湖水厂", location: "湖北·洪湖", category: "数字水厂", coord: [113.47, 29.8] },
+  { name: "武汉咸宁水厂", location: "湖北·咸宁", category: "数字水厂", coord: [114.32, 29.84] },
+]
+
+// 将地图定位项目并入各方案「其它参考案例」清单（按分类去重追加）
+for (const m of mapMarkers) {
+  const list = otherCases[m.category]
+  if (list && !list.includes(m.name)) list.push(m.name)
 }
