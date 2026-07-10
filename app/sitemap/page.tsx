@@ -23,10 +23,10 @@ const groups: Group[] = [
   {
     title: "核心产品",
     links: [
-      { label: "CW-Agent", desc: "水务智能体平台", href: "/#product-agent" },
-      { label: "CW-PPI", desc: "厂网河湖一体化平台", href: "/#product-ppi" },
-      { label: "CW-3DP", desc: "三维数字孪生平台", href: "/#product-3dp" },
-      { label: "CW-POM", desc: "数字水厂平台", href: "/#product-pom" },
+      { label: "CW-Agent", desc: "水务智能体平台", href: "/#products" },
+      { label: "CW-PPI", desc: "厂网河湖一体化平台", href: "/#products" },
+      { label: "CW-3DP", desc: "三维数字孪生平台", href: "/#products" },
+      { label: "CW-POM", desc: "数字水厂平台", href: "/#products" },
     ],
   },
   {
@@ -41,12 +41,13 @@ const groups: Group[] = [
   {
     title: "经典案例",
     links: [
-      { label: "上海城投临港供水厂", href: "/#cases" },
-      { label: "上海城投临港污水厂", href: "/#cases" },
-      { label: "上海浦东水务北水厂", href: "/#cases" },
-      { label: "杭州城北水厂", href: "/#cases" },
-      { label: "西安水务集团项目", href: "/#cases" },
-      { label: "北京定福庄水厂", href: "/#cases" },
+      { label: "案例总览", desc: "全国项目分布地图", href: "/cases" },
+      { label: "北控水务·集团数字化运营", href: "/cases/beikong-shuiwu" },
+      { label: "创业环保·多厂业财一体化", href: "/cases/tianjin-chuangye" },
+      { label: "上海临港·AI 全流程智慧水厂", href: "/cases/shanghai-linkang" },
+      { label: "西安·第三再生水厂数字化运营", href: "/cases/xian-third-reclaimed" },
+      { label: "绵阳塔子坝黑灯水厂", href: "/cases/mianyang-taziba" },
+      { label: "鹤山水环境二三维智慧管控", href: "/cases/heshan-water-env" },
     ],
   },
   {

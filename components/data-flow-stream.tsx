@@ -49,14 +49,6 @@ export function DataFlowStream() {
               <stop offset="100%" stopColor={s.color} stopOpacity="0" />
             </linearGradient>
           ))}
-          {/* 粒子柔光 */}
-          <filter id="flow-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1.5" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
           {/* 左下角整体亮度蒙版（向右上淡出） */}
           <radialGradient id="flow-fade" cx="6%" cy="98%" r="95%">
             <stop offset="0%" stopColor="#fff" stopOpacity="1" />
@@ -88,9 +80,11 @@ export function DataFlowStream() {
             />
           ))}
 
-          {/* 流动粒子 */}
+          {/* 流动粒子
+              性能优化：运动元素不挂 blur 滤镜（每帧重栅格化是 GPU 大头），
+              改用「大半径低透明度光晕圆 + 实心圆」双层模拟柔光 */}
           {particles.map((p, i) => (
-            <circle key={`c-${i}`} r={p.r} fill={p.color} filter="url(#flow-glow)" className="flow-dot">
+            <g key={`c-${i}`} className="flow-dot">
               <animateMotion
                 dur={`${p.dur}s`}
                 begin={`${p.delay}s`}
@@ -110,7 +104,9 @@ export function DataFlowStream() {
                 begin={`${p.delay}s`}
                 repeatCount="indefinite"
               />
-            </circle>
+              <circle r={p.r * 2.4} fill={p.color} opacity={0.25} />
+              <circle r={p.r} fill={p.color} />
+            </g>
           ))}
         </g>
       </svg>

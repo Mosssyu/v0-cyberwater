@@ -40,16 +40,16 @@ export function ParticleSphere({ className }: { className?: string }) {
     // 轻量版判定：容器较窄（移动端）时降低粒子数 / 帧率 / 像素比，兼顾观感与 CPU
     const compact =
       (container.getBoundingClientRect().width || window.innerWidth || 0) < 640
-    const DPR_CAP = compact ? 1.25 : 1.5
-    const TENDRILS_PER_QUAD = compact ? 3 : 5
-    const FRAME_MS = 1000 / (compact ? 24 : 30) // 移动端 24fps / 桌面 30fps
+    const DPR_CAP = compact ? 1 : 1.25
+    const TENDRILS_PER_QUAD = compact ? 3 : 4
+    const FRAME_MS = 1000 / (compact ? 20 : 24) // 移动端 20fps / 桌面 24fps
 
     let width = 0
     let height = 0
     let dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP)
 
     // ---------- 生成球面粒子（Fibonacci 分布） ----------
-    const SPHERE_COUNT = compact ? 80 : 150
+    const SPHERE_COUNT = compact ? 70 : 110
     const sphere: P3[] = []
     const golden = Math.PI * (3 - Math.sqrt(5))
     for (let i = 0; i < SPHERE_COUNT; i++) {
@@ -60,7 +60,8 @@ export function ParticleSphere({ className }: { className?: string }) {
     }
 
     // ---------- 预计算邻接连线（基于球面 3D 距离，刚体不变） ----------
-    const LINK_DIST = 0.42
+    // 收紧连线距离阈值：连线数随距离立方级增长，是每帧描边开销的主要来源
+    const LINK_DIST = 0.38
     const links: { a: number; b: number; phase: number }[] = []
     for (let i = 0; i < SPHERE_COUNT; i++) {
       for (let j = i + 1; j < SPHERE_COUNT; j++) {

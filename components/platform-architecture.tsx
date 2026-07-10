@@ -138,26 +138,32 @@ function CardHeading({ icon: Icon, title }: { icon: LucideIcon; title: string })
   )
 }
 
-/* 六大能力中心 —— 俯视盘面旋转轨道（节点直立，沿压扁椭圆环绕） */
+/* 六大能力中心 —— 俯视盘面旋转轨道（节点直立，沿压扁椭圆环绕）
+   性能优化：帧率上限 20fps + 离屏/隐藏自动暂停，避免满帧持续布局与合成 */
 function CapabilityOrbit() {
+  const rootRef = useRef<HTMLDivElement>(null)
   const nodesRef = useRef<(HTMLDivElement | null)[]>([])
   const rafRef = useRef<number>(0)
   const rx = 168 // 椭圆水平半径
   const ry = 60 // 椭圆垂直半径（俯视压扁）
 
   useEffect(() => {
+    const root = rootRef.current
+    if (!root) return
+
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     const n = nodesRef.current.length
     const speed = (2 * Math.PI) / 48000 // 一圈 48s（慢速、平稳、高级）
-    let start: number | null = null
+    const FRAME_MS = 1000 / 20 // 轨道极慢，20fps 已足够平滑
+    const startTime = performance.now()
+    let last = startTime
+    let running = false
 
-    const frame = (t: number) => {
-      if (start === null) start = t
-      const base = reduce ? Math.PI / 2 : (t - start) * speed
-
+    const paint = (t: number) => {
+      const base = reduce ? Math.PI / 2 : (t - startTime) * speed
       nodesRef.current.forEach((el, i) => {
         if (!el) return
         const angle = base + (i / n) * 2 * Math.PI
@@ -170,16 +176,58 @@ function CapabilityOrbit() {
         el.style.opacity = String(opacity)
         el.style.zIndex = String(50 + Math.round(depth * 40))
       })
-
-      if (!reduce) rafRef.current = requestAnimationFrame(frame)
     }
 
-    rafRef.current = requestAnimationFrame(frame)
-    return () => cancelAnimationFrame(rafRef.current)
+    const frame = (t: number) => {
+      rafRef.current = requestAnimationFrame(frame)
+      const dt = t - last
+      if (dt < FRAME_MS) return
+      last = t - (dt % FRAME_MS)
+      paint(t)
+    }
+
+    const start = () => {
+      if (running || reduce) return
+      running = true
+      last = performance.now()
+      rafRef.current = requestAnimationFrame(frame)
+    }
+    const stop = () => {
+      running = false
+      cancelAnimationFrame(rafRef.current)
+    }
+
+    // 首帧摆位（静态也可见）
+    paint(performance.now())
+
+    // 离屏自动暂停（同时冻结区块内所有 CSS 无限动画）
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = !!entries[0]?.isIntersecting
+        root.classList.toggle("cw-anim-paused", !visible)
+        if (visible) start()
+        else stop()
+      },
+      { threshold: 0.05 },
+    )
+    io.observe(root)
+
+    // 标签页隐藏时暂停
+    const onVisibility = () => {
+      if (document.hidden) stop()
+      else if (!root.classList.contains("cw-anim-paused")) start()
+    }
+    document.addEventListener("visibilitychange", onVisibility)
+
+    return () => {
+      stop()
+      io.disconnect()
+      document.removeEventListener("visibilitychange", onVisibility)
+    }
   }, [])
 
   return (
-    <div className="relative mx-auto h-[240px] w-full max-w-[440px]">
+    <div ref={rootRef} className="relative mx-auto h-[240px] w-full max-w-[440px]">
       {/* 俯视盘面装饰圈（多层同心椭圆 + 虚线轨道） */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         {/* 最外发光盘面 */}

@@ -603,6 +603,12 @@
   transform-origin: center bottom;
 }
 
+/* 性能优化：离屏区块冻结全部 CSS 动画（由 IntersectionObserver 切换），避免不可见时空转 GPU */
+.cw-anim-paused,
+.cw-anim-paused * {
+  animation-play-state: paused !important;
+}
+
 @keyframes cw-ripple {
   0% {
     transform: translate(-50%, -50%) scale(0.3);
