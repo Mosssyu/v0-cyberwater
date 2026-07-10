@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { geoMercator, type GeoProjection } from "d3-geo"
 import { ArrowRight, MapPin } from "lucide-react"
 import { cases, caseCoords, categoryColor, mapMarkers, type CaseCategory } from "@/lib/cases"
+import { usePauseOffscreen } from "@/hooks/use-pause-offscreen"
 
 const WIDTH = 800
 const HEIGHT = 640
@@ -53,6 +54,8 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
   const router = useRouter()
   const [geo, setGeo] = useState<GeoFeatureCollection | null>(null)
   const [active, setActive] = useState<string | null>(null)
+  // 性能优化：地图滚出视口 / 标签页隐藏时暂停全部 SMIL 动画（雷达脉冲等）
+  const svgRef = usePauseOffscreen<SVGSVGElement>()
   // 仅地图定位点位的悬停索引（放大高亮用）
   const [hoverSimple, setHoverSimple] = useState<number | null>(null)
   // 统一悬浮浮层信息（HTML 覆盖层渲染，不随 SVG 缩放，保证清晰大号卡片）
@@ -209,6 +212,7 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
         {/* 地图 */}
         <div className="relative">
           <svg
+            ref={svgRef}
             viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
             className="h-auto w-full"
             role="img"
@@ -307,11 +311,9 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                   tabIndex={0}
                   aria-label={`${m.name}，位于${m.location}，${m.category}`}
                 >
-                  {/* 轻微呼吸光效 */}
-                  <circle r={5} fill={color} opacity={0.18}>
-                    <animate attributeName="r" values="4.5;7;4.5" dur="3s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.22;0.08;0.22" dur="3s" repeatCount="indefinite" />
-                  </circle>
+                  {/* 静态光晕（性能优化：58 个定位点若各带 2 个 SMIL 呼吸动画
+                      会产生 100+ 常驻动画，改为静态光晕后观感接近、开销归零） */}
+                  <circle r={5.5} fill={color} opacity={0.16} />
                   <circle
                     r={isHover ? 4 : 2.8}
                     fill={color}

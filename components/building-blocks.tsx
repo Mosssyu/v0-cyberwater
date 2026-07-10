@@ -199,7 +199,7 @@ export function BuildingBlocks({
           opacity={0.4}
         />
 
-        {/* ===== 发光承载平台 / ��槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
+        {/* ===== 发光承载平台 / ���槽底盘（承托整组积木，配色与地图科技蓝一致） ===== */}
         {/* 平台底部投影辉光 */}
         <ellipse cx={PLATE.cx} cy={PLATE.cy + PLATE.h + 8} rx={PLATE.w / 2 + 16} ry={PLATE.qh * 0.7} fill="oklch(0.55 0.2 255 / 0.32)" filter="url(#bb-soft)" />
         {/* 平台厚度侧面 */}
@@ -259,10 +259,6 @@ export function BuildingBlocks({
                   <polygon points={f.top} fill={m.palette.top} fillOpacity={isHot ? 0.9 : 0.78} stroke={isHot ? "oklch(0.98 0.04 200)" : "oklch(0.94 0.08 200 / 0.95)"} strokeWidth={isHot ? 1.9 : 1.2} />
                   {/* 顶面霜光高光 */}
                   <polygon points={f.top} fill="oklch(0.99 0.01 200)" fillOpacity={0.18} />
-                  {/* 内部竖向流光 */}
-                  <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
-                    <animate attributeName="stroke-opacity" values="0.12;0.7;0.12" dur="2.2s" repeatCount="indefinite" />
-                  </line>
                   {/* 底层积木与承载平台接触处的高亮底边（强化"已安装/卡接"关系） */}
                   {slot.layer === 0 && (
                     <polyline
@@ -274,6 +270,11 @@ export function BuildingBlocks({
                     />
                   )}
                 </g>
+                {/* 内部竖向流光（性能优化：置于 bb-glow 滤镜组之外，
+                    避免组内 SMIL 动画每帧触发整组滤镜重栅格化） */}
+                <line x1={slot.cx} y1={slot.cy + QH} x2={slot.cx} y2={slot.cy + QH + H} stroke="oklch(0.98 0.05 200)" strokeOpacity={0.5} strokeWidth={1}>
+                  <animate attributeName="stroke-opacity" values="0.12;0.7;0.12" dur="2.2s" repeatCount="indefinite" />
+                </line>
                 {/* 系统简称：普通文字（无泛光），绘制在朝外的可见侧面上，被遮挡积木不显示 */}
                 {m.short &&
                   !slot.hidden &&
@@ -325,6 +326,7 @@ export function BuildingBlocks({
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
           aria-hidden="true"
         >
+          {/* 性能优化：持续运动的组不挂 blur 滤镜（每帧重栅格化），虚线描边本身已有轻盈感 */}
           <motion.g
             animate={{ scaleX: [1, -1, 1], y: [0, -4, 0] }}
             transition={{
@@ -332,7 +334,6 @@ export function BuildingBlocks({
               y: { duration: 3.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
             }}
             style={{ transformBox: "fill-box", transformOrigin: "center" }}
-            filter="url(#bb-glow)"
           >
             {(() => {
               const f = faces(CAP.cx, CAP.cy, CAP.w, CAP.qh, CAP.h)

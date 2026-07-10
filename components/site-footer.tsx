@@ -4,10 +4,10 @@ const columns = [
   {
     title: "核心产品",
     links: [
-      { label: "CW-Agent · 水务智能体", href: "/#product-agent" },
-      { label: "CW-PPI · 厂网河湖一体化", href: "/#product-ppi" },
-      { label: "CW-3DP · 三维孪生", href: "/#product-3dp" },
-      { label: "CW-POM · 数字水厂", href: "/#product-pom" },
+      { label: "CW-Agent · 水务智能体", href: "/#products" },
+      { label: "CW-PPI · 厂网河湖一体化", href: "/#products" },
+      { label: "CW-3DP · 三维孪生", href: "/#products" },
+      { label: "CW-POM · 数字水厂", href: "/#products" },
     ],
   },
   {
@@ -24,7 +24,7 @@ const columns = [
     links: [
       { label: "公司介绍", href: "/contact#about" },
       { label: "联系我们", href: "/contact" },
-      { label: "新闻动态", href: "/#news" },
+      { label: "新闻动态", href: "/news" },
     ],
   },
 ]
