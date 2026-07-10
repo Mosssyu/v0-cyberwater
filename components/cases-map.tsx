@@ -197,11 +197,26 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
   // 右侧列表与筛选联动
   const listMarkers = markers.filter((m) => isMatch(m.category))
 
+  // 地图上实际呈现的项目点位总数（全部方案时含仅定位点位）
+  const plottedCount = listMarkers.length + (activeCategory === "all" ? simpleMarkers.length : 0)
+
   return (
     <div className="relative mt-8 overflow-hidden rounded-2xl border border-border bg-card/60 p-4 sm:p-6">
       <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
         {/* 地图 */}
         <div className="relative">
+          {/* 项目案例数量标记 */}
+          <div className="absolute left-3 top-3 z-10 flex items-center gap-3 rounded-xl border border-primary/30 bg-background/80 px-4 py-2.5 backdrop-blur">
+            <MapPin className="size-5 text-primary" aria-hidden="true" />
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-mono text-2xl font-bold leading-none text-foreground tabular-nums">
+                {plottedCount}
+              </span>
+              <span className="text-xs font-medium text-muted-foreground">
+                个{activeCategory === "all" ? "落地案例" : "相关案例"}
+              </span>
+            </div>
+          </div>
           <svg
             viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
             className="h-auto w-full"
@@ -437,8 +452,17 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
             </div>
           )}
 
+          {/* 项目列表标题 + 数量 */}
+          <div className="mt-4 flex items-center justify-between">
+            <span className="text-xs font-semibold text-foreground">项目案例列表</span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary">
+              <span className="font-mono font-bold tabular-nums">{listMarkers.length}</span>
+              个可查看详情
+            </span>
+          </div>
+
           {/* 项目快捷列表（与筛选联动） */}
-          <div className="mt-4 grid max-h-[320px] gap-1.5 overflow-y-auto pr-1">
+          <div className="mt-2.5 grid max-h-[320px] gap-1.5 overflow-y-auto pr-1">
             {listMarkers.map((m) => (
               <button
                 key={m.slug}
