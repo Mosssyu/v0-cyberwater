@@ -635,201 +635,9 @@ function MilestoneCard({
 }
 
 /* =========================================================================
-   重点���主题插画 —— 2018 水滴涟漪 / 2022 发光方块 / 2026 AI 智能球体
-   ========================================================================= */
-function DropArt() {
-  return (
-    <span className="pointer-events-none relative block size-[104px]" aria-hidden="true">
-      {/* 水面同心涟漪 */}
-      {[0, 1, 2].map((i) => (
-        <span
-          key={i}
-          className="cw-disc-ripple absolute left-1/2 top-[64%] -translate-x-1/2 rounded-[50%] border"
-          style={
-            {
-              width: 78,
-              height: 26,
-              borderColor: "rgb(0 229 255 / 0.5)",
-              ["--rd-delay" as string]: `${i * 0.9}s`,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-      {/* 水面光盘 */}
-      <span
-        className="absolute left-1/2 top-[64%] -translate-x-1/2 rounded-[50%]"
-        style={{
-          width: 46,
-          height: 14,
-          background: "radial-gradient(closest-side, rgb(0 229 255 / 0.7), rgb(47 140 255 / 0.15) 60%, transparent)",
-        }}
-      />
-      {/* 下落水滴 */}
-      <span className="cw-drop-float absolute left-1/2 top-1.5 -translate-x-1/2 block">
-        <svg width="30" height="40" viewBox="0 0 26 34" fill="none" aria-hidden="true">
-          <defs>
-            <radialGradient id="fcDrop" cx="40%" cy="32%" r="70%">
-              <stop offset="0" stopColor="#eafdff" />
-              <stop offset="0.4" stopColor="#7fe9ff" />
-              <stop offset="1" stopColor="#0091ea" />
-            </radialGradient>
-          </defs>
-          <path d="M13 1 C13 1 23 16 23 23 A10 10 0 1 1 3 23 C3 16 13 1 13 1 Z" fill="url(#fcDrop)" />
-          <ellipse cx="9.5" cy="20" rx="2.4" ry="3.6" fill="#ffffff" opacity="0.7" />
-        </svg>
-      </span>
-    </span>
-  )
-}
-
-function CubeArt() {
-  return (
-    <span className="pointer-events-none relative flex size-[104px] items-center justify-center" aria-hidden="true">
-      <span className="cw-drop-float block">
-        <svg width="92" height="96" viewBox="0 0 92 96" fill="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="fcCubeFace" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="#00e5ff" stopOpacity="0.28" />
-              <stop offset="1" stopColor="#2f8cff" stopOpacity="0.06" />
-            </linearGradient>
-            <filter id="fcCubeGlow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="1.6" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <g filter="url(#fcCubeGlow)" stroke="#7fe9ff" strokeWidth="1.4" strokeLinejoin="round">
-            {/* 顶面 */}
-            <path d="M46 8 L82 28 L46 48 L10 28 Z" fill="url(#fcCubeFace)" />
-            {/* 左面 */}
-            <path d="M10 28 L46 48 L46 88 L10 68 Z" fill="url(#fcCubeFace)" stroke="#4facfe" />
-            {/* 右面 */}
-            <path d="M82 28 L46 48 L46 88 L82 68 Z" fill="url(#fcCubeFace)" stroke="#4facfe" />
-            {/* 内部竖脊 */}
-            <path d="M46 48 L46 88" stroke="#aef6ff" strokeOpacity="0.7" strokeWidth="1" />
-          </g>
-          {/* 顶点光点 */}
-          {[
-            [46, 8],
-            [82, 28],
-            [10, 28],
-            [46, 88],
-          ].map(([cx, cy], i) => (
-            <circle key={i} cx={cx} cy={cy} r="2.2" fill="#eafdff" filter="url(#fcCubeGlow)" />
-          ))}
-        </svg>
-      </span>
-    </span>
-  )
-}
-
-function AiArt() {
-  return (
-    <span className="pointer-events-none relative flex size-[104px] items-center justify-center" aria-hidden="true">
-      {/* 轨道环 */}
-      <span
-        className="absolute inset-1 rounded-[50%] border border-accent/40"
-        style={{ animation: "orbit-spin 9s linear infinite", transform: "rotateX(70deg)" }}
-      >
-        <span className="absolute -top-1 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-[#aef6ff] shadow-[0_0_8px_1px_rgb(0_229_255/0.9)]" />
-      </span>
-      <span
-        className="absolute inset-2 rounded-[50%] border border-accent/30"
-        style={{ animation: "orbit-spin-rev 12s linear infinite", transform: "rotateX(70deg) rotate(60deg)" }}
-      >
-        <span className="absolute -top-1 left-1/2 size-1 -translate-x-1/2 rounded-full bg-[#7fe9ff] shadow-[0_0_6px_1px_rgb(0_229_255/0.8)]" />
-      </span>
-      {/* 智能核心球 */}
-      <span
-        className="relative flex size-12 items-center justify-center rounded-full"
-        style={{
-          background: "radial-gradient(circle at 38% 32%, #eafdff 0%, #33d6fe 42%, #0091ea 100%)",
-          boxShadow: "0 0 24px 2px rgb(0 229 255 / 0.75), inset 0 2px 6px -2px rgb(255 255 255 / 0.8)",
-          animation: "core-pulse 3.6s ease-in-out infinite",
-        }}
-      >
-        <span className="font-mono text-sm font-bold tracking-tight text-[oklch(0.18_0.05_245)]">AI</span>
-      </span>
-    </span>
-  )
-}
-
-function FutureArt() {
-  return (
-    <span className="pointer-events-none relative block size-[104px]" aria-hidden="true">
-      {/* 底部光盘 */}
-      <span
-        className="absolute left-1/2 top-[74%] -translate-x-1/2 rounded-[50%]"
-        style={{
-          width: 60,
-          height: 16,
-          background: "radial-gradient(closest-side, rgb(0 229 255 / 0.7), rgb(47 140 255 / 0.15) 60%, transparent)",
-        }}
-      />
-      {/* 同心涟漪 */}
-      {[0, 1].map((i) => (
-        <span
-          key={i}
-          className="cw-disc-ripple absolute left-1/2 top-[74%] -translate-x-1/2 rounded-[50%] border"
-          style={
-            {
-              width: 70,
-              height: 22,
-              borderColor: "rgb(0 229 255 / 0.5)",
-              ["--rd-delay" as string]: `${i * 1.1}s`,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-      {/* 水晶簇 */}
-      <span className="cw-drop-float absolute left-1/2 top-1 -translate-x-1/2 block">
-        <svg width="78" height="82" viewBox="0 0 78 82" fill="none" aria-hidden="true">
-          <defs>
-            <linearGradient id="fcCrystal" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#eafdff" />
-              <stop offset="0.45" stopColor="#7fe9ff" />
-              <stop offset="1" stopColor="#0091ea" />
-            </linearGradient>
-            <filter id="fcCrystalGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="2.2" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          <g filter="url(#fcCrystalGlow)" stroke="#aef6ff" strokeWidth="1.2" strokeLinejoin="round">
-            {/* 左侧短晶 */}
-            <path d="M20 70 L14 40 L26 34 L30 66 Z" fill="url(#fcCrystal)" fillOpacity="0.85" />
-            {/* 中央高晶 */}
-            <path d="M39 72 L30 26 L46 12 L52 60 Z" fill="url(#fcCrystal)" />
-            {/* 右侧中晶 */}
-            <path d="M56 70 L52 38 L64 32 L66 64 Z" fill="url(#fcCrystal)" fillOpacity="0.9" />
-            {/* 高光棱线 */}
-            <path d="M46 12 L44 58" stroke="#ffffff" strokeOpacity="0.7" strokeWidth="1" />
-          </g>
-          {/* 顶部星光 */}
-          <circle cx="46" cy="12" r="2.2" fill="#eafdff" filter="url(#fcCrystalGlow)" />
-        </svg>
-      </span>
-    </span>
-  )
-}
-
-const FEATURE_ART: Record<string, () => React.ReactElement> = {
-  "2018": DropArt,
-  "2022": CubeArt,
-  "2026": AiArt,
-  "未来": FutureArt,
-}
-
-/* =========================================================================
-   FeatureCard ���— 第二排重点放大卡片（横向大卡 + 主题插画 + 发光描边）
+   FeatureCard —— 顶部核心大卡（图标 + 年份 + 标题 + 描述）
    ========================================================================= */
 function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; active: boolean; onSelect: () => void }) {
-  const Art = FEATURE_ART[milestone.year] ?? DropArt
   return (
     <button
       type="button"
@@ -858,7 +666,7 @@ function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; ac
         aria-hidden="true"
       />
 
-      {/* 左侧内容 */}
+      {/* 卡片内容 */}
       <div className="relative flex min-w-0 flex-1 flex-col">
         <span className="flex items-center gap-2.5">
           <span
@@ -874,11 +682,6 @@ function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; ac
         </span>
         <h4 className="mt-3.5 text-pretty text-lg font-bold leading-snug text-foreground">{milestone.title}</h4>
         <span className="mt-2 block flex-1 text-pretty text-[13px] leading-relaxed text-foreground/70">{milestone.desc}</span>
-      </div>
-
-      {/* 右侧主题插画 */}
-      <div className="relative flex shrink-0 items-center justify-center self-center">
-        <Art />
       </div>
     </button>
   )
