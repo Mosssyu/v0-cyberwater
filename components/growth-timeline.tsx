@@ -970,22 +970,8 @@ function EvolutionSection() {
           })}
         </ol>
 
-        {/* 重点卡 -> 常规卡 垂直发光虚线连接区 */}
-        <div className="grid grid-cols-3 gap-6 px-2" aria-hidden="true">
-          {featureMilestones.map((m) => (
-            <div key={m.year} className="flex h-14 items-stretch justify-center">
-              <span
-                className="cw-stem-flow w-px"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(to bottom, rgb(127 233 255 / 0.85) 0%, rgb(127 233 255 / 0.85) 45%, transparent 45%, transparent 100%)",
-                  backgroundSize: "1px 9px",
-                  filter: "drop-shadow(0 0 4px rgb(0 229 255 / 0.7))",
-                }}
-              />
-            </div>
-          ))}
-        </div>
+        {/* 两排卡片之间的垂直间距 */}
+        <div className="h-14" aria-hidden="true" />
 
         {/* 第二排：常规里程碑卡片（3 张非重点年份卡片均匀分布） */}
         <ol className="grid grid-cols-3 gap-x-5">
