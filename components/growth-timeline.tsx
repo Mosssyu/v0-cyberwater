@@ -257,16 +257,6 @@ function EnergyTrackSvg() {
           <stop offset="0.6" stopColor="#00e5ff" stopOpacity="0.45" />
           <stop offset="1" stopColor="#aef6ff" stopOpacity="0.95" />
         </linearGradient>
-        {/* 强发光（轨迹外发光 blur） */}
-        <filter id="etGlow" x="-10%" y="-180%" width="120%" height="460%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="wide" />
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="mid" />
-          <feMerge>
-            <feMergeNode in="wide" />
-            <feMergeNode in="mid" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
         {/* 宽幅水汽光晕 */}
         <filter id="etHalo" x="-12%" y="-220%" width="124%" height="540%">
           <feGaussianBlur stdDeviation="8" />
@@ -315,20 +305,35 @@ function EnergyTrackSvg() {
         <animate attributeName="stroke-dashoffset" from="0" to="-116" dur="7s" repeatCount="indefinite" />
       </path>
 
-      {/* 大流光水滴 + 拖尾（源源向右流动） */}
+      {/* 大流光水滴 + 拖尾（源源向右流动）
+          性能优化：运动元素不挂 blur 滤镜（每帧重算高斯模糊是 GPU 大头），
+          改用宽幅低透明度叠加图层模拟辉光，观感接近、开销极低 */}
       <g opacity="0.95">
-        <rect x="-30" y="-1.5" width="30" height="3" rx="1.5" fill="url(#etCometTail)" filter="url(#etGlow)">
+        {/* 辉光底层：更宽更淡的拖尾 + 大半径光晕圆 */}
+        <rect x="-30" y="-3.5" width="30" height="7" rx="3.5" fill="url(#etCometTail)" opacity="0.35">
           <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
         </rect>
-        <circle r="3" fill="#aef6ff" filter="url(#etGlow)">
+        <rect x="-30" y="-1.5" width="30" height="3" rx="1.5" fill="url(#etCometTail)">
+          <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+        </rect>
+        <circle r="6.5" fill="#aef6ff" opacity="0.28">
+          <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+        </circle>
+        <circle r="3" fill="#aef6ff">
           <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
         </circle>
       </g>
       <g opacity="0.85">
-        <rect x="-20" y="-1.1" width="20" height="2.2" rx="1.1" fill="url(#etCometTail)" filter="url(#etGlow)">
+        <rect x="-20" y="-2.6" width="20" height="5.2" rx="2.6" fill="url(#etCometTail)" opacity="0.35">
           <animateMotion dur="12s" begin="3s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
         </rect>
-        <circle r="2.2" fill="#7fe9ff" filter="url(#etGlow)">
+        <rect x="-20" y="-1.1" width="20" height="2.2" rx="1.1" fill="url(#etCometTail)">
+          <animateMotion dur="12s" begin="3s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+        </rect>
+        <circle r="5" fill="#7fe9ff" opacity="0.28">
+          <animateMotion dur="12s" begin="3s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
+        </circle>
+        <circle r="2.2" fill="#7fe9ff">
           <animateMotion dur="12s" begin="3s" repeatCount="indefinite" rotate="auto" path={MAIN_PATH} />
         </circle>
       </g>
