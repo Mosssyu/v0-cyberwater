@@ -170,7 +170,7 @@ export const cases: CaseItem[] = [
     slug: "qinhuangdao",
     title: "秦皇岛·排水防汛一体化管理平台",
     category: "排水一体化管理",
-    products: ["CW-Cloud PPI", "防汛管理模块"],
+    products: ["CW-PPI", "防汛管理模块"],
     location: "河北·秦皇岛",
     client: "秦皇岛排水管理单位",
     image: "/cases/qinhuangdao.png",
@@ -472,7 +472,7 @@ export const cases: CaseItem[] = [
     title: "鹤山水环境二三维智慧管控",
     category: "三维数字孪生",
     products: ["CW-Visual"],
-    location: "���东·江门鹤山",
+    location: "广东·江门鹤山",
     client: "鹤山市水务管理单位",
     image: "/cases/heshan-water-env.png",
     summary:
@@ -584,7 +584,7 @@ export const mapMarkers: MapMarker[] = [
     coord: [122.35, 40.68],
   },
   {
-    name: "增城区开发区下沉式污水处理厂智慧水务系统",
+    name: "增城区开发区下沉式污水处理厂智慧水务系���",
     location: "广东·广州增城",
     category: "数字水厂",
     coord: [113.9, 23.4],

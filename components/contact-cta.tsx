@@ -1,6 +1,3 @@
-import { ArrowRight } from "lucide-react"
-import { DemoTrigger } from "@/components/demo-trigger"
-
 // 合作伙伴 LOGO 墙（统一反白为单色，与整体深色主题一致）
 const partners: { name: string; src: string }[] = [
   { name: "北控水务集团", src: "/partners/bewg.png" },
@@ -51,27 +48,6 @@ export function ContactCta() {
             </li>
           ))}
         </ul>
-      </div>
-
-      <div className="ring-hairline relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-border/20 bg-gradient-to-b from-[oklch(0.18_0.015_230/0.1)] via-[oklch(0.14_0.012_245)] to-[oklch(0.12_0.012_252)] px-6 py-20 text-center sm:py-28">
-        <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-72" aria-hidden="true" />
-        <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
-
-        <div className="relative mx-auto max-w-3xl space-y-6">
-          <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-4xl">
-            让水务运营从"系统管理"走向
-            <span className="text-gradient">智能决策</span>
-          </h2>
-          <p className="mx-auto max-w-2xl text-pretty leading-relaxed text-muted-foreground">
-            通过 CW-Agent、CW-PPI、CW-Visual 与 CW-POM 的组合建设，帮助水务企业构建覆盖感知、运营、空间、决策与经营分析的一体化智能平台。
-          </p>
-          <div className="mt-2 flex flex-wrap justify-center gap-4">
-            <DemoTrigger className="inline-flex h-11 items-center gap-2 rounded-lg bg-primary px-8 text-sm font-medium text-primary-foreground shadow-[0_0_24px_-6px_oklch(0.63_0.17_250/0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_0_32px_-4px_oklch(0.63_0.17_250/0.95)]">
-              预约演示
-              <ArrowRight className="size-4" />
-            </DemoTrigger>
-          </div>
-        </div>
       </div>
     </section>
   )
