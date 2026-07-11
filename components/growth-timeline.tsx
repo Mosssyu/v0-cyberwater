@@ -72,7 +72,7 @@ const subMilestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: '聚焦"中国智慧水务建设"计算研究院联盟团队，开启布局高级数字化服务。',
+    desc: "中信国安+中国建筑标准院团队",
     Icon: Building2,
   },
   {
@@ -789,7 +789,7 @@ function EvolutionSection() {
         </div>
       </div>
 
-      {/* ===== 桌面端：能量轨迹 + 4 核心节点 → 4 核心大卡 → 横向虚线 → 4 次要卡片 ===== */}
+      {/* ===== 桌面端：能量轨迹 + 4 核��节点 → 4 核心大卡 → 横向虚线 → 4 次要卡片 ===== */}
       <div className="hidden lg:block">
         {/* 能量轨迹 + 四个核心节点 */}
         <div className="relative mt-12 w-full" style={{ height: BAND_H }}>
