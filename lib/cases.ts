@@ -589,7 +589,7 @@ export const mapMarkers: MapMarker[] = [
     category: "数字水厂",
     coord: [113.9, 23.4],
   },
-  { name: "舟山市定海水厂智慧水务项目", location: "浙江·舟山定海", category: "数字水厂", coord: [122.1, 30.02] },
+  { name: "舟山市定海水厂智慧水务项目", location: "浙江·舟山定海", category: "数���水厂", coord: [122.1, 30.02] },
   { name: "杭州水务城北水厂三维系统", location: "浙江·杭州", category: "三维数字孪生", coord: [120.1, 30.35] },
   {
     name: "石家庄市桥西污水处理厂提标改造工程",
@@ -624,4 +624,17 @@ export const mapMarkers: MapMarker[] = [
 for (const m of mapMarkers) {
   const list = otherCases[m.category]
   if (list && !list.includes(m.name)) list.push(m.name)
+}
+
+// 汇总标签固定排在对应分类的最后，避免后续追加地图项目时被插到列表中间
+const trailingSummaryLabels: Partial<Record<CaseCategory, string>> = {
+  数字水厂: "300+ 数字水厂落地案例",
+  三维数字孪生: "20+ 孪生 / BIM 服务案例",
+}
+
+for (const [category, label] of Object.entries(trailingSummaryLabels) as [CaseCategory, string][]) {
+  const list = otherCases[category]
+  const index = list.indexOf(label)
+  if (index !== -1) list.splice(index, 1)
+  list.push(label)
 }
