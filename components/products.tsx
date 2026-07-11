@@ -56,9 +56,6 @@ export function Products() {
             />
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs tracking-wider text-accent">CW-Visual</span>
-              <span className="rounded-full bg-accent/10 px-2 py-0.5 font-mono text-[10px] uppercase text-accent">
-                Digital Twin
-              </span>
             </div>
             <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">三维数字孪生平台</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
