@@ -23,10 +23,8 @@ const groups: Group[] = [
   {
     title: "核心产品",
     links: [
-      { label: "CW-Agent", desc: "水务智能体平台", href: "/#products" },
-      { label: "CW-PPI", desc: "厂网河湖一体化平台", href: "/#products" },
-      { label: "CW-3DP", desc: "三维数字孪生平台", href: "/#products" },
-      { label: "CW-POM", desc: "数字水厂平台", href: "/#products" },
+      { label: "CW-Cloud", desc: "水务 AI 运营平台", href: "/#products" },
+      { label: "CW-Visual", desc: "三维数字孪生平台", href: "/#products" },
     ],
   },
   {

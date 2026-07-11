@@ -15,8 +15,9 @@ export function Products() {
             核心产品
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
-            <span className="text-foreground/90">CW-Cloud</span> 与 <span className="text-foreground/90">CW-3DP</span>{" "}
-            分别面向水务运营管理和三维空间表达，既可独立建设，也可组合应用，支撑水厂、泵站、管网、河湖等场景的数字化升级。
+            <span className="text-foreground/90">CW-Cloud</span> 连接水务业务，
+            <span className="text-foreground/90">CW-Visual</span>{" "}
+            连接物理空间。两大体系以数据为纽带，实现业务、空间与智能融合，支撑水务运营全过程数字化升级。
           </p>
         </div>
 
@@ -30,9 +31,6 @@ export function Products() {
             />
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs tracking-wider text-accent">CW-Cloud</span>
-              <span className="rounded-full bg-accent/10 px-2 py-0.5 font-mono text-[10px] uppercase text-accent">
-                AI Operation
-              </span>
             </div>
             <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">水务 AI 运营平台</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -50,17 +48,14 @@ export function Products() {
             <span className="h-px w-6 bg-gradient-to-r from-border to-transparent md:h-6 md:w-px md:bg-gradient-to-b" />
           </div>
 
-          {/* CW-3DP */}
+          {/* CW-Visual */}
           <div className="group relative flex-1 overflow-hidden rounded-2xl border border-border bg-card/60 p-6 text-left transition-colors duration-300 hover:border-accent/50">
             <span
               className="absolute inset-x-0 top-0 h-px"
               style={{ background: "linear-gradient(90deg, transparent, oklch(0.63 0.17 250 / 0.6), transparent)" }}
             />
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs tracking-wider text-accent">CW-3DP</span>
-              <span className="rounded-full bg-accent/10 px-2 py-0.5 font-mono text-[10px] uppercase text-accent">
-                Digital Twin
-              </span>
+              <span className="font-mono text-xs tracking-wider text-accent">CW-Visual</span>
             </div>
             <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">三维数字孪生平台</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -74,7 +69,7 @@ export function Products() {
           <CwCloudSlide active />
         </div>
 
-        {/* 产品二：CW-3DP */}
+        {/* 产品二：CW-Visual */}
         <div className="mt-10">
           <Cw3dpSlide />
         </div>

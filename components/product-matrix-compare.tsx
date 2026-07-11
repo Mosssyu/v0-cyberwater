@@ -19,7 +19,7 @@ const products = [
   },
   {
     icon: Cube,
-    code: "CW-3DP",
+    code: "CW-Visual",
     tag: "空间可视化与仿真推演平台",
     position: "空间可视化与仿真推演平台",
     desc: "融合 BIM+GIS 的二三维一体化平台，提供三维实景、空间定位、场景联动与模拟推演，实现全域可感知。",

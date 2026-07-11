@@ -61,7 +61,7 @@ const productMatrix: { label: string; icon: LucideIcon }[] = [
   { label: "CW-Agent", icon: BotIcon },
   { label: "CW-POM", icon: Settings },
   { label: "CW-PPI", icon: Network },
-  { label: "CW-3DP", icon: Box },
+  { label: "CW-Visual", icon: Box },
 ]
 
 // 塔体五层，从上到下（上窄下宽），每层带关键词说明

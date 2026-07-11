@@ -22,7 +22,7 @@ const products = [
   },
   {
     icon: Boxes,
-    code: "CW-3DP",
+    code: "CW-Visual",
     name: "数字孪生",
     desc: "三维可视化还原水务对象，支持状态联动与仿真推演。",
     glow: "oklch(0.7 0.16 260)",
@@ -57,10 +57,10 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
   if (!open || typeof document === "undefined") return null
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto overscroll-contain p-4 sm:items-center sm:p-6">
       {/* 遮罩 */}
       <div
-        className="absolute inset-0 bg-[oklch(0.09_0.02_252/0.78)] backdrop-blur-md"
+        className="fixed inset-0 bg-[oklch(0.09_0.02_252/0.78)] backdrop-blur-md"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -70,7 +70,7 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
         role="dialog"
         aria-modal="true"
         aria-labelledby="demo-modal-title"
-        className="ring-hairline relative w-full max-w-4xl overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-b from-[oklch(0.19_0.017_248)] to-[oklch(0.13_0.014_252)] shadow-2xl shadow-black/60"
+        className="ring-hairline relative flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-b from-[oklch(0.19_0.017_248)] to-[oklch(0.13_0.014_252)] shadow-2xl shadow-black/60 sm:max-h-[calc(100dvh-3rem)]"
       >
         {/* 顶部柔光 + 网格 */}
         <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-40" aria-hidden="true" />
@@ -79,12 +79,12 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
         <button
           onClick={onClose}
           aria-label="关闭"
-          className="absolute right-4 top-4 z-10 flex size-9 items-center justify-center rounded-full border border-border/50 bg-background/40 text-muted-foreground transition-colors hover:border-accent/50 hover:text-foreground"
+          className="absolute right-4 top-4 z-20 flex size-9 items-center justify-center rounded-full border border-border/50 bg-background/60 text-muted-foreground backdrop-blur transition-colors hover:border-accent/50 hover:text-foreground"
         >
           <X className="size-4.5" />
         </button>
 
-        <div className="relative p-6 sm:p-8">
+        <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain p-6 sm:p-8">
           {/* 标题 */}
           <div className="mb-7 text-center sm:mb-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-1 font-mono text-xs text-accent">
