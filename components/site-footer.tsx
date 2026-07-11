@@ -4,10 +4,8 @@ const columns = [
   {
     title: "核心产品",
     links: [
-      { label: "CW-Agent · 水务智能体", href: "/#products" },
-      { label: "CW-PPI · 厂网河湖一体化", href: "/#products" },
-      { label: "CW-Visual · 三维孪生", href: "/#products" },
-      { label: "CW-POM · 数字水厂", href: "/#products" },
+      { label: "CW-Cloud · 水务 AI 运营平台", href: "/#products" },
+      { label: "CW-Visual · 三维数字孪生平台", href: "/#products" },
     ],
   },
   {

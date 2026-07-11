@@ -472,7 +472,7 @@ export const cases: CaseItem[] = [
     title: "鹤山水环境二三维智慧管控",
     category: "三维数字孪生",
     products: ["Visual"],
-    location: "���东·江门鹤山",
+    location: "广东·江门鹤山",
     client: "鹤山市水务管理单位",
     image: "/cases/heshan-water-env.png",
     summary:
@@ -589,7 +589,7 @@ export const mapMarkers: MapMarker[] = [
     category: "数字水厂",
     coord: [113.9, 23.4],
   },
-  { name: "舟山市定海水厂智慧水务项目", location: "浙江·舟山定海", category: "数���水厂", coord: [122.1, 30.02] },
+  { name: "舟山市定海水厂智慧水务项目", location: "浙江·舟山定海", category: "数�����水厂", coord: [122.1, 30.02] },
   { name: "杭州水务城北水厂三维系统", location: "浙江·杭州", category: "三维数字孪生", coord: [120.1, 30.35] },
   {
     name: "石家庄市桥西污水处理厂提标改造工程",
