@@ -343,7 +343,7 @@ const ppi: ProductData = {
 
 const twin: ProductData = {
   id: "product-3dp",
-  eyebrow: "核心产品 · CW-3DP · 三维孪生",
+  eyebrow: "核心产品 · CW-Visual · 三维孪生",
   title: "数字孪生，空间可视、状态可感、决策可推演",
   subtitle:
     "以三维实景还原为基础，以运行数据融合为核心，以场景联动和仿真推演为延伸，支撑水厂实现空间可视、状态可感、过程可巡、风险可控与决策可推演。",
@@ -396,7 +396,7 @@ const pom: ProductData = {
   eyebrow: "核心产品 · CW-POM · 数字水厂",
   title: "数字水厂，从高效运营到集团化经营决策",
   subtitle:
-    "以运营闭环为基础，以经营分析为延伸，以集团管控为目标，支撑水务企业实现单厂高效运营、成本精细管理与集团化决策升级。",
+    "以运营闭环为基础，以经营分析为延伸，以集团管控为目标，支撑水务企业实现单���高效运营、成本精细管理与集团化决策升级。",
   image: "/products/pom-dashboard.png",
   glow: "oklch(0.7 0.16 160)",
   flow: [

@@ -22,7 +22,7 @@ const products = [
   },
   {
     icon: Boxes,
-    code: "CW-3DP",
+    code: "CW-Visual",
     name: "数字孪生",
     desc: "三维可视化还原水务对象，支持状态联动与仿真推演。",
     glow: "oklch(0.7 0.16 260)",

@@ -31,9 +31,6 @@ export function Products() {
             />
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs tracking-wider text-accent">CW-Cloud</span>
-              <span className="rounded-full bg-accent/10 px-2 py-0.5 font-mono text-[10px] uppercase text-accent">
-                AI Operation
-              </span>
             </div>
             <h3 className="mt-3 text-xl font-bold tracking-tight text-foreground">水务 AI 运营平台</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -51,14 +48,14 @@ export function Products() {
             <span className="h-px w-6 bg-gradient-to-r from-border to-transparent md:h-6 md:w-px md:bg-gradient-to-b" />
           </div>
 
-          {/* CW-3DP */}
+          {/* CW-Visual */}
           <div className="group relative flex-1 overflow-hidden rounded-2xl border border-border bg-card/60 p-6 text-left transition-colors duration-300 hover:border-accent/50">
             <span
               className="absolute inset-x-0 top-0 h-px"
               style={{ background: "linear-gradient(90deg, transparent, oklch(0.63 0.17 250 / 0.6), transparent)" }}
             />
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs tracking-wider text-accent">CW-3DP</span>
+              <span className="font-mono text-xs tracking-wider text-accent">CW-Visual</span>
               <span className="rounded-full bg-accent/10 px-2 py-0.5 font-mono text-[10px] uppercase text-accent">
                 Digital Twin
               </span>
@@ -75,7 +72,7 @@ export function Products() {
           <CwCloudSlide active />
         </div>
 
-        {/* 产品二：CW-3DP */}
+        {/* 产品二：CW-Visual */}
         <div className="mt-10">
           <Cw3dpSlide />
         </div>

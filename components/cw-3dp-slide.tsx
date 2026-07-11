@@ -204,7 +204,7 @@ export function Cw3dpSlide() {
         <div className="absolute left-6 top-6 flex items-center gap-2">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-[oklch(0.1_0.04_250/0.55)] px-3 py-1 font-mono text-xs text-primary backdrop-blur-md">
             <span className="size-1.5 animate-pulse rounded-full bg-primary shadow-[0_0_8px_2px_oklch(0.7_0.16_250/0.8)]" />
-            CW-3DP
+            CW-Visual
           </span>
           <span className="hidden font-mono text-[11px] tracking-widest text-primary/70 sm:inline">{view.scene}</span>
         </div>
@@ -333,7 +333,7 @@ export function Cw3dpSlide() {
                     {m.id === "twin" ? <Box className="size-5" /> : <Library className="size-5" />}
                   </span>
                   <span className="min-w-0">
-                    <span className="block font-mono text-xs font-semibold text-primary">CW-3DP · {m.code}</span>
+                    <span className="block font-mono text-xs font-semibold text-primary">CW-Visual · {m.code}</span>
                     <span className="mt-1 block text-lg font-bold tracking-tight text-foreground">{m.label}</span>
                   </span>
                 </button>
