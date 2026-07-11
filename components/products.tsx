@@ -15,8 +15,9 @@ export function Products() {
             核心产品
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
-            <span className="text-foreground/90">CW-Cloud</span> 与 <span className="text-foreground/90">CW-3DP</span>{" "}
-            分别面向水务运营管理和三维空间表达，既可独立建设，也可组合应用，支撑水厂、泵站、管网、河湖等场景的数字化升级。
+            <span className="text-foreground/90">CW-Cloud</span> 连接水务业务，
+            <span className="text-foreground/90">CW-Visual</span>{" "}
+            连接物理空间。两大体系以数据为纽带，实现业务、空间与智能融合，支撑水务运营全过程数字化升级。
           </p>
         </div>
 
