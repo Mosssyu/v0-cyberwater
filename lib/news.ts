@@ -418,7 +418,7 @@ export const news: NewsItem[] = [
     date: "2023-02-20",
     category: "公司新闻",
     tag: "公司新闻",
-    solutionTags: ["股权合作", "物��网", "软硬一体"],
+    solutionTags: ["股权合作", "物联网", "软硬一体"],
     title: "云建标与芒果传感签署股权合作协议",
     subtitle: "软硬一体化解决方案，赋能水务行业精细化管理",
     summary:
