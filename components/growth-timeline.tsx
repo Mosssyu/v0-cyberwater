@@ -224,7 +224,7 @@ function BackgroundGrid() {
 
 /* =========================================================================
    EnergyTrackSvg —— SVG 波形能量轨迹
-   分层：basePath（细暗底）/ glowPath（宽发光 blur）/ animatedPath（流光 dash）
+   分层：basePath（细暗底��/ glowPath（宽发光 blur）/ animatedPath（流光 dash）
          + 交织辅流线 + 流光粒子 + 上升粒子
    ========================================================================= */
 function EnergyTrackSvg() {
@@ -472,7 +472,7 @@ function TimelineNode({
       {/* 2026 上方水滴 */}
       {hasDrop ? <WaterDrop top={y - 86} /> : null}
 
-      {/* 节点上方标签：年份（大）+ 短描述（小） */}
+      {/* 节点上方标签：仅显示年份 */}
       <span
         className="absolute left-1/2 flex -translate-x-1/2 -translate-y-full flex-col items-center text-center"
         style={{ top: y - 18 }}
@@ -485,9 +485,6 @@ function TimelineNode({
         >
           {m.year}
         </span>
-        {m.short ? (
-          <span className="mt-1 whitespace-nowrap text-xs font-medium text-foreground/70">{m.short}</span>
-        ) : null}
       </span>
 
       {/* 垂直光柱（从节点向下直射到卡片，上窄下宽光锥） */}
@@ -789,7 +786,7 @@ function EvolutionSection() {
         </div>
       </div>
 
-      {/* ===== 桌面端：能量轨迹 + 4 核��节点 → 4 核心大卡 → 横向虚线 → 4 次要卡片 ===== */}
+      {/* ===== 桌面端：能量轨迹 + 4 核��节点 → 4 核心大卡 → 横向虚线 → 4 次��卡片 ===== */}
       <div className="hidden lg:block">
         {/* 能量轨迹 + 四个核心节点 */}
         <div className="relative mt-12 w-full" style={{ height: BAND_H }}>
