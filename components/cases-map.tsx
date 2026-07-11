@@ -203,12 +203,9 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
   // 仅地图定位点位（与筛选联动）
   const matchedSimple = simpleMarkers.filter((m) => isMatch(m.category))
 
-  // 地图上实际呈现的项目点位总数（重点案例 + 定位点位）
-  const plottedCount = listMarkers.length + matchedSimple.length
-
   return (
     <div className="relative mt-8 overflow-hidden rounded-2xl border border-border bg-card/60 p-4 sm:p-6">
-      <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+      <div className="grid gap-6 lg:h-[72vh] lg:min-h-[560px] lg:max-h-[720px] lg:grid-cols-[1.6fr_1fr]">
         {/* 地图 */}
         <div className="relative">
           <svg
@@ -442,20 +439,10 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
             )
           })()}
 
-          {/* 地图下方统计（不遮挡地图） */}
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
-              <MapPin className="size-3.5 text-primary" />
-              <span className="font-mono text-sm font-bold tabular-nums text-primary">{plottedCount}</span>
-              个{activeCategory === "all" ? "落地案例" : "相关案例"}
-            </span>
-            <span>其中 {listMarkers.length} 个可查看详情</span>
-            <span className="text-muted-foreground/70">悬停查看项目摘要，点击进入详情</span>
-          </div>
         </div>
 
-        {/* 右侧项目信息 / 列表 */}
-        <div className="flex flex-col">
+        {/* 右侧项目信息 / 列表：与地图等高，列表占满剩余空间 */}
+        <div className="flex min-h-0 flex-col">
           {activeCase ? (
             <div
               className="rounded-xl border bg-background/60 p-5"
@@ -509,8 +496,8 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
             </span>
           </div>
 
-          {/* 项目快捷列表（与筛选联动） */}
-          <div className="mt-2.5 grid max-h-[320px] gap-1.5 overflow-y-auto pr-1">
+          {/* 项目快捷列表（与筛选联动）：填满右侧剩余高度，内部独立滚动 */}
+          <div className="mt-2.5 grid min-h-0 flex-1 content-start gap-2 overflow-y-auto pr-1.5 [scrollbar-color:var(--color-primary)_transparent] [scrollbar-width:thin]">
             {listMarkers.map((m) => {
               const isOn = m.slug === active
               return (
