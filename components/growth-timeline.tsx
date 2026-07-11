@@ -72,7 +72,7 @@ const subMilestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
-    desc: "中信国安+中国建筑标准院团队",
+    desc: "中信国安+中国建筑标准院团队，以数字技术推动水务运营管理升级，开启云建标创新发展之路。",
     Icon: Building2,
   },
   {
@@ -224,7 +224,7 @@ function BackgroundGrid() {
 
 /* =========================================================================
    EnergyTrackSvg —— SVG 波形能量轨迹
-   分层：basePath（细暗底��/ glowPath（宽发光 blur）/ animatedPath（流光 dash）
+   分层：basePath（细暗底���/ glowPath（宽发光 blur）/ animatedPath（流光 dash）
          + 交织辅流线 + 流光粒子 + 上升粒子
    ========================================================================= */
 function EnergyTrackSvg() {
