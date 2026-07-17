@@ -401,7 +401,7 @@ function EnergyTrackSvg() {
 }
 
 /* =========================================================================
-   WaterDrop —— 2026 节点上方蓝色水滴（上下浮动 + glow 呼吸 + 水花溅射）
+   WaterDrop —— 2026 ���点上方蓝色水滴（上下浮动 + glow 呼吸 + 水花溅射）
    ========================================================================= */
 function WaterDrop({ top }: { top: number }) {
   return (
@@ -487,19 +487,6 @@ function TimelineNode({
         </span>
       </span>
 
-      {/* 垂直光柱（从节点向下直射到卡片，上窄下宽光锥） */}
-      <span
-        className="cw-holo-cone pointer-events-none absolute left-1/2 -translate-x-1/2"
-        style={{
-          top: y,
-          height: BAND_H - y,
-          width: 30,
-          clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
-          background: "linear-gradient(to top, rgb(0 229 255 / 0.28), rgb(47 140 255 / 0.06) 70%, transparent)",
-        }}
-        aria-hidden="true"
-      />
-
       {/* 连接竖线（脉冲流动） */}
       <span
         className={[
@@ -557,34 +544,6 @@ function TimelineNode({
         </span>
       </button>
 
-      {/* 底部光盘 + 落点同心水波（光柱落点） */}
-      <span
-        className="cw-holo-base pointer-events-none absolute left-1/2"
-        style={{
-          bottom: 0,
-          width: 36,
-          height: 9,
-          borderRadius: "50%",
-          background: "radial-gradient(closest-side, rgb(0 229 255 / 0.78), rgb(47 140 255 / 0.18) 60%, transparent)",
-          filter: "blur(0.5px)",
-        }}
-        aria-hidden="true"
-      />
-      {[0, 1].map((ri) => (
-        <span
-          key={ri}
-          className="cw-disc-ripple pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 rounded-[50%] border"
-          style={
-            {
-              width: 28,
-              height: 10,
-              borderColor: "rgb(0 229 255 / 0.55)",
-              ["--rd-delay" as string]: `${ri * 1.3}s`,
-            } as React.CSSProperties
-          }
-          aria-hidden="true"
-        />
-      ))}
     </div>
   )
 }
@@ -788,7 +747,7 @@ function EvolutionSection() {
 
       {/* ===== 桌面端：能量轨迹 + 4 核��节点 → 4 核心大卡 → 横向虚线 → 4 次��卡片 ===== */}
       <div className="hidden lg:block">
-        {/* 能量轨迹 + 四个核心节点 */}
+        {/* ���量轨迹 + 四个核心节点 */}
         <div className="relative mt-12 w-full" style={{ height: BAND_H }}>
           <EnergyTrackSvg />
           {coreMilestones.map((m, i) => (
