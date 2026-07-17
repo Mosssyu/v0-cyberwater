@@ -1,6 +1,6 @@
 "use client"
 
-import { Layers, Building2, Boxes, BrainCircuit, Droplets } from "lucide-react"
+import { Layers, Building2, Boxes, BrainCircuit } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { ParticleSphere } from "@/components/particle-sphere"
 
@@ -87,36 +87,6 @@ function GeneCardBox({ card }: { card: GeneCard }) {
   )
 }
 
-function Core() {
-  return (
-    <div className="relative flex size-36 items-center justify-center lg:size-40">
-      {/* 外圈脉冲 */}
-      <span className="ring-pulse-anim absolute inset-0 rounded-full border border-accent/30" aria-hidden="true" />
-      <span
-        className="ring-pulse-anim absolute -inset-4 rounded-full border border-accent/15"
-        style={{ animationDelay: "0.8s" }}
-        aria-hidden="true"
-      />
-      {/* 旋转刻度环 */}
-      <span className="core-ticks absolute -inset-2 rounded-full opacity-60" aria-hidden="true" />
-      {/* 扫光环 */}
-      <span className="core-sweep absolute inset-1 rounded-full opacity-70" aria-hidden="true" />
-      {/* 核心球 */}
-      <div className="gene-core-breathe relative flex size-28 items-center justify-center rounded-full border border-accent/40 bg-[radial-gradient(circle_at_50%_35%,oklch(0.45_0.12_220/0.9),oklch(0.2_0.04_240/0.95))] lg:size-32">
-        <span className="core-grid-mask absolute inset-0 rounded-full opacity-50" aria-hidden="true" />
-        <div className="relative flex flex-col items-center">
-          <Droplets className="size-5 text-accent" />
-          <span className="core-flicker-anim mt-1 text-center text-sm font-bold leading-tight text-foreground">
-            水务运营
-            <br />
-            基因
-          </span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export function CompanyGene() {
   return (
     <div className="w-full">
@@ -135,11 +105,6 @@ export function CompanyGene() {
             {t.label}
           </span>
         ))}
-
-        {/* 中心核心 */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <Core />
-        </div>
 
         {/* 四角能力卡片 */}
         {cards.map((c) => (
@@ -165,11 +130,6 @@ export function CompanyGene() {
               {t.label}
             </span>
           ))}
-
-          {/* 中心核心 */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <Core />
-          </div>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
