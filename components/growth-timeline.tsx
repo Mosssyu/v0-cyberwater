@@ -709,7 +709,7 @@ function EvolutionSection() {
         </span>
         <div className="min-w-0">
           <div className="flex items-center gap-3">
-            <h2 className="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">水务数字化能力演进轨迹</h2>
+            <h2 className="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">发展历程</h2>
             <span className="hidden items-center gap-0.5 sm:flex" aria-hidden="true">
               <ChevronLeft className="size-4 text-accent/80" />
               <ChevronLeft className="size-3.5 text-accent/55" />

@@ -352,30 +352,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
         {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
         <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
-          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光；负上边距上提，避免压住积木塔顶部） */}
-          <div className="-mt-2 flex flex-wrap justify-center gap-2.5 sm:-mt-3 lg:-mt-5 lg:justify-end lg:gap-3">
-            {highlights.map((h) => (
-              <div
-                key={h.title}
-                className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-4 py-3 backdrop-blur-sm transition-colors hover:border-accent/45"
-                style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
-              >
-                <span
-                  className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
-                  aria-hidden="true"
-                >
-                  <h.icon className="size-5 text-accent" />
-                </span>
-                <span className="flex flex-col gap-0.5 leading-tight">
-                  <span className="text-base font-bold text-foreground">{h.title}</span>
-                  <span className="text-xs text-muted-foreground/95">{h.desc}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-
           {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
-          <div className="pointer-events-auto mt-10 max-w-md lg:mt-14 lg:max-w-sm">
+          <div className="pointer-events-auto mt-4 max-w-md lg:mt-6 lg:max-w-sm">
             <h3 className="text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
               CW-Cloud
               <br />
@@ -384,6 +362,28 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             <p className="mt-5 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
               从单一业务到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
             </p>
+
+            {/* 五大产品特性（自顶部移入左侧文案下方） */}
+            <div className="mt-6 grid max-w-xs grid-cols-1 gap-2">
+              {highlights.map((h) => (
+                <div
+                  key={h.title}
+                  className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-3.5 py-2.5 backdrop-blur-sm transition-colors hover:border-accent/45"
+                  style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
+                >
+                  <span
+                    className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
+                    aria-hidden="true"
+                  >
+                    <h.icon className="size-4.5 text-accent" />
+                  </span>
+                  <span className="flex items-baseline gap-2 leading-tight">
+                    <span className="text-sm font-bold text-foreground">{h.title}</span>
+                    <span className="text-xs text-muted-foreground/95">{h.desc}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 弹性占位：把流程/状态推到底部 */}
