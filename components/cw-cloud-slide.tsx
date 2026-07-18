@@ -130,7 +130,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
       "管网资产全要素、全周期展示查询与分析，高精度 BIM 接入、影视级三维呈现",
       "支持多公司、多项目集中部署，快速接入供排新业务，减少重复建设",
       "建立 GIS 数据审核录入规范，自动属性 / 拓扑检查，多层级审核保障数据质量",
-      "巡检、养护、抢维修在线工单化流转，移动外业轨迹留痕、全过程可追踪",
+      "巡检、养护、抢维修在线工单化流转，移��外业轨迹留痕、全过程可追踪",
       "连通性、断面、流向与人员绩效分析联动，辅助施工指导与精细化运营",
     ],
   },
@@ -563,11 +563,11 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card/40"
+              className="grid gap-3 overflow-hidden rounded-2xl border border-border bg-card/35 p-3 lg:grid-cols-[minmax(0,1.9fr)_minmax(260px,0.75fr)]"
             >
-              {/* 上：产品大屏示意图 */}
+              {/* 左：内收式产品大屏示意图 */}
               <div
-                className="relative aspect-video w-full overflow-hidden"
+                className="relative aspect-video w-full overflow-hidden rounded-xl border border-accent/15 lg:aspect-auto lg:min-h-[430px]"
                 style={{ background: "oklch(0.12 0.025 248)" }}
               >
                 {productImages[showModule.id] ? (
@@ -579,13 +579,13 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                       loading="lazy"
                       draggable={false}
                     />
-                    {/* 边缘柔化暗角，让图片自然融入卡片 */}
+                    {/* 柔和暗角让图片自然向内收拢 */}
                     <div
                       className="pointer-events-none absolute inset-0"
                       aria-hidden="true"
                       style={{
                         background:
-                          "radial-gradient(120% 120% at 50% 50%, transparent 64%, oklch(0.1 0.025 248 / 0.5) 100%)",
+                          "radial-gradient(115% 110% at 50% 48%, transparent 62%, oklch(0.09 0.025 248 / 0.62) 100%)",
                       }}
                     />
                   </>
@@ -596,15 +596,15 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 )}
               </div>
 
-              {/* 下：重点展示核心能力 */}
-              <div className="flex flex-col border-t border-accent/20 bg-card/60 p-6">
-                <div className="mb-4 flex items-center gap-2">
-                  <span className="h-5 w-1 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
-                  <span className="text-base font-bold text-foreground">核心能力</span>
+              {/* 右：内嵌式核心能力面板 */}
+              <div className="flex flex-col justify-center rounded-xl border border-accent/15 bg-card/55 p-5 lg:p-6">
+                <div className="mb-5 flex items-center gap-2.5">
+                  <span className="h-6 w-1 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
+                  <span className="text-lg font-bold text-foreground">核心能力</span>
                 </div>
-                <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                <ul className="grid gap-4">
                   {showInfo.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2.5 text-sm leading-relaxed">
+                    <li key={p} className="flex items-start gap-3 text-sm leading-relaxed">
                       <span
                         className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
                         style={{ backgroundColor: showModule.palette.top }}
