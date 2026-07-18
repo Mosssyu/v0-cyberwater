@@ -420,8 +420,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           {/* 弹性占位：把流程/状态推到底部 */}
           <div className="flex-1" />
 
-          {/* 底部状态胶囊（低调半透明） */}
-          <div className="mb-4 flex justify-center lg:justify-start">
+          {/* 底部状态胶囊（右侧对齐，避开左侧内容） */}
+          <div className="mb-4 flex justify-center lg:justify-end">
             <span className="pointer-events-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.12_0.04_248/0.7)] px-4 py-1.5 text-[11px] text-muted-foreground backdrop-blur-sm sm:text-[12px]">
               已选{" "}
               <span className="font-mono font-semibold text-accent">{activeIds.length}</span> / {listedModules.length} 个模块 ·
