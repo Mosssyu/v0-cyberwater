@@ -363,23 +363,23 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               从单一业务到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
             </p>
 
-            {/* 五大产品特性（自顶部移入左侧文案下方） */}
-            <div className="mt-6 grid max-w-xs grid-cols-1 gap-2">
+            {/* 五大产品特性（紧凑卡片，两列排布，副标题置于主标题下方） */}
+            <div className="mt-6 grid max-w-xs grid-cols-2 gap-2">
               {highlights.map((h) => (
                 <div
                   key={h.title}
-                  className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-3.5 py-2.5 backdrop-blur-sm transition-colors hover:border-accent/45"
-                  style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
+                  className="pointer-events-auto flex items-start gap-2 rounded-lg border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-2.5 py-2 backdrop-blur-sm transition-colors hover:border-accent/45"
+                  style={{ boxShadow: "0 0 18px -8px oklch(0.7 0.14 215 / 0.55)" }}
                 >
                   <span
-                    className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
+                    className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-md border border-accent/30 bg-accent/[0.12]"
                     aria-hidden="true"
                   >
-                    <h.icon className="size-4.5 text-accent" />
+                    <h.icon className="size-4 text-accent" />
                   </span>
-                  <span className="flex items-baseline gap-2 leading-tight">
+                  <span className="flex min-w-0 flex-col leading-tight">
                     <span className="text-sm font-bold text-foreground">{h.title}</span>
-                    <span className="text-xs text-muted-foreground/95">{h.desc}</span>
+                    <span className="text-[11px] text-muted-foreground/95">{h.desc}</span>
                   </span>
                 </div>
               ))}
