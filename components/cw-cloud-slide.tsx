@@ -386,6 +386,37 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             </div>
           </div>
 
+          {/* 桌面端产品模块池：移至主视觉右侧空白区域 */}
+          <div className="pointer-events-auto absolute right-8 top-8 hidden w-52 rounded-2xl border border-accent/20 bg-[oklch(0.1_0.03_248/0.78)] p-3 backdrop-blur-md lg:block">
+            <div className="mb-2.5 flex items-center gap-1.5">
+              <Boxes className="size-4 text-accent" />
+              <span className="text-xs font-semibold text-foreground">产品模块池 · 11</span>
+            </div>
+            <div className="grid gap-1.5">
+              {listedModules.map((m) => {
+                const on = activeIds.includes(m.id)
+                const hot = showId === m.id
+                return (
+                  <button
+                    key={m.id}
+                    onMouseEnter={() => handleHover(m.id)}
+                    onMouseLeave={() => handleHover(null)}
+                    onClick={() => toggleModule(m.id)}
+                    className="flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-left text-[11px] transition-all duration-300"
+                    style={{
+                      borderColor: on ? `${m.palette.top}8c` : hot ? `${m.palette.top}66` : "oklch(0.32 0.03 240 / 0.55)",
+                      backgroundColor: on ? `${m.palette.top}24` : hot ? `${m.palette.top}1a` : "oklch(0.2 0.03 245 / 0.35)",
+                      opacity: on || hot ? 1 : 0.78,
+                    }}
+                  >
+                    <span className="size-2 shrink-0 rounded-[3px]" style={{ backgroundColor: m.palette.top }} />
+                    <span className="min-w-0 flex-1 truncate text-foreground/90">{m.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
           {/* 弹性占位：把流程/状态推到底部 */}
           <div className="flex-1" />
 
@@ -483,9 +514,9 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           <span className="text-[11px] text-muted-foreground">（左侧模块池选择 / 悬停，右侧实时呈现该产品大屏与说明）</span>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
-          {/* 左：产品模块池 10+（竖向列表，与组合体实时联动；填满高度与右侧等高） */}
-          <div className="flex h-full flex-col rounded-2xl border border-border bg-card/40 p-3.5">
+        <div className="grid gap-5">
+          {/* 移动端产品模块池；桌面端已移至上方主视觉右侧 */}
+          <div className="flex h-full flex-col rounded-2xl border border-border bg-card/40 p-3.5 lg:hidden">
             <div className="mb-3 flex items-center gap-1.5">
               <Boxes className="size-4 text-accent" />
               <span className="text-xs font-semibold text-foreground">产品模块池 · 11</span>
@@ -565,15 +596,15 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                 )}
               </div>
 
-              {/* 下：核心能力详述（双列，避免卡片过高、保持左右协调） */}
-              <div className="flex flex-col border-t border-border p-5">
-                <div className="mb-2.5 flex items-center gap-1.5">
-                  <span className="h-3 w-0.5 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
-                  <span className="text-xs font-semibold text-foreground/90">核心能力</span>
+              {/* 下：重点展示核心能力 */}
+              <div className="flex flex-col border-t border-accent/20 bg-card/60 p-6">
+                <div className="mb-4 flex items-center gap-2">
+                  <span className="h-5 w-1 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
+                  <span className="text-base font-bold text-foreground">核心能力</span>
                 </div>
-                <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
                   {showInfo.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2 text-[12px] leading-relaxed">
+                    <li key={p} className="flex items-start gap-2.5 text-sm leading-relaxed">
                       <span
                         className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
                         style={{ backgroundColor: showModule.palette.top }}
