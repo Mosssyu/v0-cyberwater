@@ -139,7 +139,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
     desc: "面向河道、湖泊、水库等水体对象的数字化建档、实时监测与河湖长制闭环治理。",
     features: ["统一建档", "实时监测", "闭环治理"],
     points: [
-      "河道、湖泊、断面、排口、闸站等对象统一建档，水体资源数字化管理",
+      "河道、湖泊、断面、排口、闸站等对象统一建档，水体资源数字化管���",
       "接入水位、水质、流量、视频、雨情等数据，实时掌握运行状态",
       "围绕巡河巡湖、问题上报、整改处置、复核销号构建闭环管理",
       "支持异常告警、问题台账、治理成效分析，辅助河湖长制考核与精细化治理",
@@ -364,7 +364,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             </p>
 
             {/* 五大产品特性（紧凑卡片，纵向排列，副标题保持单行） */}
-            <div className="mt-6 flex max-w-xs flex-col gap-2">
+            <div className="mt-6 flex w-56 flex-col gap-2">
               {highlights.map((h) => (
                 <div
                   key={h.title}
