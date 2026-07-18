@@ -1,6 +1,14 @@
+import { Building2, Award, FileCheck, ShieldCheck } from "lucide-react"
 import { CompanyGene } from "@/components/company-gene"
 import { GrowthTimeline } from "@/components/growth-timeline"
 import { DataFlowStream } from "@/components/data-flow-stream"
+
+const heroStats = [
+  { icon: Building2, num: "2015", label: "公司成立" },
+  { icon: FileCheck, num: "50+", label: "软件著作权" },
+  { icon: ShieldCheck, num: "10+", label: "硬件发明专利" },
+  { icon: Award, num: "AAA", label: "企业信用等级" },
+]
 
 export function Hero() {
   return (
@@ -39,16 +47,14 @@ export function Hero() {
               北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，打造面向水务行业的标准化、产品化、可配置的软件服务能力。
             </p>
 
-            {/* 资质标签 */}
-            <div className="mt-6 flex flex-wrap gap-3">
-              {["软件著作权 50+", "硬件发明专利 10+", "AAA 企业信用等级"].map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-card/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur"
-                >
-                  <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
-                  {tag}
-                </span>
+            {/* 资质数据卡片 */}
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {heroStats.map((s) => (
+                <div key={s.label} className="rounded-xl border border-border bg-card/70 p-4 text-center backdrop-blur">
+                  <s.icon className="mx-auto size-5 text-primary" />
+                  <div className="mt-2 text-xl font-bold text-foreground">{s.num}</div>
+                  <div className="text-xs text-muted-foreground">{s.label}</div>
+                </div>
               ))}
             </div>
           </div>
