@@ -69,9 +69,12 @@ const cornerClass: Record<GeneCard["corner"], string> = {
   br: "right-0 bottom-[8%]",
 }
 
-function GeneCardBox({ card }: { card: GeneCard }) {
+function GeneCardBox({ card, delay }: { card: GeneCard; delay?: string }) {
   return (
-    <div className="group/card gene-float-anim w-[200px] rounded-2xl border border-transparent bg-transparent p-4 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:bg-card/60 hover:backdrop-blur-md hover:shadow-[0_0_28px_-6px_oklch(0.79_0.13_200/0.5)]">
+    <div
+      className="group/card gene-float-anim gene-card-glow w-[200px] rounded-2xl border border-accent/20 bg-card/40 p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:bg-card/70 hover:shadow-[0_0_36px_-4px_oklch(0.79_0.13_200/0.65)]"
+      style={delay ? { animationDelay: `${delay}, ${delay}` } : undefined}
+    >
       <div className="flex items-center gap-2.5">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
           <card.icon className="size-[18px]" />
@@ -95,10 +98,23 @@ export function CompanyGene() {
         {/* 三维粒子球体神经网络（纯 Canvas 渲染） */}
         <ParticleSphere className="absolute inset-0 size-full" />
 
-        {/* 球体中心文字 */}
-        <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base font-bold tracking-widest text-foreground [text-shadow:0_0_16px_oklch(0.79_0.13_200/0.8)]">
-          水厂运营基因
-        </span>
+        {/* 球体中心徽章：双层旋转圆环 + 文字 */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 flex size-36 -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+          {/* 外圈：虚线缓慢正转 */}
+          <span
+            className="gene-ring-spin absolute inset-0 rounded-full border border-dashed border-accent/40"
+            aria-hidden="true"
+          />
+          {/* 内圈：细实线反转 + 轻微发光 */}
+          <span
+            className="gene-ring-spin-reverse absolute inset-3 rounded-full border border-accent/25"
+            aria-hidden="true"
+            style={{ boxShadow: "0 0 24px -6px oklch(0.79 0.13 200 / 0.45), inset 0 0 18px -8px oklch(0.79 0.13 200 / 0.4)" }}
+          />
+          <span className="relative text-base font-bold tracking-widest text-foreground [text-shadow:0_0_16px_oklch(0.79_0.13_200/0.8)]">
+            公司运营基因
+          </span>
+        </div>
 
         {/* 轨道点缀标签 */}
         {orbitTags.map((t) => (
@@ -112,9 +128,9 @@ export function CompanyGene() {
         ))}
 
         {/* 四角能力卡片 */}
-        {cards.map((c) => (
+        {cards.map((c, i) => (
           <div key={c.id} className={`absolute ${cornerClass[c.corner]}`}>
-            <GeneCardBox card={c} />
+            <GeneCardBox card={c} delay={`${i * 0.9}s`} />
           </div>
         ))}
       </div>
@@ -125,10 +141,21 @@ export function CompanyGene() {
         <div className="relative mx-auto mb-6 aspect-square w-full max-w-[340px]">
           <ParticleSphere className="absolute inset-0 size-full" />
 
-          {/* 球体中心文字 */}
-          <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-bold tracking-widest text-foreground [text-shadow:0_0_16px_oklch(0.79_0.13_200/0.8)]">
-            水厂运营基因
-          </span>
+          {/* 球体中心徽章：双层旋转圆环 + 文字 */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 flex size-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center">
+            <span
+              className="gene-ring-spin absolute inset-0 rounded-full border border-dashed border-accent/40"
+              aria-hidden="true"
+            />
+            <span
+              className="gene-ring-spin-reverse absolute inset-2.5 rounded-full border border-accent/25"
+              aria-hidden="true"
+              style={{ boxShadow: "0 0 20px -6px oklch(0.79 0.13 200 / 0.45), inset 0 0 14px -8px oklch(0.79 0.13 200 / 0.4)" }}
+            />
+            <span className="relative text-sm font-bold tracking-widest text-foreground [text-shadow:0_0_16px_oklch(0.79_0.13_200/0.8)]">
+              公司运营基因
+            </span>
+          </div>
 
           {/* 轨道点缀标签 */}
           {orbitTags.map((t) => (
