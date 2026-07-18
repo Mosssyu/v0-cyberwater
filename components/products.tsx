@@ -14,11 +14,6 @@ export function Products() {
           <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             核心产品
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
-            <span className="text-foreground/90">CW-Cloud</span> 连接水务业务，
-            <span className="text-foreground/90">CW-Visual</span>{" "}
-            连接物理空间。两大体系以数据为纽带，实现业务、空间与智能融合，支撑水务运营全过程数字化升级。
-          </p>
         </div>
 
         {/* 两大产品定位：左右分立，中间“端到端”连接 */}
