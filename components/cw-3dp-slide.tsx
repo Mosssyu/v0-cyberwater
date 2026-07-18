@@ -295,9 +295,8 @@ export function Cw3dpSlide() {
         onMouseEnter={() => setShowPaused(true)}
         onMouseLeave={() => setShowPaused(false)}
       >
-        <div className="mb-3 flex items-center gap-2">
+        <div className="mb-3">
           <span className="text-sm font-semibold text-foreground">产品模块</span>
-          <span className="text-[11px] text-muted-foreground">（选择上侧产品，下侧实时呈现大屏与核心能力）</span>
         </div>
 
         <div className="flex flex-col gap-5">
