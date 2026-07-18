@@ -401,7 +401,7 @@ function EnergyTrackSvg() {
 }
 
 /* =========================================================================
-   WaterDrop —— 2026 ���点上方蓝色水滴（上下浮动 + glow 呼吸 + 水花溅射）
+   WaterDrop —— 2026 �����点上方蓝色水滴（上下浮动 + glow 呼吸 + 水花溅射）
    ========================================================================= */
 function WaterDrop({ top }: { top: number }) {
   return (
@@ -512,23 +512,6 @@ function TimelineNode({
         aria-pressed={active}
         aria-label={`${m.year} ${m.title}`}
       >
-        {/* 水平透视能量环（多层同心椭圆 + 呼吸） */}
-        <span
-          className="cw-node-breathe pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
-          style={{
-            width: 52,
-            height: 18,
-            borderColor: "rgb(0 229 255 / 0.55)",
-            boxShadow: "0 0 14px -2px rgb(0 229 255 / 0.65), inset 0 0 9px -4px rgb(127 233 255 / 0.7)",
-          }}
-          aria-hidden="true"
-        />
-        <span
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border"
-          style={{ width: 34, height: 12, borderColor: "rgb(127 233 255 / 0.7)" }}
-          aria-hidden="true"
-        />
-
         {/* 圆形水波涟漪 */}
         <span className="cw-ripple" aria-hidden="true" />
 
