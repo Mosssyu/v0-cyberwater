@@ -364,7 +364,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             </p>
 
             {/* 五大产品特性（紧凑卡片，两列排布，副标题置于主标题下方） */}
-            <div className="mt-6 grid max-w-xs grid-cols-2 gap-2">
+            <div className="mt-6 grid max-w-sm grid-cols-2 gap-2">
               {highlights.map((h) => (
                 <div
                   key={h.title}
@@ -379,7 +379,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
                   </span>
                   <span className="flex min-w-0 flex-col leading-tight">
                     <span className="text-sm font-bold text-foreground">{h.title}</span>
-                    <span className="text-[11px] text-muted-foreground/95">{h.desc}</span>
+                    <span className="whitespace-nowrap text-[10px] tracking-tight text-muted-foreground/95">{h.desc}</span>
                   </span>
                 </div>
               ))}
