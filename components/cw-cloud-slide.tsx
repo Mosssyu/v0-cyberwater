@@ -139,7 +139,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
     desc: "面向河道、湖泊、水库等水体对象的数字化建档、实时监测与河湖长制闭环治理。",
     features: ["统一建档", "实时监测", "闭环治理"],
     points: [
-      "河道、湖泊、断面、排口、闸站等对象统一建档，水体资源数字化管���",
+      "河道、湖泊、断面、排口、闸站等对象统一建档，水体资源数字化管�����",
       "接入水位、水质、流量、视频、雨情等数据，实时掌握运行状态",
       "围绕巡河巡湖、问题上报、整改处置、复核销号构建闭环管理",
       "支持异常告警、问题台账、治理成效分析，辅助河湖长制考核与精细化治理",
@@ -299,7 +299,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
   const showId = hoveredId ?? focusId
   const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
-  const showInfo = productInfo[showModule.id]
 
   const handleHover = (id: string | null) => {
     setHoveredId(id)
@@ -562,57 +561,26 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.35, ease: "easeOut" }}
-              className="grid gap-3 overflow-hidden rounded-2xl border border-border bg-card/35 p-3 lg:grid-cols-[minmax(0,1.9fr)_minmax(260px,0.75fr)]"
+              className="overflow-hidden rounded-2xl border border-border bg-card/35 p-3"
             >
-              {/* 左：内收式产品大屏示意图 */}
+              {/* 产品大屏示意图（图内已含核心能力，整幅铺满展示） */}
               <div
-                className="relative aspect-video w-full overflow-hidden rounded-xl border border-accent/15 lg:aspect-auto lg:min-h-[430px]"
+                className="relative aspect-video w-full overflow-hidden rounded-xl border border-accent/15"
                 style={{ background: "oklch(0.12 0.025 248)" }}
               >
                 {productImages[showModule.id] ? (
-                  <>
-                    <img
-                      src={productImages[showModule.id] || "/placeholder.svg"}
-                      alt={`${showModule.label}产品大屏示意`}
-                      className="size-full object-cover"
-                      loading="lazy"
-                      draggable={false}
-                    />
-                    {/* 柔和暗角让图片自然向内收拢 */}
-                    <div
-                      className="pointer-events-none absolute inset-0"
-                      aria-hidden="true"
-                      style={{
-                        background:
-                          "radial-gradient(115% 110% at 50% 48%, transparent 62%, oklch(0.09 0.025 248 / 0.62) 100%)",
-                      }}
-                    />
-                  </>
+                  <img
+                    src={productImages[showModule.id] || "/placeholder.svg"}
+                    alt={`${showModule.label}产品大屏示意（含核心能力说明）`}
+                    className="size-full object-cover"
+                    loading="lazy"
+                    draggable={false}
+                  />
                 ) : (
                   <div className="flex size-full items-center justify-center p-4">
                     <ProductScene id={showModule.id} palette={showModule.palette} />
                   </div>
                 )}
-              </div>
-
-              {/* 右：内嵌式核心能力面板 */}
-              <div className="flex flex-col justify-center rounded-xl border border-accent/15 bg-card/55 p-5 lg:p-6">
-                <div className="mb-5 flex items-center gap-2.5">
-                  <span className="h-6 w-1 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
-                  <span className="text-lg font-bold text-foreground">核心能力</span>
-                </div>
-                <ul className="grid gap-4">
-                  {showInfo.points.map((p) => (
-                    <li key={p} className="flex items-start gap-3 text-sm leading-relaxed">
-                      <span
-                        className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
-                        style={{ backgroundColor: showModule.palette.top }}
-                        aria-hidden="true"
-                      />
-                      <span className="text-pretty text-muted-foreground">{p}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </motion.div>
           </AnimatePresence>
