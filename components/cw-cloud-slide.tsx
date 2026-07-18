@@ -363,8 +363,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               从单一业务到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
             </p>
 
-            {/* 五大产品特性（紧凑卡片，两列排布，副标题置于主标题下方） */}
-            <div className="mt-6 grid max-w-sm grid-cols-2 gap-2">
+            {/* 五大产品特性（紧凑卡片，纵向排列，副标题保持单行） */}
+            <div className="mt-6 flex max-w-xs flex-col gap-2">
               {highlights.map((h) => (
                 <div
                   key={h.title}
