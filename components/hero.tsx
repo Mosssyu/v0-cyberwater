@@ -10,7 +10,12 @@ export function Hero() {
       {/* 科技网格 */}
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative z-[1] mx-auto max-w-7xl px-6 pt-20 pb-16 lg:pt-24">
+      <div className="relative z-[1] mx-auto max-w-7xl px-6 pt-10 pb-16 lg:pt-12">
+        {/* 顶部价值观 */}
+        <p className="mb-10 text-center text-lg font-medium tracking-[0.3em] text-accent lg:mb-14 lg:text-xl">
+          执着 · 共生 · 求变
+        </p>
+
         {/* 数据粒子流光带（约束在 Hero 文案区域下方，不触及时间轴） */}
         <DataFlowStream />
         <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
@@ -33,6 +38,19 @@ export function Hero() {
             <p className="mt-6 max-w-xl text-pretty leading-relaxed text-muted-foreground">
               北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，打造面向水务行业的标准化、产品化、可配置的软件服务能力。
             </p>
+
+            {/* 资质标签 */}
+            <div className="mt-6 flex flex-wrap gap-3">
+              {["软件著作权 50+", "硬件发明专利 10+", "AAA 企业信用等级"].map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-card/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur"
+                >
+                  <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.6)]" />
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* 右侧：公司基因 / 水务运营数字化能力沉淀 */}

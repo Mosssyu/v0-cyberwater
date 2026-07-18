@@ -5,7 +5,7 @@ const aboutIntro =
 
 const aboutStats = [
   { icon: Building2, num: "2015", label: "公司成立" },
-  { icon: FileCheck, num: "30+", label: "软件著作权" },
+  { icon: FileCheck, num: "50+", label: "软件著作权" },
   { icon: ShieldCheck, num: "10+", label: "硬件发明专利" },
   { icon: Award, num: "AAA", label: "企业信用等级" },
 ]
