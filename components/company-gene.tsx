@@ -72,8 +72,8 @@ const cornerClass: Record<GeneCard["corner"], string> = {
 function GeneCardBox({ card, delay }: { card: GeneCard; delay?: string }) {
   return (
     <div
-      className="group/card gene-float-anim gene-card-glow w-[200px] rounded-2xl border border-accent/20 bg-card/40 p-4 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:bg-card/70 hover:shadow-[0_0_36px_-4px_oklch(0.79_0.13_200/0.65)]"
-      style={delay ? { animationDelay: `${delay}, ${delay}` } : undefined}
+      className="group/card gene-card-drift w-[200px] rounded-2xl p-4 transition-colors duration-300 hover:bg-card/40"
+      style={delay ? { animationDelay: delay } : undefined}
     >
       <div className="flex items-center gap-2.5">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
@@ -130,7 +130,7 @@ export function CompanyGene() {
         {/* 四角能力卡片 */}
         {cards.map((c, i) => (
           <div key={c.id} className={`absolute ${cornerClass[c.corner]}`}>
-            <GeneCardBox card={c} delay={`${i * 0.9}s`} />
+            <GeneCardBox card={c} delay={`${i * 1.6}s`} />
           </div>
         ))}
       </div>

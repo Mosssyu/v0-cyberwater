@@ -20,9 +20,29 @@ export function Hero() {
 
       <div className="relative z-[1] mx-auto max-w-7xl px-6 pt-10 pb-16 lg:pt-12">
         {/* 顶部价值观 */}
-        <p className="mb-10 text-center text-lg font-medium tracking-[0.3em] text-accent lg:mb-14 lg:text-xl">
-          执着 · 共生 · 求变
-        </p>
+        <div className="mb-10 flex items-center justify-center gap-4 lg:mb-14 lg:gap-6">
+          <span
+            className="h-px w-16 bg-gradient-to-r from-transparent to-accent/60 sm:w-24 lg:w-32"
+            aria-hidden="true"
+          />
+          <p className="flex items-center gap-3 lg:gap-4">
+            {["执着", "共生", "求变"].map((w, i) => (
+              <span key={w} className="flex items-center gap-3 lg:gap-4">
+                {i > 0 && (
+                  <span
+                    className="size-1 rotate-45 bg-accent/70 shadow-[0_0_8px_2px_oklch(0.79_0.13_200/0.5)]"
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="text-gradient text-lg font-semibold tracking-[0.4em] lg:text-xl">{w}</span>
+              </span>
+            ))}
+          </p>
+          <span
+            className="h-px w-16 bg-gradient-to-l from-transparent to-accent/60 sm:w-24 lg:w-32"
+            aria-hidden="true"
+          />
+        </div>
 
         {/* 数据粒子流光带（约束在 Hero 文案区域下方，不触及时间轴） */}
         <DataFlowStream />
@@ -47,13 +67,13 @@ export function Hero() {
               北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，打造面向水务行业的标准化、产品化、可配置的软件服务能力。
             </p>
 
-            {/* 资质数据卡片 */}
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {/* 资质数据（弱化为轻量行内标签） */}
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
               {heroStats.map((s) => (
-                <div key={s.label} className="rounded-xl border border-border bg-card/70 p-4 text-center backdrop-blur">
-                  <s.icon className="mx-auto size-5 text-primary" />
-                  <div className="mt-2 text-xl font-bold text-foreground">{s.num}</div>
-                  <div className="text-xs text-muted-foreground">{s.label}</div>
+                <div key={s.label} className="flex items-center gap-2">
+                  <s.icon className="size-4 text-primary/70" />
+                  <span className="text-sm font-bold text-foreground/90">{s.num}</span>
+                  <span className="text-xs text-muted-foreground">{s.label}</span>
                 </div>
               ))}
             </div>

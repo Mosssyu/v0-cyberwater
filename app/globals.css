@@ -470,20 +470,24 @@
 .gene-ring-spin-reverse {
   animation: gene-ring-spin 26s linear infinite reverse;
 }
-/* 四角能力卡片：常显发光脉冲 */
-@keyframes gene-card-glow {
+/* 四角能力卡片：无边框漂浮动效（上下浮动 + 轻微横向漂移） */
+@keyframes gene-card-drift {
   0%,
   100% {
-    border-color: oklch(0.79 0.13 200 / 0.22);
-    box-shadow: 0 0 18px -8px oklch(0.79 0.13 200 / 0.35);
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(3px, -8px);
   }
   50% {
-    border-color: oklch(0.79 0.13 200 / 0.55);
-    box-shadow: 0 0 32px -6px oklch(0.79 0.13 200 / 0.6);
+    transform: translate(-2px, -14px);
+  }
+  75% {
+    transform: translate(-4px, -6px);
   }
 }
-.gene-card-glow {
-  animation: gene-card-glow 3.6s ease-in-out infinite;
+.gene-card-drift {
+  animation: gene-card-drift 7s ease-in-out infinite;
 }
 
 /* 时间轴聚焦卡片入场 */
@@ -811,7 +815,7 @@
   .gene-flow,
   .gene-ring-spin,
   .gene-ring-spin-reverse,
-  .gene-card-glow,
+  .gene-card-drift,
   .reveal-focus,
   .tl-item-up,
   .tl-item-down,
