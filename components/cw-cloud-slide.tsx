@@ -130,7 +130,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
       "管网资产全要素、全周期展示查询与分析，高精度 BIM 接入、影视级三维呈现",
       "支持多公司、多项目集中部署，快速接入供排新业务，减少重复建设",
       "建立 GIS 数据审核录入规范，自动属性 / 拓扑检查，多层级审核保障数据质量",
-      "巡检、养护、抢维修在线工单化流转，移��外业轨迹留痕、全过程可追踪",
+      "巡检、养护、抢维修在线工单化流转，移����外业轨迹留痕、全过程可追踪",
       "连通性、断面、流向与人员绩效分析联动，辅助施工指导与精细化运营",
     ],
   },
@@ -387,12 +387,12 @@ export function CwCloudSlide({ active }: { active: boolean }) {
           </div>
 
           {/* 桌面端产品模块池：移至主视觉右侧空白区域 */}
-          <div className="pointer-events-auto absolute right-8 top-8 hidden w-52 rounded-2xl border border-accent/20 bg-[oklch(0.1_0.03_248/0.78)] p-3 backdrop-blur-md lg:block">
-            <div className="mb-2.5 flex items-center gap-1.5">
+          <div className="pointer-events-auto absolute right-8 top-16 hidden h-[500px] w-52 flex-col rounded-2xl border border-accent/20 bg-[oklch(0.1_0.03_248/0.78)] p-3 backdrop-blur-md lg:flex">
+            <div className="mb-2.5 flex shrink-0 items-center gap-1.5">
               <Boxes className="size-4 text-accent" />
               <span className="text-xs font-semibold text-foreground">产品模块池 · 11</span>
             </div>
-            <div className="grid gap-1.5">
+            <div className="grid min-h-0 flex-1 grid-rows-11 gap-1.5">
               {listedModules.map((m) => {
                 const on = activeIds.includes(m.id)
                 const hot = showId === m.id
