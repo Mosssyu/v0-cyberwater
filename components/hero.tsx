@@ -37,7 +37,7 @@ export function Hero() {
 
             {/* 主标题 */}
             <h1 className="mt-6 text-balance text-3xl font-bold leading-[1.16] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              做最懂水务运营管理的
+              做更懂水务运营管理的
               <br />
               <span className="text-gradient">数字化产品公司</span>
             </h1>
