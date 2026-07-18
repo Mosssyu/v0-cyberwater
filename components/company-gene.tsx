@@ -95,6 +95,11 @@ export function CompanyGene() {
         {/* 三维粒子球体神经网络（纯 Canvas 渲染） */}
         <ParticleSphere className="absolute inset-0 size-full" />
 
+        {/* 球体中心文字 */}
+        <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-base font-bold tracking-widest text-foreground [text-shadow:0_0_16px_oklch(0.79_0.13_200/0.8)]">
+          水厂运营基因
+        </span>
+
         {/* 轨道点缀标签 */}
         {orbitTags.map((t) => (
           <span
@@ -119,6 +124,11 @@ export function CompanyGene() {
         {/* 轻量版三维粒子球体（移动端 24fps / 精简粒子，离屏与后台自动暂停） */}
         <div className="relative mx-auto mb-6 aspect-square w-full max-w-[340px]">
           <ParticleSphere className="absolute inset-0 size-full" />
+
+          {/* 球体中心文字 */}
+          <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-bold tracking-widest text-foreground [text-shadow:0_0_16px_oklch(0.79_0.13_200/0.8)]">
+            水厂运营基因
+          </span>
 
           {/* 轨道点缀标签 */}
           {orbitTags.map((t) => (
