@@ -69,9 +69,12 @@ const cornerClass: Record<GeneCard["corner"], string> = {
   br: "right-0 bottom-[8%]",
 }
 
-function GeneCardBox({ card }: { card: GeneCard }) {
+function GeneCardBox({ card, delay }: { card: GeneCard; delay?: string }) {
   return (
-    <div className="group/card gene-float-anim w-[200px] rounded-2xl border border-transparent bg-transparent p-4 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:bg-card/60 hover:backdrop-blur-md hover:shadow-[0_0_28px_-6px_oklch(0.79_0.13_200/0.5)]">
+    <div
+      className="group/card gene-card-drift w-[200px] rounded-2xl p-4 transition-colors duration-300 hover:bg-card/40"
+      style={delay ? { animationDelay: delay } : undefined}
+    >
       <div className="flex items-center gap-2.5">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
           <card.icon className="size-[18px]" />
@@ -101,13 +104,25 @@ function Core() {
       <span className="core-ticks absolute -inset-2 rounded-full opacity-60" aria-hidden="true" />
       {/* 扫光环 */}
       <span className="core-sweep absolute inset-1 rounded-full opacity-70" aria-hidden="true" />
+      {/* 双层旋转圆环（球型边框设计感） */}
+      <span
+        className="gene-ring-spin absolute -inset-1 rounded-full border border-dashed border-accent/40"
+        aria-hidden="true"
+      />
+      <span
+        className="gene-ring-spin-reverse absolute inset-2 rounded-full border border-accent/25"
+        aria-hidden="true"
+        style={{
+          boxShadow: "0 0 24px -6px oklch(0.79 0.13 200 / 0.45), inset 0 0 18px -8px oklch(0.79 0.13 200 / 0.4)",
+        }}
+      />
       {/* 核心球 */}
       <div className="gene-core-breathe relative flex size-28 items-center justify-center rounded-full border border-accent/40 bg-[radial-gradient(circle_at_50%_35%,oklch(0.45_0.12_220/0.9),oklch(0.2_0.04_240/0.95))] lg:size-32">
         <span className="core-grid-mask absolute inset-0 rounded-full opacity-50" aria-hidden="true" />
         <div className="relative flex flex-col items-center">
           <Droplets className="size-5 text-accent" />
           <span className="core-flicker-anim mt-1 text-center text-sm font-bold leading-tight text-foreground">
-            水务运营
+            公司运营
             <br />
             基因
           </span>
@@ -142,9 +157,9 @@ export function CompanyGene() {
         </div>
 
         {/* 四角能力卡片 */}
-        {cards.map((c) => (
+        {cards.map((c, i) => (
           <div key={c.id} className={`absolute ${cornerClass[c.corner]}`}>
-            <GeneCardBox card={c} />
+            <GeneCardBox card={c} delay={`${i * 1.6}s`} />
           </div>
         ))}
       </div>

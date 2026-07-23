@@ -130,7 +130,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
       "管网资产全要素、全周期展示查询与分析，高精度 BIM 接入、影视级三维呈现",
       "支持多公司、多项目集中部署，快速接入供排新业务，减少重复建设",
       "建立 GIS 数据审核录入规范，自动属性 / 拓扑检查，多层级审核保障数据质量",
-      "巡检、养护、抢维修在线工单化流转，移动外业轨迹留痕、全过程可追踪",
+      "巡检、养护、抢维修在线工单化流转，移���外业轨迹留痕、全过程可追踪",
       "连通性、断面、流向与人员绩效分析联动，辅助施工指导与精细化运营",
     ],
   },
@@ -151,7 +151,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
     features: ["内涝预警", "排水调度", "应急指挥"],
     points: [
       "以水文模型应用为核心，强化预报、预警、预演、预案“四预”能力",
-      "基于未来降雨与潮位数据开展水位模拟推演，超阈值自动匹配并下发预案",
+      "基于未来降雨与潮位数据开展水位模拟推演，超阈��自动匹配并下发预案",
       "预案库支持结构化配置，人员、物资、闸站可按等级灵活调整",
       "复盘历史重大防汛事件，模型推演反向优化预案配置",
       "贯通预报、预警、上级指令等事件来源，下发、审批、执行、总结全流程闭环",
@@ -351,30 +351,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
         {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
         <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
-          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光；负上边距上提，避免压住积木塔顶部） */}
-          <div className="-mt-2 flex flex-wrap justify-center gap-2.5 sm:-mt-3 lg:-mt-5 lg:justify-end lg:gap-3">
-            {highlights.map((h) => (
-              <div
-                key={h.title}
-                className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-4 py-3 backdrop-blur-sm transition-colors hover:border-accent/45"
-                style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
-              >
-                <span
-                  className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
-                  aria-hidden="true"
-                >
-                  <h.icon className="size-5 text-accent" />
-                </span>
-                <span className="flex flex-col gap-0.5 leading-tight">
-                  <span className="text-base font-bold text-foreground">{h.title}</span>
-                  <span className="text-xs text-muted-foreground/95">{h.desc}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-
           {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
-          <div className="pointer-events-auto mt-10 max-w-md lg:mt-14 lg:max-w-sm">
+          <div className="pointer-events-auto max-w-md lg:max-w-sm">
             <h3 className="text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
               CW-Cloud
               <br />
@@ -383,6 +361,28 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             <p className="mt-5 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
               从单一业务到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
             </p>
+
+            {/* 五大产品特性标签（左侧纵向紧凑排列） */}
+            <div className="mt-6 flex w-56 flex-col gap-2">
+              {highlights.map((h) => (
+                <div
+                  key={h.title}
+                  className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-3.5 py-2.5 backdrop-blur-sm transition-colors hover:border-accent/45"
+                  style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
+                >
+                  <span
+                    className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
+                    aria-hidden="true"
+                  >
+                    <h.icon className="size-4 text-accent" />
+                  </span>
+                  <span className="flex flex-col gap-0.5 leading-tight">
+                    <span className="text-sm font-bold text-foreground">{h.title}</span>
+                    <span className="whitespace-nowrap text-[11px] text-muted-foreground/95">{h.desc}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 弹性占位：把流程/状态推到底部 */}
