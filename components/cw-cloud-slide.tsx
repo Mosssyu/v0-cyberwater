@@ -299,7 +299,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
   const showId = hoveredId ?? focusId
   const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
-  const showInfo = productInfo[showModule.id]
 
   const handleHover = (id: string | null) => {
     setHoveredId(id)
@@ -480,7 +479,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
       <div className="relative mt-6">
         <div className="mb-3 flex items-center gap-2">
           <span className="text-sm font-semibold text-foreground">产品示意</span>
-          <span className="text-[11px] text-muted-foreground">（左侧模块池选择 / 悬停，右侧实时呈现该产品大屏与说明）</span>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
@@ -534,55 +532,24 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               transition={{ duration: 0.35, ease: "easeOut" }}
               className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card/40"
             >
-              {/* 上：产品大屏示意图 */}
+              {/* 产品大屏示意图（图内已含核心能力说明，整幅铺满展示） */}
               <div
                 className="relative aspect-video w-full overflow-hidden"
                 style={{ background: "oklch(0.12 0.025 248)" }}
               >
                 {productImages[showModule.id] ? (
-                  <>
-                    <img
-                      src={productImages[showModule.id] || "/placeholder.svg"}
-                      alt={`${showModule.label}产品大屏示意`}
-                      className="size-full object-cover"
-                      loading="lazy"
-                      draggable={false}
-                    />
-                    {/* 边缘柔化暗角，让图片自然融入卡片 */}
-                    <div
-                      className="pointer-events-none absolute inset-0"
-                      aria-hidden="true"
-                      style={{
-                        background:
-                          "radial-gradient(120% 120% at 50% 50%, transparent 64%, oklch(0.1 0.025 248 / 0.5) 100%)",
-                      }}
-                    />
-                  </>
+                  <img
+                    src={productImages[showModule.id] || "/placeholder.svg"}
+                    alt={`${showModule.label}产品大屏示意（含核心能力说明）`}
+                    className="size-full object-cover"
+                    loading="lazy"
+                    draggable={false}
+                  />
                 ) : (
                   <div className="flex size-full items-center justify-center p-4">
                     <ProductScene id={showModule.id} palette={showModule.palette} />
                   </div>
                 )}
-              </div>
-
-              {/* 下：核心能力详述（双列，避免卡片过高、保持左右协调） */}
-              <div className="flex flex-col border-t border-border p-5">
-                <div className="mb-2.5 flex items-center gap-1.5">
-                  <span className="h-3 w-0.5 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
-                  <span className="text-xs font-semibold text-foreground/90">核心能力</span>
-                </div>
-                <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
-                  {showInfo.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2 text-[12px] leading-relaxed">
-                      <span
-                        className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
-                        style={{ backgroundColor: showModule.palette.top }}
-                        aria-hidden="true"
-                      />
-                      <span className="text-pretty text-muted-foreground">{p}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </motion.div>
           </AnimatePresence>
