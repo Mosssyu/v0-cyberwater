@@ -11,7 +11,6 @@ import {
   Box,
   Layers,
   Sparkles,
-  Gem,
   type LucideIcon,
 } from "lucide-react"
 import { usePauseOffscreen } from "@/hooks/use-pause-offscreen"
@@ -35,7 +34,7 @@ type Milestone = {
   Icon: LucideIcon
 }
 
-/* 顶部核心里程碑：位于能量轨迹上并对应上排大卡（含新增「未来」） */
+/* 顶部核心里程碑：位于能量轨迹上并对应上排大卡 */
 const coreMilestones: Milestone[] = [
   {
     year: "2018",
@@ -57,13 +56,6 @@ const coreMilestones: Milestone[] = [
     title: "AI 智能运营平台发布",
     desc: "深度融合大模型、智能体与数字孪生，实现感知、认知、决策、执行全链路智能闭环。",
     Icon: Sparkles,
-  },
-  {
-    year: "未来",
-    short: "持续创新",
-    title: "持续创新 引领未来",
-    desc: "以执着、共生、求变持续推动技术与业务创新，构建更智能、更高效、更绿色的水务数字化未来。",
-    Icon: Gem,
   },
 ]
 
@@ -98,11 +90,11 @@ const subMilestones: Milestone[] = [
 /* 轨迹带尺寸（viewBox 0 0 700 BAND_H）。节点纵向落点贴合波形 */
 const BAND_W = 700
 const BAND_H = 140
-/* 四个核心节点水平位置（百分比）：对齐到下方 grid-cols-4 四张大卡的中心
-   （1/8、3/8、5/8、7/8），使节点光柱垂直下贯、精准对准卡片。 */
-const NODE_X = [12.5, 37.5, 62.5, 87.5]
-/* 轻柔波形：2018 → 2022 微降 → 2026 回升 → 未来 上扬（末端箭头向上） */
-const NODE_Y = [58, 66, 50, 42]
+/* 三个核心节点水平位置（百分比）：对齐到下方 grid-cols-3 三张大卡的中心
+   （1/6、3/6、5/6），使节点光柱垂直下贯、精准对准卡片。 */
+const NODE_X = [16.667, 50, 83.333]
+/* 轻柔波形：2018 → 2022 微降 → 2026 回升（末端箭头向上） */
+const NODE_Y = [58, 66, 46]
 const colX = (i: number) => NODE_X[i]
 
 /* ===== Catmull-Rom 样条：穿过 4 个节点 + 两端，生成平滑波形 ===== */
@@ -401,7 +393,7 @@ function EnergyTrackSvg() {
 }
 
 /* =========================================================================
-   WaterDrop —— 2026 节点上方蓝色水滴（上下浮动 + glow 呼吸 + 水花溅射）
+   WaterDrop —— 2026 ���点上方蓝色水滴（上下浮动 + glow 呼吸 + 水花溅射）
    ========================================================================= */
 function WaterDrop({ top }: { top: number }) {
   return (
@@ -709,7 +701,7 @@ function RowDivider() {
         }}
       />
       {/* 四个分隔节点，落在下排四列卡片中心 */}
-      {NODE_X.map((leftPct, i) => (
+      {[12.5, 37.5, 62.5, 87.5].map((leftPct, i) => (
         <span
           key={i}
           className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/70 bg-[oklch(0.16_0.03_245)]"
@@ -788,7 +780,7 @@ function EvolutionSection() {
 
       {/* ===== 桌面端：能量轨迹 + 4 核��节点 → 4 核心大卡 → 横向虚线 → 4 次��卡片 ===== */}
       <div className="hidden lg:block">
-        {/* 能量轨迹 + 四个核心节点 */}
+        {/* ���量轨迹 + 四个核心节点 */}
         <div className="relative mt-12 w-full" style={{ height: BAND_H }}>
           <EnergyTrackSvg />
           {coreMilestones.map((m, i) => (
@@ -796,8 +788,8 @@ function EvolutionSection() {
           ))}
         </div>
 
-        {/* 顶部核心大卡（2018 / 2022 / 2026 / 未来） */}
-        <ol className="mt-8 grid grid-cols-4 gap-5">
+        {/* 顶部核心大卡（2018 / 2022 / 2026） */}
+        <ol className="mt-8 grid grid-cols-3 gap-5">
           {coreMilestones.map((m, i) => (
             <li key={m.year}>
               <FeatureCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
