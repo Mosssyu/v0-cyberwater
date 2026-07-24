@@ -130,7 +130,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
       "管网资产全要素、全周期展示查询与分析，高精度 BIM 接入、影视级三维呈现",
       "支持多公司、多项目集中部署，快速接入供排新业务，减少重复建设",
       "建立 GIS 数据审核录入规范，自动属性 / 拓扑检查，多层级审核保障数据质量",
-      "巡检、养护、抢维修在线工单化流转，移动外业轨迹留痕、全过程可追踪",
+      "巡检、养护、抢维修在线工单化流转，移���外业轨迹留痕、全过程可追踪",
       "连通性、断面、流向与人员绩效分析联动，辅助施工指导与精细化运营",
     ],
   },
@@ -151,7 +151,7 @@ const productInfo: Record<string, { icon: LucideIcon; desc: string; features: st
     features: ["内涝预警", "排水调度", "应急指挥"],
     points: [
       "以水文模型应用为核心，强化预报、预警、预演、预案“四预”能力",
-      "基于未来降雨与潮位数据开展水位模拟推演，超阈值自动匹配并下发预案",
+      "基于未来降雨与潮位数据开展水位模拟推演，超阈��自动匹配并下发预案",
       "预案库支持结构化配置，人员、物资、闸站可按等级灵活调整",
       "复盘历史重大防汛事件，模型推演反向优化预案配置",
       "贯通预报、预警、上级指令等事件来源，下发、审批、执行、总结全流程闭环",
@@ -299,7 +299,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
   const showId = hoveredId ?? focusId
   const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
-  const showInfo = productInfo[showModule.id]
 
   const handleHover = (id: string | null) => {
     setHoveredId(id)
@@ -352,30 +351,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
 
         {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
         <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
-          {/* 顶部能力标签（漂浮，靠右，半透明描边轻发光；负上边距上提，避免压住积木塔顶部） */}
-          <div className="-mt-2 flex flex-wrap justify-center gap-2.5 sm:-mt-3 lg:-mt-5 lg:justify-end lg:gap-3">
-            {highlights.map((h) => (
-              <div
-                key={h.title}
-                className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-4 py-3 backdrop-blur-sm transition-colors hover:border-accent/45"
-                style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
-              >
-                <span
-                  className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
-                  aria-hidden="true"
-                >
-                  <h.icon className="size-5 text-accent" />
-                </span>
-                <span className="flex flex-col gap-0.5 leading-tight">
-                  <span className="text-base font-bold text-foreground">{h.title}</span>
-                  <span className="text-xs text-muted-foreground/95">{h.desc}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-
           {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
-          <div className="pointer-events-auto mt-10 max-w-md lg:mt-14 lg:max-w-sm">
+          <div className="pointer-events-auto max-w-md lg:max-w-sm">
             <h3 className="text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
               CW-Cloud
               <br />
@@ -384,6 +361,28 @@ export function CwCloudSlide({ active }: { active: boolean }) {
             <p className="mt-5 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
               从单一业务到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
             </p>
+
+            {/* 五大产品特性标签（左侧纵向紧凑排列） */}
+            <div className="mt-6 flex w-56 flex-col gap-2">
+              {highlights.map((h) => (
+                <div
+                  key={h.title}
+                  className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-3.5 py-2.5 backdrop-blur-sm transition-colors hover:border-accent/45"
+                  style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
+                >
+                  <span
+                    className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
+                    aria-hidden="true"
+                  >
+                    <h.icon className="size-4 text-accent" />
+                  </span>
+                  <span className="flex flex-col gap-0.5 leading-tight">
+                    <span className="text-sm font-bold text-foreground">{h.title}</span>
+                    <span className="whitespace-nowrap text-[11px] text-muted-foreground/95">{h.desc}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* 弹性占位：把流程/状态推到底部 */}
@@ -480,7 +479,6 @@ export function CwCloudSlide({ active }: { active: boolean }) {
       <div className="relative mt-6">
         <div className="mb-3 flex items-center gap-2">
           <span className="text-sm font-semibold text-foreground">产品示意</span>
-          <span className="text-[11px] text-muted-foreground">（左侧模块池选择 / 悬停，右侧实时呈现该产品大屏与说明）</span>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
@@ -534,55 +532,24 @@ export function CwCloudSlide({ active }: { active: boolean }) {
               transition={{ duration: 0.35, ease: "easeOut" }}
               className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card/40"
             >
-              {/* 上：产品大屏示意图 */}
+              {/* 产品大屏示意图（图内已含核心能力说明，整幅铺满展示） */}
               <div
                 className="relative aspect-video w-full overflow-hidden"
                 style={{ background: "oklch(0.12 0.025 248)" }}
               >
                 {productImages[showModule.id] ? (
-                  <>
-                    <img
-                      src={productImages[showModule.id] || "/placeholder.svg"}
-                      alt={`${showModule.label}产品大屏示意`}
-                      className="size-full object-cover"
-                      loading="lazy"
-                      draggable={false}
-                    />
-                    {/* 边缘柔化暗角，让图片自然融入卡片 */}
-                    <div
-                      className="pointer-events-none absolute inset-0"
-                      aria-hidden="true"
-                      style={{
-                        background:
-                          "radial-gradient(120% 120% at 50% 50%, transparent 64%, oklch(0.1 0.025 248 / 0.5) 100%)",
-                      }}
-                    />
-                  </>
+                  <img
+                    src={productImages[showModule.id] || "/placeholder.svg"}
+                    alt={`${showModule.label}产品大屏示意（含核心能力说明）`}
+                    className="size-full object-cover"
+                    loading="lazy"
+                    draggable={false}
+                  />
                 ) : (
                   <div className="flex size-full items-center justify-center p-4">
                     <ProductScene id={showModule.id} palette={showModule.palette} />
                   </div>
                 )}
-              </div>
-
-              {/* 下：核心能力详述（双列，避免卡片过高、保持左右协调） */}
-              <div className="flex flex-col border-t border-border p-5">
-                <div className="mb-2.5 flex items-center gap-1.5">
-                  <span className="h-3 w-0.5 rounded-full" style={{ backgroundColor: showModule.palette.top }} />
-                  <span className="text-xs font-semibold text-foreground/90">核心能力</span>
-                </div>
-                <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
-                  {showInfo.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2 text-[12px] leading-relaxed">
-                      <span
-                        className="mt-[7px] size-1.5 shrink-0 rounded-[2px]"
-                        style={{ backgroundColor: showModule.palette.top }}
-                        aria-hidden="true"
-                      />
-                      <span className="text-pretty text-muted-foreground">{p}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </motion.div>
           </AnimatePresence>

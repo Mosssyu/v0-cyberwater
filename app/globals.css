@@ -458,6 +458,37 @@
   stroke-dasharray: 3 9;
   animation: gene-dash 1s linear infinite;
 }
+/* 中心球型徽章：外圈虚线缓慢旋转 */
+@keyframes gene-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.gene-ring-spin {
+  animation: gene-ring-spin 18s linear infinite;
+}
+.gene-ring-spin-reverse {
+  animation: gene-ring-spin 26s linear infinite reverse;
+}
+/* 四角能力卡片：无边框漂浮动效（上下浮动 + 轻微横向漂移） */
+@keyframes gene-card-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(3px, -8px);
+  }
+  50% {
+    transform: translate(-2px, -14px);
+  }
+  75% {
+    transform: translate(-4px, -6px);
+  }
+}
+.gene-card-drift {
+  animation: gene-card-drift 7s ease-in-out infinite;
+}
 
 /* 时间轴聚焦卡片入场 */
 @keyframes focus-in {
@@ -782,6 +813,9 @@
   .gene-twinkle-anim,
   .gene-core-breathe,
   .gene-flow,
+  .gene-ring-spin,
+  .gene-ring-spin-reverse,
+  .gene-card-drift,
   .reveal-focus,
   .tl-item-up,
   .tl-item-down,

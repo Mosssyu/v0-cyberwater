@@ -208,6 +208,22 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
       <div className="grid gap-6 lg:h-[72vh] lg:min-h-[560px] lg:max-h-[720px] lg:grid-cols-[1.6fr_1fr]">
         {/* 地图 */}
         <div className="relative">
+          {/* 左上角落地规模统计 */}
+          <div className="pointer-events-none absolute left-2 top-2 z-10 max-w-[220px] sm:left-3 sm:top-3">
+            <ul className="flex flex-col gap-1.5">
+              {[
+                { num: "380+", label: "座水厂" },
+                { num: "2000+", label: "公里河道 / 管网" },
+                { num: "1000+", label: "座泵闸 / 厂站" },
+                { num: "100+", label: "项目落地" },
+              ].map((s) => (
+                <li key={s.label} className="flex items-baseline gap-1.5">
+                  <span className="text-base font-bold text-accent sm:text-lg">{s.num}</span>
+                  <span className="text-xs text-muted-foreground">{s.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
           <svg
             ref={svgRef}
             viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
