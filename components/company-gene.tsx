@@ -2,6 +2,7 @@
 
 import { Layers, Building2, Boxes, BrainCircuit, Droplets } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+import type { CSSProperties } from "react"
 import { ParticleSphere } from "@/components/particle-sphere"
 
 type GeneCard = {
@@ -72,11 +73,11 @@ const cornerClass: Record<GeneCard["corner"], string> = {
 function GeneCardBox({ card, delay }: { card: GeneCard; delay?: string }) {
   return (
     <div
-      className="group/card gene-card-drift w-[200px] rounded-2xl p-4 transition-colors duration-300 hover:bg-card/40"
-      style={delay ? { animationDelay: delay } : undefined}
+      className="gene-card-focus group/card relative w-[200px] rounded-2xl p-4 transition-colors duration-300 hover:bg-card/40"
+      style={delay ? ({ "--gene-delay": delay } as CSSProperties) : undefined}
     >
       <div className="flex items-center gap-2.5">
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
+        <span className="gene-card-icon flex size-9 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent/80 transition-colors group-hover/card:border-accent/25 group-hover/card:bg-accent/15 group-hover/card:text-accent">
           <card.icon className="size-[18px]" />
         </span>
         <h4 className="text-sm font-semibold leading-snug text-foreground transition-colors group-hover/card:text-foreground">
@@ -92,7 +93,7 @@ function GeneCardBox({ card, delay }: { card: GeneCard; delay?: string }) {
 
 function Core() {
   return (
-    <div className="relative flex size-36 items-center justify-center lg:size-40">
+    <div className="company-gene-core relative flex size-36 items-center justify-center lg:size-40">
       {/* 外圈脉冲 */}
       <span className="ring-pulse-anim absolute inset-0 rounded-full border border-accent/30" aria-hidden="true" />
       <span
@@ -151,15 +152,41 @@ export function CompanyGene() {
           </span>
         ))}
 
+        {/* 从静态核心指向四项能力的顺序流光 */}
+        <svg
+          className="pointer-events-none absolute inset-0 z-[1] size-full"
+          viewBox="0 0 600 480"
+          fill="none"
+          aria-hidden="true"
+        >
+          {cards.map((card, index) => (
+            <g key={card.id}>
+              <path
+                d={card.path}
+                stroke="oklch(0.79 0.13 200 / 0.18)"
+                strokeWidth="1"
+              />
+              <path
+                d={card.path}
+                className="gene-connector-flow"
+                stroke="oklch(0.82 0.16 200 / 0.9)"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                style={{ "--gene-delay": `${index * 2}s` } as CSSProperties}
+              />
+            </g>
+          ))}
+        </svg>
+
         {/* 中心核心 */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
           <Core />
         </div>
 
         {/* 四角能力卡片 */}
         {cards.map((c, i) => (
-          <div key={c.id} className={`absolute ${cornerClass[c.corner]}`}>
-            <GeneCardBox card={c} delay={`${i * 1.6}s`} />
+          <div key={c.id} className={`absolute z-10 ${cornerClass[c.corner]}`}>
+            <GeneCardBox card={c} delay={`${i * 2}s`} />
           </div>
         ))}
       </div>
@@ -188,8 +215,8 @@ export function CompanyGene() {
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          {cards.map((c) => (
-            <GeneCardBox key={c.id} card={c} />
+          {cards.map((c, i) => (
+            <GeneCardBox key={c.id} card={c} delay={`${i * 2}s`} />
           ))}
         </div>
       </div>

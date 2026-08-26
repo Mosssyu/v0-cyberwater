@@ -99,12 +99,14 @@ export function BuildingBlocks({
   hoveredId,
   onHover,
   onToggle,
+  compact = false,
 }: {
   modules: ModuleDef[]
   activeIds: string[]
   hoveredId: string | null
   onHover: (id: string | null) => void
   onToggle: (id: string) => void
+  compact?: boolean
 }) {
   const business = modules.filter((m) => !m.float)
   const isActive = (id: string) => activeIds.includes(id)
@@ -151,24 +153,28 @@ export function BuildingBlocks({
 
   return (
     <div
-      className="relative size-full overflow-hidden"
+      className={`relative size-full overflow-hidden ${compact ? "bg-[radial-gradient(circle_at_50%_58%,oklch(0.28_0.12_235/0.48),oklch(0.09_0.035_248/0.96)_66%)]" : ""}`}
       role="img"
       aria-label="厂网河湖 AI 一体化数字孪生沙盘：在发光全息底座上自由组合水务业务模块，叠加 AI 智能中枢"
     >
       {/* ===== 底图：数字孪生沙盘（发光平台 + 厂网河湖设施） ===== */}
-      <img
-        src="/scenes/cw-sandbox-empty.png"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 size-full object-cover object-center"
-        draggable={false}
-      />
+      {compact ? (
+        <div className="bg-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden="true" />
+      ) : (
+        <img
+          src="/scenes/cw-sandbox-empty.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 size-full object-cover object-center"
+          draggable={false}
+        />
+      )}
 
       {/* ===== 叠加层：动态玻璃晶体积木 ===== */}
       <svg
         className="absolute inset-0 size-full"
-        viewBox={`0 0 ${VB_W} ${VB_H}`}
-        preserveAspectRatio="xMidYMid slice"
+        viewBox={compact ? "295 110 310 245" : `0 0 ${VB_W} ${VB_H}`}
+        preserveAspectRatio={compact ? "xMidYMid meet" : "xMidYMid slice"}
         fill="none"
       >
         <defs>

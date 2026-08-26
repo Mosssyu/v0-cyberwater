@@ -50,7 +50,13 @@ function featureToPath(geometry: Geometry, projection: GeoProjection, minLat?: n
   return d
 }
 
-export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | CaseCategory }) {
+export function CasesMap({
+  activeCategory = "all",
+  highlightName,
+}: {
+  activeCategory?: "all" | CaseCategory
+  highlightName?: string | null
+}) {
   const router = useRouter()
   const [geo, setGeo] = useState<GeoFeatureCollection | null>(null)
   const [active, setActive] = useState<string | null>(null)
@@ -202,6 +208,16 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
   const listMarkers = markers.filter((m) => isMatch(m.category))
   // 仅地图定位点位（与筛选联动）
   const matchedSimple = simpleMarkers.filter((m) => isMatch(m.category))
+  const highlightedSimple = matchedSimple.find((m) => m.name === highlightName) ?? null
+  const visibleHover = hover ?? (highlightedSimple
+    ? {
+        x: highlightedSimple.x,
+        y: highlightedSimple.y,
+        title: highlightedSimple.name,
+        location: highlightedSimple.location,
+        category: highlightedSimple.category,
+      }
+    : null)
 
   return (
     <div className="relative mt-8 overflow-hidden rounded-2xl border border-border bg-card/60 p-4 sm:p-6">
@@ -298,7 +314,7 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
 
             {/* 仅地图定位点位（无详情页）：默认仅显示发光点位，悬停显示浮层卡片 */}
             {matchedSimple.map((m) => {
-              const isHover = m.index === hoverSimple
+              const isHover = m.index === hoverSimple || m.name === highlightName
               const color = categoryColor[m.category]
               return (
                 <g
@@ -391,13 +407,13 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
           </svg>
 
           {/* 悬浮玻璃拟态项目卡片（HTML 覆盖层，清晰大号、自动避开边缘） */}
-          {hover && (() => {
-            const leftPct = (hover.x / WIDTH) * 100
-            const topPct = (hover.y / HEIGHT) * 100
+          {visibleHover && (() => {
+            const leftPct = (visibleHover.x / WIDTH) * 100
+            const topPct = (visibleHover.y / HEIGHT) * 100
             const tx = leftPct < 22 ? "-6%" : leftPct > 78 ? "-94%" : "-50%"
             const below = topPct < 32
             const ty = below ? "16px" : "calc(-100% - 16px)"
-            const color = categoryColor[hover.category]
+            const color = categoryColor[visibleHover.category]
             return (
               <div
                 className="pointer-events-none absolute z-30 w-[288px]"
@@ -413,10 +429,10 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                 >
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <MapPin className="size-3.5 shrink-0" style={{ color }} />
-                    {hover.location}
+                    {visibleHover.location}
                   </div>
                   <h4 className="mt-1.5 text-balance text-base font-bold leading-snug text-foreground">
-                    {hover.title}
+                    {visibleHover.title}
                   </h4>
                   <span
                     className="mt-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold"
@@ -425,13 +441,13 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                       backgroundColor: `color-mix(in oklch, ${color} 16%, transparent)`,
                     }}
                   >
-                    {hover.category}
+                    {visibleHover.category}
                   </span>
-                  {hover.products && hover.products.length > 0 && (
+                  {visibleHover.products && visibleHover.products.length > 0 && (
                     <div className="mt-3">
                       <div className="text-[11px] font-medium text-muted-foreground">应用产品</div>
                       <div className="mt-1.5 flex flex-wrap gap-1.5">
-                        {hover.products.map((p) => (
+                        {visibleHover.products.map((p) => (
                           <span
                             key={p}
                             className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[11px] font-medium text-primary"
@@ -442,7 +458,7 @@ export function CasesMap({ activeCategory = "all" }: { activeCategory?: "all" | 
                       </div>
                     </div>
                   )}
-                  {hover.slug ? (
+                  {visibleHover.slug ? (
                     <div className="mt-3 flex items-center gap-1 text-xs font-semibold" style={{ color }}>
                       查看项目详情
                       <ArrowRight className="size-3.5" />

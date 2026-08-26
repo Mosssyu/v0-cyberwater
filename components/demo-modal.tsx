@@ -89,13 +89,13 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
           <div className="mb-7 text-center sm:mb-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-1 font-mono text-xs text-accent">
               <span className="size-1.5 rounded-full bg-accent" />
-              BOOK A DEMO
+              CONTACT US
             </span>
             <h2
               id="demo-modal-title"
               className="mt-3 text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
             >
-              预约产品演示
+              联系我们
             </h2>
           </div>
 

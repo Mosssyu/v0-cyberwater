@@ -3,11 +3,8 @@
 import { useEffect, useMemo, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-  Box,
   Boxes,
-  Blocks,
   Network,
-  Sparkles,
   Building2,
   BrainCircuit,
   Plus,
@@ -240,14 +237,6 @@ const productImages: Record<string, string> = {
 // 单业态阶段轮播展示的候选模块（表达「任一业务模块都可独立建设」）
 const soloRotation = ["plant", "pipe", "pump", "sewage", "reservoir", "flood"]
 
-const flowSteps = [
-  { icon: Boxes, label: "模块池选择" },
-  { icon: Box, label: "单业态独立建设" },
-  { icon: Blocks, label: "多模块自由组合" },
-  { icon: Network, label: "跨场景一体化" },
-  { icon: Sparkles, label: "AI 持续升级" },
-]
-
 // CW-Cloud 水务AI运营平台 · 五大产品特性标签
 const highlights: { icon: LucideIcon; title: string; desc: string }[] = [
   { icon: Building2, title: "全场景", desc: "覆盖厂、站、网、河湖" },
@@ -257,14 +246,7 @@ const highlights: { icon: LucideIcon; title: string; desc: string }[] = [
   { icon: TrendingUp, title: "懂业务", desc: "行业标准，水务知识" },
 ]
 
-// 由当前激活模块集合推断所处阶段（用于流程条/说明联动）
-function inferFlow(active: string[]) {
-  if (active.includes("ai")) return 4
-  if (active.length === 0) return 0
-  if (active.length === 1) return 1
-  if (active.length <= 5) return 2
-  return 3
-}
+const evolutionLabels = ["模块池选择", "单业态独立建设", "多模块自由组合", "跨场景一体化", "AI 持续升级"]
 
 export function CwCloudSlide({ active }: { active: boolean }) {
   const [stageIdx, setStageIdx] = useState(0)
@@ -272,7 +254,8 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   const [custom, setCustom] = useState<string[] | null>(null)
   const [paused, setPaused] = useState(false)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
-  const [focusId, setFocusId] = useState<string>("group")
+  const [showcaseId, setShowcaseId] = useState<string>(listedModules[0].id)
+  const [showcasePaused, setShowcasePaused] = useState(false)
 
   // 自动播放 Stage 0 → 1 → 2 → 3 → 4 循环
   useEffect(() => {
@@ -287,6 +270,18 @@ export function CwCloudSlide({ active }: { active: boolean }) {
     return () => clearInterval(t)
   }, [active, paused, custom])
 
+  // 产品示意独立自动轮播，不再与上方积木组合或阶段演示联动
+  useEffect(() => {
+    if (!active || showcasePaused) return
+    const t = setInterval(() => {
+      setShowcaseId((current) => {
+        const index = listedModules.findIndex((module) => module.id === current)
+        return listedModules[(index + 1) % listedModules.length].id
+      })
+    }, 4200)
+    return () => clearInterval(t)
+  }, [active, showcasePaused])
+
   // 当前生效的激活模块集合
   const activeIds = useMemo(() => {
     if (custom) return custom
@@ -294,21 +289,18 @@ export function CwCloudSlide({ active }: { active: boolean }) {
     return demoStages[stageIdx].active
   }, [custom, stageIdx, soloPick])
 
-  const flowIdx = custom ? inferFlow(custom) : demoStages[stageIdx].flow
-
-  // 展示区聚焦的产品：优先悬停项，其次点击聚焦项
-  const showId = hoveredId ?? focusId
-  const showModule = productModules.find((m) => m.id === showId) ?? listedModules[0]
+  const showcaseModule = listedModules.find((module) => module.id === showcaseId) ?? listedModules[0]
 
   const handleHover = (id: string | null) => {
     setHoveredId(id)
     setPaused(!!id)
-    if (id) setFocusId(id)
+    setShowcasePaused(!!id)
+    if (id) setShowcaseId(id)
   }
 
   const toggleModule = (id: string) => {
     setPaused(true)
-    setFocusId(id)
+    setShowcaseId(id)
     setCustom((prev) => {
       const base = prev ?? activeIds
       return base.includes(id) ? base.filter((x) => x !== id) : [...base, id]
@@ -316,245 +308,151 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.1_0.03_248)]">
-      {/* ===== 主视觉舞台：右侧数字孪生场景为绝对主角，左/上/下为轻量叠加 ===== */}
-      <div className="relative min-h-[600px] w-full lg:min-h-[680px]">
-        {/* 底图：全幅数字孪生沙盘（发光平台 + 中心积木组合体） */}
-        <div className="absolute inset-0">
+    <div
+      data-testid="cw-cloud-workspace"
+      className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.1_0.03_248)] p-4 sm:p-5"
+    >
+      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-25" aria-hidden="true" />
+
+      {/* 头部左侧保留标题与能力卡，右侧集中放大积木交互区 */}
+      <div className="relative grid gap-3 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
+        <div className="relative min-w-0 lg:h-40">
+          <h3 className="text-balance text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl">
+            <span>CW-Cloud</span>
+            <span className="mt-1 block text-gradient sm:ml-2 sm:mt-0 sm:inline">水务 AI 运营平台</span>
+          </h3>
+
+          <div className="mt-2 flex max-w-[440px] flex-wrap gap-2">
+            {highlights.map((h) => (
+              <div
+                key={h.title}
+                className="flex w-[140px] min-w-0 items-center gap-1.5 rounded-lg border border-accent/25 bg-[oklch(0.12_0.04_248/0.72)] px-2 py-1.5 backdrop-blur-sm transition-colors hover:border-accent/45"
+              >
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-md border border-accent/30 bg-accent/[0.12]" aria-hidden="true">
+                  <h.icon className="size-3 text-accent" />
+                </span>
+                <span className="min-w-0 leading-tight">
+                  <span className="block text-xs font-bold text-foreground">{h.title}</span>
+                  <span className="mt-0.5 block truncate text-[9px] text-muted-foreground/95">{h.desc}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div
+            aria-label="产品演进路径"
+            className="mt-4 flex items-center gap-1.5 overflow-x-auto whitespace-nowrap font-mono text-[11px] font-medium tracking-tight text-muted-foreground/75 lg:absolute lg:bottom-0 lg:left-[430px] lg:right-0 lg:mt-0 lg:overflow-hidden"
+          >
+            {evolutionLabels.map((label, index) => (
+              <span key={label} className="flex shrink-0 items-center gap-1.5">
+                <span className={index === evolutionLabels.length - 1 ? "text-accent/80" : undefined}>{label}</span>
+                {index < evolutionLabels.length - 1 ? <span className="text-accent/45">→</span> : null}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div
+          aria-label="积木组合交互区"
+          className="relative h-40 overflow-hidden rounded-xl bg-[oklch(0.09_0.04_248/0.9)]"
+        >
           <BuildingBlocks
+            compact
             modules={productModules}
             activeIds={activeIds}
             hoveredId={hoveredId}
             onHover={handleHover}
             onToggle={toggleModule}
           />
-        </div>
-
-        {/* 左侧可读性渐隐遮罩（让文案浮于场景之上，不压实心面板） */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          aria-hidden="true"
-          style={{
-            background:
-              "linear-gradient(90deg, oklch(0.09 0.03 248 / 0.96) 0%, oklch(0.09 0.03 248 / 0.7) 30%, oklch(0.09 0.03 248 / 0.15) 52%, transparent 68%)",
-          }}
-        />
-        {/* 顶部 / 底部轻微压暗，提升标签与流程可读性 */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          aria-hidden="true"
-          style={{
-            background:
-              "linear-gradient(180deg, oklch(0.09 0.03 248 / 0.55) 0%, transparent 22%, transparent 70%, oklch(0.09 0.03 248 / 0.85) 100%)",
-          }}
-        />
-
-        {/* ===== 内容叠加层（默认穿透，交互元素单独开启指针事件，保证场景可点选） ===== */}
-        <div className="pointer-events-none relative z-10 flex min-h-[600px] flex-col p-6 sm:p-8 lg:min-h-[680px] lg:p-10">
-          {/* 左侧品牌文案（轻、透、简洁，不使用实心面板） */}
-          <div className="pointer-events-auto max-w-md lg:max-w-sm">
-            <h3 className="text-balance text-4xl font-bold leading-[1.12] tracking-tight text-foreground lg:text-5xl">
-              CW-Cloud
-              <br />
-              <span className="text-gradient">水务 AI 运营平台</span>
-            </h3>
-            <p className="mt-5 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
-              从单一业务到多业态组合，从业务系统到 AI 智能运营平台，CW-Cloud 支持 10+ 类产品模块按需选择、灵活组合、持续扩展。
-            </p>
-
-            {/* 五大产品特性标签（左侧纵向紧凑排列） */}
-            <div className="mt-6 flex w-56 flex-col gap-2">
-              {highlights.map((h) => (
-                <div
-                  key={h.title}
-                  className="pointer-events-auto flex items-center gap-3 rounded-xl border border-accent/25 bg-[oklch(0.12_0.04_248/0.78)] px-3.5 py-2.5 backdrop-blur-sm transition-colors hover:border-accent/45"
-                  style={{ boxShadow: "0 0 22px -8px oklch(0.7 0.14 215 / 0.55)" }}
-                >
-                  <span
-                    className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/[0.12]"
-                    aria-hidden="true"
-                  >
-                    <h.icon className="size-4 text-accent" />
-                  </span>
-                  <span className="flex flex-col gap-0.5 leading-tight">
-                    <span className="text-sm font-bold text-foreground">{h.title}</span>
-                    <span className="whitespace-nowrap text-[11px] text-muted-foreground/95">{h.desc}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 弹性占位：把流程/状态推到底部 */}
-          <div className="flex-1" />
-
-          {/* 底部状态胶囊（低调半透明） */}
-          <div className="mb-4 flex justify-center lg:justify-start">
-            <span className="pointer-events-auto inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-accent/20 bg-[oklch(0.12_0.04_248/0.7)] px-4 py-1.5 text-[11px] text-muted-foreground backdrop-blur-sm sm:text-[12px]">
-              已选{" "}
-              <span className="font-mono font-semibold text-accent">{activeIds.length}</span> / {listedModules.length} 个模块 ·
-              点击下方模块加入组合
-            </span>
-          </div>
-
-          {/* 底部横向发光流程路径（替代竖向箭头，融入场景） */}
-          <div className="pointer-events-auto flex items-center overflow-x-auto pb-1">
-            {flowSteps.map((s, i) => {
-              const done = i <= flowIdx
-              const current = i === flowIdx
-              return (
-                <div key={s.label} className="flex flex-1 items-center">
-                  {/* 节点 */}
-                  <div className="flex shrink-0 flex-col items-center gap-2">
-                    <span
-                      className="relative flex items-center justify-center transition-all duration-500"
-                      style={{
-                        width: current ? 52 : 38,
-                        height: current ? 52 : 38,
-                        clipPath: current
-                          ? "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)"
-                          : "none",
-                        borderRadius: current ? 0 : 9999,
-                        border: `1.5px solid ${
-                          current
-                            ? "oklch(0.85 0.15 200)"
-                            : done
-                              ? "oklch(0.7 0.13 210 / 0.7)"
-                              : "oklch(0.4 0.04 240 / 0.6)"
-                        }`,
-                        backgroundColor: current
-                          ? "oklch(0.7 0.16 210 / 0.22)"
-                          : done
-                            ? "oklch(0.5 0.1 220 / 0.25)"
-                            : "oklch(0.18 0.03 245 / 0.5)",
-                        boxShadow: current ? "0 0 22px 1px oklch(0.7 0.16 205 / 0.75)" : "none",
-                        backdropFilter: "blur(4px)",
-                      }}
-                    >
-                      <s.icon
-                        className="transition-colors duration-500"
-                        style={{
-                          width: current ? 20 : 16,
-                          height: current ? 20 : 16,
-                          color: done ? "oklch(0.92 0.1 200)" : "oklch(0.55 0.04 240)",
-                        }}
-                      />
-                    </span>
-                    <span
-                      className="whitespace-nowrap text-center text-[11px] leading-tight transition-colors duration-500 sm:text-[12px]"
-                      style={{
-                        color: current
-                          ? "oklch(0.95 0.06 200)"
-                          : done
-                            ? "oklch(0.82 0.05 220)"
-                            : "oklch(0.6 0.02 240)",
-                        fontWeight: current ? 700 : 500,
-                      }}
-                    >
-                      {s.label}
-                    </span>
-                  </div>
-
-                  {/* 连接线 */}
-                  {i < flowSteps.length - 1 && (
-                    <span
-                      className="mx-1.5 mb-6 h-px flex-1 transition-colors duration-500 sm:mx-2.5"
-                      style={{
-                        background:
-                          i < flowIdx
-                            ? "linear-gradient(90deg, oklch(0.78 0.14 205 / 0.9), oklch(0.7 0.13 215 / 0.6))"
-                            : "oklch(0.4 0.04 240 / 0.4)",
-                        boxShadow: i < flowIdx ? "0 0 8px 0 oklch(0.7 0.14 205 / 0.6)" : "none",
-                      }}
-                    />
-                  )}
-                </div>
-              )
-            })}
-          </div>
+          <span className="pointer-events-none absolute left-2 top-1.5 rounded-full border border-accent/20 bg-[oklch(0.09_0.04_248/0.78)] px-2 py-0.5 text-[9px] text-muted-foreground backdrop-blur-sm">
+            积木组合 · 已选 <span className="font-mono text-accent">{activeIds.length}</span> / {listedModules.length}
+          </span>
+          <span className="pointer-events-none absolute bottom-1.5 right-2 text-[9px] text-accent/70">点击积木交互</span>
         </div>
       </div>
 
-      {/* 产品示意区：左 产品模块池 10+ ｜ 右 产品示意图 + 图下文字描述 */}
-      <div className="relative mt-6">
-        <div className="mb-3 flex items-center gap-2">
-          <span className="text-sm font-semibold text-foreground">产品示意</span>
-        </div>
-
-        <div className="grid gap-5 lg:grid-cols-[minmax(0,250px)_minmax(0,1fr)]">
-          {/* 左：产品模块池 10+（竖向列表，与组合体实时联动；填满高度与右侧等高） */}
-          <div className="flex h-full flex-col rounded-2xl border border-border bg-card/40 p-3.5">
-            <div className="mb-3 flex items-center gap-1.5">
-              <Boxes className="size-4 text-accent" />
-              <span className="text-xs font-semibold text-foreground">产品模块池 · 11</span>
+      {/* 单屏交互区：左侧标签 + 右侧完整产品示意 */}
+      <div
+        className="relative mt-2"
+        onMouseEnter={() => setShowcasePaused(true)}
+        onMouseLeave={() => setShowcasePaused(false)}
+      >
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,180px)_minmax(0,1fr)]">
+          {/* 左：可点击的产品标签 */}
+          <div className="flex h-full flex-col rounded-2xl border border-border bg-card/40 p-2.5">
+            <div className="mb-2.5 flex items-center justify-between gap-1.5">
+              <div className="flex min-w-0 items-center gap-1.5">
+                <Boxes className="size-3.5 shrink-0 text-accent" />
+                <span className="truncate text-[11px] font-semibold text-foreground">产品标签 · 11</span>
+              </div>
+              <span className="shrink-0 text-[9px] text-muted-foreground">点击切换</span>
             </div>
-            <div className="flex flex-1 flex-col justify-between gap-1.5">
+            <div className="flex flex-1 flex-col justify-between gap-1">
               {listedModules.map((m) => {
-                const on = activeIds.includes(m.id)
-                const hot = showId === m.id
+                const selected = activeIds.includes(m.id)
+                const hot = showcaseId === m.id
                 return (
                   <button
                     key={m.id}
-                    onMouseEnter={() => handleHover(m.id)}
-                    onMouseLeave={() => handleHover(null)}
+                    type="button"
                     onClick={() => toggleModule(m.id)}
-                    className="flex items-center gap-2 rounded-lg border px-2.5 py-2 text-left text-[12px] transition-all duration-300"
+                    aria-pressed={selected}
+                    className="flex items-center gap-1.5 rounded-lg border px-2 py-1.5 text-left text-[11px] transition-all duration-300"
                     style={{
-                      borderColor: on ? `${m.palette.top}8c` : hot ? `${m.palette.top}66` : "oklch(0.32 0.03 240 / 0.55)",
-                      backgroundColor: on ? `${m.palette.top}24` : hot ? `${m.palette.top}1a` : "oklch(0.2 0.03 245 / 0.35)",
-                      opacity: on || hot ? 1 : 0.78,
+                      borderColor: hot ? `${m.palette.top}b3` : selected ? `${m.palette.top}73` : "oklch(0.32 0.03 240 / 0.55)",
+                      backgroundColor: hot ? `${m.palette.top}24` : selected ? `${m.palette.top}17` : "oklch(0.2 0.03 245 / 0.35)",
+                      opacity: hot || selected ? 1 : 0.78,
                     }}
                   >
                     <span
                       className="size-2.5 shrink-0 rounded-[3px]"
-                      style={{ backgroundColor: m.palette.top, boxShadow: on ? `0 0 7px 1px ${m.palette.glow}` : "none" }}
+                      style={{ backgroundColor: m.palette.top, boxShadow: hot || selected ? `0 0 7px 1px ${m.palette.glow}` : "none" }}
                     />
                     <span className="min-w-0 flex-1 truncate text-foreground/90">{m.label}</span>
                   </button>
                 )
               })}
               {/* 更多模块持续扩展 */}
-              <div className="flex items-center gap-2 rounded-lg border border-dashed border-accent/30 px-2.5 py-2 text-[12px] opacity-70">
-                <Plus className="size-3.5 shrink-0 text-accent" />
+              <div className="flex items-center gap-1.5 rounded-lg border border-dashed border-accent/30 px-2 py-1.5 text-[11px] opacity-70">
+                <Plus className="size-3 shrink-0 text-accent" />
                 <span className="min-w-0 flex-1 truncate text-foreground/80">更多+</span>
-                <span className="shrink-0 text-[10px] text-muted-foreground">持续扩展</span>
+                <span className="shrink-0 text-[9px] text-muted-foreground">持续扩展</span>
               </div>
             </div>
           </div>
 
-          {/* 右：产品示意图 + 图下方文字描述 */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={showModule.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card/40"
-            >
-              {/* 产品大屏示意图（图内已含核心能力说明，整幅铺满展示） */}
-              <div
-                className="relative aspect-video w-full overflow-hidden"
-                style={{ background: "oklch(0.12 0.025 248)" }}
-              >
-                {productImages[showModule.id] ? (
-                  <img
-                    src={productImages[showModule.id] || "/placeholder.svg"}
-                    alt={`${showModule.label}产品大屏示意（含核心能力说明）`}
-                    className="size-full object-cover"
-                    loading="lazy"
-                    draggable={false}
-                  />
-                ) : (
-                  <div className="flex size-full items-center justify-center p-4">
-                    <ProductScene id={showModule.id} palette={showModule.palette} />
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          </AnimatePresence>
+          {/* 右：完整产品展示区，按原始比例自适应，不裁切大屏内容 */}
+          <div className="min-w-0 overflow-hidden rounded-2xl border border-border bg-card/40">
+            <div className="relative aspect-video w-full overflow-hidden" style={{ background: "oklch(0.12 0.025 248)" }}>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={showcaseModule.id}
+                  initial={{ opacity: 0, x: 14 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.35, ease: "easeOut" }}
+                  className="absolute inset-0"
+                >
+                  {productImages[showcaseModule.id] ? (
+                    <img
+                      src={productImages[showcaseModule.id] || "/placeholder.svg"}
+                      alt={`${showcaseModule.label}产品大屏示意（含核心能力说明）`}
+                      className="size-full object-contain"
+                      loading="lazy"
+                      draggable={false}
+                    />
+                  ) : (
+                    <div className="flex size-full items-center justify-center p-4">
+                      <ProductScene id={showcaseModule.id} palette={showcaseModule.palette} />
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   )
 }

@@ -725,19 +725,3 @@ news.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 export function getNewsBySlug(slug: string) {
   return news.find((n) => n.slug === slug)
 }
-
-/** 分类 Tab 选项（含“全部”） */
-export const newsCategories: ("全部" | NewsCategory)[] = [
-  "全部",
-  "公司新闻",
-  "案例分享",
-  "技术创新",
-]
-
-/** 顶部数据条统计 */
-export const newsStats = [
-  { value: "20+", label: "案例项目" },
-  { value: "50+", label: "服务客户" },
-  { value: "30+", label: "覆盖城市" },
-  { value: "10年+", label: "行业经验" },
-]

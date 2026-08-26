@@ -2,10 +2,12 @@ import Link from "next/link"
 import { ArrowUpRight, CalendarDays, MapPin } from "lucide-react"
 import type { NewsItem } from "@/lib/news"
 
-export function NewsCard({ item }: { item: NewsItem }) {
+export function NewsCard({ item, fromPage }: { item: NewsItem; fromPage?: number }) {
+  const href = fromPage && fromPage > 1 ? `/news/${item.slug}?fromPage=${fromPage}` : `/news/${item.slug}`
+
   return (
     <Link
-      href={`/news/${item.slug}`}
+      href={href}
       className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
     >
       <div className="relative aspect-[16/9] overflow-hidden">
@@ -16,9 +18,6 @@ export function NewsCard({ item }: { item: NewsItem }) {
           className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-        <span className="absolute left-3 top-3 rounded-full bg-primary/90 px-3 py-1 text-xs font-medium text-primary-foreground backdrop-blur-sm">
-          {item.tag}
-        </span>
         {item.location && (
           <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
             <MapPin className="size-3" />

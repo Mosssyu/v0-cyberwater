@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { ArrowRight, MapPin } from "lucide-react"
 import {
@@ -8,7 +8,6 @@ import {
   caseCategories,
   categoryColor,
   solutionIntro,
-  otherCases,
   type CaseCategory,
 } from "@/lib/cases"
 import { CasesMap } from "@/components/cases-map"
@@ -17,6 +16,16 @@ type Filter = "all" | CaseCategory
 
 export function CasesBrowser() {
   const [filter, setFilter] = useState<Filter>("all")
+  const [highlightName, setHighlightName] = useState<string | null>(null)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const category = params.get("category")
+    if (category && caseCategories.includes(category as CaseCategory)) {
+      setFilter(category as CaseCategory)
+    }
+    setHighlightName(params.get("highlight"))
+  }, [])
 
   const chips: { key: Filter; label: string }[] = [
     { key: "all", label: "经典案例集" },
@@ -36,7 +45,10 @@ export function CasesBrowser() {
             <button
               key={chip.key}
               type="button"
-              onClick={() => setFilter(chip.key)}
+              onClick={() => {
+                setFilter(chip.key)
+                setHighlightName(null)
+              }}
               className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
                 isActive
                   ? "border-primary bg-primary text-primary-foreground shadow-[0_0_20px_-4px_oklch(0.63_0.17_250/0.85)]"
@@ -64,7 +76,9 @@ export function CasesBrowser() {
       )}
 
       {/* 地图 + 案例信息联动模块 */}
-      <CasesMap activeCategory={filter} />
+      <div id="project-map" className="scroll-mt-24">
+        <CasesMap activeCategory={filter} highlightName={highlightName} />
+      </div>
 
       {/* 案例卡片网格（与筛选联动） */}
       <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -145,36 +159,6 @@ export function CasesBrowser() {
         ))}
       </div>
 
-      {/* 其它案例（文字清单） */}
-      <div className="mt-12 space-y-8">
-        {(filter === "all" ? caseCategories : [filter]).map((cat) => {
-          const others = otherCases[cat]
-          if (!others || others.length === 0) return null
-          return (
-            <div key={cat}>
-              <div className="flex items-center gap-2.5">
-                <span
-                  className="size-2.5 rounded-full"
-                  style={{ backgroundColor: categoryColor[cat], boxShadow: `0 0 8px ${categoryColor[cat]}` }}
-                  aria-hidden="true"
-                />
-                <h3 className="text-sm font-semibold text-foreground">{cat} · 其它参考案例</h3>
-                <span className="h-px flex-1 bg-border" />
-              </div>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {others.map((name) => (
-                  <span
-                    key={name}
-                    className="rounded-full border border-border bg-card px-3.5 py-1.5 text-sm text-muted-foreground"
-                  >
-                    {name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )
-        })}
-      </div>
     </div>
   )
 }

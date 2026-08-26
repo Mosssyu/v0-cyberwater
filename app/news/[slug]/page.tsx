@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import {
@@ -15,6 +16,7 @@ import {
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { ArticleToc, type TocEntry } from "@/components/news/article-toc"
+import { NewsBackLink } from "@/components/news/news-back-link"
 import { NewsCard } from "@/components/news/news-card"
 import { news, getNewsBySlug } from "@/lib/news"
 
@@ -73,6 +75,20 @@ export default async function NewsDetailPage({
         <section className="relative overflow-hidden bg-background">
           <div className="absolute inset-0 bg-grid bg-grid-fade opacity-40" aria-hidden />
           <div className="relative mx-auto max-w-7xl px-6 pt-8">
+            <Suspense
+              fallback={(
+                <Link
+                  href="/news"
+                  className="mb-5 inline-flex items-center gap-1.5 text-sm text-blue-100/75 transition-colors hover:text-white"
+                >
+                  <ArrowLeft className="size-4" />
+                  返回新闻动态
+                </Link>
+              )}
+            >
+              <NewsBackLink />
+            </Suspense>
+
             {/* 面包屑 */}
             <nav className="flex flex-wrap items-center gap-1.5 text-sm text-blue-100/70" aria-label="面包屑">
               <Link href="/" className="transition-colors hover:text-white">
@@ -83,8 +99,6 @@ export default async function NewsDetailPage({
                 新闻动态
               </Link>
               <ChevronRight className="size-3.5 opacity-60" />
-              <span className="text-cyan-200/90">{item.tag}</span>
-              <ChevronRight className="size-3.5 opacity-60" />
               <span className="text-white/90">正文</span>
             </nav>
 
@@ -93,9 +107,6 @@ export default async function NewsDetailPage({
               {/* 左侧文字 */}
               <div className="flex flex-col justify-center">
                 <div className="flex flex-wrap items-center gap-3 text-xs">
-                  <span className="rounded-full bg-primary/90 px-3 py-1 font-medium text-primary-foreground">
-                    {item.tag}
-                  </span>
                   <span className="inline-flex items-center gap-1.5 text-blue-100/85">
                     <CalendarDays className="size-3.5" />
                     {item.date}
@@ -292,8 +303,7 @@ export default async function NewsDetailPage({
                               className="size-16 shrink-0 rounded-lg object-cover"
                             />
                             <div className="min-w-0">
-                              <span className="text-[11px] font-medium text-accent">{r.tag}</span>
-                              <p className="mt-0.5 line-clamp-2 text-sm font-medium leading-snug text-foreground transition-colors group-hover:text-primary">
+                              <p className="line-clamp-2 text-sm font-medium leading-snug text-foreground transition-colors group-hover:text-primary">
                                 {r.title}
                               </p>
                             </div>

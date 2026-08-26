@@ -1,4 +1,5 @@
 import { CompanyGene } from "@/components/company-gene"
+import { CompanyStats } from "@/components/company-stats"
 import { GrowthTimeline } from "@/components/growth-timeline"
 import { DataFlowStream } from "@/components/data-flow-stream"
 
@@ -10,9 +11,27 @@ export function Hero() {
       {/* 科技网格 */}
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div className="relative z-[1] mx-auto max-w-7xl px-6 pt-20 pb-16 lg:pt-24">
+      <div className="relative z-[1] mx-auto max-w-7xl px-6 pt-6 pb-16 lg:pt-8">
         {/* 数据粒子流光带（约束在 Hero 文案区域下方，不触及时间轴） */}
         <DataFlowStream />
+
+        <div className="relative z-10 mb-12 flex items-center justify-center gap-4 sm:gap-6">
+          <span
+            className="h-px w-10 bg-gradient-to-r from-transparent to-accent/60 sm:w-20"
+            aria-hidden="true"
+          />
+          <p
+            className="whitespace-nowrap text-lg font-medium tracking-[0.24em] text-accent sm:text-xl"
+            aria-label="执着、共生、求变"
+          >
+            执着 · 共生 · 求变
+          </p>
+          <span
+            className="h-px w-10 bg-gradient-to-l from-transparent to-accent/60 sm:w-20"
+            aria-hidden="true"
+          />
+        </div>
+
         <div className="relative z-10 grid items-center gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-10">
           {/* 左侧：价值主张 */}
           <div className="max-w-xl">
@@ -24,7 +43,7 @@ export function Hero() {
 
             {/* 主标题 */}
             <h1 className="mt-6 text-balance text-3xl font-bold leading-[1.16] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              做最懂水务运营管理的
+              做更懂水务运营管理的
               <br />
               <span className="text-gradient">数字化产品公司</span>
             </h1>
@@ -33,6 +52,11 @@ export function Hero() {
             <p className="mt-6 max-w-xl text-pretty leading-relaxed text-muted-foreground">
               北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。公司依托国内头部水务集团的运营实践场景，持续沉淀水务运营经验、管理标准、业务流程和技术能力，打造面向水务行业的标准化、产品化、可配置的软件服务能力。
             </p>
+
+            <CompanyStats
+              compact
+              className="mt-8 grid grid-cols-2 gap-2.5 sm:grid-cols-4"
+            />
           </div>
 
           {/* 右侧：公司基因 / 水务运营数字化能力沉淀 */}
@@ -42,7 +66,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* 下方：水务数字化能力演进轨迹 */}
+      {/* 下方：发展历程 */}
       <div className="relative z-[1] mx-auto max-w-7xl px-6 pb-20">
         <GrowthTimeline />
       </div>

@@ -1,4 +1,5 @@
 import { Mail, MapPin } from "lucide-react"
+import { PartnerMarquee } from "@/components/partner-marquee"
 
 const columns = [
   {
@@ -33,18 +34,18 @@ const qrCodes = [
 ]
 
 const branches = [
-  "深圳 · 南山区沙河西路南山智谷产业园",
-  "成都 · 天府新区同森元气港",
-  "西安 · 高新区清华科技园",
-  "上海 · 普陀区华宏商务中心",
+  "深圳",
+  "成都",
+  "西安",
+  "上海",
 ]
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-[oklch(0.12_0.012_252)] text-white">
+    <footer id="contact" className="scroll-mt-16 border-t border-border bg-[oklch(0.12_0.012_252)] text-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-12 lg:grid-cols-6">
-          <div className="lg:col-span-2">
+        <div className="grid gap-12 lg:grid-cols-2 xl:grid-cols-[1.55fr_1.15fr_1.2fr_0.7fr_1fr] xl:gap-8">
+          <div>
             <div className="flex flex-col items-start gap-2 text-left">
               <img
                 src="/cyberwater-logo-dark.png"
@@ -58,14 +59,14 @@ export function SiteFooter() {
             <ul className="mt-6 space-y-3 text-sm text-blue-100/70">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-cyan-300" />
-                北京市朝阳区新源里16号琨莎大厦2座901室
+                <span>北京市朝阳区新源里16号琨莎大厦2座901室</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="size-4 text-cyan-300" />
                 service@cyberwater.cn
               </li>
             </ul>
-            <div className="mt-5 flex flex-col items-start gap-2">
+            <div className="mt-5 flex flex-wrap items-center gap-2">
               {branches.map((b) => (
                 <span
                   key={b}
@@ -85,7 +86,7 @@ export function SiteFooter() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-blue-100/60 transition-colors hover:text-cyan-300"
+                      className={`text-sm text-blue-100/60 transition-colors hover:text-cyan-300 ${col.title === "核心产品" ? "whitespace-nowrap" : ""}`}
                     >
                       {link.label}
                     </a>
@@ -116,6 +117,11 @@ export function SiteFooter() {
               扫码添加，获取产品资料与解决方案咨询
             </p>
           </div>
+        </div>
+
+        <div className="mt-12 grid items-center gap-4 border-y border-white/10 py-5 sm:grid-cols-[auto_minmax(0,1fr)]">
+          <span className="shrink-0 text-sm font-semibold text-white">合作伙伴</span>
+          <PartnerMarquee />
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-blue-100/50 sm:flex-row">
