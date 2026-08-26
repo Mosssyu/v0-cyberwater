@@ -6,8 +6,17 @@ __v0_jsx-dev-runtime.ts
 .v0-trash/
 .vercel/
 
-# Environment variables
+# 环境变量
 .env*.local
+
+# 本地工具/IDE
+.idea/
+.playwright-mcp/
+pnpm-workspace.yaml
+*.iml
+
+# Next.js 自动生成（勿入库）
+next-env.d.ts
 
 # Common ignores
 node_modules
