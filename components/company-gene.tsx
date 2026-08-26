@@ -123,9 +123,9 @@ function Core() {
         <div className="relative flex flex-col items-center">
           <Droplets className="size-5 text-accent" />
           <span className="core-flicker-anim mt-1 text-center text-sm font-bold leading-tight text-foreground">
-            公司运营
+            水务运营
             <br />
-            基因
+            管理基因
           </span>
         </div>
       </div>

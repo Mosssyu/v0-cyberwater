@@ -18,14 +18,6 @@ const columns = [
       { label: "三维数字孪生", href: "/#cases" },
     ],
   },
-  {
-    title: "关于我们",
-    links: [
-      { label: "公司介绍", href: "/contact#about" },
-      { label: "联系我们", href: "/contact" },
-      { label: "新闻动态", href: "/news" },
-    ],
-  },
 ]
 
 const qrCodes = [
@@ -44,7 +36,7 @@ export function SiteFooter() {
   return (
     <footer id="contact" className="scroll-mt-16 border-t border-border bg-[oklch(0.12_0.012_252)] text-white">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid gap-12 lg:grid-cols-2 xl:grid-cols-[1.55fr_1.15fr_1.2fr_0.7fr_1fr] xl:gap-8">
+        <div className="grid gap-12 lg:grid-cols-2 xl:grid-cols-[1.65fr_1.15fr_1.35fr_1fr] xl:gap-10">
           <div>
             <div className="flex flex-col items-start gap-2 text-left">
               <img

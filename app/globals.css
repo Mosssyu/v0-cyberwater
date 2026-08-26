@@ -614,7 +614,7 @@
 }
 .cw-rail-flow {
   background-size: 200% 100%;
-  animation: cw-rail-flow 6s linear infinite;
+  animation: cw-rail-flow 10s linear infinite;
 }
 /* 光点沿轨迹穿梭 */
 @keyframes cw-spark-run {
@@ -636,6 +636,31 @@
 .cw-spark-run {
   animation: cw-spark-run var(--spark-dur, 7s) linear infinite;
   animation-delay: var(--spark-delay, 0s);
+}
+/* 核心里程碑卡：蓝紫光束沿上下边框错峰巡游 */
+@keyframes cw-core-border-beam {
+  0% {
+    left: -46%;
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.35;
+  }
+  42%,
+  76% {
+    opacity: 1;
+  }
+  100% {
+    left: 106%;
+    opacity: 0;
+  }
+}
+.cw-core-border-beam {
+  box-shadow: 0 0 7px 2px rgb(128 145 255 / 0.7);
+  animation: cw-core-border-beam 6.8s ease-in-out infinite;
+}
+.cw-core-border-beam-reverse {
+  animation-direction: reverse;
 }
 /* 重点节点能量呼吸 */
 @keyframes cw-node-breathe {
@@ -846,6 +871,7 @@
   .cw-disc-ripple,
   .cw-rail-flow,
   .cw-spark-run,
+  .cw-core-border-beam,
   .cw-node-breathe,
   .cw-beam,
   .cw-stem-flow,

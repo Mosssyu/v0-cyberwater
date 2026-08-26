@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import {
-  Activity,
-  ChevronLeft,
   Building2,
-  ShieldCheck,
   Users,
   UserRound,
   Box,
@@ -22,7 +19,8 @@ import { usePauseOffscreen } from "@/hooks/use-pause-offscreen"
        ├─ BackgroundGrid   深蓝黑背景 + 科技网格 + 冷光
        ├─ EnergyTrackSvg   SVG 波形能量轨迹（base / glow / animated dash + 流光粒子）
        ├─ TimelineNode     年份标签 / 大小节点 / 能量环 / 光柱 / 2026 水滴
-       └─ MilestoneCard    下方里程碑卡片
+       ├─ FloatingMilestoneCard 轨迹上方的轻量里程碑卡片
+       └─ MilestoneCard    移动端里程碑卡片
    ========================================================================= */
 
 type Milestone = {
@@ -59,19 +57,13 @@ const coreMilestones: Milestone[] = [
   },
 ]
 
-/* 底部次要里程碑：不在轨迹上，横向虚线分隔下方展示 */
+/* 次要里程碑：桌面端悬浮在轨迹上方，移动端按时间顺序展示 */
 const subMilestones: Milestone[] = [
   {
     year: "2015",
     title: "公司成立",
     desc: "中信国安+中国建筑标准院团队，以数字技术推动水务运营管理升级，开启云建标创新发展之路。",
     Icon: Building2,
-  },
-  {
-    year: "2016",
-    title: "双高认证",
-    desc: "获得国家高新技术企业、中关村高新技术企业双高认证，技术研发能力获得认可。",
-    Icon: ShieldCheck,
   },
   {
     year: "2020",
@@ -629,6 +621,30 @@ function MilestoneCard({
 }
 
 /* =========================================================================
+   FloatingMilestoneCard —— 桌面端辅助里程碑（轻边框、弱光效、紧凑层级）
+   ========================================================================= */
+function FloatingMilestoneCard({ milestone }: { milestone: Milestone }) {
+  return (
+    <article className="relative h-[100px] w-[92%] rounded-xl border border-accent/20 bg-[oklch(0.115_0.02_247)]/55 px-4 py-3 text-left backdrop-blur-md">
+      <span
+        className="pointer-events-none absolute inset-x-8 bottom-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent"
+        aria-hidden="true"
+      />
+      <div className="flex items-center gap-2.5">
+        <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-md border border-accent/25 bg-accent/[0.05] text-accent/70">
+          <milestone.Icon className="size-3.5" />
+        </span>
+        <span className="rounded-md border border-accent/35 bg-accent/[0.06] px-2 py-0.5 font-mono text-[11px] font-bold tabular-nums text-accent/85">
+          {milestone.year}
+        </span>
+        <h4 className="truncate text-sm font-semibold text-foreground/90">{milestone.title}</h4>
+      </div>
+      <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-foreground/55">{milestone.desc}</p>
+    </article>
+  )
+}
+
+/* =========================================================================
    FeatureCard —— 顶部核心大卡（图标 + 年份 + 标题 + 描述）
    ========================================================================= */
 function FeatureCard({ milestone, active, onSelect }: { milestone: Milestone; active: boolean; onSelect: () => void }) {
@@ -700,14 +716,303 @@ function RowDivider() {
           filter: "drop-shadow(0 0 3px rgb(0 229 255 / 0.45))",
         }}
       />
-      {/* 四个分隔节点，落在下排四列卡片中心 */}
-      {[12.5, 37.5, 62.5, 87.5].map((leftPct, i) => (
+      {/* 三个分隔节点，落在下排三列卡片中心 */}
+      {[16.667, 50, 83.333].map((leftPct, i) => (
         <span
           key={i}
           className="absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/70 bg-[oklch(0.16_0.03_245)]"
           style={{ left: `${leftPct}%`, boxShadow: "0 0 8px 1px rgb(0 229 255 / 0.55)" }}
         />
       ))}
+    </div>
+  )
+}
+
+/* 桌面端辅助里程碑到能量轨迹的垂直连接线：落点偏左，避开核心节点和 2026 水滴 */
+function UpperMilestoneConnectors() {
+  return (
+    <>
+      <svg
+        viewBox={`0 0 ${BAND_W} ${BAND_H}`}
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 size-full overflow-visible"
+        aria-hidden="true"
+      >
+        {NODE_X.map((xPct, index) => {
+          const startX = (xPct / 100) * BAND_W
+          const lineX = startX - 78
+          const endY = NODE_Y[index] + 1
+          const d = `M ${lineX} -48 L ${lineX} ${endY}`
+
+          return (
+            <g key={xPct}>
+              <path
+                d={d}
+                fill="none"
+                stroke="rgb(127 233 255 / 0.38)"
+                strokeWidth="1"
+                strokeDasharray="4 5"
+                strokeLinecap="round"
+                style={{ filter: "drop-shadow(0 0 3px rgb(0 229 255 / 0.45))" }}
+              />
+              <circle cx={lineX} cy={endY} r="2.2" fill="rgb(127 233 255 / 0.8)" />
+            </g>
+          )
+        })}
+      </svg>
+
+      {NODE_X.map((xPct, index) => {
+        const lineX = (xPct / 100) * BAND_W - 78
+        const labelY = NODE_Y[index] + 9
+
+        return (
+          <span
+            key={subMilestones[index].year}
+            className="pointer-events-none absolute -translate-x-1/2 whitespace-nowrap font-mono text-xl font-bold tabular-nums leading-none text-accent/85"
+            style={{
+              left: `${(lineX / BAND_W) * 100}%`,
+              top: labelY,
+              textShadow: "0 0 8px rgb(0 229 255 / 0.55)",
+            }}
+            aria-hidden="true"
+          >
+            {subMilestones[index].year}
+          </span>
+        )
+      })}
+    </>
+  )
+}
+
+/* =========================================================================
+   AlternatingTimelineDesktop —— 六节点交错时间轴（上三卡 / 下三卡 / 直线光轨）
+   ========================================================================= */
+const alternatingTimelineItems = [
+  { milestone: subMilestones[0], side: "top", x: 9, column: 0 },
+  { milestone: coreMilestones[0], side: "bottom", x: 25, column: 0, coreIndex: 0 },
+  { milestone: subMilestones[1], side: "top", x: 42, column: 1 },
+  { milestone: coreMilestones[1], side: "bottom", x: 58, column: 1, coreIndex: 1 },
+  { milestone: subMilestones[2], side: "top", x: 75, column: 2 },
+  { milestone: coreMilestones[2], side: "bottom", x: 91, column: 2, coreIndex: 2 },
+] as const
+
+function TechMilestoneCard({
+  milestone,
+  active = false,
+  core = false,
+  beamDelay = 0,
+}: {
+  milestone: Milestone
+  active?: boolean
+  core?: boolean
+  beamDelay?: number
+}) {
+  return (
+    <article
+      className={[
+        "relative h-[160px] overflow-hidden border bg-[oklch(0.115_0.025_247)]/78 px-5 py-4 backdrop-blur-md transition-all duration-500",
+        core ? "border-[#7c8cff]/70" : active ? "border-accent/75" : "border-accent/35",
+      ].join(" ")}
+      style={{
+        clipPath: "polygon(0 12px, 12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px))",
+        background: core
+          ? "linear-gradient(145deg, rgb(10 21 43 / 0.96), rgb(24 17 52 / 0.9))"
+          : "oklch(0.115 0.025 247 / 0.78)",
+        boxShadow: core
+          ? active
+            ? "0 0 38px -7px rgb(112 92 255 / 0.72), inset 0 0 28px -15px rgb(96 165 250 / 0.72)"
+            : "0 0 28px -10px rgb(88 129 255 / 0.58), inset 0 0 22px -17px rgb(139 92 246 / 0.55)"
+          : active
+            ? "0 0 32px -8px rgb(0 229 255 / 0.65), inset 0 0 24px -18px rgb(127 233 255 / 0.7)"
+            : "0 0 22px -12px rgb(0 229 255 / 0.45), inset 0 0 18px -18px rgb(127 233 255 / 0.5)",
+      }}
+    >
+      {core ? (
+        <>
+          <span
+            className="cw-core-border-beam pointer-events-none absolute top-0 h-[2px] w-[42%] bg-gradient-to-r from-transparent via-[#d7ddff] to-transparent"
+            style={{ animationDelay: `${-beamDelay}s` }}
+            aria-hidden="true"
+          />
+          <span
+            className="cw-core-border-beam cw-core-border-beam-reverse pointer-events-none absolute bottom-0 h-[2px] w-[42%] bg-gradient-to-r from-transparent via-[#9b8cff] to-transparent"
+            style={{ animationDelay: `${-3.4 - beamDelay}s` }}
+            aria-hidden="true"
+          />
+          <span className="pointer-events-none absolute inset-[1px] border border-[#718dff]/15" aria-hidden="true" />
+        </>
+      ) : (
+        <span className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/80 to-transparent" aria-hidden="true" />
+      )}
+      <span
+        className={[
+          "pointer-events-none absolute bottom-0 right-0 size-8 border-b border-r",
+          core ? "border-[#9a8cff]/80" : "border-accent/60",
+        ].join(" ")}
+        aria-hidden="true"
+      />
+
+      <div className="flex items-center gap-3">
+        <span
+          className={[
+            "inline-flex px-3 py-1 font-mono text-lg font-bold tabular-nums",
+            core ? "text-[#a9b9ff]" : "text-accent",
+          ].join(" ")}
+          style={{
+            clipPath: "polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px)",
+            border: core ? "1px solid rgb(124 140 255 / 0.75)" : "1px solid rgb(0 229 255 / 0.55)",
+            background: core ? "rgb(105 89 255 / 0.13)" : "rgb(0 229 255 / 0.08)",
+            textShadow: core ? "0 0 10px rgb(139 92 246 / 0.8)" : "0 0 8px rgb(0 229 255 / 0.5)",
+          }}
+        >
+          {milestone.year}
+        </span>
+        <h3 className="min-w-0 truncate text-lg font-bold text-foreground">{milestone.title}</h3>
+      </div>
+
+      <div className="mt-4 flex items-center gap-4">
+        <span
+          className={[
+            "relative flex size-16 shrink-0 items-center justify-center rounded-full border",
+            core ? "border-[#7c8cff]/65 bg-[#6454ff]/10 text-[#9cb5ff]" : "border-accent/45 bg-accent/[0.06] text-accent",
+          ].join(" ")}
+          style={{
+            boxShadow: core
+              ? "0 0 22px -5px rgb(104 95 255 / 0.82), inset 0 0 16px -7px rgb(96 165 250 / 0.72)"
+              : "0 0 18px -6px rgb(0 229 255 / 0.75), inset 0 0 14px -8px rgb(127 233 255 / 0.7)",
+          }}
+          aria-hidden="true"
+        >
+          <milestone.Icon className="size-8" strokeWidth={1.45} />
+          <span
+            className={[
+              "absolute -bottom-1 left-1/2 h-2 w-16 -translate-x-1/2 rounded-[50%] border",
+              core ? "border-[#8d86ff]/65" : "border-accent/45",
+            ].join(" ")}
+          />
+        </span>
+        <p className="line-clamp-3 text-[13px] leading-relaxed text-foreground/68">{milestone.desc}</p>
+      </div>
+    </article>
+  )
+}
+
+function AlternatingTimelineDesktop({ active }: { active: number }) {
+  const railY = 278
+  const topCardBottom = 160
+  const bottomCardTop = 352
+
+  return (
+    <div className="relative mt-9 h-[535px] overflow-hidden">
+      {/* 轨迹下方的透视数据地面 */}
+      <span
+        className="pointer-events-none absolute inset-x-0 top-[278px] h-[250px] opacity-30"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgb(0 229 255 / 0.08) 1px, transparent 1px), linear-gradient(90deg, rgb(0 229 255 / 0.07) 1px, transparent 1px)",
+          backgroundSize: "34px 24px",
+          maskImage: "linear-gradient(to bottom, rgb(0 0 0 / 0.9), transparent 88%)",
+          WebkitMaskImage: "linear-gradient(to bottom, rgb(0 0 0 / 0.9), transparent 88%)",
+          transform: "perspective(420px) rotateX(58deg)",
+          transformOrigin: "top center",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 上排辅助里程碑卡 */}
+      <ol className="absolute inset-x-0 top-0 grid grid-cols-3 gap-8 px-2">
+        {subMilestones.map((milestone) => (
+          <li key={milestone.year}>
+            <TechMilestoneCard milestone={milestone} />
+          </li>
+        ))}
+      </ol>
+
+      {/* 下排核心里程碑卡 */}
+      <ol className="absolute inset-x-0 top-[352px] grid grid-cols-3 gap-8 px-2">
+        {coreMilestones.map((milestone, index) => (
+          <li key={milestone.year}>
+            <TechMilestoneCard milestone={milestone} active={active === index} core beamDelay={index * 1.25} />
+          </li>
+        ))}
+      </ol>
+
+      {/* 主能量轨迹 */}
+      <span
+        className="cw-rail-flow pointer-events-none absolute inset-x-0 top-[276px] h-1 rounded-full"
+        style={{
+          backgroundImage: "linear-gradient(90deg, rgb(0 145 234 / 0.5), #00e5ff 35%, #e8fdff 50%, #00e5ff 65%, rgb(47 140 255 / 0.55))",
+          boxShadow: "0 0 8px 2px rgb(0 229 255 / 0.75), 0 0 26px 5px rgb(47 140 255 / 0.35)",
+        }}
+        aria-hidden="true"
+      />
+      <span className="pointer-events-none absolute inset-x-0 top-[268px] h-5 bg-accent/10 blur-xl" aria-hidden="true" />
+
+      {/* 沿主轴舒缓掠过的光束粒子 */}
+      {[0, 1, 2, 3, 4].map((index) => (
+        <span
+          key={index}
+          className="cw-spark-run pointer-events-none absolute top-[274px] h-[3px] rounded-full bg-gradient-to-r from-transparent via-accent to-white"
+          style={
+            {
+              width: `${52 + index * 18}px`,
+              boxShadow: "0 0 8px 2px rgb(127 233 255 / 0.8)",
+              ["--spark-dur" as string]: `${6.8 + index * 1}s`,
+              ["--spark-delay" as string]: `${-index * 1.85}s`,
+            } as React.CSSProperties
+          }
+          aria-hidden="true"
+        />
+      ))}
+
+      {/* 六个年份节点、年份标签与上下直连线 */}
+      {alternatingTimelineItems.map((item) => {
+        const isTop = item.side === "top"
+        const connectorTop = isTop ? topCardBottom : railY
+        const connectorHeight = isTop ? railY - topCardBottom : bottomCardTop - railY
+
+        return (
+          <div key={item.milestone.year}>
+            <span
+              className="cw-stem-flow pointer-events-none absolute w-px -translate-x-1/2"
+              style={{
+                left: `${item.x}%`,
+                top: connectorTop,
+                height: connectorHeight,
+                backgroundImage: "linear-gradient(to bottom, rgb(127 233 255 / 0.85) 0 48%, transparent 48% 100%)",
+              }}
+              aria-hidden="true"
+            />
+            <span
+              className="pointer-events-none absolute -translate-x-1/2 whitespace-nowrap font-mono text-xl font-bold tabular-nums leading-none text-accent"
+              style={{
+                left: `${item.x}%`,
+                top: isTop ? railY - 39 : railY + 24,
+                textShadow: "0 0 9px rgb(0 229 255 / 0.65)",
+              }}
+              aria-hidden="true"
+            >
+              {item.milestone.year}
+            </span>
+            <span
+              className="cw-node-breathe pointer-events-none absolute size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent bg-[oklch(0.16_0.08_220)]"
+              style={{ left: `${item.x}%`, top: railY, boxShadow: "0 0 16px 3px rgb(0 229 255 / 0.72)" }}
+              aria-hidden="true"
+            >
+              <span className="absolute left-1/2 top-1/2 size-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/35" />
+              <span className="absolute left-1/2 top-1/2 size-14 -translate-x-1/2 -translate-y-1/2 rounded-full border border-accent/15" />
+              <span className="absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
+            </span>
+          </div>
+        )
+      })}
+
+      {/* 时间轴终点水滴与水波：与 2026 节点对齐，避免右侧裁切 */}
+      <span className="pointer-events-none absolute top-[278px] w-px" style={{ left: "91%" }} aria-hidden="true">
+        <WaterDrop top={-82} />
+        <span className="absolute left-1/2 top-0 h-8 w-28 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-accent/55" />
+        <span className="absolute left-1/2 top-0 h-14 w-44 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border border-accent/20" />
+      </span>
     </div>
   )
 }
@@ -752,62 +1057,19 @@ function EvolutionSection() {
     >
       <BackgroundGrid />
 
-      {/* 标题区：六边形发光徽章 + 标题 + EVOLUTION + 箭头装饰 */}
-      <div className="relative flex items-center gap-3.5 px-1">
-        <span className="relative flex size-11 shrink-0 items-center justify-center" aria-hidden="true">
-          <span
-            className="cw-node-breathe absolute inset-0"
-            style={{
-              clipPath: "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
-              border: "1.5px solid rgb(0 229 255 / 0.6)",
-              background: "rgb(0 229 255 / 0.1)",
-            }}
-          />
-          <Activity className="relative size-5 text-accent" />
+      {/* 与“核心产品”统一的居中标题规范 */}
+      <div className="relative mx-auto max-w-3xl text-center">
+        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
+          Evolution
         </span>
-        <div className="min-w-0">
-          <div className="flex items-center gap-3">
-            <h2 className="text-balance text-xl font-bold tracking-tight text-foreground sm:text-2xl">发展历程</h2>
-            <span className="hidden items-center gap-0.5 sm:flex" aria-hidden="true">
-              <ChevronLeft className="size-4 text-accent/80" />
-              <ChevronLeft className="size-3.5 text-accent/55" />
-              <ChevronLeft className="size-3 text-accent/35" />
-            </span>
-          </div>
-          <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-[0.35em] text-accent/55">Evolution</span>
-        </div>
+        <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          发展历程
+        </h2>
       </div>
 
-      {/* ===== 桌面端：能量轨迹 + 4 核��节点 → 4 核心大卡 → 横向虚线 → 4 次��卡片 ===== */}
+      {/* ===== 桌面端：六节点交错时间轴 ===== */}
       <div className="hidden lg:block">
-        {/* ���量轨迹 + 四个核心节点 */}
-        <div className="relative mt-12 w-full" style={{ height: BAND_H }}>
-          <EnergyTrackSvg />
-          {coreMilestones.map((m, i) => (
-            <TimelineNode key={m.year} m={m} index={i} active={i === active} onSelect={() => setActive(i)} />
-          ))}
-        </div>
-
-        {/* 顶部核心大卡（2018 / 2022 / 2026） */}
-        <ol className="mt-8 grid grid-cols-3 gap-5">
-          {coreMilestones.map((m, i) => (
-            <li key={m.year}>
-              <FeatureCard milestone={m} active={i === active} onSelect={() => setActive(i)} />
-            </li>
-          ))}
-        </ol>
-
-        {/* 横向虚线分隔（下排不与上排竖直连接） */}
-        <RowDivider />
-
-        {/* 底部次要里程碑卡片（2015 / 2016 / 2020 / 2025） */}
-        <ol className="grid grid-cols-4 gap-5">
-          {subMilestones.map((m) => (
-            <li key={m.year}>
-              <MilestoneCard milestone={m} active={false} onSelect={() => {}} />
-            </li>
-          ))}
-        </ol>
+        <AlternatingTimelineDesktop active={active} />
       </div>
 
       {/* ===== 移动端：核心大卡 → 横向虚线 → 次要卡片 ===== */}
