@@ -2,159 +2,103 @@
 
 import { useEffect, useRef } from "react"
 
-type Drop = {
-  x: number
-  y: number
-  radius: number
-  speed: number
-  drift: number
-  phase: number
-}
+type Photon = { x: number; depth: number; phase: number; size: number; pink: boolean }
+type Ripple = { x: number; y: number; born: number }
+const TAU = Math.PI * 2
 
 export function LiquidWaterCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
-    const context = canvas.getContext("2d")
-    if (!context) return
+    const ctx = canvas?.getContext("2d")
+    if (!canvas || !ctx) return
+    let width = 0, height = 0, raf = 0, nextDrop = 1200, falling = 0, visible = true
+    const photons: Photon[] = [], ripples: Ripple[] = []
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)")
+    const surfaceY = () => height * (width < 640 ? .52 : .56)
+    const impactX = () => width * (width < 640 ? .7 : .74)
 
-    let width = 0
-    let height = 0
-    let animationFrame = 0
-    let visible = true
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const drops: Drop[] = []
-
-    const makeDrops = () => {
-      drops.length = 0
-      const count = Math.min(72, Math.max(28, Math.round(width / 22)))
-      for (let index = 0; index < count; index += 1) {
-        drops.push({
-          x: Math.random() * width,
-          y: height * (0.48 + Math.random() * 0.48),
-          radius: 0.7 + Math.random() * 3.7,
-          speed: 0.08 + Math.random() * 0.24,
-          drift: (Math.random() - 0.5) * 0.1,
-          phase: Math.random() * Math.PI * 2,
-        })
+    const seedPhotons = () => {
+      photons.length = 0
+      const step = width < 640 ? 14 : 13, rows = width < 640 ? 22 : 30
+      for (let row = 0; row < rows; row++) for (let x = -step; x < width + step; x += step) {
+        const n = Math.sin((x + 17) * 91.17 + row * 37.41) * 43758.5453
+        const r = n - Math.floor(n)
+        photons.push({ x: x + (r - .5) * step * .7, depth: row / (rows - 1), phase: r * TAU, size: .45 + r * 1.35, pink: (r + row * .07) % 1 > .79 })
       }
     }
-
     const resize = () => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.75)
-      width = canvas.clientWidth
-      height = canvas.clientHeight
-      canvas.width = Math.max(1, Math.round(width * ratio))
-      canvas.height = Math.max(1, Math.round(height * ratio))
-      context.setTransform(ratio, 0, 0, ratio, 0, 0)
-      makeDrops()
+      const dpr = Math.min(devicePixelRatio || 1, 1.6)
+      width = canvas.clientWidth; height = canvas.clientHeight
+      canvas.width = Math.max(1, width * dpr); canvas.height = Math.max(1, height * dpr)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); seedPhotons()
     }
+    const rippleOffset = (x: number, y: number, time: number) => ripples.reduce((sum, r) => {
+      const age = (time - r.born) / 1000, radius = age * Math.min(width, 920) * .24
+      const distance = Math.hypot(x - r.x, (y - r.y) * 1.75)
+      return sum + Math.sin(distance * .12 - age * 8.5) * Math.exp(-Math.pow((distance - radius) / 22, 2)) * 24
+    }, 0)
 
-    const waterY = (x: number, time: number) => {
-      const main = Math.sin(x * 0.0055 + time * 0.00055) * height * 0.045
-      const detail = Math.sin(x * 0.013 - time * 0.00032 + 1.4) * height * 0.018
-      return height * 0.54 + main + detail
+    const drawWord = (time: number) => {
+      const text = "CYBERWATER", fs = Math.min(width * (width < 640 ? .115 : .102), 150)
+      ctx.save(); ctx.font = `600 ${fs}px Arial, sans-serif`; ctx.textBaseline = "middle"; ctx.globalCompositeOperation = "lighter"
+      const total = ctx.measureText(text).width
+      let x = Math.min(width < 640 ? width * .08 : width * .39, width * .96 - total)
+      const y = surfaceY() - fs * .08
+      for (const letter of text) {
+        const w = ctx.measureText(letter).width, cx = x + w / 2, dy = rippleOffset(cx, y, time)
+        const glow = .5 + .5 * Math.sin(time * .0012 + cx * .012)
+        const g = ctx.createLinearGradient(x, y - fs, x, y + fs)
+        g.addColorStop(0, `rgba(210,248,255,${.15 + glow * .12})`); g.addColorStop(.47, `rgba(83,220,255,${.34 + glow * .18})`)
+        g.addColorStop(.68, `rgba(255,76,190,${.16 + glow * .12})`); g.addColorStop(1, "rgba(30,70,100,.05)")
+        ctx.fillStyle = g; ctx.shadowColor = glow > .65 ? "#54ddff" : "#ff4fbd"; ctx.shadowBlur = 18 + glow * 14
+        ctx.save(); ctx.translate(cx, y + dy * .62); ctx.rotate(dy * .0009); ctx.transform(1, dy * .0018, dy * .0007, 1, 0, 0); ctx.fillText(letter, -w / 2, 0); ctx.restore(); x += w
+      }
+      ctx.restore()
     }
-
+    const drawPhotons = (time: number) => {
+      const base = surfaceY(); ctx.save(); ctx.globalCompositeOperation = "lighter"
+      for (const p of photons) {
+        const depth = Math.pow(p.depth, 1.5)
+        const y = base + depth * height * .48 + Math.sin(p.x * .018 + time * .0007 + p.phase) * (4 + depth * 13) + Math.sin(p.x * .006 - time * .00042) * 10
+        const py = y + rippleOffset(p.x, y, time) * (1 - p.depth * .45), focus = 1 - Math.min(1, Math.abs(py - base) / (height * .5))
+        const pulse = .55 + Math.sin(time * .0015 + p.phase) * .25
+        ctx.fillStyle = p.pink ? `rgba(255,76,190,${.2 + pulse * focus * .45})` : `rgba(89,220,255,${.18 + pulse * focus * .55})`
+        ctx.shadowColor = p.pink ? "#ff4fbd" : "#54ddff"; ctx.shadowBlur = p.depth < .18 && p.size > 1.15 ? 4 : 0
+        ctx.beginPath(); ctx.arc(p.x, py, p.size * (1.15 - p.depth * .35), 0, TAU); ctx.fill()
+      }
+      ctx.restore()
+    }
+    const drawRings = (time: number) => {
+      ctx.save(); ctx.globalCompositeOperation = "lighter"
+      for (const r of ripples) {
+        const age = (time - r.born) / 1000, radius = age * Math.min(width, 920) * .24, alpha = Math.max(0, 1 - age / 3.1)
+        for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.ellipse(r.x, r.y, radius + i * 17, (radius + i * 17) * .2, 0, 0, TAU); ctx.strokeStyle = i % 2 ? `rgba(255,70,192,${alpha * .14})` : `rgba(84,222,255,${alpha * .34})`; ctx.lineWidth = .8 + (4 - i) * .32; ctx.shadowColor = i % 2 ? "#ff4fc1" : "#67e7ff"; ctx.shadowBlur = 10; ctx.stroke() }
+      }
+      ctx.restore()
+    }
+    const drawDrop = (time: number) => {
+      if (!falling) return
+      const progress = Math.min(1, (time - falling) / 760), x = impactX(), end = surfaceY() - 3, y = -30 + (end + 30) * progress * progress, radius = 2.5 + progress * 2.2
+      ctx.save(); ctx.globalCompositeOperation = "lighter"; const g = ctx.createRadialGradient(x - 1, y - 2, 0, x, y, radius * 5)
+      g.addColorStop(0, "#fff"); g.addColorStop(.18, "rgba(95,231,255,.9)"); g.addColorStop(.5, "rgba(80,122,255,.34)"); g.addColorStop(1, "rgba(48,190,255,0)")
+      ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(x, y, radius * 2.6, radius * 5, 0, 0, TAU); ctx.fill(); ctx.restore()
+      if (progress >= 1) { ripples.push({ x, y: end, born: time }); falling = 0; nextDrop = time + 3900 }
+    }
     const draw = (time: number) => {
-      if (!visible) return
-      context.clearRect(0, 0, width, height)
-
-      const water = new Path2D()
-      water.moveTo(0, waterY(0, time))
-      for (let x = 0; x <= width + 8; x += 8) water.lineTo(x, waterY(x, time))
-      water.lineTo(width, height)
-      water.lineTo(0, height)
-      water.closePath()
-
-      const fill = context.createLinearGradient(0, height * 0.44, 0, height)
-      fill.addColorStop(0, "rgba(226, 239, 245, 0.76)")
-      fill.addColorStop(0.05, "rgba(109, 136, 150, 0.5)")
-      fill.addColorStop(0.2, "rgba(19, 29, 36, 0.92)")
-      fill.addColorStop(1, "rgba(2, 5, 8, 0.99)")
-      context.fillStyle = fill
-      context.fill(water)
-
-      context.save()
-      context.clip(water)
-      const reflection = context.createLinearGradient(0, 0, width, height)
-      reflection.addColorStop(0, "rgba(255,255,255,0.03)")
-      reflection.addColorStop(0.43, "rgba(255,255,255,0.16)")
-      reflection.addColorStop(0.6, "rgba(255,255,255,0.02)")
-      reflection.addColorStop(1, "rgba(255,255,255,0.08)")
-      context.fillStyle = reflection
-      context.fillRect(0, height * 0.42, width, height)
-
-      for (const drop of drops) {
-        drop.y -= drop.speed
-        drop.x += drop.drift
-        if (drop.y < waterY(drop.x, time) + 12) {
-          drop.y = height * (0.78 + Math.random() * 0.2)
-          drop.x = Math.random() * width
-        }
-        const pulse = 0.75 + Math.sin(time * 0.001 + drop.phase) * 0.25
-        const orb = context.createRadialGradient(
-          drop.x - drop.radius * 0.35,
-          drop.y - drop.radius * 0.35,
-          0,
-          drop.x,
-          drop.y,
-          drop.radius * 2.4,
-        )
-        orb.addColorStop(0, `rgba(255,255,255,${0.62 * pulse})`)
-        orb.addColorStop(0.28, `rgba(160,205,225,${0.28 * pulse})`)
-        orb.addColorStop(0.62, "rgba(10,18,23,0.18)")
-        orb.addColorStop(1, "rgba(0,0,0,0)")
-        context.fillStyle = orb
-        context.beginPath()
-        context.arc(drop.x, drop.y, drop.radius * 2.4, 0, Math.PI * 2)
-        context.fill()
-      }
-      context.restore()
-
-      context.beginPath()
-      for (let x = 0; x <= width + 4; x += 4) {
-        const y = waterY(x, time)
-        if (x === 0) context.moveTo(x, y)
-        else context.lineTo(x, y)
-      }
-      context.strokeStyle = "rgba(239, 249, 252, 0.72)"
-      context.lineWidth = 1.25
-      context.shadowColor = "rgba(174, 231, 247, 0.6)"
-      context.shadowBlur = 14
-      context.stroke()
-      context.shadowBlur = 0
-
-      if (!reducedMotion.matches) animationFrame = window.requestAnimationFrame(draw)
+      if (!visible) { raf = 0; return }
+      ctx.clearRect(0, 0, width, height)
+      const glow = ctx.createRadialGradient(impactX(), surfaceY(), 0, impactX(), surfaceY(), width * .65); glow.addColorStop(0, "rgba(32,104,142,.16)"); glow.addColorStop(.45, "rgba(35,20,66,.07)"); glow.addColorStop(1, "transparent"); ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height)
+      drawWord(time); drawPhotons(time); drawRings(time); drawDrop(time)
+      while (ripples.length && time - ripples[0].born > 3300) ripples.shift()
+      if (!falling && time >= nextDrop && !reduced.matches) falling = time
+      if (!reduced.matches) raf = requestAnimationFrame(draw)
     }
-
-    const onVisibility = () => {
-      visible = document.visibilityState === "visible"
-      if (visible && !animationFrame) animationFrame = window.requestAnimationFrame(draw)
-    }
-
-    const observer = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting && document.visibilityState === "visible"
-      if (visible) {
-        window.cancelAnimationFrame(animationFrame)
-        animationFrame = window.requestAnimationFrame(draw)
-      }
-    })
-    observer.observe(canvas)
-    resize()
-    draw(0)
-    window.addEventListener("resize", resize)
-    document.addEventListener("visibilitychange", onVisibility)
-
-    return () => {
-      observer.disconnect()
-      window.cancelAnimationFrame(animationFrame)
-      window.removeEventListener("resize", resize)
-      document.removeEventListener("visibilitychange", onVisibility)
-    }
+    const resume = () => { visible = document.visibilityState === "visible"; if (visible && !raf) raf = requestAnimationFrame(draw) }
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting && document.visibilityState === "visible"; if (visible && !raf) raf = requestAnimationFrame(draw) })
+    observer.observe(canvas); resize(); draw(0); addEventListener("resize", resize); document.addEventListener("visibilitychange", resume)
+    return () => { observer.disconnect(); cancelAnimationFrame(raf); removeEventListener("resize", resize); document.removeEventListener("visibilitychange", resume) }
   }, [])
-
   return <canvas ref={canvasRef} className="absolute inset-0 size-full" aria-hidden="true" />
 }
