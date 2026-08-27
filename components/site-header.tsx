@@ -78,8 +78,8 @@ export function SiteHeader({
   }, [])
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#05080a]/88 backdrop-blur-xl">
+      <div className="flex h-16 w-full items-center justify-between px-5 sm:px-8 lg:px-14 xl:px-20">
         <a href="/#home" className="flex items-center" aria-label="云建标 CYBERWATER 首页">
           <img
             src="/cyberwater-logo-dark.png"
@@ -137,7 +137,7 @@ export function SiteHeader({
 
       {open && (
         <div className="border-t border-border/60 bg-background lg:hidden">
-          <nav className="mx-auto flex max-w-7xl flex-col px-6 py-4">
+          <nav className="flex w-full flex-col px-5 py-4 sm:px-8">
             {navItems.map((item) => (
               <a
                 key={item.label}

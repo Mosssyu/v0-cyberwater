@@ -168,6 +168,36 @@
   }
 }
 
+.liquid-hero {
+  background:
+    radial-gradient(circle at 76% 12%, rgba(229, 240, 244, 0.2), transparent 24%),
+    #020508;
+}
+
+.liquid-hero-noise {
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+.liquid-title {
+  color: transparent;
+  background: linear-gradient(110deg, #fff 8%, #8e9ca3 42%, #fff 65%, #77858c 92%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: liquid-type-shimmer 8s ease-in-out infinite;
+}
+
+.liquid-primary-action {
+  box-shadow: 0 12px 48px rgba(255, 255, 255, 0.12);
+}
+
+@keyframes liquid-type-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 /* ---------- 全局点击水波纹 ---------- */
 .ripple-layer {
   position: fixed;
@@ -246,6 +276,9 @@
     transform: none;
     filter: none;
     transition: none;
+  }
+  .liquid-title {
+    animation: none;
   }
 }
 
