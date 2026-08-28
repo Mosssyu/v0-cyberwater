@@ -13,7 +13,7 @@ export function LiquidWaterCanvas() {
     const canvas = canvasRef.current
     const ctx = canvas?.getContext("2d")
     if (!canvas || !ctx) return
-    let width = 0, height = 0, raf = 0, nextDrop = 1200, falling = 0, visible = true
+    let width = 0, height = 0, raf = 0, nextDrop = 1200, falling = 0, visible = true, lastFrame = 0
     const photons: Photon[] = [], ripples: Ripple[] = []
     const reduced = matchMedia("(prefers-reduced-motion: reduce)")
     const surfaceY = () => height * (width < 640 ? .52 : .56)
@@ -21,7 +21,7 @@ export function LiquidWaterCanvas() {
 
     const seedPhotons = () => {
       photons.length = 0
-      const step = width < 640 ? 14 : 13, rows = width < 640 ? 22 : 30
+      const step = width < 640 ? 20 : 18, rows = width < 640 ? 16 : 22
       for (let row = 0; row < rows; row++) for (let x = -step; x < width + step; x += step) {
         const n = Math.sin((x + 17) * 91.17 + row * 37.41) * 43758.5453
         const r = n - Math.floor(n)
@@ -29,16 +29,20 @@ export function LiquidWaterCanvas() {
       }
     }
     const resize = () => {
-      const dpr = Math.min(devicePixelRatio || 1, 1.6)
+      const dpr = Math.min(devicePixelRatio || 1, 1.25)
       width = canvas.clientWidth; height = canvas.clientHeight
       canvas.width = Math.max(1, width * dpr); canvas.height = Math.max(1, height * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); seedPhotons()
     }
-    const rippleOffset = (x: number, y: number, time: number) => ripples.reduce((sum, r) => {
+    const rippleOffset = (x: number, y: number, time: number) => {
+      const r = ripples[0]
+      if (!r) return 0
       const age = (time - r.born) / 1000, radius = age * Math.min(width, 920) * .24
       const distance = Math.hypot(x - r.x, (y - r.y) * 1.75)
-      return sum + Math.sin(distance * .12 - age * 8.5) * Math.exp(-Math.pow((distance - radius) / 22, 2)) * 24
-    }, 0)
+      const delta = distance - radius
+      if (Math.abs(delta) > 58) return 0
+      return Math.sin(distance * .12 - age * 8.5) * Math.exp(-(delta * delta) / 484) * 24
+    }
 
     const drawWord = (time: number) => {
       const text = "CYBERWATER", fs = Math.min(width * (width < 640 ? .115 : .102), 150)
@@ -46,28 +50,28 @@ export function LiquidWaterCanvas() {
       const total = ctx.measureText(text).width
       let x = Math.min(width < 640 ? width * .08 : width * .39, width * .96 - total)
       const y = surfaceY() - fs * .08
+      const wordGradient = ctx.createLinearGradient(0, y - fs, 0, y + fs)
+      wordGradient.addColorStop(0, "rgba(210,248,255,.22)"); wordGradient.addColorStop(.47, "rgba(83,220,255,.48)")
+      wordGradient.addColorStop(.68, "rgba(255,76,190,.24)"); wordGradient.addColorStop(1, "rgba(30,70,100,.05)")
+      ctx.fillStyle = wordGradient; ctx.shadowColor = "rgba(84,221,255,.45)"; ctx.shadowBlur = 16
       for (const letter of text) {
         const w = ctx.measureText(letter).width, cx = x + w / 2, dy = rippleOffset(cx, y, time)
-        const glow = .5 + .5 * Math.sin(time * .0012 + cx * .012)
-        const g = ctx.createLinearGradient(x, y - fs, x, y + fs)
-        g.addColorStop(0, `rgba(210,248,255,${.15 + glow * .12})`); g.addColorStop(.47, `rgba(83,220,255,${.34 + glow * .18})`)
-        g.addColorStop(.68, `rgba(255,76,190,${.16 + glow * .12})`); g.addColorStop(1, "rgba(30,70,100,.05)")
-        ctx.fillStyle = g; ctx.shadowColor = glow > .65 ? "#54ddff" : "#ff4fbd"; ctx.shadowBlur = 18 + glow * 14
         ctx.save(); ctx.translate(cx, y + dy * .62); ctx.rotate(dy * .0009); ctx.transform(1, dy * .0018, dy * .0007, 1, 0, 0); ctx.fillText(letter, -w / 2, 0); ctx.restore(); x += w
       }
       ctx.restore()
     }
     const drawPhotons = (time: number) => {
       const base = surfaceY(); ctx.save(); ctx.globalCompositeOperation = "lighter"
+      const cyan = new Path2D(), pink = new Path2D()
       for (const p of photons) {
         const depth = Math.pow(p.depth, 1.5)
         const y = base + depth * height * .48 + Math.sin(p.x * .018 + time * .0007 + p.phase) * (4 + depth * 13) + Math.sin(p.x * .006 - time * .00042) * 10
-        const py = y + rippleOffset(p.x, y, time) * (1 - p.depth * .45), focus = 1 - Math.min(1, Math.abs(py - base) / (height * .5))
-        const pulse = .55 + Math.sin(time * .0015 + p.phase) * .25
-        ctx.fillStyle = p.pink ? `rgba(255,76,190,${.2 + pulse * focus * .45})` : `rgba(89,220,255,${.18 + pulse * focus * .55})`
-        ctx.shadowColor = p.pink ? "#ff4fbd" : "#54ddff"; ctx.shadowBlur = p.depth < .18 && p.size > 1.15 ? 4 : 0
-        ctx.beginPath(); ctx.arc(p.x, py, p.size * (1.15 - p.depth * .35), 0, TAU); ctx.fill()
+        const py = y + (p.depth < .72 ? rippleOffset(p.x, y, time) * (1 - p.depth * .45) : 0)
+        const path = p.pink ? pink : cyan
+        path.moveTo(p.x + p.size, py); path.arc(p.x, py, p.size * (1.15 - p.depth * .35), 0, TAU)
       }
+      ctx.fillStyle = "rgba(89,220,255,.62)"; ctx.fill(cyan)
+      ctx.fillStyle = "rgba(255,76,190,.44)"; ctx.fill(pink)
       ctx.restore()
     }
     const drawRings = (time: number) => {
@@ -88,6 +92,8 @@ export function LiquidWaterCanvas() {
     }
     const draw = (time: number) => {
       if (!visible) { raf = 0; return }
+      if (time - lastFrame < 40) { raf = requestAnimationFrame(draw); return }
+      lastFrame = time
       ctx.clearRect(0, 0, width, height)
       const glow = ctx.createRadialGradient(impactX(), surfaceY(), 0, impactX(), surfaceY(), width * .65); glow.addColorStop(0, "rgba(32,104,142,.16)"); glow.addColorStop(.45, "rgba(35,20,66,.07)"); glow.addColorStop(1, "transparent"); ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height)
       drawWord(time); drawPhotons(time); drawRings(time); drawDrop(time)
