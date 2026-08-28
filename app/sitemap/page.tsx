@@ -75,7 +75,7 @@ export default function SitemapPage() {
         <PageHero eyebrow="Sitemap" title="网站地图" subtitle="快速了解云建标官网结构" />
         <section className="v4-section bg-[#05090c]">
           <div className="relative z-[1]">
-            <div className="mb-12 grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="mb-12 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
                 <span className="v4-kicker">Information Architecture / 信息索引</span>
                 <h2 className="mt-6 max-w-4xl text-4xl font-medium tracking-[-0.05em] text-foreground sm:text-6xl">
@@ -88,11 +88,11 @@ export default function SitemapPage() {
               </div>
             </div>
 
-            <div className="grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2 xl:grid-cols-3">
+            <div className="v4-flat-grid md:grid-cols-2 xl:grid-cols-3">
               {groups.map((group, groupIndex) => (
                 <div
                   key={group.title}
-                  className="group bg-[#071015] p-6 transition-colors hover:bg-[#0a171e] sm:p-8"
+                  className="group bg-transparent py-6 transition-colors hover:bg-white/[0.02] sm:py-8"
                 >
                   <span className="v4-index">SECTION / {String(groupIndex + 1).padStart(2, "0")}</span>
                   <h2 className="mt-4 mb-6 text-2xl font-medium tracking-[-0.03em] text-foreground">

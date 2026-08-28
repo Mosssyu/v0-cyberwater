@@ -48,7 +48,7 @@ export function News() {
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-2">
+        <div className="v4-flat-grid mt-12 lg:grid-cols-2">
           {/* 头条 */}
           <Link
             href={`/news/${featured.slug}`}

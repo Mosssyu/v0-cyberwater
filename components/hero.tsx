@@ -59,7 +59,7 @@ export function Hero() {
             <span className="v4-kicker">Our origin / 水务运营管理基因</span>
             <h2 className="mt-6 text-balance text-4xl font-medium leading-[1.02] tracking-[-0.055em] text-foreground sm:text-6xl">不是为水务增加一个系统，<br /><span className="text-white/34">而是让运营成为能力。</span></h2>
             <p className="mt-7 max-w-xl text-pretty leading-7 text-muted-foreground">北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。依托国内头部水务集团运营实践，持续沉淀管理标准、业务流程与技术能力。</p>
-            <CompanyStats compact className="v4-origin-stats mt-10 grid grid-cols-2 gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-4" />
+            <CompanyStats compact className="v4-origin-stats mt-10 grid grid-cols-2 sm:grid-cols-4" />
           </div>
           <CompanyGene />
         </div>

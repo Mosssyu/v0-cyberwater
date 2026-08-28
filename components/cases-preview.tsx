@@ -8,7 +8,7 @@ export function CasesPreview() {
   return (
     <section id="cases" className="v4-section bg-[#070b0e]">
       <div className="relative z-[1]">
-        <div className="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <span className="v4-kicker">Solutions & Cases / 解决方案</span>
             <h2 className="v4-display mt-6 max-w-6xl text-foreground">让每个项目，<br /><span className="text-white/36">成为可复制的能力。</span></h2>

@@ -8,7 +8,7 @@ export function Products() {
   return (
     <section id="products" className="v4-section bg-[#05090c]">
       <div className="relative z-[1]">
-        <div className="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div>
             <span className="v4-kicker">Core Products / 核心产品</span>
             <h2 className="v4-display mt-6 max-w-5xl text-foreground">从运营出发，<br /><span className="text-white/36">让系统持续进化。</span></h2>
@@ -24,10 +24,6 @@ export function Products() {
             aria-label="进入 CW-Cloud 水务 AI 运营平台"
             className="v4-flat-cell group relative flex min-h-[20rem] flex-col overflow-hidden p-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:p-10"
           >
-            <span
-              className="absolute inset-x-0 top-0 h-px"
-              style={{ background: "linear-gradient(90deg, transparent, oklch(0.79 0.13 200 / 0.6), transparent)" }}
-            />
             <div className="flex items-center justify-between gap-3">
               <span className="v4-rule-label text-accent/70">CW-Cloud</span>
               <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.16em] text-white/40 transition-colors group-hover:text-accent">
@@ -58,10 +54,6 @@ export function Products() {
             aria-label="进入 CW-Visual 三维数字孪生平台"
             className="v4-flat-cell group relative flex min-h-[20rem] flex-col overflow-hidden p-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:p-10"
           >
-            <span
-              className="absolute inset-x-0 top-0 h-px"
-              style={{ background: "linear-gradient(90deg, transparent, oklch(0.63 0.17 250 / 0.6), transparent)" }}
-            />
             <div className="flex items-center justify-between gap-3">
               <span className="v4-rule-label text-accent/70">CW-Visual</span>
               <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-[0.16em] text-white/40 transition-colors group-hover:text-accent">

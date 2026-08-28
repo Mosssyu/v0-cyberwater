@@ -172,7 +172,7 @@
 .v4-section {
   position: relative;
   overflow: hidden;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 0;
   padding: clamp(5rem, 8vw, 9rem) clamp(1.25rem, 4.2vw, 5rem);
   background-color: #020508 !important;
 }
@@ -228,7 +228,7 @@
 }
 
 .v4-panel {
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 0;
   background: rgba(5, 11, 15, 0.9);
   box-shadow: none;
 }
@@ -240,11 +240,23 @@
   color: rgba(255, 255, 255, 0.28);
 }
 
+.v4-origin-stats {
+  gap: clamp(1.5rem, 3vw, 3.5rem) !important;
+  overflow: visible !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
 .v4-origin-stats > div {
   border: 0;
   border-radius: 0;
-  background: #050b0f;
-  padding: 1.15rem 0.75rem;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+}
+
+.v4-origin-stats > div svg {
+  margin-inline: 0;
 }
 
 .v4-timeline-line::after {
@@ -1375,19 +1387,19 @@
 
 .v4-flat-grid {
   display: grid;
-  gap: 1px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: rgba(255, 255, 255, 0.09);
+  gap: clamp(1.5rem, 2.6vw, 3.25rem);
+  overflow: visible;
+  border: 0;
+  background: transparent;
 }
 
 .v4-flat-cell {
-  background: rgba(4, 10, 14, 0.97);
-  transition: background-color 260ms ease;
+  background: transparent;
+  transition: background-color 260ms ease, transform 260ms ease;
 }
 
 .v4-flat-cell:hover {
-  background: rgba(10, 22, 28, 0.97);
+  background: rgba(255, 255, 255, 0.022);
 }
 
 .v4-product-stage,

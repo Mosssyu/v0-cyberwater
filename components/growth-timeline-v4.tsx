@@ -11,7 +11,7 @@ const milestones = [
 
 export function GrowthTimelineV4() {
   return (
-    <section className="relative border-t border-white/10 py-20 lg:py-28">
+    <section className="relative py-20 lg:py-28">
       <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
           <span className="v4-kicker">Evolution / 发展历程</span>
@@ -24,9 +24,9 @@ export function GrowthTimelineV4() {
 
       <div className="relative mt-16">
         <div className="v4-timeline-line absolute inset-x-0 top-[1.1rem] hidden h-px bg-white/12 xl:block" aria-hidden="true" />
-        <ol className="grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 xl:grid-cols-6">
+        <ol className="grid gap-x-8 gap-y-12 sm:grid-cols-2 xl:grid-cols-6">
           {milestones.map(({ year, title, desc, Icon }, index) => (
-            <li key={year} className="group relative min-h-64 bg-[#050b0f] p-5 transition-colors hover:bg-[#09151b] sm:p-6">
+            <li key={year} className="group relative min-h-64 bg-transparent py-2 transition-colors hover:bg-white/[0.015]">
               <div className="relative z-[1] flex items-center justify-between">
                 <span className={`v4-timeline-node flex size-9 items-center justify-center rounded-full border bg-[#050b0f] ${year === "2026" ? "border-accent text-accent" : "border-white/20 text-white/48"}`}>
                   <Icon className="size-4" />

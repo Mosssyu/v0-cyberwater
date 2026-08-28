@@ -34,15 +34,15 @@ const branches = [
 
 export function SiteFooter() {
   return (
-    <footer id="contact" className="relative scroll-mt-16 overflow-hidden border-t border-white/10 bg-[#020405] text-white">
+    <footer id="contact" className="relative scroll-mt-16 overflow-hidden bg-[#020405] text-white">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(circle_at_78%_8%,rgba(119,196,216,.11),transparent_34%)]" aria-hidden="true" />
       <div className="relative px-5 py-16 sm:px-8 lg:px-14 lg:py-24 xl:px-20">
-        <div className="mb-16 grid gap-8 border-b border-white/10 pb-14 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="mb-16 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
           <div><span className="v4-kicker">Contact / 联系我们</span><h2 className="v4-display mt-6 max-w-5xl">让水务运营，<br /><span className="text-white/32">进入智能时代。</span></h2></div>
           <a href="/contact" className="v4-action-light w-fit">开始沟通</a>
         </div>
-        <div className="grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-2 xl:grid-cols-[1.65fr_1.15fr_1.35fr_1fr]">
-          <div className="bg-[#04090c] p-7 sm:p-9">
+        <div className="grid gap-12 lg:grid-cols-2 xl:grid-cols-[1.65fr_1.15fr_1.35fr_1fr]">
+          <div className="bg-transparent py-4">
             <div className="flex flex-col items-start gap-2 text-left">
               <img
                 src="/cyberwater-logo-dark.png"
@@ -63,7 +63,7 @@ export function SiteFooter() {
                 service@cyberwater.cn
               </li>
             </ul>
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-5">
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 pt-2">
               {branches.map((b, index) => (
                 <span
                   key={b}
@@ -76,14 +76,14 @@ export function SiteFooter() {
           </div>
 
           {columns.map((col) => (
-            <div key={col.title} className="bg-[#04090c] p-7 sm:p-9">
+            <div key={col.title} className="bg-transparent py-4">
               <h3 className="v4-rule-label text-white/70">{col.title}</h3>
-              <ul className="mt-6 border-t border-white/10">
+              <ul className="mt-6 space-y-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className={`block border-b border-white/[0.07] py-3 text-sm text-white/48 transition-colors hover:text-white ${col.title === "核心产品" ? "whitespace-nowrap" : ""}`}
+                      className={`block py-1 text-sm text-white/48 transition-colors hover:text-white ${col.title === "核心产品" ? "whitespace-nowrap" : ""}`}
                     >
                       {link.label}
                     </a>
@@ -93,7 +93,7 @@ export function SiteFooter() {
             </div>
           ))}
 
-          <div className="bg-[#04090c] p-7 sm:p-9">
+          <div className="bg-transparent py-4">
             <h3 className="v4-rule-label text-white/70">关注与咨询</h3>
             <ul className="mt-5 flex gap-4">
               {qrCodes.map((qr) => (
@@ -116,12 +116,12 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 grid items-center gap-4 border-y border-white/10 py-6 sm:grid-cols-[auto_minmax(0,1fr)]">
+        <div className="mt-16 grid items-center gap-4 py-6 sm:grid-cols-[auto_minmax(0,1fr)]">
           <span className="v4-rule-label shrink-0 text-white/70">Partners / 合作伙伴</span>
           <PartnerMarquee />
         </div>
 
-        <div className="pointer-events-none mt-16 select-none overflow-hidden border-b border-white/[0.07] pb-2 text-[clamp(4rem,12vw,12rem)] font-semibold leading-[.72] tracking-[-.075em] text-white/[0.035]" aria-hidden="true">CYBERWATER</div>
+        <div className="pointer-events-none mt-16 select-none overflow-hidden pb-2 text-[clamp(4rem,12vw,12rem)] font-semibold leading-[.72] tracking-[-.075em] text-white/[0.035]" aria-hidden="true">CYBERWATER</div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 text-sm text-blue-100/50 sm:flex-row">
           <p>© 2026 北京云建标科技有限公司. 京ICP备20010617号</p>

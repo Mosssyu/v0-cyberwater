@@ -14,7 +14,7 @@ export function About() {
           </h2></div>
           <p className="text-pretty leading-8 text-muted-foreground">{aboutIntro}</p>
         </div>
-        <CompanyStats className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4" />
+        <CompanyStats className="mt-14 grid grid-cols-2 gap-8 sm:grid-cols-4 sm:gap-12" />
       </div>
     </section>
   )

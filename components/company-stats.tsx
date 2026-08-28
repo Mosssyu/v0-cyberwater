@@ -25,16 +25,13 @@ export function CompanyStats({
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className={[
-            "border border-border bg-card/70 text-center backdrop-blur",
-            compact ? "rounded-lg p-3" : "rounded-xl p-4",
-          ].join(" ")}
+          className="bg-transparent p-0 text-left"
         >
           <stat.icon
             className={
               compact
-                ? "mx-auto size-4 text-primary"
-                : "mx-auto size-5 text-primary"
+                ? "size-4 text-primary"
+                : "size-5 text-primary"
             }
             aria-hidden="true"
           />
