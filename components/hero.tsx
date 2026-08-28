@@ -23,7 +23,7 @@ export function Hero() {
               <span className="h-px w-10 bg-white/45" />
               源于水务集团运营实践
             </div>
-            <h1 className="text-balance text-[clamp(3.35rem,7.7vw,8.4rem)] font-medium leading-[0.86] tracking-[-0.065em] text-white">
+            <h1 className="text-balance text-[clamp(3.35rem,7.7vw,8.4rem)] font-medium leading-[1.02] tracking-[-0.065em] text-white">
               水，正在被
               <br />
               <span className="liquid-title">重新理解</span>
