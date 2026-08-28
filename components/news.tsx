@@ -1,31 +1,29 @@
 import Link from "next/link"
-import { ArrowUpRight, ArrowRight, Newspaper } from "lucide-react"
+import { ArrowUpRight, ArrowRight } from "lucide-react"
 import { news } from "@/lib/news"
 
 const featured = news[0]
 // 头条之外的全部动态进入自动上滚列表
 const scrolling = news.slice(1)
 
-function NewsRow({ slug, tag, date, title }: { slug: string; tag: string; date: string; title: string }) {
+function NewsRow({ slug, tag, date, title, index }: { slug: string; tag: string; date: string; title: string; index: number }) {
   return (
     <Link
       href={`/news/${slug}`}
-      className="group flex items-start gap-4 border-b border-border px-5 py-4 transition-colors hover:bg-muted/50"
+      className="group grid min-h-[5.5rem] grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-4 border-b border-white/[0.08] px-5 py-4 transition-colors hover:bg-white/[0.025] sm:px-7"
     >
-      <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        <Newspaper className="size-4" />
-      </span>
+      <span className="v4-index">{String(index + 1).padStart(2, "0")}</span>
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="font-medium text-accent">{tag}</span>
+        <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+          <span className="text-accent/70">{tag}</span>
           <span>·</span>
           <span>{date}</span>
         </div>
-        <h4 className="mt-1 truncate text-sm font-medium text-foreground transition-colors group-hover:text-primary">
+        <h4 className="mt-1 truncate text-sm font-medium text-white/82 transition-colors group-hover:text-white">
           {title}
         </h4>
       </div>
-      <ArrowUpRight className="mt-1 size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+      <ArrowUpRight className="size-4 shrink-0 text-white/20 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
     </Link>
   )
 }
@@ -43,7 +41,7 @@ export function News() {
           </div>
           <Link
             href="/news"
-            className="group inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-primary/45 bg-primary/[0.08] px-5 py-2.5 text-sm font-medium text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/70 hover:bg-primary/15"
+            className="v4-action-line group shrink-0"
           >
             更多动态
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
@@ -54,18 +52,19 @@ export function News() {
           {/* 头条 */}
           <Link
             href={`/news/${featured.slug}`}
-            className="group flex flex-col justify-between bg-[#081015] p-8 transition-colors hover:bg-[#0a161d] sm:p-12"
+            className="v4-flat-cell group relative flex min-h-[28rem] flex-col justify-between overflow-hidden p-8 sm:p-12"
           >
+            <span className="pointer-events-none absolute -right-8 bottom-4 select-none text-[clamp(5rem,11vw,11rem)] font-semibold leading-none tracking-[-.08em] text-white/[0.03]" aria-hidden="true">NEWS</span>
             <div>
-              <div className="flex items-center gap-3 text-xs">
-                <span className="rounded-full bg-primary/10 px-3 py-1 font-medium text-primary">{featured.tag}</span>
-                <span className="text-muted-foreground">{featured.date}</span>
+              <div className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.14em]">
+                <span className="text-accent/70">{featured.tag}</span>
+                <span className="text-white/30">{featured.date}</span>
               </div>
-              <h3 className="mt-5 text-xl font-semibold leading-snug text-foreground">{featured.title}</h3>
+              <h3 className="mt-8 max-w-2xl text-3xl font-medium leading-[1.12] tracking-[-0.035em] text-foreground sm:text-5xl">{featured.title}</h3>
               <p className="mt-2 text-sm font-medium text-accent">{featured.subtitle}</p>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{featured.summary}</p>
             </div>
-            <span className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-primary">
+            <span className="relative mt-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.14em] text-white/50 transition-colors group-hover:text-accent">
               阅读全文
               <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </span>
@@ -84,6 +83,7 @@ export function News() {
                   tag={item.tag}
                   date={item.date}
                   title={item.title}
+                  index={i % scrolling.length}
                 />
               ))}
             </div>

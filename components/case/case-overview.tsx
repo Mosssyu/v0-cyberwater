@@ -13,10 +13,10 @@ export function CaseOverview({ item }: { item: CaseItem }) {
 
   return (
     <div>
-      <span className="font-mono text-xs font-medium tracking-wider text-accent">01 / OVERVIEW</span>
-      <h2 className="mt-2 text-balance text-3xl font-bold tracking-tight text-foreground">项目概览</h2>
-      <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)] lg:items-start">
-        <div className="rounded-2xl bg-card/45 p-6 ring-hairline sm:p-8">
+      <span className="v4-kicker">01 / Overview / 项目概览</span>
+      <h2 className="mt-6 text-balance text-4xl font-medium tracking-[-0.045em] text-foreground sm:text-6xl">从真实业务出发，<br /><span className="text-white/34">构建可持续的运营能力。</span></h2>
+      <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-[minmax(0,1.15fr)_minmax(22rem,0.85fr)] lg:items-stretch">
+        <div className="bg-[#040a0e] p-6 sm:p-10">
           <p className="text-pretty text-base leading-8 text-foreground/85">{item.background}</p>
           <div className="mt-7 grid gap-x-8 gap-y-4 sm:grid-cols-2">
             {highlights.map((text) => (
@@ -28,15 +28,15 @@ export function CaseOverview({ item }: { item: CaseItem }) {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+        <div className="grid gap-px bg-white/10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
           {cards.map((c) => (
             <div
               key={c.title}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-card/70 p-5 ring-hairline backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40"
+              className="group relative overflow-hidden bg-[#050b0f] p-5 transition-colors hover:bg-[#0a151a] sm:p-6"
             >
               <div
                 aria-hidden
-                className="pointer-events-none absolute -right-10 -top-10 size-28 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
+                className="pointer-events-none absolute -right-10 -top-10 size-28 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-20"
                 style={{ background: c.glow }}
               />
               <GlowIcon icon={c.icon} size="md" glow={c.glow} />

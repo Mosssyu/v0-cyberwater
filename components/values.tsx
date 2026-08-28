@@ -30,27 +30,24 @@ export function Values() {
       id="values"
       className="v4-section bg-[#040709]"
     >
-      <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-80" aria-hidden="true" />
-      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
-
       <div className="relative z-[1]">
         {/* 总纲 */}
         <div className="max-w-4xl">
           <span className="v4-kicker">Values / 企业价值观</span>
           <h2 className="mt-6 text-balance text-4xl font-medium tracking-[-0.05em] text-foreground sm:text-6xl">
-            执着 · 共生 · <span className="text-gradient">求变</span>
+            执着 · 共生 · <span className="text-white/34">求变</span>
           </h2>
           <p className="mt-6 text-pretty leading-relaxed text-muted-foreground">
             以执着深耕行业，以共生连接客户与生态，以求变推动产品和组织持续进化。
           </p>
         </div>
 
-        {/* 三张发光卡片 */}
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        {/* 与全站一致的单线平面价值观矩阵 */}
+        <div className="v4-flat-grid mt-14 lg:grid-cols-3">
           {values.map((v, i) => (
             <div
               key={v.title}
-              className="v4-panel group relative flex flex-col p-7 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+              className="v4-flat-cell group relative flex min-h-72 flex-col p-7 sm:p-9"
             >
               <span
                 className="pointer-events-none absolute inset-x-0 top-0 h-px scale-x-0 bg-gradient-to-r from-transparent via-accent to-transparent transition-transform duration-300 group-hover:scale-x-100"
@@ -63,8 +60,8 @@ export function Values() {
                 </span>
               </div>
 
-              <div className="mt-5 flex items-baseline gap-2">
-                <h3 className="text-2xl font-bold tracking-tight text-foreground">
+              <div className="mt-auto flex items-baseline gap-2 pt-12">
+                <h3 className="text-3xl font-medium tracking-[-0.04em] text-foreground">
                   {v.title}
                 </h3>
                 <span className="font-mono text-xs uppercase tracking-wider text-accent">

@@ -72,9 +72,8 @@ export default async function NewsDetailPage({
       <SiteHeader />
       <main>
         {/* 顶部 Hero：左侧文字 42% + 右侧大图 58%，无边框、图片清晰完整 */}
-        <section className="relative overflow-hidden bg-background">
-          <div className="absolute inset-0 bg-grid bg-grid-fade opacity-40" aria-hidden />
-          <div className="relative mx-auto max-w-7xl px-6 pt-8">
+        <section className="v4-article-hero relative overflow-hidden bg-background">
+          <div className="relative px-5 pt-8 sm:px-8 lg:px-14 xl:px-20">
             <Suspense
               fallback={(
                 <Link
@@ -90,7 +89,7 @@ export default async function NewsDetailPage({
             </Suspense>
 
             {/* 面包屑 */}
-            <nav className="flex flex-wrap items-center gap-1.5 text-sm text-blue-100/70" aria-label="面包屑">
+            <nav className="flex flex-wrap items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-white/35" aria-label="面包屑">
               <Link href="/" className="transition-colors hover:text-white">
                 首页
               </Link>
@@ -103,7 +102,7 @@ export default async function NewsDetailPage({
             </nav>
 
             {/* 左右布局：文字区 42% / 图片区 58% */}
-            <div className="grid items-center gap-8 py-8 lg:min-h-[440px] lg:grid-cols-[0.42fr_0.58fr] lg:gap-6">
+            <div className="grid items-center gap-8 py-12 lg:min-h-[34rem] lg:grid-cols-[0.46fr_0.54fr] lg:gap-12">
               {/* 左侧文字 */}
               <div className="flex flex-col justify-center">
                 <div className="flex flex-wrap items-center gap-3 text-xs">
@@ -118,7 +117,7 @@ export default async function NewsDetailPage({
                     </span>
                   )}
                 </div>
-                <h1 className="mt-5 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl lg:text-[2.5rem] lg:leading-[1.15]">
+                <h1 className="mt-6 text-balance text-4xl font-medium leading-[1.02] tracking-[-0.05em] text-white sm:text-5xl lg:text-6xl">
                   {item.title}
                 </h1>
                 <p className="mt-4 text-pretty text-base leading-relaxed text-blue-100/85 lg:text-lg">
@@ -128,7 +127,7 @@ export default async function NewsDetailPage({
                   {item.solutionTags.map((t) => (
                     <span
                       key={t}
-                      className="rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1 text-xs font-medium text-cyan-100"
+                      className="font-mono text-[10px] uppercase tracking-[0.12em] text-accent/60"
                     >
                       #{t}
                     </span>
@@ -166,13 +165,13 @@ export default async function NewsDetailPage({
         </section>
 
         {/* 正文 + 侧栏 */}
-        <section className="py-14">
-          <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <section className="v4-section">
+          <div className="relative z-[1] mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
             {/* 正文 */}
             <article className="min-w-0">
               {/* 引言 */}
               <div id="intro" className="scroll-mt-28">
-                <div className="rounded-2xl border-l-2 border-primary bg-secondary/40 py-5 pl-6 pr-5">
+                <div className="border-l border-accent/50 bg-white/[0.018] py-6 pl-6 pr-5">
                   {item.intro.map((p, i) => (
                     <p
                       key={i}
@@ -194,8 +193,8 @@ export default async function NewsDetailPage({
                     className="mt-12 scroll-mt-28"
                   >
                     {section.heading && (
-                      <h2 className="flex items-center gap-3 text-xl font-bold text-foreground sm:text-2xl">
-                        <span className="h-6 w-1 rounded-full bg-primary" />
+                      <h2 className="flex items-center gap-3 text-2xl font-medium tracking-[-0.03em] text-foreground sm:text-3xl">
+                        <span className="h-px w-8 bg-accent/60" />
                         {section.heading}
                       </h2>
                     )}
@@ -207,7 +206,7 @@ export default async function NewsDetailPage({
                       ))}
                     </div>
                     {section.image && (
-                      <figure className="mt-6 overflow-hidden rounded-2xl border border-border bg-card">
+                      <figure className="mt-6 overflow-hidden border border-white/10 bg-[#04090c]">
                         <img
                           src={section.image || "/placeholder.svg"}
                           alt={section.caption || section.heading || item.title}
@@ -228,8 +227,8 @@ export default async function NewsDetailPage({
               {/* 结语 */}
               {item.conclusion && (
                 <div id="conclusion" className="mt-12 scroll-mt-28">
-                  <div className="rounded-2xl border border-primary/20 bg-primary/[0.06] p-6">
-                    <h2 className="text-base font-semibold text-primary">结语</h2>
+                  <div className="border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+                    <h2 className="v4-rule-label text-accent/70">Conclusion / 结语</h2>
                     <p className="mt-2 text-pretty text-[15px] leading-relaxed text-foreground/90">
                       {item.conclusion}
                     </p>
@@ -242,7 +241,7 @@ export default async function NewsDetailPage({
                 {prev ? (
                   <Link
                     href={`/news/${prev.slug}`}
-                    className="group rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
+                    className="group border border-white/10 bg-[#04090c] p-5 transition-colors hover:border-white/30"
                   >
                     <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                       <ArrowLeft className="size-3.5" />
@@ -258,7 +257,7 @@ export default async function NewsDetailPage({
                 {next ? (
                   <Link
                     href={`/news/${next.slug}`}
-                    className="group rounded-xl border border-border bg-card p-5 text-right transition-colors hover:border-primary/40 sm:text-right"
+                    className="group border border-white/10 bg-[#04090c] p-5 text-right transition-colors hover:border-white/30 sm:text-right"
                   >
                     <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground sm:justify-end">
                       下一篇
@@ -278,7 +277,7 @@ export default async function NewsDetailPage({
             <aside className="lg:sticky lg:top-24 lg:h-fit lg:self-start">
               <div className="flex flex-col gap-6">
                 {/* 文章目录 */}
-                <div className="rounded-2xl border border-border bg-card p-5">
+                <div className="border border-white/10 bg-[#04090c] p-5">
                   <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
                     <Layers className="size-4 text-primary" />
                     文章目录
@@ -290,7 +289,7 @@ export default async function NewsDetailPage({
 
                 {/* 相关推荐 */}
                 {recommended.length > 0 && (
-                  <div className="rounded-2xl border border-border bg-card p-5">
+                  <div className="border border-white/10 bg-[#04090c] p-5">
                     <h3 className="text-sm font-semibold text-foreground">相关推荐</h3>
                     <ul className="mt-4 flex flex-col gap-4">
                       {recommended.map((r) => (
@@ -300,7 +299,7 @@ export default async function NewsDetailPage({
                               src={r.image || "/placeholder.svg"}
                               alt={r.title}
                               loading="lazy"
-                              className="size-16 shrink-0 rounded-lg object-cover"
+                              className="size-16 shrink-0 object-cover"
                             />
                             <div className="min-w-0">
                               <p className="line-clamp-2 text-sm font-medium leading-snug text-foreground transition-colors group-hover:text-primary">
@@ -315,12 +314,12 @@ export default async function NewsDetailPage({
                 )}
 
                 {/* 方案咨询 */}
-                <div className="ring-hairline overflow-hidden rounded-2xl border border-primary/20 bg-[oklch(0.21_0.06_256)] p-6 text-center">
+                <div className="overflow-hidden border border-white/10 bg-[#061016] p-6 text-center">
                   <h3 className="text-base font-semibold text-white">方案咨询</h3>
                   <p className="mt-1 text-xs leading-relaxed text-blue-100/70">
                     结合您的业务场景，提供定制化数字化建设方案
                   </p>
-                  <div className="mt-4 inline-block rounded-xl bg-white p-2 shadow-sm">
+                  <div className="mt-4 inline-block bg-white p-2">
                     <img
                       src="/qr/qr-sales-wechat.png"
                       alt="扫码添加销售微信"
@@ -331,7 +330,7 @@ export default async function NewsDetailPage({
                   <p className="mt-2 text-xs text-blue-100/60">扫码添加，获取解决方案资料</p>
                   <Link
                     href="/contact"
-                    className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                    className="v4-action-light mt-4 w-full"
                   >
                     <MessageSquareText className="size-4" />
                     立即咨询
@@ -351,8 +350,8 @@ export default async function NewsDetailPage({
 
         {/* 推荐阅读 */}
         {recommended.length > 0 && (
-          <section className="border-t border-border bg-secondary/30 py-16">
-            <div className="mx-auto max-w-7xl px-6">
+          <section className="v4-section">
+            <div className="relative z-[1]">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-foreground">推荐阅读</h2>
                 <Link
@@ -363,7 +362,7 @@ export default async function NewsDetailPage({
                   <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </div>
-              <div className="mt-8 grid gap-6 md:grid-cols-3">
+              <div className="v4-flat-grid mt-8 md:grid-cols-3">
                 {recommended.map((r) => (
                   <NewsCard key={r.slug} item={r} />
                 ))}

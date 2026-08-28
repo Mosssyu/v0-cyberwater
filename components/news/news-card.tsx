@@ -8,7 +8,7 @@ export function NewsCard({ item, fromPage }: { item: NewsItem; fromPage?: number
   return (
     <Link
       href={href}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10"
+      className="v4-flat-cell group flex flex-col overflow-hidden"
     >
       <div className="relative aspect-[16/9] overflow-hidden">
         <img
@@ -17,16 +17,16 @@ export function NewsCard({ item, fromPage }: { item: NewsItem; fromPage?: number
           loading="lazy"
           className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020508]/70 via-transparent to-transparent" />
         {item.location && (
-          <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/30 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1 border border-white/15 bg-[#020508]/65 px-2.5 py-1 text-[10px] uppercase tracking-[0.1em] text-white/75 backdrop-blur-sm">
             <MapPin className="size-3" />
             {item.location}
           </span>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="text-balance text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+      <div className="flex flex-1 flex-col p-6 sm:p-7">
+        <h3 className="text-balance text-xl font-medium leading-snug tracking-[-0.025em] text-foreground transition-colors group-hover:text-white">
           {item.title}
         </h3>
         <p className="mt-3 line-clamp-2 flex-1 text-sm leading-relaxed text-muted-foreground">{item.summary}</p>
@@ -34,7 +34,7 @@ export function NewsCard({ item, fromPage }: { item: NewsItem; fromPage?: number
           {item.solutionTags.slice(0, 3).map((t) => (
             <span
               key={t}
-              className="rounded-full border border-primary/25 bg-primary/[0.07] px-2 py-0.5 text-[11px] font-medium text-primary"
+              className="font-mono text-[10px] uppercase tracking-[0.08em] text-white/38"
             >
               #{t}
             </span>
@@ -45,7 +45,7 @@ export function NewsCard({ item, fromPage }: { item: NewsItem; fromPage?: number
             <CalendarDays className="size-3.5" />
             {item.date}
           </span>
-          <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+          <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.12em] text-white/40 transition-colors group-hover:text-accent">
             阅读全文
             <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>

@@ -310,7 +310,7 @@ export function CwCloudSlide({ active }: { active: boolean }) {
   return (
     <div
       data-testid="cw-cloud-workspace"
-      className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.1_0.03_248)] p-4 sm:p-5"
+      className="v4-product-stage relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.1_0.03_248)] p-4 sm:p-5"
     >
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-25" aria-hidden="true" />
 

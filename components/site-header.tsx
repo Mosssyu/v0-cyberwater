@@ -78,29 +78,30 @@ export function SiteHeader({
   }, [])
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#05080a]/88 backdrop-blur-xl">
-      <div className="flex h-16 w-full items-center justify-between px-5 sm:px-8 lg:px-14 xl:px-20">
+    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-[#020508]/88 backdrop-blur-xl">
+      <div className="flex h-[4.5rem] w-full items-center justify-between px-5 sm:px-8 lg:px-14 xl:px-20">
         <a href="/#home" className="flex items-center" aria-label="云建标 CYBERWATER 首页">
           <img
             src="/cyberwater-logo-dark.png"
             alt="云建标 CYBERWATER"
-            className="h-9 w-auto"
+            className="h-8 w-auto sm:h-9"
           />
         </a>
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {navItems.map((item) => (
+        <nav className="hidden items-center gap-8 lg:flex">
+          {navItems.map((item, index) => (
             <a
               key={item.label}
               href={item.href}
               aria-current={activeSection === item.sectionId ? "location" : undefined}
               className={[
-                "relative text-sm transition-colors",
+                "relative py-2 text-xs tracking-[0.04em] transition-colors",
                 activeSection === item.sectionId
-                  ? "font-medium text-foreground after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:rounded-full after:bg-accent after:shadow-[0_0_8px_1px_oklch(0.79_0.13_200/0.6)]"
-                  : "text-muted-foreground hover:text-foreground",
+                  ? "font-medium text-foreground after:absolute after:-bottom-[1.1rem] after:left-0 after:h-px after:w-full after:bg-accent"
+                  : "text-white/48 hover:text-foreground",
               ].join(" ")}
             >
+              <span aria-hidden="true" className="mr-2 font-mono text-[9px] text-white/20">{String(index + 1).padStart(2, "0")}</span>
               {item.label}
             </a>
           ))}
@@ -111,7 +112,7 @@ export function SiteHeader({
             <a
               href={caseBackHref}
               aria-label={caseBackLabel}
-              className="group inline-flex items-center gap-1.5 rounded-lg border border-primary/35 bg-primary/[0.07] px-3 py-2 text-sm font-medium text-primary transition-all duration-300 hover:border-primary/65 hover:bg-primary/15 hover:text-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70"
+              className="v4-action-line group px-4 py-2"
             >
               <ArrowLeft className="size-4 transition-transform duration-300 group-hover:-translate-x-0.5" />
               <span className="hidden sm:inline">{caseBackLabel}</span>
@@ -120,7 +121,7 @@ export function SiteHeader({
 
           <button
             onClick={() => setDemoOpen(true)}
-            className="hidden items-center gap-2 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground shadow-[0_0_18px_-6px_oklch(0.63_0.17_250/0.9)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_0_26px_-4px_oklch(0.63_0.17_250/0.95)] lg:inline-flex"
+            className="v4-action-light hidden lg:inline-flex"
           >
             联系我们
           </button>
@@ -136,7 +137,7 @@ export function SiteHeader({
       </div>
 
       {open && (
-        <div className="border-t border-border/60 bg-background lg:hidden">
+        <div className="border-t border-white/10 bg-[#020508]/98 lg:hidden">
           <nav className="flex w-full flex-col px-5 py-4 sm:px-8">
             {navItems.map((item) => (
               <a
@@ -159,7 +160,7 @@ export function SiteHeader({
                 setOpen(false)
                 setDemoOpen(true)
               }}
-              className="mt-3 inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground"
+              className="v4-action-light mt-3"
             >
               联系我们
             </button>

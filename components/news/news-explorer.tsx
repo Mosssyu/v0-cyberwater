@@ -29,7 +29,7 @@ export function NewsExplorer() {
       <div className="relative z-[1]">
         {/* 卡片网格 */}
         {visible.length > 0 ? (
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          <div className="v4-flat-grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {visible.map((item) => (
               <NewsCard key={item.slug} item={item} fromPage={current} />
             ))}
@@ -45,7 +45,7 @@ export function NewsExplorer() {
               type="button"
               onClick={() => goToPage(current - 1)}
               disabled={current === 1}
-              className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex size-10 items-center justify-center border border-white/12 text-muted-foreground transition-colors hover:border-white/35 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="上一页"
             >
               <ChevronLeft className="size-4" />
@@ -55,10 +55,10 @@ export function NewsExplorer() {
                 key={p}
                 type="button"
                 onClick={() => goToPage(p)}
-                className={`inline-flex size-10 items-center justify-center rounded-lg border text-sm font-medium transition-colors ${
+                className={`inline-flex size-10 items-center justify-center border text-sm font-medium transition-colors ${
                   p === current
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                    ? "border-white bg-white text-black"
+                    : "border-white/12 text-muted-foreground hover:border-white/35 hover:text-foreground"
                 }`}
                 aria-label={`第 ${p} 页`}
                 aria-current={p === current ? "page" : undefined}
@@ -70,7 +70,7 @@ export function NewsExplorer() {
               type="button"
               onClick={() => goToPage(current + 1)}
               disabled={current === totalPages}
-              className="inline-flex size-10 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex size-10 items-center justify-center border border-white/12 text-muted-foreground transition-colors hover:border-white/35 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="下一页"
             >
               <ChevronRight className="size-4" />

@@ -60,7 +60,7 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
     <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto overscroll-contain p-4 sm:items-center sm:p-6">
       {/* 遮罩 */}
       <div
-        className="fixed inset-0 bg-[oklch(0.09_0.02_252/0.78)] backdrop-blur-md"
+        className="fixed inset-0 bg-black/80 backdrop-blur-md"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -70,32 +70,28 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
         role="dialog"
         aria-modal="true"
         aria-labelledby="demo-modal-title"
-        className="ring-hairline relative flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-b from-[oklch(0.19_0.017_248)] to-[oklch(0.13_0.014_252)] shadow-2xl shadow-black/60 sm:max-h-[calc(100dvh-3rem)]"
+        className="relative flex max-h-[calc(100dvh-2rem)] w-full max-w-4xl flex-col overflow-hidden border border-white/12 bg-[#03080b] sm:max-h-[calc(100dvh-3rem)]"
       >
         {/* 顶部柔光 + 网格 */}
-        <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-40" aria-hidden="true" />
-        <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_72%_0%,rgba(99,191,214,.12),transparent_62%)]" aria-hidden="true" />
 
         <button
           onClick={onClose}
           aria-label="关闭"
-          className="absolute right-4 top-4 z-20 flex size-9 items-center justify-center rounded-full border border-border/50 bg-background/60 text-muted-foreground backdrop-blur transition-colors hover:border-accent/50 hover:text-foreground"
+          className="absolute right-4 top-4 z-20 flex size-9 items-center justify-center rounded-full border border-white/12 bg-black/20 text-muted-foreground backdrop-blur transition-colors hover:border-white/40 hover:text-foreground"
         >
           <X className="size-4.5" />
         </button>
 
         <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain p-6 sm:p-8">
           {/* 标题 */}
-          <div className="mb-7 text-center sm:mb-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-3 py-1 font-mono text-xs text-accent">
-              <span className="size-1.5 rounded-full bg-accent" />
-              CONTACT US
-            </span>
+          <div className="mb-7 border-b border-white/10 pb-7 text-left sm:mb-8">
+            <span className="v4-kicker">CONTACT US / 联系我们</span>
             <h2
               id="demo-modal-title"
-              className="mt-3 text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
+              className="mt-5 text-balance text-3xl font-medium tracking-[-0.04em] text-foreground sm:text-5xl"
             >
-              联系我们
+              从一次沟通开始，<br /><span className="text-white/34">让运营持续进化。</span>
             </h2>
           </div>
 
@@ -106,11 +102,11 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
                 <Sparkles className="size-4 text-accent" />
                 <p className="text-sm font-semibold text-foreground">新一代 AI 水务运营平台</p>
               </div>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="v4-flat-grid grid-cols-1 sm:grid-cols-2">
                 {products.map((p) => (
                   <div
                     key={p.code}
-                    className="group ring-hairline rounded-2xl border border-border/50 bg-card/40 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-card/70"
+                    className="v4-flat-cell group p-4"
                   >
                     <GlowIcon icon={p.icon} size="md" glow={p.glow} />
                     <div className="mt-3">
@@ -126,15 +122,14 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
             </div>
 
             {/* 右侧：微信二维码 */}
-            <div className="ring-hairline relative flex flex-col items-center overflow-hidden rounded-2xl border border-primary/25 bg-gradient-to-b from-[oklch(0.2_0.03_240/0.5)] to-[oklch(0.14_0.015_252/0.5)] p-6 text-center">
-              <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-24" aria-hidden="true" />
+            <div className="relative flex flex-col items-center overflow-hidden border border-white/10 bg-white/[0.018] p-6 text-center">
               <p className="relative text-base font-semibold text-foreground">扫码添加水务顾问</p>
-              <div className="relative mt-4 rounded-2xl border border-accent/30 bg-white p-2.5 shadow-[0_0_28px_-6px_oklch(0.79_0.13_200/0.7)]">
+              <div className="relative mt-4 border border-white/20 bg-white p-2.5">
                 <img
                   src="/wechat-sales-qr.png"
                   alt="销售顾问微信二维码"
                   decoding="async"
-                  className="size-40 rounded-lg object-contain"
+                  className="size-40 object-contain"
                 />
               </div>
               <div className="relative mt-5 w-full">
@@ -143,7 +138,7 @@ export function DemoModal({ open, onClose }: { open: boolean; onClose: () => voi
                   {benefits.map((b) => (
                     <li
                       key={b.label}
-                      className="flex items-center gap-2.5 rounded-lg border border-border/40 bg-card/40 px-3 py-2 text-left"
+                      className="flex items-center gap-2.5 border-t border-white/10 px-3 py-2 text-left"
                     >
                       <b.icon className="size-4 shrink-0 text-accent" />
                       <span className="text-sm text-foreground">{b.label}</span>

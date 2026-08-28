@@ -53,12 +53,11 @@ export function CaseProducts({ item }: { item: CaseItem }) {
   const ProductIcon: LucideIcon = Boxes
 
   return (
-    <section className="relative border-y border-border bg-secondary/30">
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-grid bg-grid-fade opacity-35" />
-      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:py-20">
-        <span className="font-mono text-xs font-medium tracking-wider text-accent">02 / PRODUCTS</span>
-        <h2 className="mt-2 text-balance text-3xl font-bold tracking-tight text-foreground">核心产品</h2>
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <section className="v4-section">
+      <div className="relative z-[1]">
+        <span className="v4-kicker">02 / Products / 核心产品</span>
+        <h2 className="mt-6 text-balance text-4xl font-medium tracking-[-0.045em] text-foreground sm:text-6xl">标准产品组合，<br /><span className="text-white/34">支撑项目快速落地。</span></h2>
+        <div className="v4-flat-grid mt-12 sm:grid-cols-2 lg:grid-cols-3">
           {item.products.map((code, index) => {
             const product = PRODUCT_META[code] ?? {
               name: code,
@@ -69,11 +68,11 @@ export function CaseProducts({ item }: { item: CaseItem }) {
             return (
               <article
                 key={code}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card/75 p-6 ring-hairline transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
+                className="v4-flat-cell group relative min-h-56 overflow-hidden p-6 sm:p-8"
               >
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute -right-12 -top-12 size-32 rounded-full opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-100"
+                  className="pointer-events-none absolute -right-12 -top-12 size-32 rounded-full opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-20"
                   style={{ background: glow }}
                 />
                 <div className="relative flex items-start gap-4">

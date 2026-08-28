@@ -3,25 +3,22 @@ import type { CaseItem } from "@/lib/cases"
 
 export function CaseHero({ item }: { item: CaseItem }) {
   return (
-    <section className="relative overflow-hidden bg-[oklch(0.11_0.025_252)]">
-      <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-25" aria-hidden />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-56 bg-[radial-gradient(circle_at_70%_0%,oklch(0.5_0.16_240/0.15),transparent_68%)]" aria-hidden />
+    <section className="relative overflow-hidden border-b border-white/10 bg-[#020508]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_4%,rgba(130,195,212,.12),transparent_32%)]" aria-hidden />
+      <div className="pointer-events-none absolute -right-12 bottom-4 select-none text-[clamp(6rem,16vw,17rem)] font-semibold leading-none tracking-[-.08em] text-white/[0.025]" aria-hidden="true">CASE</div>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-10 lg:py-14">
-        <div className="grid items-center gap-8 xl:grid-cols-[27rem_minmax(0,1fr)] xl:gap-8">
-          <div className="flex w-full max-w-[27rem] flex-col justify-self-center px-1 py-2 sm:px-2 xl:min-h-[23rem] xl:justify-self-end xl:py-5">
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 font-mono text-xs font-medium text-accent">
-              <span className="size-1.5 animate-pulse rounded-full bg-accent" />
-              客户案例
-            </span>
-            <h1 className="mt-4 text-balance text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl">
+      <div className="relative px-5 py-12 sm:px-8 lg:px-14 lg:py-20 xl:px-20">
+        <div className="grid items-stretch gap-px overflow-hidden border border-white/10 bg-white/10 xl:grid-cols-[.82fr_1.18fr]">
+          <div className="flex flex-col bg-[#03080b] p-7 sm:p-10 xl:min-h-[35rem] xl:p-14">
+            <span className="v4-kicker">Case Study / 客户案例</span>
+            <h1 className="mt-8 max-w-2xl text-balance text-4xl font-medium leading-[.98] tracking-[-0.055em] text-white sm:text-6xl">
               {item.title}
             </h1>
-            <p className="mt-4 max-w-[26rem] text-pretty text-sm leading-7 text-blue-50/72">
+            <p className="mt-6 max-w-2xl text-pretty text-sm leading-7 text-white/52">
               {item.summary}
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-blue-50/75">
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-5 text-sm text-white/55">
               <span className="inline-flex items-center gap-1.5">
                 <Building2 className="size-4 text-accent" />
                 {item.client}
@@ -32,39 +29,39 @@ export function CaseHero({ item }: { item: CaseItem }) {
               </span>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
               {item.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 text-xs font-medium text-blue-50/80"
+                  className="font-mono text-[10px] uppercase tracking-[0.1em] text-white/38 before:mr-1.5 before:text-accent/50 before:content-['/']"
                 >
                   {tag}
                 </span>
               ))}
             </div>
 
-            <div className="mt-auto grid grid-cols-2 gap-2 pt-6 sm:grid-cols-4 xl:grid-cols-2">
+            <div className="mt-auto grid grid-cols-2 gap-px bg-white/10 pt-px sm:grid-cols-4 xl:grid-cols-2">
               {item.metrics.map((metric) => (
                 <div
                   key={metric.label}
-                  className="rounded-lg bg-white/[0.05] px-3 py-2.5 transition-colors hover:bg-white/[0.08]"
+                  className="bg-[#050b0f] px-3 py-4 transition-colors hover:bg-[#0a151a]"
                 >
-                  <div className="bg-gradient-to-br from-white to-accent bg-clip-text font-mono text-lg font-bold text-transparent">
+                  <div className="font-mono text-lg font-medium text-white/85">
                     {metric.value}
                   </div>
-                  <div className="mt-1 text-[11px] leading-snug text-blue-50/65">{metric.label}</div>
+                  <div className="mt-1 text-[11px] leading-snug text-white/36">{metric.label}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="relative aspect-video w-full justify-self-start overflow-hidden bg-[oklch(0.075_0.025_252)]">
+          <div className="relative min-h-[22rem] w-full overflow-hidden bg-[#03070a] xl:min-h-[35rem]">
             <img
               src={item.image || "/cases/detail/hero-twin.png"}
               alt={`${item.title}项目效果图`}
               fetchPriority="high"
               decoding="async"
-              className="absolute inset-0 size-full object-contain object-center"
+              className="absolute inset-0 size-full object-contain object-center p-3 sm:p-6"
             />
           </div>
         </div>

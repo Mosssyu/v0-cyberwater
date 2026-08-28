@@ -50,23 +50,23 @@
 
 :root {
   color-scheme: dark;
-  --background: oklch(0.15 0.012 252);
-  --foreground: oklch(0.96 0.004 240);
-  --card: oklch(0.185 0.016 252);
+  --background: oklch(0.105 0.012 240);
+  --foreground: oklch(0.965 0.004 225);
+  --card: oklch(0.135 0.014 240);
   --card-foreground: oklch(0.96 0.004 240);
-  --popover: oklch(0.19 0.017 252);
+  --popover: oklch(0.13 0.014 240);
   --popover-foreground: oklch(0.96 0.004 240);
-  --primary: oklch(0.63 0.17 250);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.24 0.02 252);
+  --primary: oklch(0.78 0.105 205);
+  --primary-foreground: oklch(0.105 0.012 240);
+  --secondary: oklch(0.16 0.016 240);
   --secondary-foreground: oklch(0.92 0.005 240);
-  --muted: oklch(0.22 0.018 252);
-  --muted-foreground: oklch(0.68 0.022 245);
-  --accent: oklch(0.79 0.13 200);
-  --accent-foreground: oklch(0.16 0.02 240);
+  --muted: oklch(0.16 0.014 240);
+  --muted-foreground: oklch(0.64 0.018 225);
+  --accent: oklch(0.81 0.105 198);
+  --accent-foreground: oklch(0.105 0.012 240);
   --destructive: oklch(0.66 0.2 22);
-  --border: oklch(1 0 0 / 0.1);
-  --input: oklch(1 0 0 / 0.14);
+  --border: oklch(1 0 0 / 0.105);
+  --input: oklch(1 0 0 / 0.13);
   --ring: oklch(0.63 0.17 250);
   --chart-1: oklch(0.63 0.17 250);
   --chart-2: oklch(0.79 0.13 200);
@@ -174,6 +174,7 @@
   overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: clamp(5rem, 8vw, 9rem) clamp(1.25rem, 4.2vw, 5rem);
+  background-color: #020508 !important;
 }
 
 .v4-section::before {
@@ -181,7 +182,24 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 78% 8%, rgba(55, 189, 225, 0.075), transparent 31%);
+  background:
+    radial-gradient(circle at 78% 8%, rgba(132, 210, 230, 0.085), transparent 29%),
+    linear-gradient(125deg, transparent 18%, rgba(57, 116, 133, 0.035) 52%, transparent 78%);
+}
+
+.v4-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.46;
+  background-image:
+    radial-gradient(circle, rgba(96, 222, 248, 0.22) 0 1px, transparent 1.7px),
+    radial-gradient(circle, rgba(224, 83, 179, 0.12) 0 1px, transparent 1.8px);
+  background-position: 0 0, 31px 47px;
+  background-size: 83px 91px, 127px 113px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 2%, #000 46%, transparent 96%);
+  mask-image: linear-gradient(to bottom, transparent 2%, #000 46%, transparent 96%);
 }
 
 .v4-kicker {
@@ -211,9 +229,8 @@
 
 .v4-panel {
   border: 1px solid rgba(255, 255, 255, 0.09);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
-  box-shadow: inset 0 1px rgba(255, 255, 255, 0.035);
-  backdrop-filter: blur(14px);
+  background: rgba(5, 11, 15, 0.9);
+  box-shadow: none;
 }
 
 .v4-index {
@@ -1195,5 +1212,229 @@
   .partner-marquee-track {
     animation: none !important;
     transform: translateX(0);
+  }
+}
+
+/* ===== V4 全站液态编辑式视觉系统 ===== */
+.v4-site {
+  min-width: 320px;
+  background:
+    radial-gradient(circle at 84% 0%, rgba(92, 150, 168, 0.09), transparent 24rem),
+    #020508;
+}
+
+.v4-site ::selection {
+  color: #020508;
+  background: rgba(191, 239, 248, 0.9);
+}
+
+.v4-site main section {
+  background-color: #020508;
+}
+
+.v4-site :where(.rounded-3xl, .rounded-2xl) {
+  border-radius: 0.25rem;
+}
+
+.v4-site :where(.rounded-xl, .rounded-lg) {
+  border-radius: 0.2rem;
+}
+
+.v4-site [class*="shadow-"] {
+  box-shadow: none !important;
+}
+
+.v4-site .bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 84px 84px;
+}
+
+.v4-site .glow-cyan {
+  background: radial-gradient(55% 55% at 70% 0%, rgba(91, 183, 205, 0.1), transparent 72%);
+}
+
+.v4-site .text-gradient {
+  background-image: linear-gradient(112deg, #f4f8f9 8%, #84939a 78%);
+}
+
+.v4-page-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(28rem, 48vw, 43rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at 79% 12%, rgba(175, 207, 216, 0.14), transparent 26%),
+    #020508 !important;
+}
+
+.v4-page-hero::before {
+  content: "CYBERWATER";
+  position: absolute;
+  right: -0.04em;
+  bottom: -0.16em;
+  color: rgba(144, 182, 194, 0.09);
+  font-size: clamp(5rem, 15vw, 17rem);
+  font-weight: 650;
+  line-height: 0.8;
+  letter-spacing: -0.075em;
+  white-space: nowrap;
+}
+
+.v4-page-hero::after {
+  content: "";
+  position: absolute;
+  right: -4%;
+  bottom: 7%;
+  width: min(72rem, 85vw);
+  height: 34%;
+  opacity: 0.7;
+  background-image:
+    radial-gradient(circle, rgba(85, 221, 250, 0.36) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(220, 72, 175, 0.2) 0 1px, transparent 1.8px);
+  background-position: 0 0, 27px 41px;
+  background-size: 49px 43px, 73px 61px;
+  transform: perspective(420px) rotateX(63deg) rotateZ(-2deg);
+  transform-origin: 50% 100%;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 25%, transparent 76%);
+  mask-image: radial-gradient(ellipse at center, #000 25%, transparent 76%);
+}
+
+.v4-page-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: inherit;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(4.5rem, 8vw, 8rem) clamp(1.25rem, 4.2vw, 5rem);
+}
+
+.v4-article-hero {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at 78% 4%, rgba(115, 184, 202, 0.12), transparent 30%),
+    #020508 !important;
+}
+
+.v4-article-hero::before {
+  content: "NEWS";
+  position: absolute;
+  right: -0.03em;
+  bottom: -0.1em;
+  color: rgba(149, 187, 197, 0.045);
+  font-size: clamp(7rem, 17vw, 18rem);
+  font-weight: 650;
+  line-height: 0.8;
+  letter-spacing: -0.075em;
+}
+
+.v4-page-title {
+  max-width: 72rem;
+  font-size: clamp(3.25rem, 8vw, 9rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+}
+
+.v4-action-light,
+.v4-action-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  min-height: 2.8rem;
+  padding: 0.65rem 1.45rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 520;
+  transition: transform 240ms ease, border-color 240ms ease, color 240ms ease, background 240ms ease;
+}
+
+.v4-action-light {
+  color: #030608;
+  background: #f4f6f7;
+}
+
+.v4-action-line {
+  color: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.v4-action-light:hover,
+.v4-action-line:hover {
+  transform: translateY(-2px);
+}
+
+.v4-action-line:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.42);
+}
+
+.v4-flat-grid {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.v4-flat-cell {
+  background: rgba(4, 10, 14, 0.97);
+  transition: background-color 260ms ease;
+}
+
+.v4-flat-cell:hover {
+  background: rgba(10, 22, 28, 0.97);
+}
+
+.v4-product-stage,
+.v4-map-stage {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: rgba(3, 8, 11, 0.96) !important;
+}
+
+.v4-product-stage > .bg-grid {
+  opacity: 0.12;
+}
+
+.v4-product-stage button,
+.v4-map-stage button {
+  box-shadow: none !important;
+}
+
+.v4-map-stage {
+  margin-top: 2.5rem;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.v4-rule-label {
+  color: rgba(255, 255, 255, 0.34);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.v4-site .news-marquee {
+  background: rgba(4, 10, 14, 0.98) !important;
+}
+
+@media (max-width: 639px) {
+  .v4-page-hero {
+    min-height: 31rem;
+  }
+
+  .v4-page-hero::before {
+    right: -0.22em;
+    bottom: 0.03em;
+  }
+
+  .v4-page-hero::after {
+    right: -38%;
+    width: 145vw;
+    height: 26%;
   }
 }

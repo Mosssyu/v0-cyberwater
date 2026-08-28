@@ -16,22 +16,22 @@ export function CaseRelated({ items, category }: { items: CaseItem[]; category: 
   return (
     <>
       {items.length > 0 && (
-        <section className="border-t border-border bg-background">
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:py-20">
-            <span className="font-mono text-xs font-medium tracking-wider text-accent">03 / RELATED</span>
-            <h2 className="mt-2 text-balance text-3xl font-bold tracking-tight text-foreground">同类案例推荐</h2>
-            <div className="mt-9 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <section className="v4-section">
+          <div className="relative z-[1]">
+            <span className="v4-kicker">03 / Related / 同类案例</span>
+            <h2 className="mt-6 text-balance text-4xl font-medium tracking-[-0.045em] text-foreground sm:text-6xl">同一场景，<br /><span className="text-white/34">不同项目的持续验证。</span></h2>
+            <div className="v4-flat-grid mt-12 md:grid-cols-2 lg:grid-cols-3">
               {items.map((related) => (
                 <Link
                   key={related.slug}
                   href={`/cases/${related.slug}`}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card ring-hairline transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-xl hover:shadow-accent/10"
+                  className="v4-flat-cell group relative flex flex-col overflow-hidden"
                 >
                   <div className="overflow-hidden bg-black/20 p-3">
                     <img
                       src={related.image || "/placeholder.svg"}
                       alt={related.title}
-                      className="aspect-[16/9] w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-[1.025]"
                       loading="lazy"
                       decoding="async"
                     />
@@ -53,8 +53,8 @@ export function CaseRelated({ items, category }: { items: CaseItem[]; category: 
       )}
 
       {references.length > 0 && (
-        <section className="border-t border-border bg-secondary/30">
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:py-20">
+        <section className="v4-section">
+          <div className="relative z-[1]">
             <div className="flex flex-wrap items-end justify-between gap-5">
               <div>
                 <span className="font-mono text-xs font-medium tracking-wider text-accent">04 / MORE</span>
@@ -80,7 +80,7 @@ export function CaseRelated({ items, category }: { items: CaseItem[]; category: 
                   <Link
                     key={name}
                     href={`/cases/?${query.toString()}#project-map`}
-                    className="group/reference inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-2 text-sm text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10 hover:text-foreground"
+                    className="group/reference inline-flex items-center gap-2 rounded-full border border-white/12 bg-transparent px-3.5 py-2 text-sm text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-white/35 hover:text-foreground"
                   >
                     <MapPin
                       className="size-3.5 shrink-0 transition-colors group-hover/reference:text-primary"

@@ -220,7 +220,7 @@ export function CasesMap({
     : null)
 
   return (
-    <div className="relative mt-8 overflow-hidden rounded-2xl border border-border bg-card/60 p-4 sm:p-6">
+    <div className="v4-map-stage relative mt-8 overflow-hidden rounded-2xl border border-border bg-card/60 p-4 sm:p-6">
       <div className="grid gap-6 lg:h-[72vh] lg:min-h-[560px] lg:max-h-[720px] lg:grid-cols-[1.6fr_1fr]">
         {/* 地图 */}
         <div className="relative">

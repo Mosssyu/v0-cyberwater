@@ -36,8 +36,8 @@ export function CasesBrowser() {
 
   return (
     <div>
-      {/* 一级筛选：解决方案类型胶囊 */}
-      <div className="flex flex-wrap justify-start gap-2.5">
+      {/* 一级筛选：沿用首屏的黑白按钮与微量光色 */}
+      <div className="flex flex-wrap justify-start gap-2">
         {chips.map((chip) => {
           const isActive = filter === chip.key
           const dotColor = chip.key === "all" ? undefined : categoryColor[chip.key]
@@ -49,10 +49,10 @@ export function CasesBrowser() {
                 setFilter(chip.key)
                 setHighlightName(null)
               }}
-              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all ${
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium tracking-[0.04em] transition-all ${
                 isActive
-                  ? "border-primary bg-primary text-primary-foreground shadow-[0_0_20px_-4px_oklch(0.63_0.17_250/0.85)]"
-                  : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                  ? "border-white bg-white text-black"
+                  : "border-white/12 bg-transparent text-white/48 hover:border-white/35 hover:text-white"
               }`}
             >
               {dotColor && (
@@ -70,7 +70,7 @@ export function CasesBrowser() {
 
       {/* 选中方案简介 */}
       {filter !== "all" && (
-        <div className="mx-auto mt-6 max-w-3xl text-center">
+        <div className="mt-6 max-w-3xl border-l border-accent/40 pl-5 text-left">
           <p className="text-pretty leading-relaxed text-muted-foreground">{solutionIntro[filter]}</p>
         </div>
       )}
@@ -81,18 +81,18 @@ export function CasesBrowser() {
       </div>
 
       {/* 案例卡片网格（与筛选联动） */}
-      <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="v4-flat-grid mt-12 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {filtered.map((item) => (
           <Link
             key={item.slug}
             href={`/cases/${item.slug}`}
-            className="v4-panel group flex flex-col overflow-hidden transition-all hover:-translate-y-1 hover:border-primary/40"
+            className="v4-flat-cell group flex flex-col overflow-hidden"
           >
-            <div className="relative overflow-hidden rounded-t-2xl bg-black/20 p-3">
+            <div className="relative overflow-hidden border-b border-white/10 bg-black/20">
               <img
                 src={item.image || "/placeholder.svg"}
                 alt={`${item.title}示意图`}
-                className="aspect-[16/9] w-full rounded-xl object-contain"
+                className="aspect-[16/9] w-full object-contain transition-transform duration-700 group-hover:scale-[1.025]"
                 loading="lazy"
                 decoding="async"
               />
@@ -103,7 +103,7 @@ export function CasesBrowser() {
               />
               {/* 解决方案类型徽标 */}
               <span
-                className="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-background/85 px-3 py-1 text-xs font-medium text-foreground backdrop-blur"
+                className="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 border border-white/12 bg-[#020508]/80 px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-white/70 backdrop-blur"
               >
                 <span
                   className="size-2 rounded-full"
@@ -116,12 +116,12 @@ export function CasesBrowser() {
                 {item.category}
               </span>
             </div>
-            <div className="flex flex-1 flex-col p-6">
+            <div className="flex flex-1 flex-col p-6 sm:p-7">
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <MapPin className="size-3.5" />
                 {item.location}
               </div>
-              <h3 className="mt-2 text-lg font-semibold text-foreground">{item.title}</h3>
+              <h3 className="mt-3 text-xl font-medium tracking-[-0.025em] text-foreground">{item.title}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
                 {item.summary}
               </p>
@@ -131,7 +131,7 @@ export function CasesBrowser() {
                 {item.products.map((p) => (
                   <span
                     key={p}
-                    className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[11px] font-medium text-primary"
+                    className="border border-white/10 px-2 py-0.5 font-mono text-[10px] tracking-wide text-white/55"
                   >
                     {p}
                   </span>
@@ -143,14 +143,14 @@ export function CasesBrowser() {
                 {item.tags.map((t) => (
                   <span
                     key={t}
-                    className="rounded-full bg-secondary/60 px-2.5 py-0.5 text-[11px] text-muted-foreground"
+                    className="text-[11px] text-muted-foreground before:mr-1 before:text-white/20 before:content-['/']"
                   >
                     {t}
                   </span>
                 ))}
               </div>
 
-              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+              <span className="mt-6 inline-flex items-center gap-1.5 border-t border-white/10 pt-4 text-xs uppercase tracking-[0.12em] text-white/48 transition-colors group-hover:text-accent">
                 查看项目详情
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
               </span>

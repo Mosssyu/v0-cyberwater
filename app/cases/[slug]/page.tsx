@@ -48,8 +48,10 @@ export default async function CaseDetailPage({
       <main>
         <CaseHero item={item} />
 
-        <section className="mx-auto max-w-7xl px-6 py-16 lg:py-20">
+        <section className="v4-section">
+          <div className="relative z-[1]">
           <CaseOverview item={item} />
+          </div>
         </section>
 
         <CaseProducts item={item} />

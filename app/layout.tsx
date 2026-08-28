@@ -28,9 +28,10 @@ export default function RootLayout({
   return (
     <html
       lang="zh-CN"
+      data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth scroll-pt-20 bg-background`}
     >
-      <body className="font-sans antialiased">
+      <body className="v4-site font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

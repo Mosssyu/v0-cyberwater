@@ -171,7 +171,7 @@ export function Cw3dpSlide() {
   const activePlantFeature = plantFeatures.find((item) => item.id === plantFeatureId) ?? plantFeatures[0]
 
   return (
-    <div data-testid="cw-visual-workspace" className="relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.16_0.03_245)] p-4 sm:p-5">
+    <div data-testid="cw-visual-workspace" className="v4-product-stage relative overflow-hidden rounded-3xl border border-border bg-[oklch(0.16_0.03_245)] p-4 sm:p-5">
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
 
       <div className="relative flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
