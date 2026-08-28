@@ -1,6 +1,6 @@
 import { CompanyGene } from "@/components/company-gene"
 import { CompanyStats } from "@/components/company-stats"
-import { GrowthTimeline } from "@/components/growth-timeline"
+import { GrowthTimelineV4 } from "@/components/growth-timeline-v4"
 import { DataFlowStream } from "@/components/data-flow-stream"
 import { LiquidWaterCanvas } from "@/components/liquid-water-canvas"
 import { ArrowDown, ArrowUpRight } from "lucide-react"
@@ -50,22 +50,22 @@ export function Hero() {
         </div>
       </div>
 
-      <div id="company-gene" className="relative border-t border-white/8 bg-background px-5 py-20 sm:px-8 lg:px-14 lg:py-28 xl:px-20">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_75%_25%,oklch(0.55_0.08_220/.13),transparent_36%)]" aria-hidden="true" />
+      <div id="company-gene" className="relative bg-[#020508] px-5 pt-24 sm:px-8 lg:px-14 lg:pt-32 xl:px-20">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_78%_15%,oklch(0.55_0.08_220/.12),transparent_34%),linear-gradient(to_bottom,rgba(20,43,53,.12),transparent_22%)]" aria-hidden="true" />
         <DataFlowStream />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#020508] via-[#020508]/80 to-transparent" aria-hidden="true" />
         <div className="relative z-10 grid items-center gap-16 xl:grid-cols-[minmax(0,.8fr)_minmax(620px,1.2fr)]">
           <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.28em] text-accent/75">Our origin / 水务运营管理基因</p>
-            <h2 className="mt-5 text-balance text-3xl font-medium leading-tight tracking-[-0.04em] text-foreground sm:text-5xl">不是为水务增加一个系统，<br />而是让运营成为能力。</h2>
-            <p className="mt-6 text-pretty leading-7 text-muted-foreground">北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。依托国内头部水务集团运营实践，持续沉淀管理标准、业务流程与技术能力。</p>
-            <CompanyStats compact className="mt-9 grid grid-cols-2 gap-2.5 sm:grid-cols-4" />
+            <span className="v4-kicker">Our origin / 水务运营管理基因</span>
+            <h2 className="mt-6 text-balance text-4xl font-medium leading-[1.02] tracking-[-0.055em] text-foreground sm:text-6xl">不是为水务增加一个系统，<br /><span className="text-white/34">而是让运营成为能力。</span></h2>
+            <p className="mt-7 max-w-xl text-pretty leading-7 text-muted-foreground">北京云建标科技有限公司专注于水务领域数字化产品研发与技术服务。依托国内头部水务集团运营实践，持续沉淀管理标准、业务流程与技术能力。</p>
+            <CompanyStats compact className="v4-origin-stats mt-10 grid grid-cols-2 gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-4" />
           </div>
           <CompanyGene />
         </div>
-      </div>
-
-      <div className="relative z-[1] px-5 pb-20 sm:px-8 lg:px-14 xl:px-20">
-        <GrowthTimeline />
+        <div className="relative z-10 mt-20 lg:mt-28">
+          <GrowthTimelineV4 />
+        </div>
       </div>
     </section>
   )
