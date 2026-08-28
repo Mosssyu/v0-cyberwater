@@ -221,9 +221,9 @@ export function CasesMap({
 
   return (
     <div className="v4-map-stage relative mt-8 overflow-hidden rounded-2xl border border-border bg-card/60 p-4 sm:p-6">
-      <div className="grid gap-6 lg:h-[72vh] lg:min-h-[560px] lg:max-h-[720px] lg:grid-cols-[1.6fr_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr] lg:items-stretch">
         {/* 地图 */}
-        <div className="relative">
+        <div className="relative min-w-0">
           {/* 左上角落地规模统计 */}
           <div className="pointer-events-none absolute left-2 top-2 z-10 max-w-[220px] sm:left-3 sm:top-3">
             <ul className="flex flex-col gap-1.5">
@@ -243,7 +243,7 @@ export function CasesMap({
           <svg
             ref={svgRef}
             viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
-            className="h-auto w-full"
+            className="block h-auto w-full"
             role="img"
             aria-label="中国地图标记的项目区域分布示意图"
           >
