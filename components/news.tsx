@@ -32,14 +32,12 @@ function NewsRow({ slug, tag, date, title }: { slug: string; tag: string; date: 
 
 export function News() {
   return (
-    <section id="news" className="bg-muted/40 py-24">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="news" className="v4-section bg-[#040709]">
+      <div className="relative z-[1]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
-              Newsroom
-            </span>
-            <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            <span className="v4-kicker">Newsroom / 新闻动态</span>
+            <h2 className="mt-6 max-w-5xl text-balance text-4xl font-medium tracking-[-0.045em] text-foreground sm:text-6xl lg:text-7xl">
               洞察行业趋势，见证项目落地
             </h2>
           </div>
@@ -52,11 +50,11 @@ export function News() {
           </Link>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-2">
           {/* 头条 */}
           <Link
             href={`/news/${featured.slug}`}
-            className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+            className="group flex flex-col justify-between bg-[#081015] p-8 transition-colors hover:bg-[#0a161d] sm:p-12"
           >
             <div>
               <div className="flex items-center gap-3 text-xs">
@@ -74,7 +72,7 @@ export function News() {
           </Link>
 
           {/* 自动上滚列表：默认可见约 6 条，其余缓慢向上滚动，悬停暂停 */}
-          <div className="news-marquee relative h-[452px] overflow-hidden rounded-2xl border border-border bg-card">
+          <div className="news-marquee relative h-[452px] overflow-hidden bg-[#081015]">
             <div
               className="news-marquee-track flex flex-col"
               style={{ ["--news-duration" as string]: `${scrolling.length * 4.5}s` }}

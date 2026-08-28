@@ -25,11 +25,11 @@ export function NewsExplorer() {
   }
 
   return (
-    <section className="py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="v4-section bg-[#060a0d]">
+      <div className="relative z-[1]">
         {/* 卡片网格 */}
         {visible.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
             {visible.map((item) => (
               <NewsCard key={item.slug} item={item} fromPage={current} />
             ))}

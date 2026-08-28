@@ -45,8 +45,8 @@ export default function ContactPage() {
         {/* 关于云建标 */}
         <About />
 
-        <section className="py-16">
-          <div className="mx-auto max-w-7xl px-6">
+        <section className="v4-section bg-[#05090c]">
+          <div className="relative z-[1]">
             <div className="grid gap-6 lg:grid-cols-3">
               {/* 公司信息 */}
               <div className="rounded-2xl border border-border bg-card/60 p-7 backdrop-blur-sm lg:col-span-2">

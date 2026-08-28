@@ -37,7 +37,7 @@ export function CasesBrowser() {
   return (
     <div>
       {/* 一级筛选：解决方案类型胶囊 */}
-      <div className="flex flex-wrap justify-center gap-2.5">
+      <div className="flex flex-wrap justify-start gap-2.5">
         {chips.map((chip) => {
           const isActive = filter === chip.key
           const dotColor = chip.key === "all" ? undefined : categoryColor[chip.key]
@@ -49,7 +49,7 @@ export function CasesBrowser() {
                 setFilter(chip.key)
                 setHighlightName(null)
               }}
-              className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all ${
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all ${
                 isActive
                   ? "border-primary bg-primary text-primary-foreground shadow-[0_0_20px_-4px_oklch(0.63_0.17_250/0.85)]"
                   : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -81,12 +81,12 @@ export function CasesBrowser() {
       </div>
 
       {/* 案例卡片网格（与筛选联动） */}
-      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {filtered.map((item) => (
           <Link
             key={item.slug}
             href={`/cases/${item.slug}`}
-            className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+            className="v4-panel group flex flex-col overflow-hidden transition-all hover:-translate-y-1 hover:border-primary/40"
           >
             <div className="relative overflow-hidden rounded-t-2xl bg-black/20 p-3">
               <img

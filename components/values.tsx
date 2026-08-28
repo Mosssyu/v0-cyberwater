@@ -28,18 +28,16 @@ export function Values() {
   return (
     <section
       id="values"
-      className="relative overflow-hidden border-y border-border bg-[oklch(0.13_0.012_252)] py-24"
+      className="v4-section bg-[#040709]"
     >
       <div className="glow-cyan pointer-events-none absolute inset-x-0 top-0 h-80" aria-hidden="true" />
       <div className="bg-grid bg-grid-fade pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative z-[1]">
         {/* 总纲 */}
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent backdrop-blur">
-            Values
-          </span>
-          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <div className="max-w-4xl">
+          <span className="v4-kicker">Values / 企业价值观</span>
+          <h2 className="mt-6 text-balance text-4xl font-medium tracking-[-0.05em] text-foreground sm:text-6xl">
             执着 · 共生 · <span className="text-gradient">求变</span>
           </h2>
           <p className="mt-6 text-pretty leading-relaxed text-muted-foreground">
@@ -52,7 +50,7 @@ export function Values() {
           {values.map((v, i) => (
             <div
               key={v.title}
-              className="group relative flex flex-col rounded-2xl border border-border bg-card p-7 ring-hairline transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl hover:shadow-accent/10"
+              className="v4-panel group relative flex flex-col p-7 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40"
             >
               <span
                 className="pointer-events-none absolute inset-x-0 top-0 h-px scale-x-0 bg-gradient-to-r from-transparent via-accent to-transparent transition-transform duration-300 group-hover:scale-x-100"

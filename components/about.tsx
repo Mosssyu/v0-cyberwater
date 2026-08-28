@@ -5,18 +5,16 @@ const aboutIntro =
 
 export function About() {
   return (
-    <section id="about" className="scroll-mt-16 border-b border-border/60 py-16">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-xs text-accent">
-            About
-          </span>
-          <h2 className="mt-5 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+    <section id="about" className="v4-section scroll-mt-16 bg-[#060a0d]">
+      <div className="relative z-[1]">
+        <div className="grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
+          <div><span className="v4-kicker">About / 关于云建标</span>
+          <h2 className="mt-6 max-w-5xl text-balance text-4xl font-medium tracking-[-0.05em] text-foreground sm:text-6xl">
             从水务运营中长出来的数字化产品公司
-          </h2>
-          <p className="mt-6 text-pretty leading-relaxed text-muted-foreground">{aboutIntro}</p>
+          </h2></div>
+          <p className="text-pretty leading-8 text-muted-foreground">{aboutIntro}</p>
         </div>
-        <CompanyStats className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4" />
+        <CompanyStats className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-4" />
       </div>
     </section>
   )

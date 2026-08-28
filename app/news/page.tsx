@@ -33,7 +33,7 @@ export default function NewsListPage() {
             aria-hidden
           />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20">
+          <div className="relative px-5 py-20 sm:px-8 lg:px-14 lg:py-28 xl:px-20">
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-sm text-blue-100/80 transition-colors hover:text-white"
@@ -41,7 +41,8 @@ export default function NewsListPage() {
               <ArrowLeft className="size-4" />
               返回首页
             </Link>
-            <h1 className="mt-6 text-balance text-4xl font-bold tracking-tight text-white sm:text-5xl">新闻动态</h1>
+            <span className="v4-kicker mt-10">Newsroom / 新闻动态</span>
+            <h1 className="mt-6 text-balance text-5xl font-medium tracking-[-0.055em] text-white sm:text-7xl lg:text-8xl">新闻动态</h1>
             <p className="mt-4 max-w-2xl text-pretty text-lg leading-relaxed text-blue-100/85">
               关注云建标最新动态，了解智慧水务行业实践、技术创新与项目成果。
             </p>

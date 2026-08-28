@@ -34,8 +34,12 @@ const branches = [
 
 export function SiteFooter() {
   return (
-    <footer id="contact" className="scroll-mt-16 border-t border-border bg-[oklch(0.12_0.012_252)] text-white">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+    <footer id="contact" className="scroll-mt-16 border-t border-white/10 bg-[#020405] text-white">
+      <div className="px-5 py-16 sm:px-8 lg:px-14 lg:py-24 xl:px-20">
+        <div className="mb-16 grid gap-8 border-b border-white/10 pb-14 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div><span className="v4-kicker">Contact / 联系我们</span><h2 className="mt-6 max-w-5xl text-4xl font-medium tracking-[-0.05em] sm:text-6xl lg:text-7xl">让水务运营，<br /><span className="text-white/32">进入智能时代。</span></h2></div>
+          <a href="/contact" className="inline-flex w-fit rounded-full bg-white px-7 py-3 text-sm font-medium text-black">开始沟通</a>
+        </div>
         <div className="grid gap-12 lg:grid-cols-2 xl:grid-cols-[1.65fr_1.15fr_1.35fr_1fr] xl:gap-10">
           <div>
             <div className="flex flex-col items-start gap-2 text-left">
@@ -111,7 +115,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 grid items-center gap-4 border-y border-white/10 py-5 sm:grid-cols-[auto_minmax(0,1fr)]">
+        <div className="mt-16 grid items-center gap-4 border-y border-white/10 py-6 sm:grid-cols-[auto_minmax(0,1fr)]">
           <span className="shrink-0 text-sm font-semibold text-white">合作伙伴</span>
           <PartnerMarquee />
         </div>
