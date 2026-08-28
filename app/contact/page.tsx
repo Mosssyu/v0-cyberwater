@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { MapPin, Mail, Building2, ArrowUpRight } from "lucide-react"
 import { About } from "@/components/about"
 import { Values } from "@/components/values"
@@ -45,18 +44,28 @@ export default function ContactPage() {
         {/* 关于云建标 */}
         <About />
 
+        {/* 企业价值观 */}
+        <Values />
+
         <section className="v4-section bg-[#05090c]">
           <div className="relative z-[1]">
-            <div className="grid gap-6 lg:grid-cols-3">
+            <div className="mb-12 border-b border-white/10 pb-10">
+              <span className="v4-kicker">Get in touch / 联系方式</span>
+              <h2 className="mt-6 max-w-5xl text-4xl font-medium tracking-[-0.05em] text-foreground sm:text-6xl">
+                从一次沟通开始，<br /><span className="text-white/35">让水务运营更进一步。</span>
+              </h2>
+            </div>
+
+            <div className="grid gap-px overflow-hidden border border-white/10 bg-white/10 lg:grid-cols-[1.35fr_.65fr]">
               {/* 公司信息 */}
-              <div className="rounded-2xl border border-border bg-card/60 p-7 backdrop-blur-sm lg:col-span-2">
+              <div className="bg-[#071015] p-7 sm:p-10">
                 <div className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-xl border border-primary/25 bg-primary/[0.08] text-primary">
+                  <span className="flex size-10 items-center justify-center border border-primary/25 bg-primary/[0.08] text-primary">
                     <Building2 className="size-5" />
                   </span>
-                  <h2 className="text-xl font-semibold text-foreground">北京云建标科技有限公司</h2>
+                  <div><span className="v4-index">HEADQUARTERS / BEIJING</span><h3 className="mt-1 text-xl font-medium text-foreground">北京云建标科技有限公司</h3></div>
                 </div>
-                <ul className="mt-6 grid gap-4">
+                <ul className="mt-8 grid gap-4 border-y border-white/10 py-6">
                   <li className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
                     <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
                     地址：北京市朝阳区新源里16号琨莎大厦2座901室
@@ -70,28 +79,28 @@ export default function ContactPage() {
                   </li>
                 </ul>
 
-                <h3 className="mt-8 mb-4 text-sm font-semibold text-foreground">全国业务布局</h3>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  {regions.map((r) => (
+                <h3 className="mt-8 mb-4 text-sm font-medium text-foreground">全国业务布局</h3>
+                <div className="grid grid-cols-2 gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-4">
+                  {regions.map((r, index) => (
                     <div
                       key={r.name}
-                      className="rounded-xl border border-border bg-background/40 p-4 text-center transition-colors hover:border-primary/30"
+                      className="bg-[#050b0f] p-4 transition-colors hover:bg-[#0b1920]"
                     >
-                      <p className="text-sm font-medium text-foreground">{r.name}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">{r.city}</p>
+                      <span className="v4-index">0{index + 1}</span><p className="mt-4 text-sm font-medium text-foreground">{r.name}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{r.city} · CYBERWATER</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* 二维码 */}
-              <div className="rounded-2xl border border-border bg-card/60 p-7 backdrop-blur-sm">
-                <h2 className="text-xl font-semibold text-foreground">联系方式</h2>
+              <div className="bg-[#081117] p-7 sm:p-10">
+                <span className="v4-index">SCAN / CONNECT</span><h3 className="mt-3 text-xl font-medium text-foreground">扫码咨询</h3>
                 <p className="mt-2 text-sm text-muted-foreground">扫码添加，获取产品资料与方案咨询</p>
-                <div className="mt-6 flex gap-5">
+                <div className="mt-8 grid grid-cols-2 gap-4">
                   {qrCodes.map((qr) => (
                     <div key={qr.label} className="flex flex-col items-center gap-2">
-                      <div className="rounded-xl bg-white p-2 shadow-sm">
+                      <div className="bg-white p-2 shadow-sm">
                         <img
                           src={qr.src || "/placeholder.svg"}
                           alt={qr.label}
@@ -107,39 +116,36 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* 企业价值观 */}
-            <Values />
-
             {/* 商务合作 */}
-            <div className="mt-6 rounded-2xl border border-border bg-card/60 p-7 backdrop-blur-sm">
-              <h2 className="text-xl font-semibold text-foreground">商务合作</h2>
+            <div className="mt-16 border-t border-white/10 pt-10">
+              <span className="v4-kicker">Cooperation / 商务合作</span>
+              <h2 className="mt-5 text-3xl font-medium tracking-[-0.04em] text-foreground">我们可以一起完成什么</h2>
               <p className="mt-2 text-sm text-muted-foreground">如果您希望了解以下方向，欢迎联系我们：</p>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                {cooperation.map((c) => (
+              <div className="mt-8 grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+                {cooperation.map((c, index) => (
                   <div
                     key={c}
-                    className="flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/[0.06] px-4 py-3 text-sm font-medium text-foreground"
+                    className="bg-[#071015] p-6 text-sm font-medium text-foreground transition-colors hover:bg-[#0a171e]"
                   >
-                    <span className="size-1.5 rounded-full bg-primary" />
-                    {c}
+                    <span className="v4-index">0{index + 1}</span><span className="mt-5 block">{c}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* 底部 CTA */}
-            <div className="relative mt-10 overflow-hidden rounded-3xl border border-primary/30 bg-[oklch(0.21_0.06_256)] p-10 text-center sm:p-14">
+            <div className="relative mt-16 overflow-hidden border-y border-white/10 bg-[#071015] px-6 py-12 sm:px-10 sm:py-16">
               <div
                 aria-hidden
                 className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-primary/20 blur-3xl"
               />
-              <div className="relative">
-                <h2 className="text-balance text-3xl font-bold text-white sm:text-4xl">
+              <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+                <h2 className="text-balance text-3xl font-medium tracking-[-0.04em] text-white sm:text-5xl">
                   开启水务数字化升级之旅
                 </h2>
                 <a
                   href="mailto:service@cyberwater.cn"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-105"
+                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5"
                 >
                   立即咨询
                   <ArrowUpRight className="size-4" />

@@ -73,34 +73,47 @@ export default function SitemapPage() {
       <SiteHeader />
       <main>
         <PageHero eyebrow="Sitemap" title="网站地图" subtitle="快速了解云建标官网结构" />
-        <section className="py-16">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {groups.map((group) => (
+        <section className="v4-section bg-[#05090c]">
+          <div className="relative z-[1]">
+            <div className="mb-12 grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div>
+                <span className="v4-kicker">Information Architecture / 信息索引</span>
+                <h2 className="mt-6 max-w-4xl text-4xl font-medium tracking-[-0.05em] text-foreground sm:text-6xl">
+                  从这里，抵达云建标的每一项能力。
+                </h2>
+              </div>
+              <div className="flex gap-8 font-mono text-xs text-muted-foreground">
+                <span><b className="block text-2xl font-medium text-foreground">{groups.length}</b>栏目</span>
+                <span><b className="block text-2xl font-medium text-foreground">{groups.reduce((sum, group) => sum + group.links.length, 0)}</b>内容入口</span>
+              </div>
+            </div>
+
+            <div className="grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2 xl:grid-cols-3">
+              {groups.map((group, groupIndex) => (
                 <div
                   key={group.title}
-                  className="rounded-2xl border border-border bg-card/60 p-6 backdrop-blur-sm transition-colors hover:border-primary/30"
+                  className="group bg-[#071015] p-6 transition-colors hover:bg-[#0a171e] sm:p-8"
                 >
-                  <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-foreground">
-                    <span className="h-4 w-1 rounded-full bg-primary" />
+                  <span className="v4-index">SECTION / {String(groupIndex + 1).padStart(2, "0")}</span>
+                  <h2 className="mt-4 mb-6 text-2xl font-medium tracking-[-0.03em] text-foreground">
                     {group.title}
                   </h2>
-                  <ul className="grid gap-1.5">
+                  <ul className="border-t border-white/10">
                     {group.links.map((link) => (
                       <li key={link.label}>
                         <Link
                           href={link.href}
-                          className="group flex items-center justify-between rounded-lg px-3 py-2 transition-colors hover:bg-primary/[0.06]"
+                          className="group/link flex min-h-14 items-center justify-between gap-4 border-b border-white/8 py-3 transition-colors hover:text-accent"
                         >
-                          <span>
-                            <span className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">
+                          <span className="min-w-0">
+                            <span className="block text-sm font-medium text-foreground transition-colors group-hover/link:text-accent">
                               {link.label}
                             </span>
                             {link.desc && (
-                              <span className="ml-2 text-xs text-muted-foreground">{link.desc}</span>
+                              <span className="mt-0.5 block text-xs text-muted-foreground">{link.desc}</span>
                             )}
                           </span>
-                          <ArrowUpRight className="size-4 text-muted-foreground opacity-0 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary group-hover:opacity-100" />
+                          <ArrowUpRight className="size-4 shrink-0 text-muted-foreground/50 transition-all group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 group-hover/link:text-accent" />
                         </Link>
                       </li>
                     ))}
