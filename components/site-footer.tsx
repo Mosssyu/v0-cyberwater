@@ -41,7 +41,12 @@ export function SiteFooter() {
             <div className="flex flex-col items-start gap-2 text-left">
               <img
                 src="/cyberwater-logo-dark.png"
-                alt="云建标 CYBERWATER"
+                alt="云建标智慧水务"
+                title="北京云建标科技有限公司"
+                width={260}
+                height={60}
+                loading="lazy"
+                decoding="async"
                 className="-ml-2 h-9 w-auto object-scale-down object-left"
               />
               <span className="text-[11px] tracking-[0.2em] text-blue-100/50">

@@ -83,7 +83,13 @@ export function SiteHeader({
         <a href="/#home" className="flex items-center" aria-label="云建标 CYBERWATER 首页">
           <img
             src="/cyberwater-logo-dark.png"
-            alt="云建标 CYBERWATER"
+            alt="云建标智慧水务"
+            title="北京云建标科技有限公司"
+            width={260}
+            height={60}
+            loading="eager"
+            fetchPriority="high"
+            decoding="sync"
             className="h-9 w-auto"
           />
         </a>

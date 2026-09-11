@@ -2,7 +2,6 @@ const partners = [
   { name: "北控水务集团", src: "/partners/bewg.png" },
   { name: "上海城投", src: "/partners/shanghai-chengtou.png" },
   { name: "西安水务（集团）有限责任公司", src: "/partners/xian-water.png" },
-  { name: "北控石犀", src: "/partners/bewg-shixi.png" },
   { name: "天津创业环保", src: "/partners/chuangye-env.png" },
   { name: "上海浦东水务集团", src: "/partners/pudong-water.png" },
   { name: "北京排水集团", src: "/partners/beijing-drainage.png" },
@@ -30,8 +29,11 @@ function PartnerList({ duplicate = false }: { duplicate?: boolean }) {
         >
           <img
             src={partner.src}
-            alt={duplicate ? "" : partner.name}
+            alt={duplicate ? "" : `${partner.name}合作伙伴客户标识`}
+            title={duplicate ? undefined : partner.name}
             loading="lazy"
+            fetchPriority="low"
+            decoding="async"
             className="max-h-8 w-auto max-w-full object-contain opacity-55 brightness-0 invert transition-opacity duration-300 hover:opacity-90"
           />
         </li>
