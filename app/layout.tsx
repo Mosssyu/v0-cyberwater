@@ -32,10 +32,10 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/products/group.png',
-        width: 1672,
-        height: 941,
-        alt: '云建标智慧水务集团运营管理平台',
+        url: '/seo/cyberwater-brand-card.png',
+        width: 1200,
+        height: 630,
+        alt: '云建标智慧水务品牌标识',
       },
     ],
   },
@@ -43,15 +43,34 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: siteTitle,
     description: siteDescription,
-    images: ['/products/group.png'],
+    images: ['/seo/cyberwater-brand-card.png'],
   },
   robots: {
     index: true,
     follow: true,
   },
+  manifest: '/manifest.webmanifest',
   icons: {
-    icon: [{ url: '/cyberwater-mark.png', type: 'image/png' }],
-    apple: '/cyberwater-mark.png',
+    icon: [
+      {
+        url: '/seo/cyberwater-icon-32.png',
+        sizes: '32x32',
+        type: 'image/png',
+      },
+      {
+        url: '/seo/cyberwater-icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+    ],
+    shortcut: ['/seo/cyberwater-icon-32.png'],
+    apple: [
+      {
+        url: '/seo/cyberwater-apple-touch-icon.png',
+        sizes: '180x180',
+        type: 'image/png',
+      },
+    ],
   },
 }
 
@@ -65,6 +84,12 @@ export default function RootLayout({
       lang="zh-CN"
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth scroll-pt-20 bg-background`}
     >
+      <head>
+        <link
+          rel="image_src"
+          href="https://cyberwater.cn/seo/cyberwater-brand-card.png"
+        />
+      </head>
       <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
